@@ -1,0 +1,84 @@
+<div class="margenTop">
+	
+	<div class="row" style="margin-left:0px">				
+		<div class="col-md-5 col-lg-5 col-xs-5">
+			<h5>PROPUESTA ATRIBUTO</h5>
+		</div>		
+		<div class="col-md-4 col-lg-4 col-xs-4">
+			<h5>CONVOCATORIA</h5>
+		</div>			
+		<div class="col-md-3 col-lg-3 col-xs-3">
+			<h5>FECHA</h5>
+		</div>			
+	</div>
+
+	<div class="row">
+		<div class="col-md-5 col-lg-5 col-xs-5">
+			<select class="form-control"  ng-model="selPropuestaAtributo" 
+          ng-options="propuestaAtributo as propuestaAtributo.PATR_NOMB for propuestaAtributo in listPropuestaAtributo" required>
+          </select>
+		</div>
+		<div class="col-md-4 col-lg-4 col-xs-4">
+			<select class="form-control"  ng-model="selConvocatoria" 
+          ng-options="convocatoria as convocatoria.CON_DESC for convocatoria in listConvocatoria" required>
+          </select>
+		</div>
+		<div class="col-md-3 col-lg-3 col-xs-3">
+			<div class="form-group" ng-class="{'has-error': datepickerForm.date.$invalid}">
+   			<input type="text" data-toggle="datepicker" class="form-control" ng-model="selFecha" data-date-format="dd-MMMM-yyyy" date-type="iso"  data-min-date="today"  data-autoclose="1" name="date2" bs-datepicker required>
+  			</div>
+		</div>
+	</div>	
+	<div class="row" style="margin-top:20px">
+		<div class="col-md-2 col-lg-2 col-xs-2">
+			<button type="button" class="btn btn-primary" ng-click="onClicAgregar(selPropuestaAtributo,selConvocatoria,selFecha)">Agregar</button>
+		</div>
+	</div>		
+		
+	<my-modaleliminarpropuestaatributoconvocatoria></my-modaleliminarpropuestaatributoconvocatoria>
+	<div class="row" style="margin-top:20px">
+		<div class="col-md-12 col-lg-12 col-xs-12">           
+		   <jqx-panel jqx-settings="settingsPanel">		     
+		     <ul ng-repeat="propuestaAtributoConvocatoria in listPropuestaAtributoConvocatoria" class="list-group">		
+			<li class="list-group-item">
+				<div class="row">
+					<div class="col-md-5 col-lg-5 col-xs-5">
+						<label style="color:blue;font-size: 13px;font-weight: 100">Propuesta Atributo</label>
+					</div>
+					<div class="col-md-4 col-lg-4 col-xs-4">
+						<label style="color:blue;font-size: 13px;font-weight: 100">Convocatoria</label>
+					</div>
+						<div class="col-md-2 col-lg-2 col-xs-2">
+						<label style="color:blue;font-size: 13px;font-weight: 100">Fecha</label>
+					</div>
+					<div class="col-md-1 col-lg-1 col-xs-1">
+						<label style="color:red;font-size: 13px;font-weight: 300">Eliminar</label>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-5 col-lg-5 col-xs-5">
+						<label style="font-size: 13px;font-weight: 100">{{propuestaAtributoConvocatoria.PCAT_NOMB}}</label>
+					</div>
+					<div class="col-md-4 col-lg-4 col-xs-4">
+						<label style="font-size: 12px;font-weight: 100">{{propuestaAtributoConvocatoria.CON_DESC}}</label>
+					</div>		
+					<div class="col-md-2 col-lg-2 col-xs-2">
+						<label style="font-size: 12px;font-weight: 100">{{propuestaAtributoConvocatoria.PCAT_FECH}}</label>
+					</div>			
+					<div class="col-md-1 col-lg-1 col-xs-1">
+						<jqx-button   ng-click="onClicEliminar(propuestaAtributoConvocatoria,this)">  <i class="glyphicon glyphicon-ban-circle" style="cursor:pointer"  ></i> </jqx-button>
+					</div>
+				</div>	
+
+			</li>			     	     
+	     </ul>		   
+	</jqx-panel>
+	</div>
+	</div>
+	<div class="row" style="margin-top: 10px">
+		<div class="col-md-offset-11 col-lg-offset-11 col-xs-offset-11">
+				<button type="button" class="btn btn-success" ng-click="onClicGuardar()">Guardar</button>
+					</div>
+    	</div>		
+
+</div>

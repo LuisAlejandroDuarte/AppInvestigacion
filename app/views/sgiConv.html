@@ -1,0 +1,194 @@
+<hr>
+
+<div class="margenTop">
+
+  <nav class= "navbar navbar-default" role= "navigation" >
+ <div class= "navbar-header" >      
+<a class="btn btn-lg btn-success" href="#/edit-sgiConv/0"><i class="glyphicon glyphicon-plus"></i>&nbsp;Nuevo</a>
+ </div>
+ </nav>
+ </div>
+  <div class="panel-body">
+
+  <table id="tableSgiConv">
+   
+  </table>
+
+ 
+  </div>
+
+
+
+
+<!-- start: Delete Coupon Modal -->
+
+
+<div class="modal fade" id="myModal"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                 <h3 class="modal-title" id="myModalLabel">Advertencia!</h3>
+            </div>
+            <div class="modal-body">
+                 <h4> Desea Borrar el actual registro?</h4>
+                  <div><label id="nombreConv"></label>
+            </div>
+            <!--/modal-body-collapse -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" id="btnYes" href="#">Yes</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal"  >No</button>
+            </div>
+            <!--/modal-footer-collapse -->
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+</div>
+
+ <script>
+    function operateFormatter(value, row, index) {
+        return [
+            
+            '<a class="edit ml10" href="#/edit-sgiConv/'+ row.CON_CODI + '" title="Editar">',
+                '<i class="glyphicon glyphicon-edit"></i>',
+            '</a> &nbsp' ,
+            '<a class="remove ml10" href="javascript:void(0)" title="Eliminar">',
+                '<i class="glyphicon glyphicon-remove"></i>',
+            '</a>'
+        ].join('');
+    }
+
+    window.operateEvents = {
+        
+        // 'click .edit': function (e, value, row, index) {
+        //     alert('You click edit icon, row: ' + JSON.stringify(row));
+        //     console.log(value, row, index);
+        // },
+         'click .remove': function (e, value, row, index) {
+          $('#nombreConv').text(row.CON_DESC);
+        $('#myModal').data('id', row.CON_CODI).modal('show');
+
+    }
+       };
+
+    $(function () {        
+
+             $('#tableSgiConv').bootstrapTable({
+                method: 'post',
+                url: 'scripts/services/api.php?url=executeSQL/S/SELECT conv."CON_CODI", tipoConv."TCO_DESC", conv."CON_NUME",conv."CON_DESC",conv."CON_TEXT",conv."CON_FECH_INIC",conv."CON_FECH_FINA",conv."CON_TIPO_CONV_CODI" FROM "SGI_CONV" as conv join "SGI_TIPO_CONV" as tipoConv on tipoConv."TCO_CODI" = conv."CON_TIPO_CONV_CODI" ORDER BY conv."CON_CODI" ASC',
+                cache: false,
+                height: 400,
+                striped: true,
+                pagination: true,
+                pageSize: 50,
+                pageList: [10, 25, 50, 100, 200],
+                search: true,
+                showColumns: true,
+                showRefresh: true,
+                minimumCountColumns: 1,
+                
+                columns: [{
+                    field: 'CON_CODI',
+                    title: 'Código',
+                    align: 'left',
+                    valign: 'bottom',
+                    sortable: true,
+                    clickToSelect: false,
+                    visible: false
+                }, {
+                    field: 'CON_NUME',
+                    title: 'Número',
+                    align: 'left',
+                    valign: 'middle',
+                    sortable: true,
+                     clickToSelect: true
+                },{
+                    field: 'TCO_DESC',
+                    title: 'Convocatoria',
+                    align: 'left',
+                    valign: 'middle',
+                    sortable: true,
+                     clickToSelect: true
+                },{
+                    field: 'CON_DESC',
+                    title: 'Descripción',
+                    align: 'left',
+                    valign: 'middle',
+                    sortable: true,
+                     clickToSelect: true
+                },{
+                    field: 'CON_TEXT',
+                    title: 'Texto',
+                    align: 'left',
+                    valign: 'middle',
+                    sortable: true,
+                     clickToSelect: true
+                },{
+                    field: 'CON_FECH_INIC',
+                    title: 'Fecha Inicio',
+                    align: 'left',
+                    valign: 'middle',
+                    sortable: true,
+                    clickToSelect: true
+                },{
+                    field: 'CON_FECH_FINA',
+                    title: 'Fecha Final',
+                    align: 'left',
+                    valign: 'middle',
+                    sortable: true,
+                     clickToSelect: true
+                },{                   
+                    title: '',
+                    align: 'center',
+                    valign: 'middle',
+                    switchable:false,
+                    clickToSelect: true,
+                    formatter: operateFormatter,
+                    events: operateEvents
+                }]
+            });  
+
+   
+    });
+
+  $(document).ready(function(){
+ $('#tableSgiConv').bootstrapTable('refresh', {
+                    url: 'scripts/services/api.php?url=executeSQL/S/SELECT conv."CON_CODI", tipoConv."TCO_DESC", conv."CON_NUME",conv."CON_DESC",conv."CON_TEXT",conv."CON_FECH_INIC",conv."CON_FECH_FINA",conv."CON_TIPO_CONV_CODI" FROM "SGI_CONV" as conv join "SGI_TIPO_CONV" as tipoConv on tipoConv."TCO_CODI" = conv."CON_TIPO_CONV_CODI" ORDER BY conv."CON_CODI" ASC'
+                });
+});
+
+   $('#btnYes').click(function() {
+      var Codigo = $('#myModal').data('id');
+      // $('[data-id='+id+']').parents('tr').remove();
+        
+ //sending to php the row to be deleted from the db
+ $.ajax({
+  url: 'scripts/services/api.php?url=executeSQL/D/DELETE FROM "SGI_CONV" WHERE "CON_CODI" = '+ Codigo,
+  data: {
+      id : Codigo
+  },
+  type: 'POST',
+  dataType : 'json',
+  
+  success: function(datos){
+       // alert(JSON.stringify(datos)['msg']);
+ //removing entire row
+      
+        $('#tableSgiConv').bootstrapTable('remove', {
+                    field: 'CON_CODI',
+                    values: Codigo
+                });
+       $('#myModal').modal('hide');
+     },
+      error: function (data, textStatus, jqXHR) {
+             // error handler
+            alert(JSON.stringify(data));
+         }       
+ });
+return false;
+});
+
+</script>

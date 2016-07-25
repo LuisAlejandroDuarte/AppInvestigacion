@@ -1,0 +1,17 @@
+
+<div class="margenTop">
+
+<div ng-controller="ListControllerGrupo as list">
+      
+ <my-modalgrupo></my-modalgrupo> 
+  <div ng-controller="ControladorGrupo as ctrl">
+    <div id="custom-toolbargrupo">
+     <div class="form-inline" role="form">    
+        <a ng-click="list.btnNovoClick()" target="_self" class="btn btn-default btn-primary btn-sm"><span class="glyphicon glyphicon-plus"></span> Nuevo</a>
+     </div>
+    </div>
+   <table id="tablegrupo" init-tablagrupo="options" >
+   </table>
+  </div>
+ </div>
+</div>

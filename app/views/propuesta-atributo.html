@@ -1,0 +1,74 @@
+<div class="margenTop">
+	
+	<div class="row" style="margin-left:0px">				
+		<div class="col-md-6 col-lg-6 col-xs-6">
+			<h5>PROPUESTAS</h5>
+		</div>		
+		<div class="col-md-6 col-lg-6 col-xs-6">
+			<h5>ATRIBUTOS</h5>
+		</div>			
+	</div>
+
+	<div class="row">
+		<div class="col-md-6 col-lg-6 col-xs-6">
+			<select class="form-control"  ng-model="selPropuesta" ng-change="onChangePropuesta()"
+          ng-options="propuesta as propuesta.PRO_NOMB for propuesta in listPropuesta" required>
+          </select>
+		</div>
+		<div class="col-md-6 col-lg-6 col-xs-6">
+			<select class="form-control"  ng-model="selAtributo" 
+          ng-options="atributo as atributo.ATR_DESC for atributo in listAtributo" required>
+          </select>
+		</div>
+	</div>	
+	<div class="row" style="margin-top:20px">
+		<div class="col-md-2 col-lg-2 col-xs-2">
+			<button type="button" class="btn btn-primary" ng-click="onClicAgregar(selPropuesta,selAtributo)">Agregar</button>
+		</div>
+	</div>		
+		
+	<my-modaleliminarpropuestaatributo></my-modaleliminarpropuestaatributo>
+	<div class="row" style="margin-top:20px">
+		<div class="col-md-12 col-lg-12 col-xs-12">           
+		   <jqx-panel jqx-settings="settingsPanel">		     
+		     <ul ng-repeat="propuestaAtributo in listPropuestaAtributo" class="list-group">		
+			<li class="list-group-item">
+				<div class="row">
+					<div class="col-md-5 col-lg-5 col-xs-5">
+						<label style="color:blue;font-size: 13px;font-weight: 100">Propuesta</label>
+					</div>
+					<div class="col-md-5 col-lg-5 col-xs-5">
+						<label style="color:blue;font-size: 13px;font-weight: 100">Atributo</label>
+					</div>
+					
+					<div class="col-md-1 col-lg-1 col-xs-1">
+						<label style="color:red;font-size: 13px;font-weight: 300">Eliminar</label>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-5 col-lg-5 col-xs-5">
+						<label style="font-size: 13px;font-weight: 100">{{propuestaAtributo.PRO_NOMB}}</label>
+					</div>
+					<div class="col-md-5 col-lg-5 col-xs-5">
+						<label style="font-size: 12px;font-weight: 100">{{propuestaAtributo.ATR_DESC}}</label>
+					</div>				
+					<div class="col-md-1 col-lg-1 col-xs-1">
+						<jqx-button   ng-click="onClicEliminar(propuestaAtributo,this)">  <i class="glyphicon glyphicon-ban-circle" style="cursor:pointer"  ></i> </jqx-button>
+					</div>
+				</div>	
+
+			</li>			     	     
+	     </ul>		   
+	</jqx-panel>
+	</div>
+	</div>
+	<div class="row" style="margin-top: 10px">
+		<div class="col-md-offset-11 col-lg-offset-11 col-xs-offset-11">
+				<button type="button" class="btn btn-success" ng-click="onClicGuardar()">Guardar</button>
+					</div>
+    	</div>		
+
+</div>
+
+	
+

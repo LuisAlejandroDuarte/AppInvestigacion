@@ -1,0 +1,147 @@
+<hr>
+<mostrariconoespera></mostrariconoespera>
+<div class="margenTop">
+<div class="view">
+<div class="panel panel-primary drop-shadow" style="width:65%;height:340px;  margin-left:17%; margin-top:10%">
+  <div class="panel-heading"><h>{{tiTulo}}</h></div>
+  <form method="post" name="myForm"  novalidate>
+  <div class="panel-body">
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-lg-3 col-md-3 col-xs-6 col-sm-6">
+        <div class="form-group">
+          <label>NÚMERO</label> 
+            <input name="name" ng-model="viewDatos[0].CON_NUME" type= "text" maxlength="6" class= "form-control" placeholder="Número" autofocus required/>  
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-3 col-xs-6 col-sm-6">
+        <div class="form-group">
+          <label>DESCRIPCIÓN</label> 
+           <input name="name" ng-model="viewDatos[0].CON_DESC" type= "text" class= "form-control" placeholder="Descripción" autofocus required/>   
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">    
+     <div class="col-md-3">
+                      
+      </div>  
+      <div class="col-md-6">
+        <label>DESCRIPCIÓN</label>               
+      </div>
+      <div class="col-md-3">
+        <label>PUNTAJE</label>               
+      </div>
+  </div>  
+  <div class="row">           
+         <div class="col-md-3">                 
+                     
+         </div>
+          <div class="col-md-6">                 
+             
+    </div>
+    <div class="col-md-3">                 
+        <input name="name" ng-model="viewDatos[0].CON_PUNT_TOTA" type= "number" class= "form-control" placeholder="Puntaje" autofocus required/>        
+    </div>
+  </div>  
+
+   <div class="row" style="margin-top:15px">  
+  <div class="col-md-2">
+      <label>TEXTO</label>               
+      </div>  
+  <div class="col-md-4">
+      <label></label>               
+      </div> 
+  <div class="col-md-2">
+      <label>Resolución</label>               
+      </div> 
+  <div class="col-md-4">
+      <label></label>               
+  </div>  
+  </div>  
+
+  <div class="row">
+      <div class="col-md-2">                 
+          <span class="fileinput-button glyphicon glyphicon-file"  ng-class="{disabled:    disabled}" style="margin-left:20px"><input title="Cargar documento" type="file" name="files" onchange="angular.element(this).scope().uploadFileTexto(this) " accept="application/pdf, application/msword"> 
+          </span>    
+        <span title="Descargar documento" ng-click="DescargarTexto()" class="glyphicon glyphicon-download-alt" style="cursor: pointer;"></span>
+        <span title="Eliminar documento" ng-click="EliminarTexto()" class="glyphicon glyphicon-remove" style="cursor: pointer;"></span>
+    </div>
+    <div class="col-md-4">
+      <label style="font-weight: 100">{{nombreArchivoTexto}}</label>
+    </div>
+    <div class="col-md-2">                 
+          <span class="fileinput-button glyphicon glyphicon-file"  ng-class="{disabled:    disabled}" style="margin-left:20px"><input title="Cargar documento" type="file"  name="files" onchange="angular.element(this).scope().uploadFileResolucion(this) " accept="application/pdf,application/msword"> 
+          </span>    
+        <span title="Descargar documento" ng-click="DescargarResolucion()" class="glyphicon glyphicon-download-alt" style="cursor: pointer;"></span>  
+        <span title="Eliminar documento" ng-click="EliminarResolucion()" class="glyphicon glyphicon-remove" style="cursor: pointer;"></span>
+    </div>
+    <div class="col-md-4">
+      <label style="font-weight: 100">{{nombreArchivoResolucion}}</label>
+    </div>
+  </div> 
+
+<div class="row" style="margin-top:15px">  
+     <div class="col-md-4">
+        <label>Fecha Inicio</label>               
+      </div>
+         <div class="col-md-4">
+        <label>Fecha Final</label>               
+      </div> 
+      <div class="col-md-4">
+        <label>Tipo Convocatoria</label>               
+      </div>   
+  </div>  
+    <div class="row">
+        <div class="col-md-4">
+           
+<div class="form-group" ng-class="{'has-error': datepickerForm.date.$invalid}">
+   <input type="text" ng-model-options="{timezone:'UTC'}" class="form-control" ng-model="viewDatos[0].CON_FECH_INIC" data-date-format="dd-MMMM-yyyy"   data-max-date="{{viewDatos[0].CON_FECH_FINA}}"  data-autoclose="1" name="fechaInicio" bs-datepicker required>
+  
+  </div>
+          
+
+        </div>
+      <div class="col-md-4">
+        <div class="form-group" ng-class="{'has-error': datepickerForm.date.$invalid}">
+   <input type="text" ng-model-options="{timezone:'UTC'}" class="form-control" ng-model="viewDatos[0].CON_FECH_FINA" data-date-format="dd-MMMM-yyyy"  data-min-date="{{viewDatos[0].CON_FECH_INIC}}"  data-autoclose="1"   name="fechaFinal" bs-datepicker required>
+  
+  </div>
+       
+        
+        </div>
+          <div class="col-md-4">                          
+          <select class="form-control"  ng-model="viewDatos[0].CON_TIPO_CONV_CODI" 
+          ng-options="opt.TCO_CODI as opt.TCO_DESC for opt in tipoConvocatoria" required>
+          </select>
+    </div>         
+
+  </div> 
+ 
+  </div>
+</form>
+  <div class="row" style="margin-top:5px">
+ <div class="col-md-offset-8" >
+<div style="margin-right:20px; text-align:right">
+        <button  ng-click= "save(viewDatos[0])"  ng-disabled="myForm.$invalid"              
+                class="btn btn-primary">{{buttonText}}</button>
+              
+                
+
+  <button  ng-click= "volver()"               
+                class="btn btn-primary">Cancelar</button>
+                </div>
+</div>                
+     
+</div>
+</div>
+</div>
+
+</div>
+
+
+
+
+ 

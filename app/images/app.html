@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<!-- saved from url=(0061)http://covialco.com/AppInvestigador/app/#/edit-investigador/1 -->
+<html class="no-js"><!--<![endif]--><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style type="text/css">@charset "UTF-8";[ng\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide{display:none !important;}ng\:form{display:block;}.ng-animate-block-transitions{transition:0s all!important;-webkit-transition:0s all!important;}</style>
+  <meta charset="utf-8">
+  <title></title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+  <!-- build:css styles/vendor.css -->
+  <!-- bower:css -->
+  <link rel="stylesheet" href="http://covialco.com/AppInvestigador/app/bower_components/bootstrap/dist/css/bootstrap.min2.css">
+  <link rel="stylesheet" href="http://covialco.com/AppInvestigador/app/bower_components/bootstrapvalidator/dist/css/bootstrapValidator.css">
+  <link rel="stylesheet" href="http://covialco.com/AppInvestigador/app/bower_components/bootstraptable/dist/bootstrap-table.min.css">
+
+  <!--Para Grilla -->
+   <link rel="stylesheet" href="http://covialco.com/AppInvestigador/app/bower_components/jquery/JqGrid/css/ui.jqgrid.css">
+   <link rel="stylesheet" href="http://covialco.com/AppInvestigador/app/bower_components/jquery/JqGrid/src/css/ui.multiselect.css">
+   
+    <script async="" src="./app_files/analytics.js"></script><script src="./app_files/jquery.js"></script>
+  <!-- Termina Grilla-->
+
+  <!-- <link rel="stylesheet" href="bower_components/angular-motion/angular-motion.css"/> -->
+<!--   <link rel="stylesheet" href="bower_components/bootstrap-additions/bootstrap-additions.css"/> -->
+   <!-- <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-combined.min.css">  -->
+  <!-- endbower -->
+  <!-- endbuild -->
+  <!-- build:css({.tmp,app}) styles/main.css -->
+  <link rel="stylesheet" href="http://covialco.com/AppInvestigador/app/styles/main.css">
+  <link rel="stylesheet" href="http://covialco.com/AppInvestigador/app/styles/animaciones.css">
+  <!-- endbuild -->
+</head>
+<body ng-app="listaTareasApp" class="ng-scope">
+
+
+
+<!--[if lt IE 7]>
+<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+<![endif]-->
+
+<!-- Add your site or application content here -->
+<div ng-controller="ApCtrl" class="ng-scope">
+ 
+
+<nav id="navbar-example" class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container-fluid">      
+      
+        <div class="collapse navbar-collapse bs-example-js-navbar-collapse">
+           <!-- <ul class="nav navbar-nav">
+            <li class="dropdown" ng-show=usrConectado.estaConectado>
+              <a id="drop1"  role="button" class="dropdown-toggle" data-toggle="dropdown">TABLAS <span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="#/granarea">GRAN ÁREA</a></li>
+                 <li role="presentation"><a role="menuitem" tabindex="-1" href="#/zona">ZONA</a></li>
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="#/centro">CENT</a></li>
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="#/area">ÁREAS</a></li>
+                
+              </ul>
+            </li> -->
+
+            <!-- <li class="dropdown" ng-show=usrConectado.estaConectado>
+              <a id="drop1"  role="button" class="dropdown-toggle" data-toggle="dropdown">TABLASII<span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
+                 <li role="presentation"><a role="menuitem" tabindex="-1" href="#/sgiTipoConv">SGI_TIPO_CONV</a></li>
+                  <li role="presentation"><a role="menuitem" tabindex="-1" href="#/investigador">Investigador</a></li>
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="#/sgiConv">SGI_CONV</a></li>
+                 <li role="presentation"><a role="menuitem" tabindex="-1" href="#/sgi_escu">SGI_ESCU</a></li>
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="#/sgi_grup">SGI_GRUP</a></li>
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="#/sgi_grup_conv">SGI_GRUP_CONV</a></li>
+                
+              </ul>
+            </li> -->
+           <!--  <li class="dropdown">
+              <a href="#" id="drop2" role="button" class="dropdown-toggle" data-toggle="dropdown">Dropdown 2 <span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu" aria-labelledby="drop2">
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="http://twitter.com/fat">Action</a></li>
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="http://twitter.com/fat">Another action</a></li>
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="http://twitter.com/fat">Something else here</a></li>
+                <li role="presentation" class="divider"></li>
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="http://twitter.com/fat">Separated link</a></li>
+              </ul>
+            </li> -->
+         <!--  </ul>  -->
+          <ul class="nav navbar-nav navbar-right ">
+              <button class="btn btn-danger btnSalir" ng-click="salir()">Salir</button>
+          </ul>
+        </div><!-- /.nav-collapse
+      </div><!-- /.container-fluid -->
+    </div></nav> <!-- /navbar-example -->
+
+
+  <div class="container">
+    <!-- ngView:  --><div ng-view="" class="ng-scope"><hr class="ng-scope">
+<div class="margenTop ng-scope">
+
+
+<div class="panel panel-primary  drop-shadow" style="width:100%;height:100%;  margin-left:2%; margin-top:2%">
+  <div class="panel-heading"><h class="ng-binding">Editando Investigador</h></div>
+  <form name="myForm" novalidate="" class="ng-pristine ng-valid ng-valid-required">
+  <div class="panel-body">
+ <div class="ng-isolate-scope">
+  <ul class="nav nav-tabs" ng-class="{&#39;nav-stacked&#39;: vertical, &#39;nav-justified&#39;: justified}" ng-transclude="">
+ <li ng-class="{active: active, disabled: disabled}" active="tabPersonal" class="ng-isolate-scope active">
+  <a ng-click="select()" tab-heading-transclude="" class="ng-binding"><tab-heading class="ng-scope">
+        <i class="glyphicon glyphicon-user"></i> Datos Personales 
+      </tab-heading></a>
+</li>
+   
+  
+    <li ng-class="{active: active, disabled: disabled}" active="tabAcedemico" class="ng-isolate-scope">
+  <a ng-click="select()" tab-heading-transclude="" class="ng-binding"><tab-heading class="ng-scope">
+        <i class="glyphicon glyphicon-book"></i> Información Académica
+      </tab-heading></a>
+</li>
+      <li ng-class="{active: active, disabled: disabled}" active="tabGrupo" class="ng-isolate-scope">
+  <a ng-click="select()" tab-heading-transclude="" class="ng-binding"><tab-heading class="ng-scope">
+        <i class="glyphicon glyphicon-eye-open"></i> Información Investigativa
+      </tab-heading></a>
+</li>
+           <li ng-class="{active: active, disabled: disabled}" active="tabSemillero" class="ng-isolate-scope">
+  <a ng-click="select()" tab-heading-transclude="" class="ng-binding"><tab-heading class="ng-scope">
+        <i class="glyphicon glyphicon-th-large"></i> Productos de Investigación
+      </tab-heading></a>
+</li>
+  </ul>
+  <div class="tab-content">
+    <!-- ngRepeat: tab in tabs --><div class="tab-pane ng-scope active" ng-repeat="tab in tabs" ng-class="{active: tab.active}" tab-content-transclude="tab">
+    
+        
+                
+      <div style="width:20%;height:90px;float:left;margin-top:20px" class="ng-scope">
+       <table width="200px" border="2" cellspacing="0" style="height:150px;border-color:#66FF99;" cellpadding="4"> 
+       <tbody><tr>
+        <td style="vertical-align:middle; text-align:center"><img style="height:100px;width:100px" ng-src="data:image/jpg;charset=utf-8;base64,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" id="photo-id" src="data:image/jpg;charset=utf-8;base64,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"></td>
+       
+      </tr>
+      </tbody></table> 
+   
+      </div>
+
+     <div style="width:80%;height:100px;float:right;margin-top:20px" class="ng-scope">
+     <div class="row">
+
+      <div class="col-md-2">
+        <label>Tipo Documento</label>
+      </div>
+       <div class="col-md-2">
+        <label>Identificación</label>               
+      </div>
+       <div class="col-md-4">
+        <label>Nombres</label>               
+      </div>
+       <div class="col-md-4">
+        <label>Apellidos</label>               
+      </div>
+      </div>
+      <div class="row">
+      <div class="col-md-2">
+        <select class="form-control ng-pristine ng-valid" ng-model="viewDatos[0].INV_TIPO_DOCU_CODI" ng-options="opt.TID_CODI as opt.TID_NOMB for opt in Documento"><option value="?" selected="selected"></option><option value="0"></option></select>         
+      </div>
+       <div class="col-md-2">
+       <input name="name" ng-model="viewDatos[0].INV_IDEN" type="text" class="form-control ng-pristine ng-animate ng-invalid-remove ng-valid-add ng-invalid-required-remove ng-invalid-remove-active ng-valid ng-valid-add-active ng-invalid-required-remove-active ng-valid-required" required="" style="">            
+      </div>
+      <div class="col-md-4">                 
+      <input name="name2" ng-model="viewDatos[0].INV_NOMB" type="text" class="form-control ng-pristine ng-valid">
+     </div>
+      <div class="col-md-4">                 
+      <input name="name3" ng-model="viewDatos[0].INV_APEL" type="text" class="form-control ng-pristine ng-valid">
+      
+    </div>
+      </div>
+   <div class="row">
+    
+     <div class="col-md-4" style="margin-top:15px">
+        <label>Fecha Nacimiento</label>               
+      </div>  
+     <div class="col-md-4" style="margin-top:15px">
+        <label>Teléfono</label>               
+      </div> 
+      <div class="col-md-4" style="margin-top:15px">
+        <label>E-mail</label> 
+
+      </div>  
+  </div>  
+  <div class="row">
+    
+       
+         <div class="col-md-4"> 
+                     
+    
+
+  <div class="form-group" ng-class="{&#39;has-error&#39;: datepickerForm.date.$invalid}">
+   <input type="text" class="form-control ng-pristine ng-valid" ng-model="viewDatos[0].INV_FECH_NACI" data-date-format="dd-MMMM-yyyy" date-type="iso" data-max-date="today" data-autoclose="1" name="date2" bs-datepicker="">
+  
+  </div>
+
+     </div>
+      <div class="col-md-4">                 
+      <input name="name4" ng-model="viewDatos[0].INV_TELE_CELU" type="text" class="form-control ng-pristine ng-valid">
+
+     </div>
+      <div class="col-md-4">                 
+      <input name="name5" ng-model="viewDatos[0].INV_MAIL" type="email" class="form-control ng-pristine ng-valid ng-valid-email" placeholder="Email">
+       
+    </div> 
+    </div> 
+<div class="row" style="margin-left: -200px">
+
+ <span class="fileinput-button glyphicon glyphicon-camera" ng-class="{disabled: disabled}" style="margin-left:-20px"><input type="file" name="files" onchange="angular.element(this).scope().uploadFile(this)" accept="image/jpeg"><label style="">Ancho:100, Alto:100</label>                                 
+  </span>
+</div>
+
+      </div>
+    
+
+
+ <div class="row ng-scope">
+    
+     <div class="col-md-3" style="margin-top:70px">
+        <label>Centro</label>               
+      </div>  
+       <div class="col-md-3" style="margin-top:64px; margin-left:-60px">
+        <label>Zona</label>   
+
+      </div>  
+     <div class="col-md-3" style="margin-top:64px; margin-left:20px">
+        <label>Programa</label>               
+      </div>  
+       <div class="col-md-3" style="margin-top:64px; margin-left:20px">
+        <label>Escuela</label>               
+      </div>  
+  </div>  
+  <div class="row ng-scope">
+    
+     <div class="col-md-3" style="width:20%">
+         <select class="form-control ng-pristine ng-valid" ng-model="viewDatos[0].INV_CENT_CODI" ng-options="opt.CEN_CODI as opt.CEN_NOMB for opt in Centro" ng-change="onchangedcentro(viewDatos[0].INV_CENT_CODI)"><option value="0" selected="selected">CENTRO</option><option value="1">CENTRO2</option><option value="2">Nuevo Centro</option></select>           
+      </div> 
+         
+    <div class="col-md-3">
+     <label style="font-weight:100 " class="ng-binding">Nueva Zona</label>          
+   <!--  <button type="button" class="btn btn-default" ng-click="">...</button> -->
+    </div>
+      <div class="col-md-3" style="margin-left:15px;width:27%">
+         <select class="form-control ng-pristine ng-valid" ng-model="viewDatos[0].INV_PROG_ACAD_CODI" ng-options="opt2.PAC_CODI as opt2.PAC_NOMB for opt2 in Programa" ng-change="on_changedprograma(viewDatos[0].INV_PROG_ACAD_CODI)"><option value="0" selected="selected">Nuevo</option><option value="1">PROGRAMA</option></select>           
+      </div> 
+       <div class="col-md-3">
+     <label style="font-weight:100 " class="ng-binding">ESCUELA</label>           
+   <!--  <button type="button" class="btn btn-default" ng-click="">...</button> -->
+    </div>
+    
+  </div>  
+ 
+    </div><!-- end ngRepeat: tab in tabs --><div class="tab-pane ng-scope" ng-repeat="tab in tabs" ng-class="{active: tab.active}" tab-content-transclude="tab">
+    
+      
+
+    <div class="row ng-scope">
+      <div class="col-md-3" style="margin-top: 20px">
+        <label>Nivel de Formacíón</label>               
+      </div>
+       <div class="col-md-3" style="margin-top: 20px">
+        <label>Título Obtenido</label>               
+      </div>
+       <div class="col-md-3" style="margin-top: 20px">
+        <label>Institución</label>               
+      </div>
+       <div class="col-md-3" style="margin-top: 20px">
+        <label>Año de Grado</label>               
+      </div>
+      </div>
+
+
+      <div class="row ng-scope">
+       
+        <div class="col-md-3">
+         <select class="form-control ng-pristine ng-valid" ng-model="myformacion" ng-options="opt3.NIV_CODI as opt3.NIV_NOMB for opt3 in formacion"><option value="?" selected="selected"></option><option value="0">PRIMARIA</option><option value="1">SECUNDARIA</option><option value="2">PROFESIONAL</option></select>           
+      
+      </div>  
+
+        <div class="col-md-3">
+         <input class="form-control ng-pristine ng-valid" placeholder="Título" ng-model="tituloformacion" type="text">              
+      </div>  
+
+  <div class="col-md-3">
+         <input class="form-control ng-pristine ng-valid" placeholder="Institución" ng-model="institucion">              
+      </div> 
+        <div class="col-md-3">
+         <input class="form-control ng-pristine ng-valid ng-valid-number" placeholder="Año" type="number" ng-model="Agno">              
+      </div> 
+         
+     </div>
+    <div class="row ng-scope">
+     <button ng-click="agregarformacion(formacion[myformacion-1].NIV_NOMB,tituloformacion,institucion,Agno)" class="btn btn-default" style="margin-left: 20px; margin-top: 10px;background-color: rgb(239, 209, 230);font-size: 12px;font-weight: bold;color:#482CAE">Agregar</button>
+     <button ng-click="delformacion()" class="btn btn-default" type="button" style="margin-left: 20px; margin-top: 10px;background-color: rgb(239, 209, 230);font-size: 12px;font-weight: bold;color:#FD0505">Eliminar</button>
+    </div>
+  
+       <div class="row ng-scope">
+        
+        <div class="col-md-12" style="margin-top: 20px">
+
+      <ul>
+        <!-- ngRepeat: facademica in informacionacademica --><li ng-repeat="facademica in informacionacademica" class="ng-scope">
+          <input type="checkbox" ng-model="facademica.Sel" class="ng-pristine ng-valid">      
+          <span class="elimina-false">Primaria Instituto Primaria 1999</span>
+        </li><!-- end ngRepeat: facademica in informacionacademica --><li ng-repeat="facademica in informacionacademica" class="ng-scope">
+          <input type="checkbox" ng-model="facademica.Sel" class="ng-pristine ng-valid">      
+          <span class="elimina-false">Tecnico Tecnologico 2005</span>
+        </li><!-- end ngRepeat: facademica in informacionacademica -->
+      </ul>
+      </div>
+
+</div>
+
+     </div><!-- end ngRepeat: tab in tabs --><div class="tab-pane ng-scope" ng-repeat="tab in tabs" ng-class="{active: tab.active}" tab-content-transclude="tab">
+    
+      
+
+   <div class="row ng-scope">
+      <div class="col-md-3" style="margin-top: 20px">
+        <label>Grupo de Investigación</label>               
+      </div>
+       <div class="col-md-3" style="margin-top: 20px">
+        <label>Fecha Inicio</label>               
+      </div>
+       <div class="col-md-3" style="margin-top: 20px">
+        <label>Fecha Culminación</label>               
+      </div>
+       <div class="col-md-3" style="margin-top: 20px">
+        <label>Líneas de Investigación</label>               
+      </div>
+      </div>
+
+     <div class="row ng-scope">
+      <div class="col-md-3">
+         <select class="form-control ng-pristine ng-valid" ng-model="gru_codi" ng-change="onChangedGrup(gru_codi)" ng-options="opt.gru_codi_colc as opt.gru_nomb for opt in grupo"><option value="?" selected="selected"></option><option value="0">Grupo Uno</option><option value="1">Grupo Dos</option><option value="2">Grupo Tres</option></select>           
+      </div> 
+       <div class="col-md-3">
+           <div class="form-group" ng-class="{&#39;has-error&#39;: datepickerForm.date.$invalid}">
+   <input type="text" class="form-control ng-pristine ng-valid" ng-model="fecha" data-date-format="dd-MMMM-yyyy" date-type="iso" data-autoclose="1" name="date2" bs-datepicker="">
+  
+  </div>
+  
+       </div>
+             <div class="col-md-3">
+           <div class="form-group" ng-class="{&#39;has-error&#39;: datepickerForm.date.$invalid}">
+   <input type="text" class="form-control ng-pristine ng-valid" ng-model="fecha2" data-date-format="dd-MMMM-yyyy" date-type="iso" data-autoclose="1" name="date2" bs-datepicker="">
+  
+  </div>
+  
+       </div>
+
+        <div class="col-md-3">
+         <select class="form-control ng-pristine ng-valid" ng-model="sellinea" ng-options="opt.lin_codi as opt.lin_desc for opt in lineas"><option value="?" selected="selected"></option></select>           
+      </div> 
+
+     </div>
+     <div class="row ng-scope">
+     <button ng-click="agregarformacion(formacion[myformacion-1].NIV_NOMB,tituloformacion,institucion,Agno)" class="btn btn-default" style="margin-left: 20px; margin-top: 10px;background-color: rgb(239, 209, 230);font-size: 12px;font-weight: bold;color:#482CAE">Agregar</button>
+     <button ng-click="delformacion()" class="btn btn-default" type="button" style="margin-left: 20px; margin-top: 10px;background-color: rgb(239, 209, 230);font-size: 12px;font-weight: bold;color:#FD0505">Eliminar</button>
+    </div>
+     </div><!-- end ngRepeat: tab in tabs --><div class="tab-pane ng-scope" ng-repeat="tab in tabs" ng-class="{active: tab.active}" tab-content-transclude="tab">
+    
+      
+     <div class="row ng-scope">
+      <div class="col-md-4" style="margin-top:30px">
+         <select class="form-control ng-pristine ng-valid" ng-model="viewDatos[0].INV_PROG_ACAD_CODI" ng-options="opt.PAC_CODI as opt.PAC_NOMB for opt in academico"><option value="0" selected="selected">Nuevo</option><option value="1">PROGRAMA</option></select>           
+      </div> 
+       <div class="col-md-4" style="margin-top:30px">
+          <my-crearsemillero></my-crearsemillero>
+          <my-buttonsemillero></my-buttonsemillero>
+  
+       </div>
+     </div>
+     </div><!-- end ngRepeat: tab in tabs -->
+  </div>
+</div>  
+   <div class="row">
+    <div class="col-md-offset-10" style="margin-top:15px"> 
+
+        <button ng-click="save(viewDatos[0])" ng-disabled="myForm.$invalid" class="btn btn-primary ng-binding">Actualizar</button>
+              
+           
+
+  <button ng-click="volver()" class="btn btn-primary">Cancelar</button>
+  
+</div>
+</div>    
+  </div>
+</form>
+   
+</div>
+
+</div></div>
+  </div>
+</div>
+
+<!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-XXXXX-X');
+  ga('send', 'pageview');
+</script>
+
+<!--[if lt IE 9]>
+<script src="bower_components/es5-shim/es5-shim.js"></script>
+<script src="bower_components/json3/lib/json3.min.js"></script>
+<![endif]-->
+
+<!-- build:js scripts/vendor.js -->
+<!-- bower:js -->
+
+
+<!-- Para la grilla -->
+<script src="./app_files/grid.locale-es.js"></script>
+<script src="./app_files/jquery.jqGrid.min.js"></script>
+<!-- Termina para grilla -->
+
+<script src="./app_files/angular.js"></script>
+<script src="./app_files/bootstrap.js"></script>
+<script src="./app_files/ui-bootstrap-tpls-0.11.2.js"></script>
+<!-- <script src="bower_components/bootstrap/dist/js/ui-bootstrap-0.11.2.js"></script> -->
+<script src="./app_files/bootstrapValidator.js"></script>
+<script src="./app_files/es_ES.js"></script>
+<script src="./app_files/bootstrap-table.js"></script>
+<script src="./app_files/bootstrap-table-es-CR.min.js"></script>
+<script src="./app_files/angular-resource.js"></script>
+<!-- <script src="bower_components/angular-strap/angular-strap.js"></script>
+<script src="bower_components/angular-strap/angular-strap.tpl.js"></script> -->
+<script src="./app_files/angular-cookies.js"></script>
+<script src="./app_files/angular-sanitize.js"></script>
+<script src="./app_files/angular-route.js"></script>
+<script src="./app_files/angular-animate.js"></script>
+
+<script src="./app_files/angular-strap.min.js"></script>
+<script src="./app_files/angular-strap.tpl.min.js"></script>
+<script src="./app_files/angular-base64.js"></script>
+
+
+<!-- endbower -->
+<!-- endbuild -->
+
+<!-- build:js({.tmp,app}) scripts/scripts.js -->
+<script src="./app_files/app.js"></script>
+<script src="./app_files/nav.js"></script>
+<script src="./app_files/main.js"></script>
+<script src="./app_files/inicio.js"></script>
+<script src="./app_files/tareas.js"></script>
+<script src="./app_files/empleados.js"></script>
+<script src="./app_files/granarea.js"></script>
+<script src="./app_files/zona.js"></script>
+<script src="./app_files/edit-granarea.js"></script>
+<script src="./app_files/edit-area.js"></script>
+<script src="./app_files/edit-zona.js"></script>
+<script src="./app_files/centro.js"></script>
+<script src="./app_files/edit-centro.js"></script>
+<script src="./app_files/area.js"></script>
+<script src="./app_files/sgiTipoConv.js"></script>
+<script src="./app_files/edit-sgiTipoConv.js"></script>
+<script src="./app_files/sgiConv.js"></script>
+<script src="./app_files/edit-sgiConv.js"></script>
+<script src="./app_files/investigador.js"></script>
+<script src="./app_files/edit-investigador.js"></script>
+<script src="./app_files/crud.js"></script>
+<script src="./app_files/javascript.js"></script>
+<!-- endbuild -->
+
+
+</body></html>

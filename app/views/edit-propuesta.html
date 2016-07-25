@@ -1,0 +1,111 @@
+<hr>
+<mostrariconoesperapropuesta></mostrariconoesperapropuesta>
+<div class="margenTop">
+<div class="view">
+<div class="panel panel-primary drop-shadow" style="width:65%;height:320px;  margin-left:17%; margin-top:10%">
+  <div class="panel-heading"><h>{{tiTulo}}</h></div>
+  <form method="post" name="myForm"  novalidate>
+  <div class="panel-body">
+  <div class="row">    
+     <div class="col-md-6">
+        <label>NOMBRE</label>               
+      </div>  
+      <div class="col-md-6">
+        <label>Convocatoria</label>               
+      </div>  
+  </div> 
+  <div class="row">
+    <div class="col-md-6">                 
+         <input name="name" ng-model="viewDatos[0].PRO_NOMB" type= "text" class= "form-control" placeholder="Número" autofocus required/>           
+    </div>
+
+    <div class="col-md-6">
+       <select class="form-control"  ng-model="viewDatos[0].PRO_CONV_CODI" 
+          ng-options="opt.CON_CODI as opt.CON_DESC for opt in convocatoria" required>
+          </select>      
+    </div>
+
+  </div>  
+
+
+  <div class="row">   
+      <div class="col-md-6">
+        <label>LINK GLAC</label>               
+      </div>
+      <div class="col-md-6">
+        <label>LINK CVLA</label>               
+      </div>
+  </div>  
+  <div class="row">
+    <div class="col-md-6">                 
+         <input name="name" ng-model="viewDatos[0].PRO_LINK_GLAC" type= "text" class= "form-control" placeholder="Link GLAC" autofocus required/>           
+    </div>
+
+    <div class="col-md-6">                 
+         <input name="name" ng-model="viewDatos[0].PRO_LINK_CVLA" type= "text" class= "form-control" placeholder="Link CVLA" autofocus required/>           
+    </div>
+
+  </div>
+  
+
+   <div class="row" style="margin-top:15px">  
+    <div class="col-md-2">
+        <label>Documento del Proyecto</label>               
+        </div>  
+  <div class="col-md-4">
+      <label></label>               
+      </div> 
+  <div class="col-md-2">
+      <label>Subir Carta Aval</label>               
+      </div> 
+    <div class="col-md-4">
+        <label></label>               
+    </div>  
+  </div>  
+
+  <div class="row">
+      <div class="col-md-2">                 
+          <span class="fileinput-button glyphicon glyphicon-file"  ng-class="{disabled:    disabled}" style="margin-left:20px"><input title="Cargar documento" type="file" name="files" onchange="angular.element(this).scope().uploadFileTexto(this) " accept="application/pdf, application/msword"> 
+          </span>    
+        <span title="Descargar documento" ng-click="DescargarTexto()" class="glyphicon glyphicon-download-alt" style="cursor: pointer;"></span>
+        <span title="Eliminar documento" ng-click="EliminarTexto()" class="glyphicon glyphicon-remove" style="cursor: pointer;"></span>
+    </div>
+    <div class="col-md-4">
+      <label style="font-weight: 100">{{nombreArchivoTexto}}</label>
+    </div>
+    <div class="col-md-2">                 
+          <span class="fileinput-button glyphicon glyphicon-file"  ng-class="{disabled:    disabled}" style="margin-left:20px"><input title="Cargar documento" type="file"  name="files" onchange="angular.element(this).scope().uploadFileCarta(this) " accept="application/pdf,application/msword"> 
+          </span>    
+        <span title="Descargar documento" ng-click="DescargarCarta()" class="glyphicon glyphicon-download-alt" style="cursor: pointer;"></span>  
+        <span title="Eliminar documento" ng-click="EliminarCarta()" class="glyphicon glyphicon-remove" style="cursor: pointer;"></span>
+    </div>
+    <div class="col-md-4">
+      <label style="font-weight: 100">{{nombreArchivoCarta}}</label>
+    </div>
+  </div> 
+
+</div>
+</form>
+  <div class="row" style="margin-top:5px">
+ <div class="col-md-offset-8" >
+<div style="margin-right:20px; text-align:right">
+        <button  ng-click= "save(viewDatos[0])"  ng-disabled="myForm.$invalid"              
+                class="btn btn-primary">{{buttonText}}</button>
+              
+                
+
+  <button  ng-click= "volver()"               
+                class="btn btn-primary">Cancelar</button>
+                </div>
+</div>                
+      
+</div>
+</div>
+</div>
+
+</div>
+
+
+
+
+ 

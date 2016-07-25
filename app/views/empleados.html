@@ -1,0 +1,47 @@
+<hr>
+<div class="margenTop">
+  <nav class= "navbar navbar-default" role= "navigation" >
+ <div class= "navbar-header" >      
+<a class="btn btn-lg btn-success" href="#/edit-customer/0"><i class="glyphicon glyphicon-plus"></i>&nbsp;Nuevo Grupo</a>
+ </div>
+ </nav>
+ </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <div class="input-group">
+      <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
+      <input type="text" class="form-control" placeholder="Buscare Empleado" ng-model="buscar.GRU_CODI_COLC">
+    </div>
+  </div>
+  <div class="panel-body">
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th>
+          <a href="" ng-click="ordenarPor('GRU_NOMB')">
+            Nombre/s
+          </a>
+          <span class="caret" style="cursor: pointer" ng-click="ordenarPor('-GRU_NOMB')"></span>
+        </th>
+        <th>Apellido Paterno</th>
+        <th>Apellido Materno</th>
+        <th>Primer dia de trabajo</th>
+        <th>Telefono</th>
+        <th>Salario</th>
+        
+      </tr>
+      </thead>
+      <tbody>
+      <tr ng-repeat="empleado in empleados | orderBy:ordenSeleccionado | filter:buscar">
+        <td>{{empleado.GRU_CODI_COLC}}</td>
+        <td>{{empleado.GRU_NOMB}}</td>
+        <td>{{empleado.GRU_MESS_CODI }}</td>        
+        <td>{{empleado.GRU_AREA_CODI}}</td>
+        <td>{{empleado.GRU_AGNO_CODI}}</td>
+        <td>{{empleado.SGI_GRUP}}</td>
+        <td><a href="#/edit-customer/{{data.customerNumber}}" class="btn">&nbsp;<i class="glyphicon glyphicon-edit"></i>&nbsp; Edit Customer</a></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

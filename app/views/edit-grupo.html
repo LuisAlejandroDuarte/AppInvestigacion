@@ -1,0 +1,489 @@
+<div class="container margenTop">
+    
+
+<div class="panel panel-primary  drop-shadow" style="width:100%;height:100%;  margin-left:0%; margin-top:2%">
+
+<div class="panel-heading"><h>Editando Grupo</h></div>
+  <form  name="myForm" >
+  <div class="panel-body">
+ <tabset>
+ <tab active="tabInformacion">
+	 <tab-heading>
+        <i class="glyphicon glyphicon-user"></i> INFORMACIÓN DEL GRUPO DE INVESTIGACIÓN
+      </tab-heading>
+ <div class="row" style="margin-top:20px">
+ <div class="col-md-6">
+    
+  <div class="panel panel-info">
+    <div class="panel-heading">Información del Director de Grupo</div>
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-md-2">
+          <span class="label label-info" style="font-size:12px">Nombres</span>    
+        </div>      
+      <div class="col-md-4">
+          <label>{{NombreInvestigador}}</label>
+      </div>
+        <div class="col-md-2">
+          <span class="label label-info" style="font-size:12px">Apellidos</span>  
+        </div>  
+        <div class="col-md-4">
+          <label>{{ApellidoInvestigador}}</label>
+      </div>
+      </div>
+      <div class="row" style="margin-top:5px">
+          
+        
+      </div>
+       <div class="row" style="margin-top:5px">
+        <div class="col-md-2">
+          <span class="label label-info" style="font-size:12px">Zona</span>  
+        </div>      
+        <div class="col-md-4">
+          <label>{{ZonaInvestigador}}</label>         
+      </div>
+      <div class="col-md-2">
+          <span class="label label-info" style="font-size:12px">Centro</span>  
+        </div>      
+        <div class="col-md-4">
+          <label>{{CentroInvestigador}}</label>
+      </div>
+      </div>
+<div class="row" style="margin-top:5px">
+        <div class="col-md-2">
+          <span class="label label-info" style="font-size:12px">Escuela</span>  
+        </div>      
+        <div class="col-md-4">
+          <label>{{EscuelaInvestigador}}</label>
+      </div>
+      <div class="col-md-2">
+          <span class="label label-info" style="font-size:12px">Programa</span>  
+        </div>      
+        <div class="col-md-4">
+          <label>{{ProgramaInvestigador}}</label>
+      </div>
+      </div>
+    </div>
+  </div>
+
+  </div>  
+ 	<div class="col-md-6">
+	 <div class="row"  style="width:100%">
+		<div class="col-md-8">            
+			<label>Nombre del Grupo</label>
+		</div>	
+		<div class="col-md-4">            
+			<label>Fecha de Creación</label>
+		</div>	
+	</div>
+  
+	<div class="row" style="width:100%">
+		<div class="col-md-6">
+			<input class="form-control" ng-model="datos2[0].Grupo"/>       
+		</div>
+		<div class="col-md-6">
+			<div class="form-group" ng-class="{'has-error': datepickerForm.date.$invalid}">
+   				<input id="FechaCreaGrupo" type="text" class="form-control" ng-model="datos2[0].Fecha" data-date-format="dd-MMMM-yyyy" date-type="iso"   data-max-date="today" data-autoclose="1" name="dateCreacionGrupo" bs-datepicker/> 
+  			</div>
+		</div>
+	</div>
+<div class="row"  style="width:100%">
+    <div class="col-md-8">            
+      <label>Código Colciencias</label>
+    </div>  
+    <div class="col-md-4">            
+      <label>Categoria colciencias</label>
+    </div>  
+  </div>
+  <div class="row">
+    <div class="col-md-6 col-lg-6">
+      <input class="form-control" ng-model="datos2[0].gru_colc_codi" />
+    </div>
+    <div class="col-md-6 col-lg-6">
+      <input class="form-control" ng-model="datos2[0].gru_cate_colc" />
+    </div>
+  </div>
+<div class="row"  style="width:100%">
+    <div class="col-md-8">            
+      <label>Área</label>
+    </div>  
+    <div class="col-md-4">            
+      <label>Centro</label>
+    </div>  
+  </div>
+  <div class="row" style="width:100%">
+    <div class="col-md-6">
+      <select class="form-control" ng-model="datos2[0].selArea" ng-options="value1.ARE_CODI as value1.ARE_NOMB  for value1 in listArea"   ></select>
+    </div>
+   
+    <div class="col-md-4">
+        <select class="form-control" ng-model="datos2[0].selCentro" ng-options="value2.CEN_CODI as value2.CEN_NOMB  for value2 in listCentro"   ></select>
+    </div>
+   
+    </div>
+
+
+  </div>
+
+  
+  </div>
+
+  <table width=100% style="margin-top:20px">         
+      <tr>
+        <td style="width:30%;vertical-align: text-top;">
+          <div class="row" style="margin-bottom:10px">
+              <div class="col-md-6">
+                <label>Líneas de Investigación</label>  
+              </div>  
+              <div class="col-md-3 col-md-offset-2">     
+                <button type="button" title="Agregar Línea de Investigación" ng-click="OnClicAddLineaInvestigacion(valueLinea)" class="btn btn-success">Nueva</button>       
+              </div>  
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+                <ul  class="list-group">
+                  <jqx-panel id="jqxPanel" jqx-settings="jqxPanelSettings" >
+                    <li class="list-group-item" ng-repeat="lineas in LineasInvestigacion | filter :{FechaTermina: '!'}" >
+  
+                      <div id='altura' class="row">
+                        <div class="col-md-5" >            
+                          <span class="">{{lineas.Nombre}}</span>
+                        </div>
+                        <div class="col-md-5" >
+                         <jqx-date-time-input  ng-model="lineas.FechaInicia"  jqx-settings="dateInputSettings"></jqx-date-time-input>    
+                        </div>   
+                        <div title="Eliminar {{lineas.Nombre}}" class="col-md-2" >
+
+                          <div style="cursor:hand" >
+                              <jqx-button jqx-settings="jqxButtonsSettings"  ng-click="OnClicEliminarLineaInvestigacion(lineas,this)">  <i class="glyphicon glyphicon-ban-circle" style="cursor:pointer"  ></i> </jqx-button>
+                            
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                  </jqx-panel>                                               
+                </ul>
+            </div>
+          </div>
+        </td>
+        <td style="width:30%;vertical-align: text-top;">
+          <div class="row" style="margin-bottom:10px">
+            <div class="col-md-6">
+              <label>Integrantes del Grupo</label>  
+            </div>    
+            <div class="col-md-3 col-md-offset-2">     
+              <button type="button" title="Agregar Integrantes" ng-click="OnClicAddIntegrante(cmdInvestigador)" class="btn btn-success">Nuevo</button>        
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <ul class="list-group">
+               <jqx-panel id="jqxPanel" jqx-settings="jqxPanelSettings" >
+                  <li class="list-group-item" ng-repeat="investiga in Investigadores | filter :{FechaTermina: '!'}" >
+                    <div class="row">
+                      <div class="col-md-5">
+                        <span class="">{{investiga.Nombre}}</span>
+                      </div>
+                      <div class="col-md-5">
+                       <jqx-date-time-input ng-model="investiga.FechaInicia" jqx-settings="dateInputSettings"></jqx-date-time-input>    
+                      </div>   
+                      <div title="Eliminar {{investiga.Nombre}}" class="col-md-2" >
+                           <div style="cursor:hand" >
+                             <jqx-button jqx-settings="jqxButtonsSettings"  ng-click="OnClicEliminarIntegranteGrupo(investiga)">  <i class="glyphicon glyphicon-ban-circle" style="cursor:pointer"  ></i> </jqx-button>                      
+                          </div>
+                      </div>
+                     </div>                       
+                  </li>
+                </jqx-panel>
+              </ul>
+            </div>
+          </div>
+        </td>
+        <td style="width:30%;vertical-align: text-top;">
+          <div class="row" style="margin-bottom:10px">
+            <div class="col-md-6">
+              <label>Semilleros del  Grupo</label>  
+            </div>
+           <div class="col-md-3 col-md-offset-2">     
+                <button type="button" title="Agregar Semillero" ng-click="OnClicAddSemillero(cmdSemilla)" class="btn btn-success">Nuevo</button>       
+            </div> 
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <ul class="list-group">
+                 <jqx-panel id="jqxPanel" jqx-settings="jqxPanelSettings" >
+                  <li class="list-group-item" ng-repeat="semilla in Semilleros | filter :{FechaTermina: '!'}" >
+                    <div class="row">
+                      <div class="col-md-5">
+                          <span class="">{{semilla.Nombre}}</span>
+                      </div>
+                      <div class="col-md-5">
+                          <jqx-date-time-input ng-model="semilla.FechaInicia" jqx-settings="dateInputSettings"></jqx-date-time-input>    
+                      </div>   
+                      <div title="Eliminar {{semilla.Nombre}}" class="col-md-2" >
+                         <div style="cursor:hand" >
+                             <jqx-button jqx-settings="jqxButtonsSettings"  ng-click="OnClicEliminarSemilleroGrupo(semilla)">  <i class="glyphicon glyphicon-ban-circle" style="cursor:pointer"  ></i> </jqx-button>                      
+                          </div>                       
+                      </div>
+                    </div>                       
+                  </li>
+                </jqx-panel>
+              </ul>
+            </div>
+          </div>
+        </td>
+      </tr>    
+  </table>
+
+  
+ </tab>
+ <tab active="tabProduccion">
+   <tab-heading>
+        <i class="glyphicon glyphicon-th"></i> PRODUCIÓN DEL GRUPO DE INVESTICACIÓN
+      </tab-heading>
+    <div class="row" style="margin-top:20px">
+    <div class="col-md-4">
+          <label>Investigador</label>
+      </div>
+      <div class="col-md-4">
+          <label>Nombre del Proyecto</label>
+      </div>
+      <div class="col-md-4">
+          <label>Productos</label>
+      </div>      
+    </div>   
+
+     <div class="row" style="margin-top:5px">
+       <div class="col-md-4">
+            <select  class="form-control"  ng-options="value.Nombre  for value in Investigadores" ng-model="value" ng-change="OnChangeInvestigador(value)">              
+            </select>
+      </div>
+       <div class="col-md-4">
+            <select  class="form-control"  ng-options="valueProyecto.pro_nomb  for valueProyecto in listProyectos" ng-model="valueProyecto" ng-change="OnChangeProyecto(valueProyecto)" ></select>
+      </div>
+        <div class="col-md-4">
+            <select  class="form-control"  ng-options="valueProducto.nombre for valueProducto in listProductos" ng-model="valueProducto"  ></select>
+      </div>
+     </div> 
+      <div class="row">
+      <div class="col-md-12 col-lg-12 col-xs-12">
+          <button ng-click="addProyecto(valueProyecto,valueProducto)" class="btn btn-default"  style="margin-left: 20px; margin-top: 10px;background-color: rgb(239, 209, 230);font-size: 12px;font-weight: bold;color:#482CAE">Agregar</button>          
+     </div>
+    </div>
+    <div class="row" style="margin-top:20px">
+            <div class="col-md-12">
+            
+              <ul class="list-group">
+                 <jqx-panel id="jqxPanel" jqx-settings="jqxPanelSettingsProyecto" >
+                  <li class="list-group-item" ng-repeat="proyecto in Proyectos | filter :{fech_term: '!'}" >
+                    <div class="row">
+             <div class="col-md-4">
+               <label class="" style="color:blue;font-size:14px">Proyecto</label>
+             </div>
+              <div class="col-md-4">
+               <label class="" style="color:blue;font-size:14px">Producto</label>              
+             </div>
+             <div class="col-md-3">
+               <label class="" style="color:blue;font-size:14px">Fecha Inicial</label>               
+             </div>
+             <div class="col-md-1">
+               <label class="" style="color:red;font-size:14px">Eliminar</label>               
+             </div>
+            </div>
+                    <div class="row">
+                      <div class="col-md-4">
+                          <span class="">{{proyecto.NombreProyecto}}</span>
+                      </div>
+                        <div class="col-md-4">
+                          <span class="">{{proyecto.NombreProducto}}</span>
+                      </div>
+                      <div class="col-md-3">
+                          <jqx-date-time-input ng-model="proyecto.fech_ini" jqx-settings="dateInputSettings"></jqx-date-time-input>    
+                      </div>   
+                      <div title="Eliminar {{proyecto.NombreProyecto}}" class="col-md-1" >
+                         <div style="cursor:hand" >
+                             <jqx-button jqx-settings="jqxButtonsSettings"  ng-click="OnClicEliminarProyecto(proyecto,this)">  <i class="glyphicon glyphicon-ban-circle" style="cursor:pointer"  ></i> </jqx-button>                      
+                          </div>                       
+                      </div>
+                    </div>                       
+                  </li>
+                </jqx-panel>
+              </ul>
+            </div>
+          </div>
+  </tab>
+
+ <tab active="tabTrabajo">
+   <tab-heading>
+        <i class="glyphicon glyphicon-file"></i> PLAN DE TRABAJO DEL GRUPO
+      </tab-heading>
+      <div class="row" style="margin-top:20px">
+         <div class="col-md-1">
+          <label>Documento</label>
+         </div>
+          <div class="col-md-2">
+            
+        </div>
+        <div class="col-md-2">
+            <label>Nombre</label>
+        </div> 
+      </div>
+      <div class="row" style="">
+        <div class="col-md-1">
+            <span class="fileinput-button glyphicon glyphicon-file"  ng-class="{disabled:    disabled}" style="margin-left:20px"><input type="file" name="files" onchange="angular.element(this).scope().uploadFile(this) " accept="PDF/pdf"> 
+          </span>    
+        </div> 
+        <div class="col-md-2">
+            {{nameArch}}
+        </div>        
+        <div class="col-md-2">
+            <input id="nombrePlan" class="form-control" type="text" ng-model="nombrePlan" />
+        </div>
+        <div class="col-md-2">
+            <button class="btn  btn-success"  ng-click="OnClicAddPlan(nameArch,nombrePlan)">Adicionar a la lista</button>   
+        </div>
+      </div>
+  
+  
+   <div class="row">
+       <div class="col-md-8 col-lg-8">
+        
+     </div>
+   </div>
+      <div class="row" style="margin-top:20px">
+            <div class="col-md-12">
+              <ul class="list-group">
+                 <jqx-panel id="jqxPanel" jqx-settings="jqxPanelSettingsPlan" >
+                  <li class="list-group-item" ng-repeat="plan in planTrabajo | filter :{FechaTermina: '!'}" >
+                    <div class="row">
+                      <div class="col-md-4">
+                        <label class="" style="color:blue;font-size:14px">Nombre</label>
+                      </div>
+                     
+                   
+                     <div class="col-md-4">
+                      <label class="" style="color:blue;font-size:14px">Fecha</label>
+                     </div>
+                     <div class="col-md-2">
+                      <label class="" style="color:blue;font-size:14px">Descargar</label>
+                     </div>
+                     <div class="col-md-2">
+                      <label class="" style="color:blue;font-size:14px">Eliminar</label>
+                     </div>
+                      </div>
+                    <div class="row">
+                      <div class="col-md-4">
+                          <span class="">{{plan.Nombre}}</span>
+                      </div>
+                        <div  ng-show="false">
+                          <span class="">{{plan.Path}}</span>
+                      </div>
+                      <div class="col-md-4">
+                          <jqx-date-time-input ng-model="plan.FechaInicio" jqx-settings="dateInputSettings"></jqx-date-time-input>    
+                      </div>   
+                      <div title="Descargar {{plan.Path}}" class="col-md-2" >
+                         <div style="cursor:hand" >
+                             <jqx-button jqx-settings="jqxButtonsSettings"  ng-click="OnClicDescargarPlan(plan.Path,this)">  <i class="glyphicon glyphicon-eye-open" style="cursor:pointer"  ></i> </jqx-button>                      
+                          </div>                       
+                      </div>
+                      <div title="Eliminar {{plan.Nombre}}" class="col-md-2" >
+                         <div style="cursor:hand" >
+                             <jqx-button jqx-settings="jqxButtonsSettings"  ng-click="OnClicEliminarPlan(plan,this)">  <i class="glyphicon glyphicon-ban-circle" style="cursor:pointer"  ></i> </jqx-button>                      
+                          </div>                       
+                      </div>
+                       
+                    </div>                       
+                  </li>
+                </jqx-panel>
+              </ul>
+            </div>
+          </div>
+
+  </tab>
+
+ </tabset>
+    <div class="row">
+    <div class="col-md-offset-10" style="margin-bottom:10px;"> 
+
+        <button  ng-click= "save(datos2[0])"              
+                class="btn btn-primary">Aceptar</button>
+              
+           
+
+  <button  ng-click= "volver()"               
+                class="btn btn-primary" >Cancelar</button>
+  
+</div>
+</div>  
+ </div>
+ </form>
+</div>
+<!-- Modales -->
+<jqx-window jqx-settings="jqxWindowSettings" class="drop-shadow" id="window">
+            <div>
+                {{titleEditar}}
+            </div>
+            <div>
+                <div>
+                <table>
+                 <thead>
+                <tr>
+                  <th style="width:40%"></th>
+                  <th style="width:30%"></th>
+                  <th style="width:30%"></th>
+                </tr>
+                </thead>                                    
+                  <tbody>
+                    <tr style="height:15px"><td></td><td></td></tr>
+                    <tr>
+                      <td colspan="2"><label>{{tipoGrupo}}</label></td>
+                    </tr>
+                    <tr>                     
+                      <td colspan="2">
+                          <label ng-hide="hidelblNombre" style="font-weight:normal">{{Nombre}}</label>
+                          <select id="cmdTipoGrupo" ng-hide="hideCmdTipoGrupo" class="form-control" ng-change="OnChangedCmdTipoGrupo()"  ng-options="value.Nombre for value in listTipoGrupo" ng-model="selTipoGrupo" ></select>
+                      </td>
+                    </tr>
+                    <tr ng-hide="hideVinculacion" style="height:15px" ><td></td></tr>
+                    <tr ng-hide="hideVinculacion">
+                      <td colspan="2"><label>Tipo vinculación</label></td>
+                    </tr>
+                    <tr ng-hide="hideVinculacion">
+                      <td colspan="2">
+                          <select  class="form-control"  ng-options="value.tiv_desc for value in tipoVinculacion" ng-model="selTipoVinculacion" ></select>
+                       
+                      </td>
+                    </tr>
+                      <tr style="height:15px" ><td colspan="2"></td></tr>
+                    <tr>
+                      <td><label>Fecha Inicio</label></td>
+                      <td ng-hide="hideFechaTermina"><label>Fecha Termina</label></td>
+                    </tr>     
+                    <tr>
+                      <td> 
+                          <jqx-date-time-input id="jdFechaInicia" ng-click=" OnclickJdFechaInicia()" ng-model="FechaInicia" jqx-settings="dateInputSettings">
+                          </jqx-date-time-input>
+                      </td>
+                      <td ng-hide="hideFechaTermina">
+                        <jqx-date-time-input id="jdFechaTermina" ng-model="FechaTermina" ng-click="OnclickJdFechaTermina()" jqx-settings="dateInputSettings"></jqx-date-time-input>
+                      </td>
+                    </tr>                  
+                  </tbody>
+                </table>                  
+               
+                
+                        
+                    </div>
+                    <div>
+                    <div style="float: right; margin-top: 15px;">
+                  
+                        <button type="button" ng-click="Ok()"  style="font-size:12px" class="btn btn-primary">Guardar</button>
+                      </div>  
+                        <!-- <jqx-button jqx-on-click="" style="margin-right: 10px">Ok</jqx-button>
+                        <jqx-button jqx-on-click="Cancel()">Cancel</jqx-button> -->
+                  
+                    </div>
+            </div>
+        </jqx-window>
+    
+</div>

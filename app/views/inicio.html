@@ -1,0 +1,62 @@
+<div class="container margenTop">
+  <div class="row">
+  <div class="col-xs-12 col-sm-12 col-md-7 col-lg-4">
+
+  </div>
+  <div class="col-xs-12 col-sm-12 col-md-7 col-lg-3 well">
+  <form name="loginform"  role="form" novalidate>
+    <h1 class="form-signin-heading"></h1>
+     <div class="input-group">
+          <span class="input-group-addon"><i class="glyphicon glyphicon-modal-window"></i></span>   
+        <select class="form-control" ng-model="seleccionado" required> <option value="1">Investigador</option>
+                  <option value="2">Grupo</option>
+                   <option value="3">Convocatoria</option>
+          </select>
+     </div>
+
+      <br/>
+     <div class="input-group">
+     
+      
+        <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>   
+         <input type="text" class="form-control" name="username" placeholder="Usuario" required autofocus ng-model="usuario">
+    
+     </div>
+    
+    <br/>
+     <div class="input-group">
+      <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+        <input type="password"  class="form-control" name="pass" placeholder="Clave" ng-model="clave" required>
+    </div>
+     <br/>
+    <label class="checkbox">
+      <input type="checkbox" value="remember-me"> Recordar clave?
+    </label>
+    
+    <button class="btn btn-lg btn-primary btn-block"  ng-disabled="loginform.$invalid"   ng-click="iniciarSesion()" >Iniciar sesi&oacute;n</button>
+        <label  id="inputName3" >{{result}}</label>
+        <a style="cursor:pointer" ng-click="showRegistrarse()">Registrarse</a>
+     
+  </form>
+  <h>{{valor.text}}</h>
+  </div> 
+  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4">
+  </div>
+
+ </div>
+</div>
+
+
+<div ng-controller="ModalInstanceCtrl">
+<script type="text/ng-template" id="myModalContent.html">
+  
+     <div class="alert alert-warning alert-dismissible" role="alert">
+  <button type="button" class="close" ng-click="cerrar()"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+  <strong>Advertencia! </strong>
+   <div class="row">
+     <b> {{result}}</b>
+   </div>
+</div>   
+    
+    </script>
+</div>    
