@@ -61,19 +61,17 @@
             <label>TEXTO</label>    
                 <span class="fileinput-button glyphicon glyphicon-file"  ng-class="{disabled:    disabled}" style="margin-left:20px"><input title="Cargar documento" type="file" name="files" onchange="angular.element(this).scope().uploadFileTexto(this) " accept="application/pdf, application/msword"> 
                </span>    
-               <span title="Descargar documento" ng-click="DescargarTexto()" class="glyphicon glyphicon-download-alt" style="cursor: pointer;"></span>
                <span title="Eliminar documento" ng-click="EliminarTexto()" class="glyphicon glyphicon-remove" style="cursor: pointer;"></span>
-               <label>{{nombreArchivoTexto}}</label>
+               <span class="label label-danger" style="white-space:normal ">{{nombreArchivoTexto}}</span>
          </div>
       </div>
       <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">   
          <div class="form-group">
              <label>Resolución</label>
                <span class="fileinput-button glyphicon glyphicon-file"  ng-class="{disabled:    disabled}" style="margin-left:20px"><input title="Cargar documento" type="file"  name="files" onchange="angular.element(this).scope().uploadFileResolucion(this) " accept="application/pdf,application/msword"> 
-              </span>    
-              <span title="Descargar documento" ng-click="DescargarResolucion()" class="glyphicon glyphicon-download-alt" style="cursor: pointer;"></span>  
+              </span>                
               <span title="Eliminar documento" ng-click="EliminarResolucion()" class="glyphicon glyphicon-remove" style="cursor: pointer;"></span>
-              <label>{{nombreArchivoResolucion}}</label>
+              <span class="label label-danger" style="white-space:normal">{{nombreArchivoResolucion}}</span>
          </div>
       </div>            
     </div>

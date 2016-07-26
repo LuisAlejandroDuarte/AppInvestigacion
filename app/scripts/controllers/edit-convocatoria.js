@@ -42,8 +42,8 @@ angular.module('listaTareasApp')
                   $scope.viewDatos[0].CON_PUNT_TOTA = parseInt(result[0].CON_PUNT_TOTA);
                   nombOld = $scope.viewDatos[0].CON_DESC;
 
-                  if (result[0].CON_TEXT!=undefined) $scope.nombreArchivoTexto ="Clic en descargar";
-                  if (result[0].CON_RESO!=undefined) $scope.nombreArchivoResolucion ="Clic en descargar";
+                  if (result[0].CON_TEXT!=null) $scope.nombreArchivoTexto =result[0].CON_TEXT;
+                  if (result[0].CON_RESO!=null) $scope.nombreArchivoResolucion =result[0].CON_RESO;
 
                    $scope.buttonText = 'Actualizar';
                       $scope.tiTulo ='Editando Convocatoria';

@@ -9,10 +9,10 @@
 		"password": "jamecru2016",
 		"path": "/public_html/AppInvestigacion/",
 
-		"upload_on_save": true, // set *false* if you do not want to upload on save!
+		"upload_on_save": true // set *false* if you do not want to upload on save!
 
 		// "port": 21
-		 "tls": false
+		 //"tls": false
 		// "timeout": 30, // [seconds]
 
 		// "passive": true,
