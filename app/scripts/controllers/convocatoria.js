@@ -77,9 +77,11 @@
 
 
 
- .controller('ControladorConvocatoria', ['$scope','$window', function($scope,$window) {
+ .controller('ControladorConvocatoria', ['$scope','$window','TareasResource', function($scope,$window,TareasResource) {
 
+                                     
 
+             moment.locale('es');
          $scope.options = {           
             method: 'post',
             url: 'scripts/services/api.php?url=executeSQL/S/SELECT CON_CODI,CON_NUME,CON_DESC,CON_FECH_INIC,CON_FECH_FINA,CON_TEXT,CON_RESO ' + 
@@ -121,9 +123,9 @@
                 align: 'left',
                 valign: 'middle',
                 sortable: true,
-                formatter:function(value,row,index) {
-                        moment.locale('es');
-                       return moment(new Date(value)).format('MMMM D YYYY').charAt(0).toUpperCase() +  moment(value).format('MMMM D YYYY').slice(1) ;  
+                formatter:function(value,row,index) {                                            
+
+                       return moment(value).format('MMMM D YYYY').charAt(0).toUpperCase() +  moment(value).format('MMMM D YYYY').slice(1) ;  
 
                }
             }, {
@@ -132,9 +134,9 @@
                 align: 'left',
                 valign: 'middle',
                 sortable: true,
-                formatter:function(value,row,index) {
-                        moment.locale('es');
-                       return moment(new Date(value)).format('MMMM D YYYY').charAt(0).toUpperCase() +  moment(value).format('MMMM D YYYY').slice(1) ;  
+                formatter:function(value,row,index) {     
+
+                       return moment(value).format('MMMM D YYYY').charAt(0).toUpperCase() +  moment(value).format('MMMM D YYYY').slice(1) ;  
 
                }
             },{
@@ -144,17 +146,24 @@
                 valign: 'middle',
                 width: 40,                
                  formatter: function(value, row, index) {
-                    if (value!=null)
-                    {
-                        return '<a class="ver ml10 btn btn-default btn-xs" title="Ver Documento"><span class="glyphicon glyphicon-eye-open"></span></a>';
-                    }
-                    else
-                        return "N/A";
+                     if (value!=null)
+                                                 {
+                                                    return '<a class="ver ml10 btn btn-default btn-xs" title="Ver Documento"><span class="glyphicon glyphicon-download"></span></a>';
+                                                }
+                                                else
+                                                    return "N/A";
+                   
+                  
                    
                  },
                  events:  window.operateEvents = {
-                    'click  .ver':function (e, value, row, index) {
-                                 $window.open(row.CON_TEXT);  
+                    'click  .ver':function (e, value, row, index) {                    
+                                   var fd3 = new FormData();                                                                                                         
+                                   fd3.append('tipo',1);                                 
+                                  TareasResource.descargarbinario(fd3).then(function(result2) { 
+                                    $window.open(result2.data + value);                                         
+                                    }); 
+                                
                              }
                          }
             },{
@@ -164,18 +173,25 @@
                 valign: 'middle',
                 width: 40,                
                  formatter: function(value, row, index) {
-
-                    if (value!=null)
-                    {
-                        return '<a class="ver ml10 btn btn-default btn-xs" title="Ver Documento"><span class="glyphicon glyphicon-eye-open"></span></a>';
-                    }
-                    else
-                        return "N/A";
+                        if (value!=null)
+                                                 {
+                                                    return '<a class="ver ml10 btn btn-default btn-xs" title="Ver Documento"><span class="glyphicon glyphicon-download"></span></a>';
+                                                }
+                                                else
+                                                    return "N/A";
+                   
+                  
                    
                  },
                  events:  window.operateEvents = {
                     'click  .ver':function (e, value, row, index) {
-                                 $window.open(row.CON_RESO);  
+
+                              var fd3 = new FormData();                                                                                                         
+                                   fd3.append('tipo',2);                                 
+                                  TareasResource.descargarbinario(fd3).then(function(result2) { 
+                                    $window.open(result2.data + value);                                         
+                                    }); 
+                                  
                              }
                          }
             },{
@@ -203,8 +219,8 @@
 
 
             }]
-        };
-
+        };              
+               
     }])
 
 	.controller('ListControllerConvocatoria', ['$window','$scope', function($window,$scope) {

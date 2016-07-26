@@ -22,6 +22,8 @@ angular.module('listaTareasApp')
     var nombOld;
     var fileText;
     var fileReso;
+    var nombreArchivoTexto;
+    var nombreArchivoResolucion;
        $('#myModal').show();  
         var tipoConvocatoria = TareasResource.execute.query({Accion: 'S',
                              SQL: 'SELECT TCO_CODI,TCO_DESC FROM sgi_tipo_conv'}); 
@@ -44,6 +46,9 @@ angular.module('listaTareasApp')
 
                   if (result[0].CON_TEXT!=null) $scope.nombreArchivoTexto =result[0].CON_TEXT;
                   if (result[0].CON_RESO!=null) $scope.nombreArchivoResolucion =result[0].CON_RESO;
+
+                  nombreArchivoTexto = $scope.nombreArchivoTexto;
+                  nombreArchivoResolucion =$scope.nombreArchivoResolucion;
 
                    $scope.buttonText = 'Actualizar';
                       $scope.tiTulo ='Editando Convocatoria';
@@ -180,7 +185,7 @@ angular.module('listaTareasApp')
 
        var id = (reg.CON_CODI) ? parseInt(reg.CON_CODI) :0;
 
-
+    var ingresado =false;
    var valida =TareasResource.validaExisteRegistro.query({Tabla:'sgi_conv',Campo:'CON_DESC',Valor:reg.CON_DESC });
       $('#myModal').show();
         valida.$promise.then(function(result){
@@ -227,13 +232,24 @@ angular.module('listaTareasApp')
 
                         TareasResource.SQL(datos).then(function(resut){
 
-                               $('#myModal').hide(); 
-
-                        });
-
-                                                                  
+                              $('#myModal').hide();     
+                              $window.alert("INGRESADO TEXTO");           
+                              $location.path('/convocatoria');  
+                        });                                                                  
                      });
-                   }     
+                   }   
+                   else
+                   {
+                     if (fileReso==undefined)
+                     {
+                       $('#myModal').hide();     
+                       $window.alert("INGRESADO");           
+                       $location.path('/convocatoria'); 
+                       ingresado=true;   
+                     }
+                   }
+
+
                 if (fileReso!=undefined)
                     {
                         var fd2 = new FormData();                                
@@ -248,44 +264,217 @@ angular.module('listaTareasApp')
                         }                         
 
                         TareasResource.SQL(datos).then(function(resut){
+                                 $('#myModal').hide();     
+                                 $window.alert("INGRESADA RESOLUCIÓN");
 
-                               $('#myModal').hide(); 
-
+                                 $location.path('/convocatoria');   
                                });                                                          
                           });
                     }   
+                    else
+                    {
+                      if (fileText==undefined && !ingresado)
+                     {
+                       $('#myModal').hide();     
+                       $window.alert("INGRESADO");           
+                       $location.path('/convocatoria');    
+                     }
+                    }
 
-                     $('#myModal').hide();     
-                     $window.alert("INGRESADO");           
-                     $location.path('/convocatoria');          
+                         
                 });           
               }         
               else
               {
                 var fechamoment = moment(reg.CON_FECH_INIC);
 
-                var datos =  {
-                  Accion: 'U',
-                  SQL: "UPDATE  sgi_conv set  " +
-                  " CON_NUME =" + reg.CON_NUME + "," +
-                  " CON_DESC = '" + reg.CON_DESC + "', " +
-                  " CON_TEXT = '" + reg.CON_TEXT  + "', " + 
-                  " CON_RESO = '" + reg.CON_RESO + "', " + 
-                  " CON_FECH_INIC = '" + moment(reg.CON_FECH_INIC).format('YYYY-MM-DD')  + "', " +
-                  " CON_FECH_FINA = '" +  moment(reg.CON_FECH_FINA).format('YYYY-MM-DD') + "', " +
-                  " CON_TIPO_CONV_CODI= " + reg.CON_TIPO_CONV_CODI + ", " + 
-                  " CON_PUNT_TOTA = " + reg.CON_PUNT_TOTA + " " +
-                  " WHERE CON_CODI=" + id
-              };
-               $('#myModal').show();
-               TareasResource.enviararchivo(datos).then(function(result) { 
-              $('#myModal').hide();
+                if (fileText!=undefined)
+                {
+                    var fd2 = new FormData();                                                       
+                        fd2.append('id',id);
+                        fd2.append('tipo',1);
+                        fd2.append('nombre',nombreArchivoTexto);
+                        TareasResource.borrarbinario(fd2).then(function(result2) { 
 
-                  $window.alert(result.data);
+                            fd2.append('file', fileText);
+                            
+                              TareasResource.enviararchivobinario(fd2).then(function(result2) { 
 
-                   $location.path('/convocatoria'); 
-                });           
-             
+                                    var datos =  {
+                                    Accion: 'U',
+                                    SQL: "UPDATE  sgi_conv set  " +
+                                    " CON_NUME =" + reg.CON_NUME + "," +
+                                    " CON_DESC = '" + reg.CON_DESC + "', " +
+                                    " CON_TEXT = 'id_" + id  + "_" + fileText.name + "', " +                                   
+                                    " CON_FECH_INIC = '" + moment(reg.CON_FECH_INIC).format('YYYY-MM-DD')  + "', " +
+                                    " CON_FECH_FINA = '" +  moment(reg.CON_FECH_FINA).format('YYYY-MM-DD') + "', " +
+                                    " CON_TIPO_CONV_CODI= " + reg.CON_TIPO_CONV_CODI + ", " + 
+                                    " CON_PUNT_TOTA = " + reg.CON_PUNT_TOTA + " " +
+                                    " WHERE CON_CODI=" + id
+                                };
+                                 $('#myModal').show();
+                                 TareasResource.enviararchivo(datos).then(function(result) { 
+                                $('#myModal').hide();
+
+                                    $window.alert(result.data);
+                                     $window.alert("ACTUALIZADO TEXTO");  
+                                     $location.path('/convocatoria'); 
+                                  });           
+
+                              });
+                        });
+                }
+                else
+                {
+                    var datos =  {
+                        Accion: 'U',
+                        SQL: "UPDATE  sgi_conv set  " +
+                        " CON_NUME =" + reg.CON_NUME + "," +
+                        " CON_DESC = '" + reg.CON_DESC + "', " +                                              
+                        " CON_FECH_INIC = '" + moment(reg.CON_FECH_INIC).format('YYYY-MM-DD')  + "', " +
+                        " CON_FECH_FINA = '" +  moment(reg.CON_FECH_FINA).format('YYYY-MM-DD') + "', " +
+                        " CON_TIPO_CONV_CODI= " + reg.CON_TIPO_CONV_CODI + ", " + 
+                        " CON_PUNT_TOTA = " + reg.CON_PUNT_TOTA + " " +
+                        " WHERE CON_CODI=" + id
+                    };
+                     $('#myModal').show();
+                     TareasResource.enviararchivo(datos).then(function(result) {                         
+
+                        if ($scope.nombreArchivoTexto=="")
+                        {
+                             var fd2 = new FormData();                                                       
+                                  fd2.append('id',id);
+                                  fd2.append('tipo',1);
+                                  fd2.append('nombre',nombreArchivoTexto);
+                                  TareasResource.borrarbinario(fd2).then(function(result2) { 
+
+                                        var datos =  {
+                                              Accion: 'U',
+                                              SQL: "UPDATE  sgi_conv set  " +
+                                              " CON_TEXT =NULL" +                                            
+                                              " WHERE CON_CODI=" + id
+                                          };
+                                           $('#myModal').show();
+                                           TareasResource.enviararchivo(datos).then(function(result) {   
+                                                ingresado=true;
+                                           });                      
+
+                                  })
+                        }
+
+                        $('#myModal').hide();
+                          if (!ingresado)
+                              $window.alert(result.data);
+                        ingresado=true;
+                         $location.path('/convocatoria'); 
+                      });           
+                }
+
+                if (fileReso!=undefined)
+                {
+                        fd2 = new FormData();                                                       
+                        fd2.append('id',id);
+                        fd2.append('tipo',2);
+                        fd2.append('nombre',nombreArchivoResolucion);
+                        TareasResource.borrarbinario(fd2).then(function(result2) { 
+
+                            fd2.append('file', fileText);
+                            
+                              TareasResource.enviararchivobinario(fd2).then(function(result2) { 
+
+                                    var datos =  {
+                                    Accion: 'U',
+                                    SQL: "UPDATE  sgi_conv set  " +
+                                    " CON_NUME =" + reg.CON_NUME + "," +
+                                    " CON_DESC = '" + reg.CON_DESC + "', " +
+                                    " CON_RESO = 'id_" + id  + "_" + fileReso.name + "', " +                                   
+                                    " CON_FECH_INIC = '" + moment(reg.CON_FECH_INIC).format('YYYY-MM-DD')  + "', " +
+                                    " CON_FECH_FINA = '" +  moment(reg.CON_FECH_FINA).format('YYYY-MM-DD') + "', " +
+                                    " CON_TIPO_CONV_CODI= " + reg.CON_TIPO_CONV_CODI + ", " + 
+                                    " CON_PUNT_TOTA = " + reg.CON_PUNT_TOTA + " " +
+                                    " WHERE CON_CODI=" + id
+                                };
+                                 $('#myModal').show();
+                                 TareasResource.enviararchivo(datos).then(function(result) { 
+                                $('#myModal').hide();
+
+                                    $window.alert(result.data);
+                                    $window.alert("ACTUALIZADA RESOLUCIÓN");  
+                                     $location.path('/convocatoria'); 
+                                  });           
+
+                              });
+                        });
+                }
+                else
+                {
+                    var datos =  {
+                        Accion: 'U',
+                        SQL: "UPDATE  sgi_conv set  " +
+                        " CON_NUME =" + reg.CON_NUME + "," +
+                        " CON_DESC = '" + reg.CON_DESC + "', " +                                              
+                        " CON_FECH_INIC = '" + moment(reg.CON_FECH_INIC).format('YYYY-MM-DD')  + "', " +
+                        " CON_FECH_FINA = '" +  moment(reg.CON_FECH_FINA).format('YYYY-MM-DD') + "', " +
+                        " CON_TIPO_CONV_CODI= " + reg.CON_TIPO_CONV_CODI + ", " + 
+                        " CON_PUNT_TOTA = " + reg.CON_PUNT_TOTA + " " +
+                        " WHERE CON_CODI=" + id
+                    };
+                     $('#myModal').show();
+                     TareasResource.enviararchivo(datos).then(function(result) { 
+
+                          if ($scope.nombreArchivoResolucion=="")
+                        {
+                             var fd2 = new FormData();                                                       
+                                  fd2.append('id',id);
+                                  fd2.append('tipo',2);
+                                  fd2.append('nombre',nombreArchivoResolucion);
+                                  TareasResource.borrarbinario(fd2).then(function(result2) { 
+
+                                        var datos =  {
+                                              Accion: 'U',
+                                              SQL: "UPDATE  sgi_conv set  " +
+                                              " CON_RESO =NULL " +                                            
+                                              " WHERE CON_CODI=" + id
+                                          };
+                                           $('#myModal').show();
+                                           TareasResource.enviararchivo(datos).then(function(result) {   
+                                                ingresado=true;
+                                           });                      
+
+                                  })
+                        }
+
+                    $('#myModal').hide();
+                        if (!ingresado)
+                        $window.alert(result.data);
+                        ingresado=true;
+                         $location.path('/convocatoria'); 
+                      });           
+                }
+
+                if (fileText==undefined && fileReso==undefined)
+                {
+                   var datos =  {
+                        Accion: 'U',
+                        SQL: "UPDATE  sgi_conv set  " +
+                        " CON_NUME =" + reg.CON_NUME + "," +
+                        " CON_DESC = '" + reg.CON_DESC + "', " +                                              
+                        " CON_FECH_INIC = '" + moment(reg.CON_FECH_INIC).format('YYYY-MM-DD')  + "', " +
+                        " CON_FECH_FINA = '" +  moment(reg.CON_FECH_FINA).format('YYYY-MM-DD') + "', " +
+                        " CON_TIPO_CONV_CODI= " + reg.CON_TIPO_CONV_CODI + ", " + 
+                        " CON_PUNT_TOTA = " + reg.CON_PUNT_TOTA + " " +
+                        " WHERE CON_CODI=" + id
+                    };
+                     $('#myModal').show();
+                     TareasResource.enviararchivo(datos).then(function(result) { 
+                    $('#myModal').hide();
+                      if (!ingresado)
+                        $window.alert(result.data);
+                        ingresado=true;
+                         $location.path('/convocatoria'); 
+                      });           
+                }
+
             }  
           }
 

@@ -100,7 +100,36 @@ angular.module('listaTareasApp')
     				// called asynchronously if an error occurs
     				// or server returns response with an error status.
   					});     				                      	  
-			}
+			},
+
+		borrarbinario: function(datos){
+    	  	
+    	return  $http({
+  					method: 'post',
+  					url: 'scripts/services/borrarbinario.php',
+  					data:datos,
+  					transformRequest: angular.identity,
+            		headers: {'Content-Type': undefined}
+  				},
+  				 function errorCallback(response) {
+    				// called asynchronously if an error occurs
+    				// or server returns response with an error status.
+  					});     				                      	  
+			},
+		descargarbinario: function(datos){
+    	  	
+    	return  $http({
+  					method: 'post',
+  					url: 'scripts/services/descargarbinario.php',
+  					data:datos,
+  					transformRequest: angular.identity,
+            		headers: {'Content-Type': undefined}
+  				},
+  				 function errorCallback(response) {
+    				// called asynchronously if an error occurs
+    				// or server returns response with an error status.
+  					});     				                      	  
+			}					
 
 		};
     return servicio;
