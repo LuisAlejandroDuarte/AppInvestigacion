@@ -210,78 +210,20 @@ angular.module('listaTareasApp')
                   " '" + moment(new Date(reg.CON_FECH_INIC)).format('YYYY-MM-DD') + "','" + moment(new Date(reg.CON_FECH_FINA)).format('YYYY-MM-DD') + "'," + reg.CON_TIPO_CONV_CODI + "," + reg.CON_PUNT_TOTA + ")"
               };
                $('#myModal').show();
-               TareasResource.enviararchivo(datos).then(function(result) { 
+               TareasResource.enviararchivo(datos).then(function(result) {                   
+                       var idConvocatoria = result.data.split('@')[1];
                   
-                  var idConvocatoria = result.data.split('@')[1];
-
-                    if (fileText!=undefined)
-                    {
-                    var fd = new FormData();
-                    //fileText.name = fileText.name . idConvocatoria;
-                   fd.append('file', fileText);                   
-                   fd.append('id',idConvocatoria);
-
-                   fd.append('tipo',1);
-
-                     TareasResource.enviararchivobinario(fd).then(function(result1) { 
-
-                        datos ={
-                          Accion:'U',
-                          SQL:"UPDATE sgi_conv set CON_TEXT='id_" + idConvocatoria + "_" + fileText.name + "' WHERE CON_CODI=" + idConvocatoria
-                        }                         
-
-                        TareasResource.SQL(datos).then(function(resut){
-
+                        var fd = new FormData();                        
+                         fd.append('id',idConvocatoria); 
+                         fd.append('accion','Ingresar');               
+                        if (fileText!=undefined) fd.append('CONTEXTO', fileText);                                                    
+                        if (fileReso!=undefined) fd.append('CONRESO', fileReso);                                                                                
+                        TareasResource.enviararchivobinario(fd).then(function(result1) { 
+                     
                               $('#myModal').hide();     
-                              $window.alert("INGRESADO TEXTO");           
-                              $location.path('/convocatoria');  
-                        });                                                                  
-                     });
-                   }   
-                   else
-                   {
-                     if (fileReso==undefined)
-                     {
-                       $('#myModal').hide();     
-                       $window.alert("INGRESADO");           
-                       $location.path('/convocatoria'); 
-                       ingresado=true;   
-                     }
-                   }
-
-
-                if (fileReso!=undefined)
-                    {
-                        var fd2 = new FormData();                                
-                        fd2.append('file', fileReso);
-                        fd2.append('id',idConvocatoria);
-                        fd2.append('tipo',2);
-                        TareasResource.enviararchivobinario(fd2).then(function(result2) { 
-
-                         datos ={
-                          Accion:'U',
-                          SQL:"UPDATE sgi_conv set CON_RESO='id_" + idConvocatoria + "_" + fileReso.name + "' WHERE CON_CODI=" + idConvocatoria
-                        }                         
-
-                        TareasResource.SQL(datos).then(function(resut){
-                                 $('#myModal').hide();     
-                                 $window.alert("INGRESADA RESOLUCIÓN");
-
-                                 $location.path('/convocatoria');   
-                               });                                                          
-                          });
-                    }   
-                    else
-                    {
-                      if (fileText==undefined && !ingresado)
-                     {
-                       $('#myModal').hide();     
-                       $window.alert("INGRESADO");           
-                       $location.path('/convocatoria');    
-                     }
-                    }
-
-                         
+                              $window.alert("INGRESADO");           
+                              $location.path('/convocatoria');                       
+                     });                                          
                 });           
               }         
               else

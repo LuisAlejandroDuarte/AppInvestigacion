@@ -1,29 +1,36 @@
 <?php
-	 $id = $_POST['id'];
-	 $tipo =$_POST['tipo'];
+
+ require_once("gestionarchivo.php");  
+	// var_dump($_POST);
+	// var_dump($_FILES);
+
+$id = $_POST['id'];
+$archFileOld = $_POST['archFileOld'];
+$accion = $_POST['accion'];
+
+ $tipos = array
+  (
+  array('CONTEXTO','sgi_conv','CON_TEXT'),
+  array('CONRESO','sgi_conv','CON_RESO'),
+  array('PROTEXTO','sgi_prop','PRO_TEXT'),
+  array('PROCARTA','sgi_prop','PRO_CART_AVAL')
+  );
+
+if ($accion=='Ingresar')
+{	 	
+	 foreach ($_FILES as $attrName => $valuesArray) {  
+		$atributos = $attrName;
+	 	foreach ($tipos as $key => $value) {		 			
+	 			if ($value[0] == $attrName)	 			
+	 				$tipo = $key;	 				 			
+	 	} 		
+
+	 	$archivo = new GestionArchivo($_FILES[$attrName],$tipo, $id);
+ 	    $archivo->copyFile();
+	 }
+}
+	 echo $tipo;
 	
-	 if ($tipo==1)	 
-	 {
-	 	$dirTexto = $_SERVER['DOCUMENT_ROOT'] .'/AppInvestigacion/TEXTO';
-	 	if (!file_exists($dirTexto))			
-			mkdir( $_SERVER['DOCUMENT_ROOT'] .'/AppInvestigacion/TEXTO', 0700);			
-	 }
-	 else
-	 {
-		$dirTexto = $_SERVER['DOCUMENT_ROOT'] .'/AppInvestigacion/RESO';
-		if (!file_exists($dirTexto))			
-			mkdir( $_SERVER['DOCUMENT_ROOT'] .'/AppInvestigacion/RESO', 0700);		
-	 }
-
-	if (copy($_FILES['file']['tmp_name'],$dirTexto .'/id_' . $id . '_' . $_FILES['file']['name'] )) {
-
-		$status = 'Ok';
-	} else {
-
-		$status = 'Error al subir el archivo';
-
-	}
-	echo preg_replace("[\n|\r|\n\r]", "", $status);
 ?>
 
 
