@@ -158,12 +158,8 @@
                  },
                  events:  window.operateEvents = {
                     'click  .ver':function (e, value, row, index) {                    
-                                   var fd3 = new FormData();                                                                                                         
-                                   fd3.append('tipo',1);                                 
-                                  TareasResource.descargarbinario(fd3).then(function(result2) { 
-                                    $window.open(result2.data + value);                                         
-                                    }); 
-                                
+                                   $window.open(value,'Download'); 
+                                   $window.focus();                                     
                              }
                          }
             },{
@@ -186,11 +182,8 @@
                  events:  window.operateEvents = {
                     'click  .ver':function (e, value, row, index) {
 
-                              var fd3 = new FormData();                                                                                                         
-                                   fd3.append('tipo',2);                                 
-                                  TareasResource.descargarbinario(fd3).then(function(result2) { 
-                                    $window.open(result2.data + value);                                         
-                                    }); 
+                            $window.open(value,'Download');  
+                             $window.focus();
                                   
                              }
                          }

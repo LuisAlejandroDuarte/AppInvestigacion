@@ -62,7 +62,12 @@
                 <span class="fileinput-button glyphicon glyphicon-upload"  ng-class="{disabled:    disabled}" style="margin-left:20px"><input title="Cargar documento" type="file" name="files" onchange="angular.element(this).scope().uploadFileTexto(this) " accept="application/pdf, application/msword"> 
                </span>    
                <span title="Eliminar documento" ng-click="EliminarTexto()" class="glyphicon glyphicon-remove" style="cursor: pointer;"></span>
-               <span class="label label-danger" style="white-space:normal ">{{nombreArchivoTexto}}</span>
+               <div class="row">
+                  <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">
+                  <span class="label label-danger" style="white-space:normal">
+                  {{nombreArchivoTexto}}</span>   
+                  </div>
+               </div>                              
          </div>
       </div>
       <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">   
@@ -71,7 +76,13 @@
                <span class="fileinput-button glyphicon glyphicon-upload"  ng-class="{disabled:    disabled}" style="margin-left:20px"><input title="Cargar documento" type="file"  name="files" onchange="angular.element(this).scope().uploadFileResolucion(this) " accept="application/pdf,application/msword"> 
               </span>                
               <span title="Eliminar documento" ng-click="EliminarResolucion()" class="glyphicon glyphicon-remove" style="cursor: pointer;"></span>
-              <span class="label label-danger" style="white-space:normal">{{nombreArchivoResolucion}}</span>
+              <div class="row">
+                 <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">
+                   <span class="label label-danger" style="white-space:normal">{{nombreArchivoResolucion}}</span>
+              </div>
+              </div>
+             
+              
          </div>
       </div>            
     </div>

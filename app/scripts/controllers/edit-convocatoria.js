@@ -201,8 +201,6 @@ angular.module('listaTareasApp')
              if (id==0)
              {
               
-
-
               var datos =  {
                   Accion: 'ADJUNTO',
                   SQL: "INSERT INTO  sgi_conv (CON_NUME,CON_DESC,CON_FECH_INIC,CON_FECH_FINA,CON_TIPO_CONV_CODI, CON_PUNT_TOTA)" +
@@ -215,7 +213,9 @@ angular.module('listaTareasApp')
                   
                         var fd = new FormData();                        
                          fd.append('id',idConvocatoria); 
-                         fd.append('accion','Ingresar');               
+                         fd.append('accion','Ingresar');  
+                         fd.append('archFileOld','');  
+                         fd.append('tipo','');
                         if (fileText!=undefined) fd.append('CONTEXTO', fileText);                                                    
                         if (fileReso!=undefined) fd.append('CONRESO', fileReso);                                                                                
                         TareasResource.enviararchivobinario(fd).then(function(result1) { 
@@ -229,6 +229,13 @@ angular.module('listaTareasApp')
               else
               {
                 var fechamoment = moment(reg.CON_FECH_INIC);
+
+                  var fd = new FormData();                        
+                  fd.append('id',id); 
+                  fd.append('accion','Eliminar');  
+                  fd.append('archFileOld',nombreArchivoTexto);  
+                  fd.append('tipo','');
+
 
                 if (fileText!=undefined)
                 {
