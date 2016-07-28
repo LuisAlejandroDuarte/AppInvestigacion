@@ -44,8 +44,12 @@ angular.module('listaTareasApp')
                   $scope.viewDatos[0].CON_PUNT_TOTA = parseInt(result[0].CON_PUNT_TOTA);
                   nombOld = $scope.viewDatos[0].CON_DESC;
 
-                  if (result[0].CON_TEXT!=null) $scope.nombreArchivoTexto =result[0].CON_TEXT;
-                  if (result[0].CON_RESO!=null) $scope.nombreArchivoResolucion =result[0].CON_RESO;
+                  if (result[0].CON_TEXT_NOMB!=null) $scope.nombreArchivoTexto =result[0].CON_TEXT_NOMB;
+                  if (result[0].CON_RESO_NOMB!=null) $scope.nombreArchivoResolucion =result[0].CON_RESO_NOMB;
+
+                  if (result[0].CON_TEXT!=null) $scope.nombreLinkArchivoTexto =result[0].CON_TEXT;
+                  if (result[0].CON_RESO!=null) $scope.nombreLinkArchivoResolucion =result[0].CON_RESO;
+
 
                   nombreArchivoTexto = $scope.nombreArchivoTexto;
                   nombreArchivoResolucion =$scope.nombreArchivoResolucion;

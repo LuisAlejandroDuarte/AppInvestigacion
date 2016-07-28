@@ -9,13 +9,14 @@ $accion = $_POST['accion'];
 $archFileOld = $_POST['archFileOld'];
 $tipo = $_POST['tipo'];
 
- $tipos = array
-  (
-  array('CONTEXTO','sgi_conv','CON_TEXT','CON_CODI'),
-  array('CONRESO','sgi_conv','CON_RESO','CON_CODI'),
-  array('PROTEXTO','sgi_prop','PRO_TEXT','PRO_CODI'),
-  array('PROCARTA','sgi_prop','PRO_CART_AVAL','PRO_CODI')
-  );
+
+$tipos = array
+	  (
+	  array('CONTEXTO','sgi_conv','CON_TEXT','CON_TEXT_NOMB','CON_CODI'),
+	  array('CONRESO','sgi_conv','CON_RESO','CON_RESO_NOMB','CON_CODI'),
+	  array('PROTEXTO','sgi_prop','PRO_TEXT','PRO_TEXT_NOMB','PRO_CODI'),
+	  array('PROCARTA','sgi_prop','PRO_CART_AVAL','PRO_CART_NOMB','PRO_CODI')
+	  );
 
 if ($accion=='Ingresar')
 {	 	

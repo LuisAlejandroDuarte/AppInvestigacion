@@ -64,8 +64,7 @@
                <span title="Eliminar documento" ng-click="EliminarTexto()" class="glyphicon glyphicon-remove" style="cursor: pointer;"></span>
                <div class="row">
                   <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">
-                  <span class="label label-danger" style="white-space:normal">
-                  {{nombreArchivoTexto}}</span>   
+                  <a href="http://{{nombreLinkArchivoTexto}}" target="_blank"><span class="label label-danger" style="white-space:normal">{{nombreArchivoTexto}}</span></a>   
                   </div>
                </div>                              
          </div>
@@ -78,11 +77,9 @@
               <span title="Eliminar documento" ng-click="EliminarResolucion()" class="glyphicon glyphicon-remove" style="cursor: pointer;"></span>
               <div class="row">
                  <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">
-                   <span class="label label-danger" style="white-space:normal">{{nombreArchivoResolucion}}</span>
-              </div>
-              </div>
-             
-              
+                    <a href="http://{{nombreLinkArchivoResolucion}}" target="_blank"><span class="label label-danger" style="white-space:normal">{{nombreArchivoResolucion}}</span></a>
+                 </div>
+              </div>                          
          </div>
       </div>            
     </div>

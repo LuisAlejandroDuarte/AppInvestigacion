@@ -254,7 +254,7 @@ angular.module("listaTareasApp", ['ngRoute','ngAnimate','ngLocale', 'ngResource'
             var ConvocatoriaID = parseInt($route.current.params.idConvocatoria);
             var dat = TareasResource.execute.query({Accion: 'S',
                          SQL: "SELECT conv.CON_CODI, tipoConv.TCO_DESC, " + 
-                         " conv.CON_NUME,conv.CON_DESC,conv.CON_TEXT,conv.CON_RESO, " + 
+                         " conv.CON_NUME,conv.CON_DESC,conv.CON_TEXT,conv.CON_TEXT_NOMB,conv.CON_RESO,conv.CON_RESO_NOMB, " + 
                          " conv.CON_FECH_INIC,conv.CON_FECH_FINA,conv.CON_TIPO_CONV_CODI,conv.CON_PUNT_TOTA  " +
                          " FROM sgi_conv as conv join sgi_tipo_conv as tipoConv on " + 
                          " tipoConv.TCO_CODI = conv.CON_TIPO_CONV_CODI where " + 

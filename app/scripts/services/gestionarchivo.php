@@ -8,10 +8,10 @@ class GestionArchivo
 {
 	var $tipos = array
 	  (
-	  array('CONTEXTO','sgi_conv','CON_TEXT','CON_CODI'),
-	  array('CONRESO','sgi_conv','CON_RESO','CON_CODI'),
-	  array('PROTEXTO','sgi_prop','PRO_TEXT','PRO_CODI'),
-	  array('PROCARTA','sgi_prop','PRO_CART_AVAL','PRO_CODI')
+	  array('CONTEXTO','sgi_conv','CON_TEXT','CON_TEXT_NOMB','CON_CODI'),
+	  array('CONRESO','sgi_conv','CON_RESO','CON_RESO_NOMB','CON_CODI'),
+	  array('PROTEXTO','sgi_prop','PRO_TEXT','PRO_TEXT_NOMB','PRO_CODI'),
+	  array('PROCARTA','sgi_prop','PRO_CART_AVAL','PRO_CART_NOMB','PRO_CODI')
 	  );
 
 	 var $_file='';
@@ -63,11 +63,12 @@ class GestionArchivo
 		$conexion= mysqli_connect(DB_SERVER,DB_USER, DB_PASS,DB_NAME)
         or die("Lo sentimos pero no se pudo conectar a nuestra db");
 
-        $SQL ="UPDATE " .  $this->tipos[$this->_tipo][1] . " set " . $this->tipos[$this->_tipo][2] . "='" . $file . "' WHERE " . $this->tipos[$this->_tipo][3] . '=' . $this->_id;
+        $SQL ="UPDATE " .  $this->tipos[$this->_tipo][1] . " set " . $this->tipos[$this->_tipo][2] . "='" . $file . "'," 
+        . $this->tipos[$this->_tipo][3] . "='id_" . $this->_id . "_" . $this->_file['name']  . "' WHERE " . $this->tipos[$this->_tipo][4] . '=' . $this->_id;
         
         $result = mysqli_query($conexion,$SQL);  
 
-
+        echo $SQL;
 	}
 
 
@@ -76,7 +77,8 @@ class GestionArchivo
 		$conexion= mysqli_connect(DB_SERVER,DB_USER, DB_PASS,DB_NAME)
         or die("Lo sentimos pero no se pudo conectar a nuestra db");
 
-        $SQL ="UPDATE " .  $this->tipos[$this->_tipo][1] . " set " . $this->tipos[$this->_tipo][2] . "=NULL" . " WHERE " . $this->tipos[$this->_tipo][3] . "=" . $this->_id;
+         $SQL ="UPDATE " .  $this->tipos[$this->_tipo][1] . " set " . $this->tipos[$this->_tipo][2] . "=NULL, " .
+         $this->tipos[$this->_tipo][3] . "=NULL WHERE " . $this->tipos[$this->_tipo][4] . '=' . $this->_id;
 
          $result = mysqli_query($conexion,$SQL);  
          

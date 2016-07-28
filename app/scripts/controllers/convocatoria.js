@@ -84,7 +84,7 @@
              moment.locale('es');
          $scope.options = {           
             method: 'post',
-            url: 'scripts/services/api.php?url=executeSQL/S/SELECT CON_CODI,CON_NUME,CON_DESC,CON_FECH_INIC,CON_FECH_FINA,CON_TEXT,CON_RESO ' + 
+            url: 'scripts/services/api.php?url=executeSQL/S/SELECT CON_CODI,CON_NUME,CON_DESC,CON_FECH_INIC,CON_FECH_FINA,CON_TEXT,CON_TEXT_NOMB,CON_RESO,CON_RESO_NOMB ' + 
                     ' FROM sgi_conv ',
           
  				cache: false,
@@ -148,7 +148,7 @@
                  formatter: function(value, row, index) {
                      if (value!=null)
                                                  {
-                                                    return '<a class="ver ml10 btn btn-default btn-xs" title="Ver Documento"><span class="glyphicon glyphicon-download"></span></a>';
+                                                    return '<a href="http://' + value + '" target=_blank class="ver ml10 btn btn-default btn-xs" title="Ver Documento"><span class="glyphicon glyphicon-download"></span></a>';
                                                 }
                                                 else
                                                     return "N/A";
@@ -158,8 +158,8 @@
                  },
                  events:  window.operateEvents = {
                     'click  .ver':function (e, value, row, index) {                    
-                                   $window.open(value,'Download'); 
-                                   $window.focus();                                     
+                                   // $window.open(value,'Download'); 
+                                   // $window.focus();                                     
                              }
                          }
             },{
@@ -171,7 +171,7 @@
                  formatter: function(value, row, index) {
                         if (value!=null)
                                                  {
-                                                    return '<a class="ver ml10 btn btn-default btn-xs" title="Ver Documento"><span class="glyphicon glyphicon-download"></span></a>';
+                                                    return '<a  href="http://' + value + '" target=_blank  class="ver ml10 btn btn-default btn-xs" title="Ver Documento"><span class="glyphicon glyphicon-download"></span></a>';
                                                 }
                                                 else
                                                     return "N/A";
@@ -182,8 +182,8 @@
                  events:  window.operateEvents = {
                     'click  .ver':function (e, value, row, index) {
 
-                            $window.open(value,'Download');  
-                             $window.focus();
+                            // $window.open(value,'Download');  
+                            //  $window.focus();
                                   
                              }
                          }
