@@ -63,6 +63,9 @@ angular.module('listaTareasApp')
                   $scope.viewDatos[0].CON_PUNT_TOTA = parseInt(result[0].CON_PUNT_TOTA);
                   nombOld = $scope.viewDatos[0].CON_DESC;
 
+                  $scope.nombreArchivoTexto="";
+                  $scope.nombreArchivoResolucion ="";
+
                   if (result[0].CON_TEXT_NOMB!=null) $scope.nombreArchivoTexto =result[0].CON_TEXT_NOMB;
                   if (result[0].CON_RESO_NOMB!=null) $scope.nombreArchivoResolucion =result[0].CON_RESO_NOMB;
 
@@ -255,111 +258,121 @@ angular.module('listaTareasApp')
                 var actualizandoTexto =false;
                 var actualizandoReso = false;
                  
-                if ($scope.nombreArchivoTexto=="" || $scope.nombreArchivoTexto==undefined)
-                {
-                      actualizandoTexto = true;
                       var fd = new FormData();                        
                       fd.append('id',id); 
-                      fd.append('accion','Eliminar');  
-                      fd.append('archFileOld',nombreArchivoTexto);                       
-                      fd.append('tipo',0);
+                      fd.append('accion','Actualizar');  
+                      fd.append('archFileOld',nombreArchivoTexto + '@' + $scope.nombreArchivoTexto + '@' + nombreArchivoResolucion + '@' + $scope.nombreArchivoResolucion);  
+                      fd.append('CONTEXTO', fileText);                                                    
+                      fd.append('CONRESO', fileReso);                           
+                      fd.append('tipo','CONTEXTO@CONRESO');
+                       $('#myModal').show();
                       TareasResource.enviararchivobinario(fd).then(function(result1) {
                             actualizandoTexto = false;
-                            $location.path('/convocatoria');  
+                            $location.path('/convocatoria'); 
+
+
+                             var datos =  {
+                              Accion: 'U',
+                              SQL: "UPDATE  sgi_conv set  " +
+                              " CON_NUME =" + reg.CON_NUME + "," +
+                              " CON_DESC = '" + reg.CON_DESC + "', " +                                                   
+                              " CON_FECH_INIC = '" + moment(reg.CON_FECH_INIC).format('YYYY-MM-DD')  + "', " +
+                              " CON_FECH_FINA = '" +  moment(reg.CON_FECH_FINA).format('YYYY-MM-DD') + "', " +
+                              " CON_TIPO_CONV_CODI= " + reg.CON_TIPO_CONV_CODI + ", " + 
+                              " CON_PUNT_TOTA = " + reg.CON_PUNT_TOTA + " " +
+                              " WHERE CON_CODI=" + id
+                          };
+                          
+                           TareasResource.enviararchivo(datos).then(function(result) { 
+                               $('#myModal').hide();                    
+                               $window.alert("ACTUALIZADO");  
+
+                               if (!actualizandoTexto && !actualizandoReso)
+                                  $location.path('/convocatoria');
+
+
+                             
+                            });                            
+
                        });
-                }
+
+
+               //  if ($scope.nombreArchivoTexto=="" || $scope.nombreArchivoTexto==undefined)
+               //  {
+               //        actualizandoTexto = true;
+                     
+               //  }
                 
-               if (fileText!=undefined)
-                  {
+               // if (fileText!=undefined)
+               //    {
 
-                      var fd = new FormData();                        
-                      fd.append('id',id); 
-                      fd.append('accion','Eliminar');  
-                      fd.append('archFileOld',nombreArchivoTexto);                       
-                      fd.append('tipo',0);
-                      TareasResource.enviararchivobinario(fd).then(function(result1) {                                                        
-                            actualizandoTexto =true; 
-                            fd = new FormData();                        
-                            fd.append('id',id); 
-                            fd.append('accion','Ingresar');  
-                            fd.append('CONTEXTO', fileText); 
-                            fd.append('archFileOld','');  
-                            fd.append('tipo','');
-                            TareasResource.enviararchivobinario(fd).then(function(result1) { 
-                                actualizandoTexto = false;
-                                $location.path('/convocatoria');  
+               //        var fd = new FormData();                        
+               //        fd.append('id',id); 
+               //        fd.append('accion','Eliminar');  
+               //        fd.append('archFileOld',nombreArchivoTexto);                       
+               //        fd.append('tipo',0);
+               //        TareasResource.enviararchivobinario(fd).then(function(result1) {                                                        
+               //              actualizandoTexto =true; 
+               //              fd = new FormData();                        
+               //              fd.append('id',id); 
+               //              fd.append('accion','Ingresar');  
+               //              fd.append('CONTEXTO', fileText); 
+               //              fd.append('archFileOld','');  
+               //              fd.append('tipo','');
+               //              TareasResource.enviararchivobinario(fd).then(function(result1) { 
+               //                  actualizandoTexto = false;
+               //                  $location.path('/convocatoria');  
 
-                             }); 
-                       });
-                  }
+               //               }); 
+               //         });
+               //    }
 
-                  if ($scope.nombreArchivoResolucion=="" || $scope.nombreArchivoResolucion==undefined)
-                  {
+               //    if ($scope.nombreArchivoResolucion=="" || $scope.nombreArchivoResolucion==undefined)
+               //    {
 
-                      actualizandoReso = true;
-                      fd = new FormData();                        
-                      fd.append('id',id); 
-                      fd.append('accion','Eliminar');  
-                      fd.append('archFileOld',nombreArchivoResolucion);  
-                      fd.append('tipo',1);
-                      TareasResource.enviararchivobinario(fd).then(function(result1) { 
-                         actualizandoTexto = false;
-                         $location.path('/convocatoria');  
+               //        actualizandoReso = true;
+               //        fd = new FormData();                        
+               //        fd.append('id',id); 
+               //        fd.append('accion','Eliminar');  
+               //        fd.append('archFileOld',nombreArchivoResolucion);  
+               //        fd.append('tipo',1);
+               //        TareasResource.enviararchivobinario(fd).then(function(result1) { 
+               //           actualizandoTexto = false;
+               //           $location.path('/convocatoria');  
 
-                       });
+               //         });
 
-                  }
+               //    }
                       
-                 if (fileReso!=undefined)
-                     {
+               //   if (fileReso!=undefined)
+               //       {
 
-                      fd = new FormData();                        
-                              fd.append('id',id); 
-                              fd.append('accion','Eliminar');  
-                              fd.append('archFileOld',nombreArchivoResolucion);  
-                              fd.append('tipo',1);
-                              TareasResource.enviararchivobinario(fd).then(function(result1) { 
-                                   actualizandoReso = true;
-                                  fd = new FormData();                        
-                                  fd.append('id',id); 
-                                  fd.append('accion','Ingresar');  
-                                  fd.append('CONRESO', fileReso); 
-                                  fd.append('archFileOld','');  
-                                  fd.append('tipo','');
-                                  TareasResource.enviararchivobinario(fd).then(function(result1) {                                                                                 
-                                          actualizandoReso = false;
-                                          $location.path('/convocatoria');
-                                   });
+               //        fd = new FormData();                        
+               //                fd.append('id',id); 
+               //                fd.append('accion','Eliminar');  
+               //                fd.append('archFileOld',nombreArchivoResolucion);  
+               //                fd.append('tipo',1);
+               //                TareasResource.enviararchivobinario(fd).then(function(result1) { 
+               //                     actualizandoReso = true;
+               //                    fd = new FormData();                        
+               //                    fd.append('id',id); 
+               //                    fd.append('accion','Ingresar');  
+               //                    fd.append('CONRESO', fileReso); 
+               //                    fd.append('archFileOld','');  
+               //                    fd.append('tipo','');
+               //                    TareasResource.enviararchivobinario(fd).then(function(result1) {                                                                                 
+               //                            actualizandoReso = false;
+               //                            $location.path('/convocatoria');
+               //                     });
 
-                               });
+               //                 });
                     
-                     }    
+               //       }    
                                      
                         
                 
 
-                 var datos =  {
-                    Accion: 'U',
-                    SQL: "UPDATE  sgi_conv set  " +
-                    " CON_NUME =" + reg.CON_NUME + "," +
-                    " CON_DESC = '" + reg.CON_DESC + "', " +                                                   
-                    " CON_FECH_INIC = '" + moment(reg.CON_FECH_INIC).format('YYYY-MM-DD')  + "', " +
-                    " CON_FECH_FINA = '" +  moment(reg.CON_FECH_FINA).format('YYYY-MM-DD') + "', " +
-                    " CON_TIPO_CONV_CODI= " + reg.CON_TIPO_CONV_CODI + ", " + 
-                    " CON_PUNT_TOTA = " + reg.CON_PUNT_TOTA + " " +
-                    " WHERE CON_CODI=" + id
-                };
-                 $('#myModal').show();
-                 TareasResource.enviararchivo(datos).then(function(result) { 
-                     $('#myModal').hide();                    
-                     $window.alert("ACTUALIZADO");  
-
-                     if (!actualizandoTexto && !actualizandoReso)
-                        $location.path('/convocatoria');
-
-
-                   
-                  });           
+           
 
                 
 

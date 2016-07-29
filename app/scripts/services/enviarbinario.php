@@ -32,15 +32,34 @@ $tipos = array
 		 }
 	}
 
-	if ($accion=='Eliminar')
+	if ($accion=='Actualizar')
 	{	 
-			echo $_FILES["CONTEXTO"];
-		 	$archivo = new GestionArchivo(null,$tipo, $id,$archFileOld);
-	 	    $archivo->deleteFile();
-		 
+
+			 $t = explode("@", $tipo);
+			 $arch =explode("@", $archFileOld);
+			// $borrado = explode("*", $arch);
+			 $result="";
+			 foreach ($t as $key => $value) {
+
+			 	if ($_FILES[$value])	
+			 	{			 		
+			 		$archivo = new GestionArchivo($_FILES[$value],$key, $id,$arch[$key*2]);
+	 	    		$archivo->deleteFile();
+	 	    		$archivo->copyFile();
+
+			 	}			 				 
+			 	else
+			 	{			 		
+			 		if ($arch[(2*$key)+1]=="")
+			 		{
+			 			$archivo = new GestionArchivo(null,$key, $id,$arch[$key*2]);
+	 	    			$archivo->deleteFile();	 
+
+			 		}			 		    		
+			 	}
+			 }			 			 
 	}
-	 
-	
+	 	
 ?>
 
 
