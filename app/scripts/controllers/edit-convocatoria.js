@@ -35,10 +35,29 @@ angular.module('listaTareasApp')
                 var id = ($route.current.params.idConvocatoria) ? parseInt($route.current.params.idConvocatoria) :0 ;
                   if (id>0)
                   {
-                    moment.utc();
+                    
                      moment.locale('es');
-                    result[0].CON_FECH_FINA = moment(result[0].CON_FECH_FINA).format("D-MMMM-YYYY");
-                    result[0].CON_FECH_INIC = moment(result[0].CON_FECH_INIC).format("D-MMMM-YYYY");
+                     var day;
+                     var mounth;
+                     var year;
+                     var fechaStr;
+
+                     day = moment(result[0].CON_FECH_FINA).format("D");
+                     mounth = moment(result[0].CON_FECH_FINA).format("M");
+                     year = moment(result[0].CON_FECH_FINA).format("YYYY");
+
+                      fechaStr = year + "," + mounth + "," + day;
+
+                    result[0].CON_FECH_FINA =new Date(fechaStr); //moment(result[0].CON_FECH_FINA).format("DD-MMMM-YYYY");
+
+                     day = moment(result[0].CON_FECH_INIC).format("D");
+                     mounth = moment(result[0].CON_FECH_INIC).format("M");
+                     year = moment(result[0].CON_FECH_INIC).format("YYYY");
+
+                     fechaStr = year + "," + mounth + "," + day;
+
+
+                    result[0].CON_FECH_INIC = new Date(fechaStr); //moment(result[0].CON_FECH_INIC).format("DD-MMMM-YYYY");
                   
                   $scope.viewDatos = result;
                   $scope.viewDatos[0].CON_PUNT_TOTA = parseInt(result[0].CON_PUNT_TOTA);
@@ -236,19 +255,29 @@ angular.module('listaTareasApp')
                 var actualizandoTexto =false;
                 var actualizandoReso = false;
                  
-                
-              
+                if ($scope.nombreArchivoTexto=="" || $scope.nombreArchivoTexto==undefined)
+                {
                       actualizandoTexto = true;
                       var fd = new FormData();                        
                       fd.append('id',id); 
                       fd.append('accion','Eliminar');  
-                      fd.append('archFileOld',nombreArchivoTexto); 
-                      fd.append('CONTEXTO', fileText);  
+                      fd.append('archFileOld',nombreArchivoTexto);                       
                       fd.append('tipo',0);
                       TareasResource.enviararchivobinario(fd).then(function(result1) {
-                        actualizandoTexto = false; 
-                          if (fileText!=undefined)
-                          {
+                            actualizandoTexto = false;
+                            $location.path('/convocatoria');  
+                       });
+                }
+                
+               if (fileText!=undefined)
+                  {
+
+                      var fd = new FormData();                        
+                      fd.append('id',id); 
+                      fd.append('accion','Eliminar');  
+                      fd.append('archFileOld',nombreArchivoTexto);                       
+                      fd.append('tipo',0);
+                      TareasResource.enviararchivobinario(fd).then(function(result1) {                                                        
                             actualizandoTexto =true; 
                             fd = new FormData();                        
                             fd.append('id',id); 
@@ -260,13 +289,13 @@ angular.module('listaTareasApp')
                                 actualizandoTexto = false;
                                 $location.path('/convocatoria');  
 
-                             });
-                          }
-
+                             }); 
                        });
-                
+                  }
 
-              
+                  if ($scope.nombreArchivoResolucion=="" || $scope.nombreArchivoResolucion==undefined)
+                  {
+
                       actualizandoReso = true;
                       fd = new FormData();                        
                       fd.append('id',id); 
@@ -274,23 +303,39 @@ angular.module('listaTareasApp')
                       fd.append('archFileOld',nombreArchivoResolucion);  
                       fd.append('tipo',1);
                       TareasResource.enviararchivobinario(fd).then(function(result1) { 
-                         actualizandoReso = false;
-                         if (fileReso!=undefined)
-                         {
-                          actualizandoReso = true;
-                          fd = new FormData();                        
-                          fd.append('id',id); 
-                          fd.append('accion','Ingresar');  
-                          fd.append('CONRESO', fileReso); 
-                          fd.append('archFileOld','');  
-                          fd.append('tipo','');
-                          TareasResource.enviararchivobinario(fd).then(function(result1) { 
-                                  actualizandoReso = false;
-                                  $location.path('/convocatoria');
-                           });
-                         }
+                         actualizandoTexto = false;
+                         $location.path('/convocatoria');  
 
                        });
+
+                  }
+                      
+                 if (fileReso!=undefined)
+                     {
+
+                      fd = new FormData();                        
+                              fd.append('id',id); 
+                              fd.append('accion','Eliminar');  
+                              fd.append('archFileOld',nombreArchivoResolucion);  
+                              fd.append('tipo',1);
+                              TareasResource.enviararchivobinario(fd).then(function(result1) { 
+                                   actualizandoReso = true;
+                                  fd = new FormData();                        
+                                  fd.append('id',id); 
+                                  fd.append('accion','Ingresar');  
+                                  fd.append('CONRESO', fileReso); 
+                                  fd.append('archFileOld','');  
+                                  fd.append('tipo','');
+                                  TareasResource.enviararchivobinario(fd).then(function(result1) {                                                                                 
+                                          actualizandoReso = false;
+                                          $location.path('/convocatoria');
+                                   });
+
+                               });
+                    
+                     }    
+                                     
+                        
                 
 
                  var datos =  {

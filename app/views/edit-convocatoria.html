@@ -33,7 +33,7 @@
         <div class="form-group">
            <label>Fecha Inicio</label>
             <div class="form-group" ng-class="{'has-error': datepickerForm.date.$invalid}">
-               <input type="text" ng-model-options="{timezone:'UTC'}" class="form-control" ng-model="viewDatos[0].CON_FECH_INIC" data-date-format="dd-MMMM-yyyy"   data-max-date="{{viewDatos[0].CON_FECH_FINA}}"  data-autoclose="1" name="fechaInicio" bs-datepicker required>
+               <input type="text" class="form-control" ng-model="viewDatos[0].CON_FECH_INIC" data-date-format="dd-MMMM-yyyy"   data-max-date="{{viewDatos[0].CON_FECH_FINA}}"  data-autoclose="1" name="fechaInicio" bs-datepicker required>
   
             </div>
         </div>
@@ -42,7 +42,7 @@
            <div class="form-group">
                <label>Fecha Final</label>                       
                 <div class="form-group" ng-class="{'has-error': datepickerForm.date.$invalid}">
-                    <input type="text" ng-model-options="{timezone:'UTC'}" class="form-control" ng-model="viewDatos[0].CON_FECH_FINA" data-date-format="dd-MMMM-yyyy"  data-min-date="{{viewDatos[0].CON_FECH_INIC}}"  data-autoclose="1"   name="fechaFinal" bs-datepicker required>
+                    <input type="text"  class="form-control" ng-model="viewDatos[0].CON_FECH_FINA" data-date-format="dd-MMMM-yyyy"  data-min-date="{{viewDatos[0].CON_FECH_INIC}}"  data-autoclose="1"   name="fechaFinal" bs-datepicker required>
                 </div>           
           </div>
        </div>

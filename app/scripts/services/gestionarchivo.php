@@ -55,7 +55,7 @@ class GestionArchivo
 			unlink($_SERVER['DOCUMENT_ROOT'] .'/AppInvestigacion/' . $this->tipos[$this->_tipo][0] . '/' . $this->_nameFileOld);		
 			$this->updateRegNULL();
 		}
-		echo $dirTexto . '/' . $this->_nameFileOld;
+		//echo $dirTexto . '/' . $this->_nameFileOld;
 	}
 
 
@@ -69,7 +69,7 @@ class GestionArchivo
         
         $result = mysqli_query($conexion,$SQL);  
 
-        echo $SQL;
+      
 	}
 
 
