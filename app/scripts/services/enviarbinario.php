@@ -18,33 +18,27 @@ $tipos = array
 	  array('PROCARTA','sgi_prop','PRO_CART_AVAL','PRO_CART_NOMB','PRO_CODI')
 	  );
 
-if ($accion=='Ingresar')
-{	 	
-	 foreach ($_FILES as $attrName => $valuesArray) {  
-		$atributos = $attrName;
-	 	foreach ($tipos as $key => $value) {		 			
-	 			if ($value[0] == $attrName)	 			
-	 				$idtipo = $key;	 				 			
-	 	} 		
+	if ($accion=='Ingresar')
+	{	 	
+		 foreach ($_FILES as $attrName => $valuesArray) {  
+			$atributos = $attrName;
+		 	foreach ($tipos as $key => $value) {		 			
+		 			if ($value[0] == $attrName)	 			
+		 				$idtipo = $key;	 				 			
+		 	} 		
 
-	 	$archivo = new GestionArchivo($_FILES[$attrName],$idtipo, $id);
- 	    $archivo->copyFile();
-	 }
-}
+		 	$archivo = new GestionArchivo($_FILES[$attrName],$idtipo, $id);
+	 	    $archivo->copyFile();
+		 }
+	}
 
-if ($accion=='Eliminar')
-{	 	
-	 foreach ($_FILES as $attrName => $valuesArray) {  
-		$atributos = $attrName;
-	 	foreach ($tipos as $key => $value) {		 			
-	 			if ($value[0] == $attrName)	 			
-	 				$idtipo = $key;	 				 			
-	 	} 		
-
-	 	$archivo = new GestionArchivo($_FILES[$attrName],$idtipo, $id);
- 	    $archivo->copyFile();
-	 }
-}
+	if ($accion=='Eliminar')
+	{	 
+			echo $_FILES["CONTEXTO"];
+		 	$archivo = new GestionArchivo(null,$tipo, $id,$archFileOld);
+	 	    $archivo->deleteFile();
+		 
+	}
 	 
 	
 ?>

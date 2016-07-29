@@ -50,11 +50,12 @@ class GestionArchivo
 	{
 		$dirTexto = $_SERVER['DOCUMENT_ROOT'] .'/AppInvestigacion/' . $this->tipos[$this->_tipo][0];
 
-		if (file_exists($dirTexto))
+		if (file_exists($dirTexto) && $this->_nameFileOld!="")
 	 	{			
 			unlink($_SERVER['DOCUMENT_ROOT'] .'/AppInvestigacion/' . $this->tipos[$this->_tipo][0] . '/' . $this->_nameFileOld);		
 			$this->updateRegNULL();
 		}
+		echo $dirTexto . '/' . $this->_nameFileOld;
 	}
 
 
