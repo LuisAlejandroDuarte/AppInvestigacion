@@ -18,7 +18,8 @@ angular.module('listaTareasApp')
 })
 
   .controller('editPropuesta', function($scope,$window,$location,datosPropuesta,TareasResource,$route) {
-      
+      var fileDocumentoProyecto;
+      var fileCartaAval;
          $('#myModal').show();  
 
         var convocatoria = TareasResource.execute.query({Accion: 'S',
@@ -48,76 +49,29 @@ angular.module('listaTareasApp')
               });
         });
      $scope.uploadFileTexto = function (arch) {
- 
-		     var tipo;
-		 	 var replace;
-
-		    if (arch.files[0].size>7500000)
+ 		    
+		    if (arch.files[0].size>2000000)
 		    {
-		      $window.alert("El Archivo debe ser menor a 750 k");
+		      $window.alert("El Archivo debe ser menor a 2 Megas");
 		      return;
 		    }
 
-		     $scope.nombreArchivoTexto = arch.files[0].name;
-
-
-		     tipo = arch.files[0].type.split("\/");
-		    // var fs = require('fs');
-
-		    // fs.createReadStream(arch.value).pipe(fs.createWriteStream('/AppInvestigacion/' + arch.value));
-		     
-		     var reader = new FileReader();
-		        reader.onload = function (e) {
-		            var dato = e.target.result;               		           
-		            $scope.viewDatos[0].PRO_TEXT = dato;                    
-		        }
-		     reader.readAsDataURL(arch.files[0]);        
-
-		    //   var fd = new FormData();
-		    // //Take the first selected file
-		    // fd.append("file", arch.files[0]);
-
-		    //   $http.post('/AppInvestigacion', fd, {
-		    //     withCredentials: true,
-		    //     headers: {'Content-Type': undefined }
-		    // }).success('').error('ffd');
+        fileDocumentoProyecto =arch.files[0];
+		     $scope.nombreDocumentoProyecto = arch.files[0].name;		   
 		    $scope.$apply();
     }
 
-         $scope.uploadFileCarta = function (arch) {
- 
-         var tipo;
-       var replace;
+    $scope.uploadFileCarta = function (arch) {
+      
 
         if (arch.files[0].size>7500000)
         {
-          $window.alert("El Archivo debe ser menor a 750 k");
+          $window.alert("El Archivo debe ser menor a 2 Megas");
           return;
         }
 
-         $scope.nombreArchivoCarta = arch.files[0].name;
-
-
-         tipo = arch.files[0].type.split("\/");
-        // var fs = require('fs');
-
-        // fs.createReadStream(arch.value).pipe(fs.createWriteStream('/AppInvestigacion/' + arch.value));
-         
-         var reader = new FileReader();
-            reader.onload = function (e) {
-                var dato = e.target.result;               
-                $scope.viewDatos[0].PRO_CART_AVAL = dato;                    
-            }
-         reader.readAsDataURL(arch.files[0]);        
-
-        //   var fd = new FormData();
-        // //Take the first selected file
-        // fd.append("file", arch.files[0]);
-
-        //   $http.post('/AppInvestigacion', fd, {
-        //     withCredentials: true,
-        //     headers: {'Content-Type': undefined }
-        // }).success('').error('ffd');
+        fileCartaAval = arch.files[0];
+         $scope.nombreCartaAval = arch.files[0].name;       
         $scope.$apply();
     }
 
@@ -170,7 +124,7 @@ angular.module('listaTareasApp')
              $location.path('/propuesta'); 
           });           
         }         
-        else
+      else
         {
            datos =  {
             Accion: 'U',
@@ -193,16 +147,19 @@ angular.module('listaTareasApp')
 
    } 
 
-      $scope.EliminarTexto = function()
+      $scope.EliminarDocumentoProyecto = function()
       {
         $scope.viewDatos[0].PRO_TEXT ="undefined";
-        $scope.nombreArchivoTexto ="";
+        $scope.nombreDocumentoProyecto ="";
+        fileDocumentoProyecto =undefined;        
+        
       }
 
-      $scope.EliminarCarta = function()
+      $scope.EliminarCartaAval = function()
       {
         $scope.viewDatos[0].PRO_CART_AVAL ="undefined";
-        $scope.nombreArchivoCarta ="";
+        $scope.nombreCartaAval ="";
+        fileCartaAval =undefined;
       }
 
       $scope.DescargarTexto = function()      
@@ -237,88 +194,3 @@ angular.module('listaTareasApp')
 
 
 
-
-
-
-
-//           $scope.save = function(reg){
-
-//          var id = (reg.CON_CODI) ? parseInt(reg.CON_CODI) :0 ;
-//       // $location.path('/sgiConv');
-//       if(id > 0)    
-//       {
-//         // $scope.sql = 'UPDATE "SGI_GRAN_AREA" set  "GAR_NOMB" =@@' + gran.GAR_NOMB + '@@ WHERE "GAR_CODI" =' + gran.GAR_CODI ;
-        
-//          $scope.SQL =  "UPDATE SGI_CONV set  CON_NUME = '" + reg.CON_NUME + "', " + 
-//                          " CON_DESC = '" + reg.CON_DESC + "', CON_TEXT = '" + reg.CON_TEXT +"'," +
-//                          " CON_FECH_INIC='" + reg.CON_FECH_INIC + "'," +
-//                          " CON_FECH_FINA='" + reg.CON_FECH_FINA + "', CON_TIPO_CONV_CODI =" + 
-//                          reg.CON_TIPO_CONV_CODI + " WHERE CON_CODI ="  + reg.CON_CODI ;
-
-//  if(reg.CON_FECH_INIC == '') 
-//     $scope.fechaIni= 'null';
-//   else
-//    $scope.fechaIni=  reg.CON_FECH_INIC; 
-  
-//   if(reg.CON_FECH_FINA == '') 
-//     $scope.fechaFin= 'null';
-//   else
-//    $scope.fechaFin= reg.CON_FECH_FINA ; 
-
-//         $scope.viewDatos2= TareasResource.execute.query({Accion: 'M',
-//                          SQL: "UPDATE SGI_CONV set  CON_NUME = " + reg.CON_NUME + ", " + 
-//                          " CON_DESC='" + reg.CON_DESC + "', CON_TEXT='" + reg.CON_TEXT + "'," +
-//                          " CON_FECH_INIC='" + $scope.fechaIni + "'," +
-//                          " CON_FECH_FINA='" + $scope.fechaFin + "',CON_TIPO_CONV_CODI=" + 
-//                          reg.CON_TIPO_CONV_CODI + " WHERE CON_CODI =" + reg.CON_CODI }); 
-
-       
-
-//       }
-//       else
-//       {       
-
-//        if(reg.CON_FECH_INIC == '' || reg.CON_FECH_INIC==undefined) 
-//     $scope.fechaIni= 'null';
-//   else
-//    $scope.fechaIni= '***' + reg.CON_FECH_INIC + '***'; 
-  
-//   if(reg.CON_FECH_FINA == '' || reg.CON_FECH_FINA==undefined) 
-//     $scope.fechaFin= 'null';
-//   else
-//    $scope.fechaFin= '***' + reg.CON_FECH_FINA + '***'; 
-
-// $scope.SQL =  id + ";SGI_CONV;CON_CODI;INSERT INTO  SGI_CONV " + 
-//                          " (CON_CODI,CON_NUME,CON_DESC,CON_TEXT,CON_FECH_INIC,CON_FECH_FINA,CON_TIPO_CONV_CODI) " + 
-//                          " VALUES (@@," + reg.CON_NUME + ",'" + reg.CON_DESC + "'," +
-//                          " '" + reg.CON_TEXT + "','" + $scope.fechaIni +"','" + $scope.fechaFin + "'," + reg.CON_TIPO_CONV_CODI + ")";
-
-//       $scope.viewDatos2= TareasResource.execute.query({Accion: 'I',
-//                          SQL: id + ';SGI_CONV;CON_CODI;INSERT INTO  "SGI_CONV" ' + 
-//                          ' ("CON_CODI","CON_NUME","CON_DESC","CON_TEXT","CON_FECH_INIC","CON_FECH_FINA","CON_TIPO_CONV_CODI") ' + 
-//                          ' VALUES (@@,' + reg.CON_NUME + ',***'+ reg.CON_DESC + '***,' +
-//                          '***'+ reg.CON_TEXT +'***,'+ $scope.fechaIni +','+ $scope.fechaFin +',' + reg.CON_TIPO_CONV_CODI + ')' }); 
-//       }
-
-
-//       //$location.path('/granarea'); 
-    
-      
-      
-//     }; 
-
-//    $scope.CON_FECH_INIC = new Date();
-//    $scope.CON_FECH_FINA = new Date();
-//   $scope.selectedDateAsNumber = Date.UTC(2014, 10, 22);
-//   // $scope.fromDate = new Date();
-//   // $scope.untilDate = new Date();
-//   $scope.getType = function(key) {
-//     return Object.prototype.toString.call($scope[key]);
-//   };
-
-//   $scope.clearDates = function() {
-//     $scope.selectedDate = null;
-//   };
-
-
- // bepsy ballesteros
