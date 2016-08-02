@@ -100,81 +100,45 @@ angular.module('listaTareasApp')
 
   
                
-     $scope.uploadFileTexto = function (arch) {
- 
-		     var tipo;
-		 	 var replace;
+     $scope.uploadFileTexto = function (arch) { 		        
+		    if (arch.files[0].size>2000000)
+		    {
+		      $window.alert("El Archivo debe ser menor a 2 Megas");
+		      return;
+		    }
 
-       fileText = arch.files[0];
 
-		    // if (arch.files[0].size>7500000)
-		    // {
-		    //   $window.alert("El Archivo debe ser menor a 7 Megas");
-		    //   return;
-		    // }
+        if (arch.files[0].name.length>90)
+        {
+         $window.alert("El nombre del Archivo no debe exceder de 90 caracteres");
+           arch.files[0]=undefined;
+          return; 
+        }
 
 		     $scope.nombreArchivoTexto = arch.files[0].name;
-
-
-		   //  tipo = arch.files[0].type.split("\/");
-		    // var fs = require('fs');
-
-		    // fs.createReadStream(arch.value).pipe(fs.createWriteStream('/AppInvestigacion/' + arch.value));
-		     
-		     // var reader = new FileReader();
-		     //    reader.onload = function (e) {
-		     //        var dato = e.target.result;               		           
-		     //        $scope.viewDatos[0].CON_TEXT = dato;                    
-		     //    }
-		     // reader.readAsDataURL(arch.files[0]);        
-
-		    //   var fd = new FormData();
-		    // //Take the first selected file
-		    // fd.append("file", arch.files[0]);
-
-		    //   $http.post('/AppInvestigacion', fd, {
-		    //     withCredentials: true,
-		    //     headers: {'Content-Type': undefined }
-		    // }).success('').error('ffd');
-		    $scope.$apply();
+         $scope.$apply()
+         fileText = arch.files[0];
     }
 
-         $scope.uploadFileResolucion = function (arch) {
- 
-         var tipo;
-       var replace;
-
-        if (arch.files[0].size>7500000)
+    $scope.uploadFileResolucion = function (arch) {        
+        if (arch.files[0].size>2000000)
         {
-          $window.alert("El Archivo debe ser menor a 7 Megas");
+          $window.alert("El Archivo debe ser menor a 2 Megas");
+
           return;
+        }
+
+        if (arch.files[0].name.length>90)
+        {
+         $window.alert("El nombre del Archivo no debe exceder de 90 caracteres");
+           arch.files[0]=undefined;
+          return; 
         }
 
          $scope.nombreArchivoResolucion = arch.files[0].name;
 
+        $scope.$apply()
          fileReso = arch.files[0];
-
-      //   tipo = arch.files[0].type.split("\/");
-        // var fs = require('fs');
-
-        // fs.createReadStream(arch.value).pipe(fs.createWriteStream('/AppInvestigacion/' + arch.value));
-         
-         // var reader = new FileReader();
-         //    reader.onload = function (e) {
-         //        var dato = e.target.result;               
-         //        $scope.viewDatos[0].CON_RESO = dato;                    
-         //    }
-         // reader.readAsDataURL(arch.files[0]);        
-
-        //   var fd = new FormData();
-        // //Take the first selected file
-        // fd.append("file", arch.files[0]);
-
-        //   $http.post('/AppInvestigacion', fd, {
-        //     withCredentials: true,
-        //     headers: {'Content-Type': undefined }
-        // }).success('').error('ffd');
-        $scope.$apply();
     }
 
      function formatoFecha(fecha) {
@@ -295,86 +259,6 @@ angular.module('listaTareasApp')
                             });                            
 
                        });
-
-
-               //  if ($scope.nombreArchivoTexto=="" || $scope.nombreArchivoTexto==undefined)
-               //  {
-               //        actualizandoTexto = true;
-                     
-               //  }
-                
-               // if (fileText!=undefined)
-               //    {
-
-               //        var fd = new FormData();                        
-               //        fd.append('id',id); 
-               //        fd.append('accion','Eliminar');  
-               //        fd.append('archFileOld',nombreArchivoTexto);                       
-               //        fd.append('tipo',0);
-               //        TareasResource.enviararchivobinario(fd).then(function(result1) {                                                        
-               //              actualizandoTexto =true; 
-               //              fd = new FormData();                        
-               //              fd.append('id',id); 
-               //              fd.append('accion','Ingresar');  
-               //              fd.append('CONTEXTO', fileText); 
-               //              fd.append('archFileOld','');  
-               //              fd.append('tipo','');
-               //              TareasResource.enviararchivobinario(fd).then(function(result1) { 
-               //                  actualizandoTexto = false;
-               //                  $location.path('/convocatoria');  
-
-               //               }); 
-               //         });
-               //    }
-
-               //    if ($scope.nombreArchivoResolucion=="" || $scope.nombreArchivoResolucion==undefined)
-               //    {
-
-               //        actualizandoReso = true;
-               //        fd = new FormData();                        
-               //        fd.append('id',id); 
-               //        fd.append('accion','Eliminar');  
-               //        fd.append('archFileOld',nombreArchivoResolucion);  
-               //        fd.append('tipo',1);
-               //        TareasResource.enviararchivobinario(fd).then(function(result1) { 
-               //           actualizandoTexto = false;
-               //           $location.path('/convocatoria');  
-
-               //         });
-
-               //    }
-                      
-               //   if (fileReso!=undefined)
-               //       {
-
-               //        fd = new FormData();                        
-               //                fd.append('id',id); 
-               //                fd.append('accion','Eliminar');  
-               //                fd.append('archFileOld',nombreArchivoResolucion);  
-               //                fd.append('tipo',1);
-               //                TareasResource.enviararchivobinario(fd).then(function(result1) { 
-               //                     actualizandoReso = true;
-               //                    fd = new FormData();                        
-               //                    fd.append('id',id); 
-               //                    fd.append('accion','Ingresar');  
-               //                    fd.append('CONRESO', fileReso); 
-               //                    fd.append('archFileOld','');  
-               //                    fd.append('tipo','');
-               //                    TareasResource.enviararchivobinario(fd).then(function(result1) {                                                                                 
-               //                            actualizandoReso = false;
-               //                            $location.path('/convocatoria');
-               //                     });
-
-               //                 });
-                    
-               //       }    
-                                     
-                        
-                
-
-           
-
-                
 
             }  
           }

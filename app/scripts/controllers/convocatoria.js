@@ -3,27 +3,37 @@
 .directive('myModalconvocatoria', function() {
        return {
         restrict : 'AE',    
-        controller: [ "$scope","$window",'$http', function($scope,$window,$http) {
+        controller: [ "$scope","$window",'$http','TareasResource', function($scope,$window,$http,TareasResource) {
             $scope.afirmaEliminar = function() {
-                      var Codigo = $('#myModal').data('id').toString();  
-                    $http.post("scripts/services/api.php?url=executeSQL/D/DELETE FROM sgi_conv" +
-                                " WHERE CON_CODI = " + Codigo, $scope.formData)
-                        .success(function(data) {  
+                      var Codigo = $('#myModal').data('id').toString();                       
+                                   
+                     var result= TareasResource.validaExisteRegistro.query({Tabla:"sgi_prop_conv_atri",Campo:"PCAT_CONV_CODI",Valor:Codigo});
+                       result.$promise.then(function(result2){
 
-                        $('#tableconvocatoria').bootstrapTable('remove', {
-                                field: 'CON_CODI',
-                                values: Codigo
-                        });         
-                        $('#tableconvocatoria').bootstrapTable('refresh');   
-                        $('#myModal').modal('hide');
-                       
-                    })
-                        .error(function(data) {
+                         if (result2[0].existe=="false")
+                         {
+
+                           $http.post("scripts/services/api.php?url=executeSQL/D/DELETE FROM sgi_conv" +
+                                " WHERE CON_CODI = " + Codigo, $scope.formData)
+                                .success(function(data) {  
+                                $('#tableconvocatoria').bootstrapTable('remove', {
+                                    field: 'CON_CODI',
+                                    values: Codigo
+                                });         
+                                    $('#tableconvocatoria').bootstrapTable('refresh');   
+                                    $('#myModal').modal('hide');                       
+                                })
+                           .error(function(data) {
                             $('#myModal').modal('hide');
                             alert(data['msg']);                        
-            });  
-                };
-               
+                            });  
+                         }
+                         else
+                         {
+                             alert("No se puede eliminar existe el registro en la tabla propuesta Convocatoria Atributo");  
+                         }
+                       });
+                };               
             }],
 
         template : '<div class="modal fade" id="myModal"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">' + 

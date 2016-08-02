@@ -64,7 +64,7 @@ angular.module('listaTareasApp')
     $scope.uploadFileCarta = function (arch) {
       
 
-        if (arch.files[0].size>7500000)
+        if (arch.files[0].size>2000000)
         {
           $window.alert("El Archivo debe ser menor a 2 Megas");
           return;
