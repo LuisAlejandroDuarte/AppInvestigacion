@@ -39,25 +39,53 @@ $tipos = array
 			 $arch =explode("@", $archFileOld);
 			// $borrado = explode("*", $arch);
 			 $result="";
-			 foreach ($t as $key => $value) {
+			 if ($t[0]=="CONTEXTO")
+			 {
 
-			 	if ($_FILES[$value])	
-			 	{			 		
-			 		$archivo = new GestionArchivo($_FILES[$value],$key, $id,$arch[$key*2]);
-	 	    		$archivo->deleteFile();
-	 	    		$archivo->copyFile();
+				 foreach ($t as $key => $value) {
 
-			 	}			 				 
-			 	else
-			 	{			 		
-			 		if ($arch[(2*$key)+1]=="")
-			 		{
-			 			$archivo = new GestionArchivo(null,$key, $id,$arch[$key*2]);
-	 	    			$archivo->deleteFile();	 
+				 	if ($_FILES[$value])	
+				 	{			 		
+				 		$archivo = new GestionArchivo($_FILES[$value],$key, $id,$arch[$key*2]);
+		 	    		$archivo->deleteFile();
+		 	    		$archivo->copyFile();
 
-			 		}			 		    		
-			 	}
-			 }			 			 
+				 	}			 				 
+				 	else
+				 	{			 		
+				 		if ($arch[(2*$key)+1]=="")
+				 		{
+				 			$archivo = new GestionArchivo(null,$key, $id,$arch[$key*2]);
+		 	    			$archivo->deleteFile();	 
+
+				 		}			 		    		
+				 	}
+				 }			
+			 }
+			 else
+
+			 {
+			 		foreach ($t as $key => $value) {
+
+				 	if ($_FILES[$value])	
+				 	{			 		
+				 		$archivo = new GestionArchivo($_FILES[$value],$key+2, $id,$arch[$key*2]);
+		 	    		$archivo->deleteFile();
+		 	    		$archivo->copyFile();
+
+				 	}			 				 
+				 	else
+				 	{			 		
+				 		if ($arch[(2*$key)+1]=="")
+				 		{
+				 			$archivo = new GestionArchivo(null,$key+2, $id,$arch[$key*2]);
+		 	    			$archivo->deleteFile();	 
+
+				 		}			 		    		
+				 	}
+				 }
+			 }
+
 	}
 	 	
 ?>

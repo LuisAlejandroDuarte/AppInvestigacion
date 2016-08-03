@@ -79,7 +79,7 @@
  .controller('ControladorPropuesta', ['$scope','$window', function($scope,$window) {
          $scope.options = {           
             method: 'post',
-            url: 'scripts/services/api.php?url=executeSQL/S/SELECT P.PRO_CODI,P.PRO_NOMB,C.CON_DESC,P.PRO_TEXT,P.PRO_CART_AVAL  ' + 
+            url: 'scripts/services/api.php?url=executeSQL/S/SELECT P.PRO_CODI,P.PRO_NOMB,C.CON_DESC,P.PRO_TEXT,P.PRO_TEXT_NOMB,P.PRO_CART_AVAL,P.PRO_CART_NOMB  ' + 
                     ' FROM sgi_prop AS P INNER JOIN sgi_conv AS C ON C.CON_CODI=P.PRO_CONV_CODI ',
           
  				cache: false,
@@ -114,10 +114,12 @@
                 valign: 'middle',
                 width: 40,                
                  formatter: function(value, row, index) {
-                    if (value!="undefined" )
+                    if (value!=null )
                     {
-                        return '<a class="ver ml10 btn btn-default btn-xs" title="Ver Documento"><span class="glyphicon glyphicon-eye-open"></span></a>';
+                        return '<a href="http://' + value + '" target=_blank class="ver ml10 btn btn-default btn-xs" title="Ver Documento"><span class="glyphicon glyphicon-eye-open"></span></a>';
                     }
+                     else
+                       return "N/A";
                    
                  },
                  events:  window.operateEvents = {
@@ -132,10 +134,12 @@
                 valign: 'middle',
                 width: 40,                
                  formatter: function(value, row, index) {
-                    if (value!="undefined")
+                    if (value!=null)
                     {
-                        return '<a class="ver ml10 btn btn-default btn-xs" title="Ver Documento"><span class="glyphicon glyphicon-eye-open"></span></a>';
+                        return '<a href="http://' + value + '" target=_blank class="ver ml10 btn btn-default btn-xs" title="Ver Documento"><span class="glyphicon glyphicon-eye-open"></span></a>';
                     }
+                     else
+                        return "N/A";
                    
                  },
                  events:  window.operateEvents = {
