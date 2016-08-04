@@ -124,7 +124,7 @@
                  },
                  events:  window.operateEvents = {
                     'click  .ver':function (e, value, row, index) {
-                                 $window.open(row.PRO_TEXT);  
+                                
                              }
                          }
             },{
@@ -144,7 +144,7 @@
                  },
                  events:  window.operateEvents = {
                     'click  .ver':function (e, value, row, index) {
-                                 $window.open(row.PRO_CART_AVAL);  
+                               
                              }
                          }
             },{

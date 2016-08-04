@@ -79,10 +79,10 @@
 
 
 
- .controller('Controladoratributo', ['$scope','$window', function($scope,$window) {
+ .controller('Controladoratributo', ['$scope','$window','TareasResource', function($scope,$window,TareasResource) {
          $scope.options = {           
             method: 'post',
-            url: 'scripts/services/api.php?url=executeSQL/S/SELECT ATR_CODI,ATR_DESC FROM sgi_atrib',            
+            url: 'scripts/services/api.php?url=executeSQL/S/',            
           
  				cache: false,
                 height: 500,
@@ -130,7 +130,18 @@
 
             }]
         };
-        $('#tableatributo').bootstrapTable('load','scripts/services/api.php?url=executeSQL/S/SELECT ATR_CODI,ATR_DESC FROM sgi_atrib');    
+
+      var dat ={
+            Accion:'S',
+            SQL:'SELECT ATR_CODI,ATR_DESC FROM sgi_atrib'
+        }
+
+        var datos = TareasResource.SQL(dat);
+            datos.then(function(result){
+                $('#tableatributo').bootstrapTable('load',result.data);
+            });
+
+        //$('#tableatributo').bootstrapTable('load','scripts/services/api.php?url=executeSQL/S/SELECT ATR_CODI,ATR_DESC FROM sgi_atrib');    
 
     }])
 

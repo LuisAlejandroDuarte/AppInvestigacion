@@ -33,10 +33,15 @@ angular.module('listaTareasApp')
           
       if(id == 0)    
       {
-        $scope.viewDatos2= TareasResource.execute.query({Accion: 'I',
-                         SQL: 1 + ";INSERT INTO  sgi_atrib (ATR_DESC) " + 
+        var consulta = TareasResource.SQL({Accion: 'I',
+                         SQL: "INSERT INTO  sgi_atrib (ATR_DESC) " + 
                          " VALUES ('" + atributo.ATR_DESC + "')"}); 
-          $location.path('/atributo');
+          consulta.then(function(result){
+              $location.path('/atributo');
+          });
+
+
+          
         
       }
       else
