@@ -3,27 +3,36 @@
 .directive('myModalatributo', function() {
        return {
         restrict : 'AE',    
-        controller: [ "$scope","$window",'$http', function($scope,$window,$http) {
+        controller: [ "$scope","$window",'$http','TareasResource', function($scope,$window,$http,TareasResource) {
             $scope.afirmaEliminar = function() {
-                      var Codigo =parseInt($('#myModal').data('id').toString());  
-                    $http.post("scripts/services/api.php?url=executeSQL/D/DELETE FROM sgi_atrib" +
-                                " WHERE ATR_CODI = " + Codigo, $scope.formData)
-                        .success(function(data) {  
+                      var Codigo =parseInt($('#myModal').data('id').toString());
 
-                        $('#tableatributo').bootstrapTable('remove', {
-                                field: 'ATR_CODI',
-                                values: Codigo
-                        });     
+                       var result= TareasResource.validaExisteRegistro.query({Tabla:"sgi_prop_atrib",Campo:"PATR_ATRI_CODI",Valor:Codigo});
+                       result.$promise.then(function(result2){
 
-                         $('#tableatributo').bootstrapTable('refresh');     
+                         if (result2[0].existe=="false")
+                         {
+                            var datos ={
+                                Accion:'D',
+                                SQL:'DELETE FROM sgi_atrib where ATR_CODI=' + Codigo
+                            }
 
-                        $('#myModal').modal('hide');
-                       
-                    })
-                        .error(function(data) {
-                            $('#myModal').modal('hide');
-                            alert(data['msg']);                        
-            });  
+                            var borrar =TareasResource.SQL(datos);
+                                borrar.then(function(res){
+                             var dat ={
+                                        Accion:'S',
+                                        SQL:'SELECT ATR_CODI,ATR_DESC FROM sgi_atrib'
+                                    }
+
+                                    datos = TareasResource.SQL(dat);
+                                        datos.then(function(result){
+                                            $('#tableatributo').bootstrapTable('load',result.data);
+                                        });
+                                
+                                    $('#myModal').modal('hide');
+                                });
+                         }
+                     });  
                 };
                
             }],
@@ -82,7 +91,7 @@
  .controller('Controladoratributo', ['$scope','$window','TareasResource', function($scope,$window,TareasResource) {
          $scope.options = {           
             method: 'post',
-            url: 'scripts/services/api.php?url=executeSQL/S/',            
+            url: 'scripts/services/api.php?url=executeSQL/S/SELECT ATR_CODI,ATR_DESC FROM sgi_atrib',            
           
  				cache: false,
                 height: 500,
@@ -131,16 +140,15 @@
             }]
         };
 
-      var dat ={
-            Accion:'S',
-            SQL:'SELECT ATR_CODI,ATR_DESC FROM sgi_atrib'
-        }
+      // var dat ={
+      //                                   Accion:'S',
+      //                                   SQL:'SELECT ATR_CODI,ATR_DESC FROM sgi_atrib'
+      //                               }
 
-        var datos = TareasResource.SQL(dat);
-            datos.then(function(result){
-                $('#tableatributo').bootstrapTable('load',result.data);
-            });
-
+      //                               var datos = TareasResource.SQL(dat);
+      //                                   datos.then(function(result){
+      //                                       $('#tableatributo').bootstrapTable('load',result.data);
+      //                                   });
         //$('#tableatributo').bootstrapTable('load','scripts/services/api.php?url=executeSQL/S/SELECT ATR_CODI,ATR_DESC FROM sgi_atrib');    
 
     }])

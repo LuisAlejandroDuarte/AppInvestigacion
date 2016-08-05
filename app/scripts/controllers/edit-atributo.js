@@ -47,10 +47,14 @@ angular.module('listaTareasApp')
       else
       {       
         
-          $scope.viewDatos2= TareasResource.execute.query({Accion: 'M',
+          var actualizar= TareasResource.SQL({Accion: 'U',
                           SQL: "UPDATE sgi_atrib set  ATR_DESC = '" + atributo.ATR_DESC + "' " + 
                          " WHERE ATR_CODI =" + atributo.ATR_CODI }); 
-          $location.path('/atributo');
+
+          actualizar.then(function(result){
+              $location.path('/atributo');
+          });
+          
       }
 
 
