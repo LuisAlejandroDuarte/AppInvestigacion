@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('listaTareasApp')
-  .controller('ApCtrl', function ($scope, $cookieStore, $location) {
+  .controller('ApCtrl', function ($scope, $cookieStore, $location,$window) {
     $scope.usrConectado = {nombre: "", puesto: '', estaConectado: ''};
 
     var usr = $cookieStore.get('usuario');
@@ -18,6 +18,8 @@ angular.module('listaTareasApp')
       $cookieStore.remove('estaConectado');
       $cookieStore.remove('usuario');
        
+      $window.sessionStorage.setItem('usuario',null);
+
       $location.path('/inicio');
     };
 

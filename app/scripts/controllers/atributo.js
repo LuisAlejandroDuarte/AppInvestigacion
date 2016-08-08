@@ -19,6 +19,13 @@
 
                             var borrar =TareasResource.SQL(datos);
                                 borrar.then(function(res){
+
+                                 $('#tableatributo').bootstrapTable('remove', {
+                                    field: 'ATR_CODI',
+                                    values: Codigo
+                                });         
+                                 $('#tableatributo').bootstrapTable('refresh');         
+
                              var dat ={
                                         Accion:'S',
                                         SQL:'SELECT ATR_CODI,ATR_DESC FROM sgi_atrib'
@@ -26,7 +33,11 @@
 
                                     datos = TareasResource.SQL(dat);
                                         datos.then(function(result){
+                                            if (result.data[0]!=null)
+                                            {
                                             $('#tableatributo').bootstrapTable('load',result.data);
+                                            }
+
                                         });
                                 
                                     $('#myModal').modal('hide');

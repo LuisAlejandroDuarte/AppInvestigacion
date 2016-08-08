@@ -85,7 +85,7 @@ var idInve="";
                          ' ZONA,E.esc_nomb AS Escuela,P.pac_nomb AS Programa ' +
                          ' from sgi_inve AS I INNER JOIN sgi_cent AS C ON I.inv_cent_codi = C.cen_codi INNER JOIN sgi_zona AS Z ON ' +
                          ' Z.zon_codi=C.cen_zona_codi INNER JOIN sgi_prog_acad As P ON P.pac_codi = I.inv_prog_acad_codi INNER JOIN ' +
-                         ' sgi_escu AS E ON E.esc_codi = P.pac_escu_codi WHERE I.inv_codi=' +  user[0].Id_inve }); 
+                         ' sgi_escu AS E ON E.esc_codi = P.pac_escu_codi WHERE I.inv_codi=' +  user.Id_inve }); 
 
                             $scope.area =TareasResource.execute.query({Accion:'S',SQL:'SELECT ARE_CODI,ARE_NOMB from sgi_area'});
                             $scope.area.$promise.then(function(result){  

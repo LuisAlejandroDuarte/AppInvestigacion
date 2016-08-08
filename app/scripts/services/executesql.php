@@ -16,13 +16,17 @@
             $resultArray = array(); 
       	$resultado = mysqli_query($conexion,$SQL);
             if (mysqli_num_rows($resultado)==0 )               
-                 $resultArray[] = null;
+            {
+                  $resultArray[]= mysqli_fetch_assoc($resultado);                                                            
+            }
+
            else
+           {
               while ($tuple= mysqli_fetch_assoc($resultado)) {                        
                         $resultArray[] = $tuple;         
-                     }  
-
-             echo json_encode($resultArray);                                
+                     }               
+           }
+           echo json_encode($resultArray);                                
                           
        }
 

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('listaTareasApp')
-  .controller('InicioCtrl',['$scope','$modal','$document', '$q', 'TareasResource', '$log', '$cookieStore', '$location', function ($scope,$modal,$document, $q, TareasResource, $log, $cookieStore, $location) {
+  .controller('InicioCtrl',['$scope','$modal','$document', '$q', 'TareasResource', '$log', '$cookieStore', '$location','$window', function ($scope,$modal,$document, $q, TareasResource, $log, $cookieStore, $location,$window) {
    
     // $scope.iniciarSesion = function() {
     //   // var usr = TareasResource.iniciar.sesion({nombreUsuario: $scope.usuario.nombreUsuario, clave: $scope.usuario.clave})
@@ -32,6 +32,7 @@ angular.module('listaTareasApp')
 
          $cookieStore.put('estaConectado', true);
          $cookieStore.put('usuario', usr);
+         $window.sessionStorage.setItem('usuario', JSON.stringify(usr[0]));
 
          if ($scope.seleccionado=="2")
          {

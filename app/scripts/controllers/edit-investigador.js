@@ -35,6 +35,20 @@ angular.module('listaTareasApp')
     var oldIdentificacion;
     var strmd5;
 
+    var user = JSON.parse($window.sessionStorage.getItem('usuario'));
+
+    if (user==null || user==undefined)
+    {
+
+      $location.path('/inicio');
+      return;
+      }
+
+    $scope.settingsPanel ={
+             width: 900,
+             height: 200,
+             autoUpdate:true
+        };
   $scope.pass ={
     strPass:'',
     strRePass:''
@@ -148,6 +162,20 @@ angular.module('listaTareasApp')
                 'P.PRO_CODI=PI.id_proy WHERE  PI.id_inve=' + datos[0].INV_CODI });     
 
               $scope.viewDatos = datosInvestigador;  
+
+                     var day;
+                     var mounth;
+                     var year;
+                     var fechaStr;
+
+                     day = moment(datosInvestigador[0].INV_FECH_NACI).format("D");
+                     mounth = moment(datosInvestigador[0].INV_FECH_NACI).format("M");
+                     year = moment(datosInvestigador[0].INV_FECH_NACI).format("YYYY");
+
+                     fechaStr = year + "," + mounth + "," + day;
+
+                     $scope.viewDatos[0].INV_FECH_NACI =new Date(fechaStr);
+
               oldUser = datos[0].INV_USER; 
               oldIdentificacion = datos[0].INV_IDEN;                           
       });
@@ -569,10 +597,19 @@ angular.module('listaTareasApp')
                          SQL: 'SELECT NIV_CODI,NIV_NOMB FROM sgi_nive_form'}); 
 
       
+       var items ={
+        Accion:"S",
+        SQL: 'SELECT G.gru_codi,G.gru_nomb FROM sgi_grup AS G INNER JOIN sgi_inve_grup AS IG ON IG.IGR_GRUP_CODI=G.gru_codi WHERE '+
+                         " IG.IGR_INVE_IDEN=" + user.Id_inve
+       }
 
+      var  grupo = TareasResource.SQL(items); 
+        $scope.grupo =[];
+      grupo.then(function(result2){
+        if (result2.data[0]!=null)
+          $scope.grupo = result2.data;
+      });
 
-        $scope.grupo = TareasResource.execute.query({Accion: 'S',
-                         SQL: 'SELECT gru_codi,gru_nomb FROM sgi_grup'}); 
 
        var informacionacademica =TareasResource.execute.query({Accion: "S",
                          SQL: "SELECT NIN_NIV_CODI AS Codi,NIN_TITU_OBTE AS titulo,NIN_INST As Instituto, " +
@@ -583,6 +620,7 @@ angular.module('listaTareasApp')
         //                  SQL: "SELECT * from sgi_inve where inv_iden=0"});
 
       var tieneDatos = false;
+      $scope.informacionacademica =[];  
         informacionacademica.$promise.then(function(result2){
           angular.forEach(result2, function(value, key){
             if (value.Agno==undefined)
@@ -593,8 +631,14 @@ angular.module('listaTareasApp')
               tieneDatos =true;
                         
           });
+          var idConsecutivo=0;
           if (tieneDatos==true)
-                $scope.informacionacademica = result2;           
+
+               angular.forEach(result2,function(item){
+                  $scope.informacionacademica.splice(0,0,{Consecutivo:idConsecutivo,Nombre:item.Nombre,Sel:false,Codi:item.Codi, titulo:item.titulo,Instituto:item.Instituto,Agno:item.Agno});                                        
+                  idConsecutivo = idConsecutivo+1;
+               });                                
+
         });
         
 
@@ -897,23 +941,29 @@ $scope.onChangedGrupProducto = function(idGrupo,idLinea){
       $scope.agregarformacion = function(titu,tituloformacion,institucion,Agno,myformacion) {
         var existe =false;
 
-        if (tituloformacion==undefined || tituloformacion=="")
+        if (myformacion==undefined || myformacion=="")
+        {
+         $window.alert("Falta Nivel de Formación");          
+          return; 
+        }
+
+        if ($('#tituloformacion').val()=="")
         {
           $window.alert("Falta título formación");
           $('#tituloformacion').focus();
           return;
         }
 
-        if (institucion==undefined || institucion=="")
+        if ($('#institucion').val()=="")
         {
           $window.alert("Falta Institución");
           $('#institucion').focus();
           return;
         }
 
-        if (Agno==undefined || Agno=="")
+        if ($('#Agno').val()=="" ||  parseInt($('#Agno').val())<0 )
         {
-          $window.alert("Falta Año");
+          $window.alert("Falta Año debe ser mayor que cero");
           $('#Agno').focus();
           return;
         }
@@ -921,42 +971,60 @@ $scope.onChangedGrupProducto = function(idGrupo,idLinea){
         var datosformacion = TareasResource.execute.query({Accion: 'S',
                          SQL:"SELECT niv_codi,niv_nomb FROM sgi_nive_form WHERE niv_codi=" + myformacion.NIV_CODI + ""}); 
 
-          $scope.datoformacion = datosformacion;
 
-          angular.forEach($scope.informacionacademica,function(item){
+          datosformacion.$promise.then(function (result) { 
+
+              angular.forEach($scope.informacionacademica,function(item){
               if (myformacion.NIV_NOMB!="PROFESIONAL")
-              {
-               if (item.Codi==myformacion.NIV_CODI)
                 {
-                  existe = true;
+                 if (item.Codi==myformacion.NIV_CODI)
+                  {
+                    existe = true;
+                  }
                 }
-              }
+                else
+                {
+
+                }
+
+
+               });
+
+               if (existe==true)
+                  {
+                     $window.alert("El nivel de Formación " + myformacion.NIV_NOMB + " ya está Incluido");
+                  }
+                  else
+                  {
+                   $scope.informacionacademica.splice(0,0,{Consecutivo:$scope.informacionacademica.length, Nombre:result[0].niv_nomb + ' ' + tituloformacion + ' ' + institucion + ' ' + Agno,Sel:false,Codi:myformacion.NIV_CODI, titulo:tituloformacion,Instituto:institucion,Agno:Agno});                      
+                   $('#tituloformacion').val("");
+                   $('#institucion').val("");
+                   $('#Agno').val("");
+
+                  }
 
           });
 
-          if (existe==true)
-          {
-             $window.alert("El nivel de Formación " + myformacion.NIV_NOMB + " ya está Incluido");
-          }
-          else
-          {
-              $scope.datoformacion.$promise.then(function (result) {          
-              $scope.informacionacademica.splice(0,0,{Nombre:result[0].niv_nomb + ' ' + tituloformacion + ' ' + institucion + ' ' + Agno,Sel:false,Codi:myformacion.NIV_CODI, titulo:tituloformacion,Instituto:institucion,Agno:Agno});    
-              });
-          }
+       
+
+        
+
+         
           // var numero = Enumerable.From(informacionacademica)
           //   .Where("p => p.Codi ==" + myformacion.NIV_CODI).Select();               
       };
 
 
-      $scope.delformacion = function() {
-        for(var i=0;i<$scope.informacionacademica.length;i++)
-        {
-          if ($scope.informacionacademica[i].Sel==true)
-          {
-            $scope.informacionacademica.splice(i,1);
-          }
-        }
+      $scope.delformacion = function(formacion) {
+        var idConsecutivo =0;
+        var datos=[];
+        $scope.informacionacademica.splice(formacion.$index,1);
+
+        angular.forEach($scope.informacionacademica,function(item){
+                datos.splice(0,0,{Consecutivo:idConsecutivo,Nombre:item.Nombre,Sel:false,Codi:item.Codi, titulo:item.titulo,Instituto:item.Instituto,Agno:item.Agno});                                        
+                idConsecutivo = idConsecutivo+1;
+             });    
+        $scope.informacionacademica = datos;       
       };
 
 $scope.delGrupoInvestigacion = function() {
@@ -998,6 +1066,26 @@ $scope.OnClicEliminaProductoProyecto = function(){
 
 $scope.agregargrupoinvestigacion =  function(idgrupo,idlinea,fechaini,fechaterm)
 {
+
+  if (idgrupo==undefined)
+  {
+    $window.alert("Falta seleccionar el grupo");
+    return;
+  }
+
+  if (idlinea==undefined)
+  {
+   $window.alert("Falta seleccionar línea");
+    return; 
+  }
+
+if ($('#idFechaInicioGrupo').val()=="")
+  {
+   $window.alert("Falta seleccionar Fecha Inicio");
+    return; 
+  }
+
+
  var valido =true;
  var grupoexiste =false;
  var fechainiValue;
@@ -1025,41 +1113,51 @@ $scope.datagrupo.$promise.then(function (resultgrupo) {
 
       $scope.datalinea = datoslinea;
       $scope.datalinea.$promise.then(function (resultlinea) {
+           fechaini = moment(fechaini,"YYYY-MM-DD").format("YYYY-MM-DD");  
 
-          fechaini = new Date(fechaini);
-          fechainiValue = fechaini.valueOf();
-          fechaini = fechaini.getFullYear() + '-' + parseInt(fechaini.getMonth()+1) + '-' + fechaini.getDate();
+          //  var day = moment(fechaini).format("D");
+          //  var mounth = moment(fechaini).format("M");
+          //  var year = moment(fechaini).format("YYYY");
 
-          fechaterm = new Date(fechaterm);
-          fechafinValue = fechaterm.valueOf();
-          fechaterm = fechaterm.getFullYear() + '-' + parseInt(fechaterm.getMonth()+1) + '-' + fechaterm.getDate();
+        
+          // fechaini = year + '-' + mounth + '-' + day;
 
-          angular.forEach($scope.grupoinvestigacion,function (item){
 
-             item.FechaInicio = new Date(item.FechaInicio + 'GMT-0500');
-             FechainiValue = item.FechaInicio.valueOf();
 
-             item.FechaTermina = new Date( item.FechaTermina + 'GMT-0500');
-             FechafinValue = item.FechaTermina.valueOf();
-           if (grupoexiste==true)
-           {  
-            if ((fechainiValue>=FechainiValue && fechainiValue<=FechafinValue) || (fechafinValue>=FechainiValue && fechafinValue<=FechafinValue))
-            {
 
-              $window.alert('La fecha está dentro de alguna fecha ya seleccionada');
-              valido = false;
-              return forEach.break(); 
-            }
+          if ($('#idFechaFinGrupo').val()=="")          
+            fechaterm="";                      
+          else
+          {
+              fechaterm = moment(fechaterm,"YYYY-MM-DD").format("YYYY-MM-DD");             
+          }
 
-            if (fechainiValue<=FechainiValue && fechafinValue>=FechafinValue)
-            {
-               $window.alert('La fecha está dentro de alguna fecha ya seleccionada');
-               valido = false;
-               return forEach.break(); 
-            }
+          // angular.forEach($scope.grupoinvestigacion,function (item){
 
-           }
-          });
+          //    item.FechaInicio = new Date(item.FechaInicio + 'GMT-0500');
+          //    FechainiValue = item.FechaInicio.valueOf();
+
+          //    item.FechaTermina = new Date( item.FechaTermina + 'GMT-0500');
+          //    FechafinValue = item.FechaTermina.valueOf();
+          //  if (grupoexiste==true)
+          //  {  
+          //   if ((fechainiValue>=FechainiValue && fechainiValue<=FechafinValue) || (fechafinValue>=FechainiValue && fechafinValue<=FechafinValue))
+          //   {
+
+          //     $window.alert('La fecha está dentro de alguna fecha ya seleccionada');
+          //     valido = false;
+          //     return forEach.break(); 
+          //   }
+
+          //   if (fechainiValue<=FechainiValue && fechafinValue>=FechafinValue)
+          //   {
+          //      $window.alert('La fecha está dentro de alguna fecha ya seleccionada');
+          //      valido = false;
+          //      return forEach.break(); 
+          //   }
+
+          //  }
+          // });
        
 
           if (valido==true)
@@ -1070,11 +1168,13 @@ $scope.datagrupo.$promise.then(function (resultgrupo) {
                   FechaInicio:fechaini,FechaTermina:fechaterm,Sel:false});
             $scope.grupoProyecto.push({Id:resultgrupo[0].gru_codi,Nombre:resultgrupo[0].gru_nomb});
           }
+
+          $('#idFechaInicioGrupo').val("");
+          $('#idFechaFinGrupo').val("");
       });    
 });
 
- $('#idFechaInicioGrupo').val("");
- $('#idFechaFinGrupo').val("");
+ 
 
 
 
@@ -1239,17 +1339,24 @@ function actualizarTablasRelacionadas(id){
                                if ($scope.grupoinvestigacion[i].Sel=="false" || $scope.grupoinvestigacion[i].Sel==false)
                                  {
                                      
-                                      fechaini = new Date($scope.grupoinvestigacion[i].FechaInicio);                                      
-                                      fechaini = fechaini.getFullYear() + '-' + parseInt(fechaini.getMonth()+1) + '-' + fechaini.getDate();
+                                      fechaini = moment($scope.grupoinvestigacion[i].FechaInicio).format("YYYY-MM-DD");                                      
+                                      // fechaini = fechaini.getFullYear() + '-' + parseInt(fechaini.getMonth()+1) + '-' + fechaini.getDate();
                                       fechafin = new Date($scope.grupoinvestigacion[i].FechaTermina);                                      
-                                      fechafin = fechafin.getFullYear() + '-' + parseInt(fechafin.getMonth()+1) + '-' + fechafin.getDate();
+                                      // fechafin = fechafin.getFullYear() + '-' + parseInt(fechafin.getMonth()+1) + '-' + fechafin.getDate();
+
+                                      var fecha_fin='NULL';
+
+                                      if ($scope.grupoinvestigacion[i].FechaTermina!="")
+                                      {
+                                           fecha_fin ="'" + moment($scope.grupoinvestigacion[i].FechaTermina).format("YYYY-MM-DD") + "'";                                                                                
+                                      }
 
 
                                       executeSql= TareasResource.execute.query({Accion: "I",SQL:"1;INSERT INTO sgi_inve_grup " +
                                       " (IGR_GRUP_CODI,igr_line_inve_codi,IGR_FECH_INIC,IGR_FECH_TERM,IGR_INVE_IDEN,IGR_TIPO_VINC_CODI,igr_regi_ingr) " +
                                       " VALUES (" + $scope.grupoinvestigacion[i].IdGrupo + "," + $scope.grupoinvestigacion[i].IdLinea + ",'" + 
-                                       fechaini + "','" + 
-                                       fechafin + "'," + id + ",1,0)"});                        
+                                       fechaini + "'," + 
+                                       fecha_fin + "," + id + ",1,0)"});                        
                                  }                                  
 
                             }
@@ -1415,7 +1522,7 @@ var validaIdentificacion = TareasResource.validaExisteRegistro.query({Tabla:'sgi
                          " INV_NOMB='" + investigador.INV_NOMB + "', " + 
                          " inv_foto= '" + investigador.inv_foto + "', " + 
                          " INV_APEL='" + investigador.INV_APEL + "', " +
-                         " INV_FECH_NACI='" + investigador.INV_FECH_NACI + "', " +
+                         " INV_FECH_NACI='" + moment(new Date(investigador.INV_FECH_NACI)).format('YYYY-MM-DD')  + "', " +
                          " INV_MAIL='" + investigador.INV_MAIL + "'," +
                          " INV_TELE_CELU='" + investigador.INV_TELE_CELU  + "', " +                         
                          " INV_LINK_CVLA  = '" +  investigador.INV_LINK_CVLA  + "', " +
@@ -1465,7 +1572,7 @@ var validaIdentificacion = TareasResource.validaExisteRegistro.query({Tabla:'sgi
         SQL: id + ";sgi_inve;INV_CODI;INSERT INTO  sgi_inve (INV_CODI,INV_IDEN,INV_TIPO_DOCU_CODI, " +
         " INV_NOMB,INV_APEL,INV_FECH_NACI,INV_MAIL,INV_TELE_CELU,inv_foto,INV_CENT_CODI,INV_PROG_ACAD_CODI,INV_LINK_CVLA,INV_USER,INV_PASS) " + 
         " VALUES (@@,'" + investigador.INV_IDEN + "'," + investigador.INV_TIPO_DOCU_CODI + ",'" + 
-        investigador.INV_NOMB + "','" + investigador.INV_APEL + "','" + investigador.INV_FECH_NACI + "','" + 
+        investigador.INV_NOMB + "','" + investigador.INV_APEL + "','" + moment(new Date(investigador.INV_FECH_NACI)).format('YYYY-MM-DD')  + "','" + 
         investigador.INV_MAIL + "','" + investigador.INV_TELE_CELU  + "','" + investigador.inv_foto + "'," +
         investigador.INV_CENT_CODI + "," +  investigador.INV_PROG_ACAD_CODI + ",'"+ investigador.INV_LINK_CVLA + "','" + investigador.INV_USER + "','" + strmd5 + "')"
       };       
