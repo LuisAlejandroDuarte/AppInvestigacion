@@ -68,18 +68,21 @@
   </div> 
 </div>
 </form>
-  <div class="row" style="margin-top:5px">
- <div class="col-md-offset-8" >
-<div style="margin-right:20px; text-align:right">
-        <button  ng-click= "save(viewDatos[0])"  ng-disabled="myForm.$invalid"              
+  <div class="row container-fluid"> 
+       <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">   
+        <div class="form-group">
+          <button  ng-click= "save(viewDatos[0])"  ng-disabled="myForm.$invalid"              
                 class="btn btn-primary">{{buttonText}}</button>
-              
-                
-
-  <button  ng-click= "volver()"               
+                 <button  ng-click= "volver()"               
                 class="btn btn-primary">Cancelar</button>
+       </div>
+        </div>
+             
+       <div class="col-lg-1 col-md-1 col-xs-3 col-sm-3">   
+           
                 </div>
-</div>                
+       </div>
+               
       
 </div>
 </div>

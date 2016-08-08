@@ -1,5 +1,5 @@
 <hr>
-
+<mostrariconoespera></mostrariconoespera>
 <div class="margenTop">
 <div class="panel panel-primary  drop-shadow" style="width:100%;height:auto;  margin-left:2%; margin-top:2%">
 
@@ -669,7 +669,7 @@
 
            <div class="form-group" ng-class="{'has-error': datepickerForm.date.$invalid}">
 
-   <input type="text" class="form-control" ng-model="fechaInicioSemillero" data-date-format="dd-MMMM-yyyy" date-type="iso" data-max-date="{{fechaHoy}}"  data-autoclose="1" name="date2" bs-datepicker>
+   <input type="text" class="form-control" ng-model="fechaInicioSemillero" data-date-format="dd-MMMM-yyyy" date-type="iso" data-max-date="{{fechaFinalSemillero}}"  data-autoclose="1" name="date2" bs-datepicker>
 
   
 
@@ -683,7 +683,7 @@
 
            <div class="form-group" ng-class="{'has-error': datepickerForm.date.$invalid}">
 
-   <input type="text" class="form-control" ng-model="fechaFinalSemillero" data-date-format="dd-MMMM-yyyy" date-type="iso" data-min-date="{{fechaInicioSemillero}}" data-max-date="{{fechaHoy}}" data-autoclose="1" name="date2" bs-datepicker>
+   <input type="text" id ="idfechaFinalSemillero" class="form-control" ng-model="fechaFinalSemillero" data-date-format="dd-MMMM-yyyy" date-type="iso" data-min-date="{{fechaInicioSemillero}}"  data-autoclose="1" name="date2" bs-datepicker>
 
   
 

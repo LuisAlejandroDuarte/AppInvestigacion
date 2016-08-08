@@ -152,6 +152,7 @@ angular.module('listaTareasApp')
                 }
             }]
         };    
+         $('#myModal').show();  
         datosInvestigador.$promise.then(function(datos){      
                 id_inve = datos[0].INV_CODI;
                $scope.hideTable=false;  
@@ -160,7 +161,7 @@ angular.module('listaTareasApp')
               { url:'scripts/services/api.php?url=executeSQL/S/SELECT PI.id_grupo,PI.id_tipoInvestigador,PI.id_convocatoria,PI.id_linea,' +
                 'P.PRO_CODI, P.PRO_NOMB, P.PRO_FINA,PI.fecha_ini,PI.fecha_ter FROM sgi_proy_inve AS PI INNER JOIN sgi_inve AS I ON I.INV_CODI =PI.id_inve INNER JOIN sgi_proy AS P ON  ' + 
                 'P.PRO_CODI=PI.id_proy WHERE  PI.id_inve=' + datos[0].INV_CODI });     
-
+             $('#myModal').hide();    
               $scope.viewDatos = datosInvestigador;  
 
                      var day;
@@ -177,7 +178,8 @@ angular.module('listaTareasApp')
                      $scope.viewDatos[0].INV_FECH_NACI =new Date(fechaStr);
 
               oldUser = datos[0].INV_USER; 
-              oldIdentificacion = datos[0].INV_IDEN;                           
+              oldIdentificacion = datos[0].INV_IDEN;  
+
       });
 
       $scope.showProyecto  = function(codi)
@@ -258,7 +260,6 @@ angular.module('listaTareasApp')
 
       $scope.agregarProducto = function()
       {
-
         var strNombreProducto =$('#strNombreProducto').val();
         var strTituloProducto =$('#strTituloProducto').val();
         var selProducto =parseInt($("#selProducto").val()) +1;
@@ -1200,38 +1201,50 @@ $scope.agregarSemilleroInvestigacion = function(idSemillero,idLinea,fechaInicioS
         $scope.datos = datos;    
         $scope.datos.$promise.then(function (resultLinea){
 
-          fechaini = new Date(fechaInicioSemillero);
-          fechainiValue = fechaini.valueOf();
-          fechaini = fechaini.getFullYear() + '-' + parseInt(fechaini.getMonth()+1) + '-' + fechaini.getDate();
 
-          fechaterm = new Date(fechaFinalSemillero);
-          fechafinValue = fechaterm.valueOf();
-          fechaterm = fechaterm.getFullYear() + '-' + parseInt(fechaterm.getMonth()+1) + '-' + fechaterm.getDate();
+            fechaini = moment(fechaInicioSemillero,"YYYY-MM-DD").format("YYYY-MM-DD");          
 
-          angular.forEach($scope.semilleroinvestigacion,function (item){
 
-             item.FechaInicio = new Date(item.FechaInicio + 'GMT-0500');
-             FechainiValue = item.FechaInicio.valueOf();
+          if ($('#idfechaFinalSemillero').val()=="")          
+            fechaterm="";                      
+          else
+          {
+              fechaterm = moment(fechaFinalSemillero,"YYYY-MM-DD").format("YYYY-MM-DD");             
+          }
 
-             item.FechaTermina = new Date( item.FechaTermina + 'GMT-0500');
-             FechafinValue = item.FechaTermina.valueOf();
 
-            if ((fechainiValue>=FechainiValue && fechainiValue<=FechafinValue) || (fechafinValue>=FechainiValue && fechafinValue<=FechafinValue))
-            {
+          // fechaini = new Date(fechaInicioSemillero);
+          // fechainiValue = fechaini.valueOf();
+          // fechaini = fechaini.getFullYear() + '-' + parseInt(fechaini.getMonth()+1) + '-' + fechaini.getDate();
 
-              $window.alert('la fecha está dentro de alguna fecha ya seleccionada');
-              valido = false;
-             return forEach.break(); 
-            }
+          // fechaterm = new Date(fechaFinalSemillero);
+          // fechafinValue = fechaterm.valueOf();
+          // fechaterm = fechaterm.getFullYear() + '-' + parseInt(fechaterm.getMonth()+1) + '-' + fechaterm.getDate();
 
-            if (fechainiValue<=FechainiValue && fechafinValue>=FechafinValue)
-            {
-               $window.alert('la fecha está dentro de alguna fecha ya seleccionada');
-               valido = false;
-               return forEach.break(); 
-            }
+        //   angular.forEach($scope.semilleroinvestigacion,function (item){
 
-        });
+        //      item.FechaInicio = new Date(item.FechaInicio + 'GMT-0500');
+        //      FechainiValue = item.FechaInicio.valueOf();
+
+        //      item.FechaTermina = new Date( item.FechaTermina + 'GMT-0500');
+        //      FechafinValue = item.FechaTermina.valueOf();
+
+        //     if ((fechainiValue>=FechainiValue && fechainiValue<=FechafinValue) || (fechafinValue>=FechainiValue && fechafinValue<=FechafinValue))
+        //     {
+
+        //       $window.alert('la fecha está dentro de alguna fecha ya seleccionada');
+        //       valido = false;
+        //      return forEach.break(); 
+        //     }
+
+        //     if (fechainiValue<=FechainiValue && fechafinValue>=FechafinValue)
+        //     {
+        //        $window.alert('la fecha está dentro de alguna fecha ya seleccionada');
+        //        valido = false;
+        //        return forEach.break(); 
+        //     }
+
+        // });
 
           if (valido==true)
           {
@@ -1375,16 +1388,29 @@ function actualizarTablasRelacionadas(id){
                                                 if ($scope.semilleroinvestigacion[i].Sel=="false" || $scope.semilleroinvestigacion[i].Sel==false)
                                                    {
 
-                                                     fechaini = new Date($scope.semilleroinvestigacion[i].FechaInicio);                                      
-                                                     fechaini = fechaini.getFullYear() + '-' + parseInt(fechaini.getMonth()+1) + '-' + fechaini.getDate();
-                                                     fechafin = new Date($scope.semilleroinvestigacion[i].FechaTermina);                                      
-                                                     fechafin = fechafin.getFullYear() + '-' + parseInt(fechafin.getMonth()+1) + '-' + fechafin.getDate(); 
+                                                       fechaini = moment($scope.semilleroinvestigacion[i].FechaInicio).format("YYYY-MM-DD");   
+                                                        // fechafin = moment($scope.semilleroinvestigacion[i].FechaTermina).format("YYYY-MM-DD");                                      
+                                                        // fechaini = fechaini.getFullYear() + '-' + parseInt(fechaini.getMonth()+1) + '-' + fechaini.getDate();
+                                                        // fechafin = new Date($scope.semilleroinvestigacion[i].FechaTermina);                                      
+                                                        // fechafin = fechafin.getFullYear() + '-' + parseInt(fechafin.getMonth()+1) + '-' + fechafin.getDate();
+
+                                                        var fecha_fin='NULL';
+
+                                                        if ($scope.semilleroinvestigacion[i].FechaTermina!="")
+                                                        {
+                                                             fecha_fin ="'" + moment($scope.semilleroinvestigacion[i].FechaTermina).format("YYYY-MM-DD") + "'";                                                                                
+                                                        }
+
+                                                     // fechaini = new Date($scope.semilleroinvestigacion[i].FechaInicio);                                      
+                                                     // fechaini = fechaini.getFullYear() + '-' + parseInt(fechaini.getMonth()+1) + '-' + fechaini.getDate();
+                                                     // fechafin = new Date($scope.semilleroinvestigacion[i].FechaTermina);                                      
+                                                     // fechafin = fechafin.getFullYear() + '-' + parseInt(fechafin.getMonth()+1) + '-' + fechafin.getDate(); 
 
                                                      executeSql= TareasResource.execute.query({Accion: "I",SQL:"0;sgi_inve_semi;INS_CODI;INSERT INTO sgi_inve_semi " +
                                                      " (INS_CODI,INS_SEMI_CODI,ins_line_inve_codi,INS_FECH_INIC,INS_FECH_TERM,INS_INVE_IDEN) " +
                                                      " VALUES (@@," + $scope.semilleroinvestigacion[i].IdSemillero + "," + $scope.semilleroinvestigacion[i].IdLinea + ",'" + 
-                                                     fechaini + "','" + 
-                                                     fechafin + "'," + id + ")"});                        
+                                                     fechaini + "'," + 
+                                                     fecha_fin + "," + id + ")"});                        
                                                    }
                                                 }
                                               executeSql.$promise.then(function (result)
@@ -1398,6 +1424,7 @@ function actualizarTablasRelacionadas(id){
                                                     }
                                                     else
                                                     {
+                                                      $('#myModal').hide(); 
                                                         $window.alert("Guardado");
                                                         $scope.pass.strPass="";
                                                         $scope.pass.strRePass="";
@@ -1430,7 +1457,7 @@ function actualizarTablasRelacionadas(id){
 
 $scope.save = function(investigador){
 
-    
+     $('#myModal').show();  
 
       var id = (investigador.INV_CODI || investigador.INV_CODI=="undefined") ? investigador.INV_CODI :'0' ;
  
@@ -1549,7 +1576,7 @@ var validaIdentificacion = TareasResource.validaExisteRegistro.query({Tabla:'sgi
                          " WHERE INV_CODI =" + investigador.INV_CODI 
                     };
               TareasResource.enviararchivo(datos2).then(function(result) { 
-                    
+                      
               });
             }
             actualizarTablasRelacionadas(id);                          

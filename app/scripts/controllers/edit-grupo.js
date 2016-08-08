@@ -4,7 +4,8 @@ angular.module('listaTareasApp')
   .controller('ControladorEditGrupo', function($scope,$cookieStore,$location,datosGrupo,TareasResource,$route,$window,$http) {
 
              
-var user = $cookieStore.get('usuario');
+//var user = $cookieStore.get('usuario');
+  var user = JSON.parse($window.sessionStorage.getItem('usuario'));
 var IdGrupo = $route.current.params.idGrupo;
 var idInve="";
         if ($route.current.params.idGrupo==0)
