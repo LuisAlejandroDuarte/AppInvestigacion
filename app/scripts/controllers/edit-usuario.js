@@ -21,7 +21,15 @@ angular.module('listaTareasApp')
 			      {
 			  			$scope.buttonText = 'Guardar';
 			         $scope.tiTulo ='Creando Usuario';
-			      }		      
+			      }		
+				
+				$scope.admin=true;
+				$scope.investigador = true;
+				if (id==-1)
+				{
+					$scope.admin=false;
+					$scope.investigador = true;
+				}			            	
 
   		 });
 
@@ -153,4 +161,32 @@ angular.module('listaTareasApp')
 
 	 	}
 	 }
+
+	 $scope.onClickPassword = function(user)
+	 {
+
+	 	
+
+	 	if (user=="")
+	 	{
+	 		$window.alert("Debe digitar un usuario");
+	 		return;
+	 	}
+
+	 	var datos = {
+	 			Accion:"U",
+	 			SQL:"UPDATE sgi_user set " +	 				
+	 				" USE_CLAV = '" + md5(user) + "'"  +
+	 				" WHERE USE_CODI = " + id	 					
+	 		}
+
+	 		var usuario = TareasResource.SQL(datos);
+	 			usuario.then(function(rersult){
+
+	 				$window.alert('la clave se cambio por el nombre de Usuario');
+	 				
+
+	 			});
+	 }
+
  });

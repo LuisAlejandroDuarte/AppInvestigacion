@@ -135,7 +135,8 @@ angular.module("listaTareasApp", ['ngRoute','ngAnimate','ngLocale', 'ngResource'
             var usuarioID = parseInt($route.current.params.idUsuario); 
 
              return    TareasResource.execute.query({Accion: 'S',
-                         SQL: "SELECT * from sgi_user WHERE USE_CODI=" + usuarioID });
+                         SQL: 'SELECT USE_CODI,USE_IDEN,USE_TELE,USE_COD_TIPO, USE_NOMB,USE_APEL,USE_EMAI,USE_USUA, CASE WHEN USE_COD_TIPO="0" THEN "Administrador" ' +
+                         ' ELSE "Investigador" END AS TIPO from sgi_user WHERE USE_CODI=' + usuarioID });
 
           }
         }

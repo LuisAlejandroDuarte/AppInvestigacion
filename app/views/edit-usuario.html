@@ -8,7 +8,7 @@
 
 	  		<div class="panel-heading"><h>{{tiTulo}}</h></div>
 
-	  		<form method="post" name="formUsuario" novalidate>
+	  		<form method="post" name="formUsuario" novalidate="">
 
 	  			<div class="panel-body">
 	  			<div class="row">
@@ -52,9 +52,9 @@
 						<div class="col-lg-6 col-md-3 col-xs-12 col-sm-12">
 							<label>Usuario</label>
 							 <div class="input-group">
-							      <input type="text" ng-model="viewDatos[0].USE_USUA" class="form-control input-sm" required>
+							      <input type="text" name="usuario" ng-model="viewDatos[0].USE_USUA" class="form-control input-sm" required>
 							      <span class="input-group-btn">
-							        <button title="Resetear la clave" class="btn btn-default input-sm" type="button"><i class="glyphicon glyphicon-lock"></i></button>
+							        <button title="Resetear la clave" ng-disabled="!viewDatos[0].USE_USUA" class="btn btn-default input-sm" type="button" ng-click="onClickPassword(viewDatos[0].USE_USUA)"><i class="glyphicon glyphicon-lock"></i></button>
 							      </span>
     						</div>												
 						</div>
@@ -62,8 +62,8 @@
 							<div class="form-group">
 								<label>Tipo Usuario</label>
 								<select name="" ng-model="viewDatos[0].USE_COD_TIPO"  class="form-control" required>
-									<option value="0" ng-show="{{admin}}" >Administrador</option>
-									<option value="1" ng-show="{{investigador}} || {{admin}}">Investigador</option> 
+									<option value="0" ng-show="admin" >Administrador</option>
+									<option value="1" ng-show="investigador || admin">Investigador</option> 
 								</select>
 							</div>	
 						</div>

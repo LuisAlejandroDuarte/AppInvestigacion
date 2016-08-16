@@ -39,6 +39,12 @@
                 valign: 'middle',
                 sortable: true
             },{               
+                field: 'TIPO',
+                title: 'TIPO',
+                align: 'left',
+                valign: 'middle',
+                sortable: true
+            },{               
                 field: 'USE_APEL',
                 title: 'Apellido',
                 align: 'left',
@@ -85,7 +91,8 @@
 
         var datos ={
             Accion:"S",
-            SQL:"SELECT * FROM sgi_user"
+            SQL:'SELECT USE_CODI,USE_IDEN,USE_TELE,USE_COD_TIPO, USE_NOMB,USE_APEL,USE_EMAI,USE_USUA, CASE WHEN USE_COD_TIPO="0" THEN "Administrador" ' +
+                         ' ELSE "Investigador" END AS TIPO from sgi_user WHERE USE_CODI'
         }
 
         var usuarios = TareasResource.SQL(datos); 

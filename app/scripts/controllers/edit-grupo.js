@@ -112,6 +112,12 @@ var idInve="";
 
                          $scope.datos.$promise.then(function(result){
 
+                            if (result[0].Nombre=="" || result[0].Nombre==undefined)
+                            {
+                              $window.alert("Debe completar la Información del Investigador");
+                              return;
+                            }
+
                               $scope.NombreInvestigador = result[0].Nombre;
                               $scope.ApellidoInvestigador = result[0].Apellido;
                               $scope.CentroInvestigador = result[0].Centro;
