@@ -175,9 +175,8 @@ angular.module('listaTareasApp')
 
                      fechaStr = year + "," + mounth + "," + day;
 
-                     $scope.viewDatos[0].INV_FECH_NACI =new Date(fechaStr);
-
-              oldUser = datos[0].INV_USER; 
+                     $scope.viewDatos[0].INV_FECH_NACI =moment(datosInvestigador[0].INV_FECH_NACI).format("DD-MMMM-YYYY");
+            
               oldIdentificacion = datos[0].INV_IDEN;  
 
       });
@@ -934,7 +933,7 @@ $scope.onChangedGrupProducto = function(idGrupo,idLinea){
 
        $scope.Programa2 = TareasResource.execute.query({Accion: 'S',
                          SQL: "SELECT ESCUELA.ESC_NOMB FROM sgi_prog_acad AS PROGRAMA INNER JOIN " +
-                         "sgi_escu AS ESCUELA ON  PROGRAMA.PAC_CODI = ESCUELA.ESC_CODI WHERE " +
+                         "sgi_escu AS ESCUELA ON  PROGRAMA.PAC_ESCU_CODI = ESCUELA.ESC_CODI WHERE " +
                          "PROGRAMA.PAC_CODI =" + idPrograma }); 
 
    };
@@ -1455,6 +1454,14 @@ function actualizarTablasRelacionadas(id){
                  
 }
 
+$scope.onClicCVLAC = function(link)
+{
+  link = link.replace("http://","");
+
+  link = "http://" + link;
+  $window.open(link,"_blank");
+}
+
 $scope.save = function(investigador){
 
      $('#myModal').show();  
@@ -1464,36 +1471,19 @@ $scope.save = function(investigador){
 
 
 
-      if (investigador.INV_USER==undefined || investigador.INV_USER=="")
-      {
-        $window.alert('Digite un usuario');        
-        $('#strUser').focus();
-        return;
-      }
-
-
-
-
-
-      if (($scope.pass.strPass!="" || $scope.pass.strPass!=undefined) || ($scope.pass.strRePass!="" || $scope.pass.strRePass!=undefined))
-      {
-        if ($scope.pass.strPass!=$scope.pass.strRePass)
-        {
-            $window.alert('Las claves no son iguales');  
-            $("#strPass").focus();      
-            return;
-        }        
-      }
+      
 
       if (investigador.INV_TIPO_DOCU_CODI=="undefined" || investigador.INV_TIPO_DOCU_CODI=="")
       {
         $window.alert('Seleccione un tipo documento');
+         $('#myModal').hide();  
         return;
       }
 
       if (investigador.INV_IDEN=="undefined" || investigador.INV_IDEN=="")
       {
         $window.alert('Digite un número de documento');
+        $('#myModal').hide();  
         return;
       }
       
@@ -1501,27 +1491,19 @@ $scope.save = function(investigador){
       if (investigador.INV_NOMB=="undefined" || investigador.INV_NOMB=="")
       {
         $window.alert('Digite nombre ');
+        $('#myModal').hide();  
         return;
       }
 
       if (investigador.INV_APEL=="undefined" || investigador.INV_APEL=="")
       {
         $window.alert('Digite apellido');
+        $('#myModal').hide();  
         return;
       }
 
 
-var validaUser = TareasResource.validaExisteRegistro.query({Tabla:'sgi_inve',Campo:'inv_user',Valor:investigador.INV_USER});
-  
-  validaUser.$promise.then(function (resultUser){
 
-        var re = resultUser[0].existe;
-        if (re=="true" && investigador.INV_USER!=oldUser)
-        {
-          $window.alert('El usuario ya existe');
-          $('#strUser').focus();
-          return;
-        }  
 
 var validaIdentificacion = TareasResource.validaExisteRegistro.query({Tabla:'sgi_inve',Campo:'inv_iden',Valor:investigador.INV_IDEN});
   
@@ -1530,6 +1512,7 @@ var validaIdentificacion = TareasResource.validaExisteRegistro.query({Tabla:'sgi
       if (result[0].existe=="true" && oldIdentificacion!=investigador.INV_IDEN)
       {
         $window.alert('La Identificación ya existe');
+        $('#myModal').hide();  
         return;
       }
 
@@ -1552,56 +1535,32 @@ var validaIdentificacion = TareasResource.validaExisteRegistro.query({Tabla:'sgi
                          " INV_FECH_NACI='" + moment(new Date(investigador.INV_FECH_NACI)).format('YYYY-MM-DD')  + "', " +
                          " INV_MAIL='" + investigador.INV_MAIL + "'," +
                          " INV_TELE_CELU='" + investigador.INV_TELE_CELU  + "', " +                         
-                         " INV_LINK_CVLA  = '" +  investigador.INV_LINK_CVLA  + "', " +
+                         " INV_LINK_CVLA  = '" +  investigador.INV_LINK_CVLA.replace("http://","")   + "', " +
                          " INV_CENT_CODI = " + investigador.INV_CENT_CODI + ", " +
-                         " INV_PROG_ACAD_CODI =" +  investigador.INV_PROG_ACAD_CODI + "," +                         
-                         " INV_USER ='" +  investigador.INV_USER + "' " +                                                  
+                         " INV_PROG_ACAD_CODI =" +  investigador.INV_PROG_ACAD_CODI + " " +                                                          
                          " WHERE INV_CODI =" + investigador.INV_CODI 
 
   };
 
-
+   TareasResource.enviararchivo(datos).then(function(result) { 
+        actualizarTablasRelacionadas(id);  
+   });
   
 
-
-      
-         TareasResource.enviararchivo(datos).then(function(result) { 
-             if ($scope.pass.strPass!="")
-             {
-                   strmd5 = md5($scope.pass.strPass);  
-              var datos2 =  {
-
-                    Accion: 'M',
-                    SQL: "UPDATE sgi_inve set  INV_PASS = '" + strmd5 + "'" +                          
-                         " WHERE INV_CODI =" + investigador.INV_CODI 
-                    };
-              TareasResource.enviararchivo(datos2).then(function(result) { 
-                      
-              });
-            }
-            actualizarTablasRelacionadas(id);                          
-           });                
+  
+                    
 
       }
       else
-      {       
-
-       if ($scope.pass.strRePass!="") 
-           strmd5 = md5($scope.pass.strRePass);
-       else
-       {
-        $window.alert('Debe digitar una clave para el inicio de sesión en el tab Usuario');
-        return;
-       }
-
+      {            
       var viewDatos2 ={
         Accion: 'I',
         SQL: id + ";sgi_inve;INV_CODI;INSERT INTO  sgi_inve (INV_CODI,INV_IDEN,INV_TIPO_DOCU_CODI, " +
-        " INV_NOMB,INV_APEL,INV_FECH_NACI,INV_MAIL,INV_TELE_CELU,inv_foto,INV_CENT_CODI,INV_PROG_ACAD_CODI,INV_LINK_CVLA,INV_USER,INV_PASS) " + 
+        " INV_NOMB,INV_APEL,INV_FECH_NACI,INV_MAIL,INV_TELE_CELU,inv_foto,INV_CENT_CODI,INV_PROG_ACAD_CODI,INV_LINK_CVLA) " + 
         " VALUES (@@,'" + investigador.INV_IDEN + "'," + investigador.INV_TIPO_DOCU_CODI + ",'" + 
         investigador.INV_NOMB + "','" + investigador.INV_APEL + "','" + moment(new Date(investigador.INV_FECH_NACI)).format('YYYY-MM-DD')  + "','" + 
         investigador.INV_MAIL + "','" + investigador.INV_TELE_CELU  + "','" + investigador.inv_foto + "'," +
-        investigador.INV_CENT_CODI + "," +  investigador.INV_PROG_ACAD_CODI + ",'"+ investigador.INV_LINK_CVLA + "','" + investigador.INV_USER + "','" + strmd5 + "')"
+        investigador.INV_CENT_CODI + "," +  investigador.INV_PROG_ACAD_CODI + ",'"+ investigador.INV_LINK_CVLA.replace("http://","") + "')"
       };       
 
       TareasResource.enviararchivo(viewDatos2).then(function(result) { 
@@ -1611,519 +1570,6 @@ var validaIdentificacion = TareasResource.validaExisteRegistro.query({Tabla:'sgi
        
       }
     }
-   });
-  }); 
+   }); 
   };  
  })
-
-
-
-
-
-
-  
-
-  
-    
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- //.directive('myCrearcentro', function(){
-//     // Runs during compile
-//     return {
-//       // name: '',
-//       // priority: 1,
-//       // terminal: true,
-//       // scope: {}, // {} = isolate, true = child, false/undefined = no change
-//              controller: [ "$scope","$window",'$http','TareasResource','$q','$log', function($scope,$window,$http,TareasResource,$q,$log) {
-
-//                 $scope.datosZona= TareasResource.execute.query({Accion: 'S',
-//                          SQL: 'SELECT ZON_CODI,ZON_NOMB FROM SGI_ZONA'}); 
-
-//                  function validoCentro(existe) {                                      
-
-//                  $scope.viewDatos2= TareasResource.execute.query({Accion: 'I',
-//                          SQL: "0" + ";SGI_CENT;CEN_CODI;INSERT INTO  SGI_CENT (CEN_CODI,CEN_NOMB,CEN_ZONA_CODI) " + 
-//                          " VALUES (@@,'" + $scope.centro + "'," + $scope.zona + ")" }); 
-
-//                   $scope.Centro = TareasResource.execute.query({Accion: 'S',
-//                          SQL: 'SELECT CEN_CODI,CEN_NOMB FROM SGI_CENT'}); 
-                   
-
-//                      $('#myModal').modal('hide');
-//                  };
-
-//             $scope.salvarCentro = function() {
-                
-//               var diferir = $q.defer();
-
-//                  diferir.promise.then(validoCentro);
-
-//                 var existe = TareasResource.validaExisteRegistro.result({Tabla: "SGI_CENT",Campo: "CEN_NOMB",Valor: $scope.centro})
-
-                  
-//                   .$promise.then(function (existe) {
-//                        diferir.resolve(existe);                       
-//                   },
-//                     function(error) {
-//                      window.alert(error.data[0].msg);           
-//           });
-                  
-                 
-
-//                 };
-               
-//             }],
-//       // require: 'ngModel', // Array = multiple requires, ? = optional, ^ = check parent elements
-//        restrict: 'AE', // E = Element, A = Attribute, C = Class, M = Comment
-//        template: '<div class="modal fade" id="myModal"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">' + 
-//                     '<div class="modal-dialog">' +
-//         '<div class="modal-content">' +
-//             '<div class="modal-header">' +
-//                 '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>' +
-//                  '<h3 class="modal-title" id="myModalLabel">CREAR CENTRO</h3> ' +
-//             '</div>' +
-//             '<div class="modal-body"> ' +
-//                  '<div class="row">' +
-//                  '<div class="col-md-1">' +
-//                  '<label>NOMBRE</label>' +
-//                  '</div>' +  
-//                  '</div>' +
-//                  '<div class="row">' +    
-//                  '<div class="col-md-12">' +
-//                  '<input id="nameCentro" ng-model="centro" type="text" class="form-control" placeholder="Centro" autofocus required/>' +                      
-//                  '</div>' +
-//                  '</div>' + 
-//                  '<div class="row">' +
-//                  '<div class="col-md-1" style="margin-top:30px">' +
-//                  '<label>ZONA</label>' +
-//                  '</div>' +  
-//                  '</div>' +
-//                  '<div class="row">' +    
-//                  '<div class="col-md-9">' +
-//                  '<select class="form-control"  ng-model="zona"  ng-options="opt.ZON_CODI as opt.ZON_NOMB for opt in datosZona" required/>' +                      
-//                  '</div>' +
-//                  '</div>' + 
-//                  '<h1>{{dato}}</h1>' +
-//             '</div>' +
-//             '<div class="modal-footer">' +
-//                 '<button  class="btn btn-danger"  id="btnYes" ng-click= "salvarCentro();">Si</button>' +
-//                 '<button type="button" class="btn btn-default" data-dismiss="modal"  >No</button>' +
-//             '</div>' +        
-//         '</div>' +        
-//     '</div>' +    
-// '</div>' +
-// '</div>',
-//       // templateUrl: '',
-//       // replace: true,
-//       // transclude: true,
-//       // compile: function(tElement, tAttrs, function transclude(function(scope, cloneLinkingFn){ return function linking(scope, elm, attrs){}})),
-//       link: function($scope, iElm, iAttrs, controller) {
-        
-//       }
-//     };
-//   })
-
-//  .directive('myButtoncentro', function(){
-//     // Runs during compile
-//     return {
-//       // name: '',
-//       // priority: 1,
-//       // terminal: true,
-//       // scope: {}, // {} = isolate, true = child, false/undefined = no change
-//       restrict: 'E', // E = Element, A = Attribute, C = Class, M = Comment
-//        controller: [ "$scope","$window",'$http', function($scope,$window,$http) {
-//             $scope.show = function() {
-
-//               $('#myModal').modal('show');
-                     
-//                 };
-               
-//             }],
-//       // require: 'ngModel', // Array = multiple requires, ? = optional, ^ = check parent elements
-       
-//        template: '<button type="button" class="btn btn-default" ng-click= "show();">...</button>',
-//       // templateUrl: '',
-//       // replace: true,
-//       // transclude: true,
-//       // compile: function(tElement, tAttrs, function transclude(function(scope, cloneLinkingFn){ return function linking(scope, elm, attrs){}})),
-//       link: function($scope, iElm, iAttrs, controller) {
-        
-//       }
-//     }
-//   })
-
-//   .directive('myCrearacedemico', function(){
-//     return {
-//           controller: [ "$scope","$window",'$http','TareasResource','$q','$log', function($scope,$window,$http,TareasResource,$q,$log) {
-//                    $scope.datosEscuela= TareasResource.execute.query({Accion: 'S',
-//                           SQL: 'SELECT ESC_CODI,ESC_NOMB FROM sgi_escu'}); 
-
-//                  function validoAcademico(existe) {                                      
-
-//                  $scope.viewResult= TareasResource.execute.query({Accion: 'I',
-//                          SQL: "0" + ";sgi_prog_acad;PAC_CODI;INSERT INTO  sgi_prog_acad (PAC_CODI,PAC_NOMB,PAC_ESCU_CODI) " + 
-//                          " VALUES (@@,'" + $scope.academico + "'," + $scope.Escuela + ")" }); 
-
-//                   $scope.Escuela = TareasResource.execute.query({Accion: 'S',
-//                          SQL: 'SELECT ESC_CODI,ESC_NOMB FROM sgi_escu'}); 
-                   
-
-//                      $('#myModalAcademico').modal('hide');
-//                  };
-
-//             $scope.salvaracademico = function() {
-                
-//               var diferir = $q.defer();
-
-//                  diferir.promise.then(validoacademico);
-
-//                 var existe = TareasResource.validaExisteRegistro.result({Tabla: "sgi_prog_acad",Campo: "PAC_NOMB",Valor: $scope.academico})
-
-                  
-//                   .$promise.then(function (existe2) {
-//                        diferir.resolve(existe2);                       
-//                   },
-//                     function(error) {
-//                      window.alert(error.data[0].msg);           
-//           });
-                  
-                 
-
-//       };
-//           }],
-//  restrict: 'AE', // E = Element, A = Attribute, C = Class, M = Comment
-//        template: '<div class="modal fade" id="myModalAcademico"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel2" aria-hidden="true">' + 
-//                     '<div class="modal-dialog">' +
-//         '<div class="modal-content">' +
-//             '<div class="modal-header">' +
-//                 '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>' +
-//                  '<h3 class="modal-title" id="myModalLabel2">CREAR ACADEMICO</h3> ' +
-//             '</div>' +
-//             '<div class="modal-body"> ' +
-//                  '<div class="row">' +
-//                  '<div class="col-md-1">' +
-//                  '<label>NOMBRE</label>' +
-//                  '</div>' +  
-//                  '</div>' +
-//                  '<div class="row">' +    
-//                  '<div class="col-md-12">' +
-//                  '<input id="nameAcademico" ng-model="academico" type="text" class="form-control" placeholder="Académico" autofocus required/>' +                      
-//                  '</div>' +
-//                  '</div>' + 
-//                  '<div class="row">' +
-//                  '<div class="col-md-1" style="margin-top:30px">' +
-//                  '<label>ESCUELA</label>' +
-//                  '</div>' +  
-//                  '</div>' +
-//                  '<div class="row">' +    
-//                  '<div class="col-md-9">' +
-//                   '<select class="form-control"  ng-model="escuela"  ng-options="opt.ESC_CODI as opt.ESC_NOMB for opt in datosEscuela" required/>' +                      
-//                  '</div>' +
-//                  '</div>' + 
-//                  '<my-Crearescuela></my-Crearescuela>' +
-//                  '<my-Buttonescuela></my-Buttonescuela> ' +
-//             '</div>' +
-//             '<div class="modal-footer">' +
-//                 '<button  class="btn btn-danger"  id="btnYes2" ng-click= "salvarAcademico();">Si</button>' +
-//                 '<button type="button" class="btn btn-default" data-dismiss="modal">No</button>' +
-//             '</div>' +        
-//         '</div>' +        
-//     '</div>' +    
-// '</div>' +
-// '</div>',
-//       // templateUrl: '',
-//       // replace: true,
-//       // transclude: true,
-//       // compile: function(tElement, tAttrs, function transclude(function(scope, cloneLinkingFn){ return function linking(scope, elm, attrs){}})),
-//       link: function($scope, iElm, iAttrs, controller) {
-        
-//       }
-//     };
-
-//     })
-
-  
-//     .directive('myButtonacademico', function(){
-//     // Runs during compile
-//     return {
-//       // name: '',
-//       // priority: 1,
-//       // terminal: true,
-//       // scope: {}, // {} = isolate, true = child, false/undefined = no change
-//       restrict: 'E', // E = Element, A = Attribute, C = Class, M = Comment
-//        controller: [ "$scope","$window",'$http', function($scope,$window,$http) {
-//             $scope.showAcademico = function() {
-
-//               $('#myModalAcademico').modal('show');
-                     
-//                 };
-               
-//             }],
-//       // require: 'ngModel', // Array = multiple requires, ? = optional, ^ = check parent elements
-       
-//        template: '<button type="button" class="btn btn-default" ng-click= "showAcademico();">...</button>',
-//       // templateUrl: '',
-//       // replace: true,
-//       // transclude: true,
-//       // compile: function(tElement, tAttrs, function transclude(function(scope, cloneLinkingFn){ return function linking(scope, elm, attrs){}})),
-//       link: function($scope, iElm, iAttrs, controller) {
-        
-//       }
-//     }
-//   })
-
-
-
-// .directive('myButtongrupo', function(){
-//     // Runs during compile
-//     return {
-//       // name: '',
-//       // priority: 1,
-//       // terminal: true,
-//       // scope: {}, // {} = isolate, true = child, false/undefined = no change
-//       restrict: 'E', // E = Element, A = Attribute, C = Class, M = Comment
-//        controller: [ "$scope","$window",'$http', function($scope,$window,$http) {
-//             $scope.showGrupo = function() {
-
-//               $('#myModalGrupo').modal('show');
-                     
-//                 };
-               
-//             }],
-//       // require: 'ngModel', // Array = multiple requires, ? = optional, ^ = check parent elements
-       
-//        template: '<button type="button" class="btn btn-default" ng-click= "showGrupo();">...</button>',
-//       // templateUrl: '',
-//       // replace: true,
-//       // transclude: true,
-//       // compile: function(tElement, tAttrs, function transclude(function(scope, cloneLinkingFn){ return function linking(scope, elm, attrs){}})),
-//       link: function($scope, iElm, iAttrs, controller) {
-        
-//       }
-//     }
-//   })
-
-//   .directive('myCreargrupo', function(){
-//     return {
-//           controller: [ "$scope","$window",'$http','TareasResource','$q','$log', function($scope,$window,$http,TareasResource,$q,$log) {
-//                    $scope.datosEscuela= TareasResource.execute.query({Accion: 'S',
-//                           SQL: 'SELECT ESC_CODI,ESC_NOMB FROM sgi_escu'}); 
-
-//                  function validogrupo(existe) {                                      
-
-//                  $scope.viewResult= TareasResource.execute.query({Accion: 'I',
-//                          SQL: "0" + ";sgi_prog_acad;PAC_CODI;INSERT INTO  sgi_prog_acad (PAC_CODI,PAC_NOMB,PAC_ESCU_CODI) " + 
-//                          " VALUES (@@,'" + $scope.academico + "'," + $scope.Escuela + ")" }); 
-
-//                   $scope.Escuela = TareasResource.execute.query({Accion: 'S',
-//                          SQL: 'SELECT ESC_CODI,ESC_NOMB FROM sgi_escu'}); 
-                   
-
-//                      $('#myModalGrupo').modal('hide');
-//                  };
-
-//             $scope.salvargrupo = function() {
-                
-//               var diferir = $q.defer();
-
-//                  diferir.promise.then(validoacademico);
-
-//                 var existe = TareasResource.validaExisteRegistro.result({Tabla: "sgi_prog_acad",Campo: "PAC_NOMB",Valor: $scope.academico})
-
-                  
-//                   .$promise.then(function (existe2) {
-//                        diferir.resolve(existe2);                       
-//                   },
-//                     function(error) {
-//                      window.alert(error.data[0].msg);           
-//           });
-                  
-                 
-
-//       };
-//           }],
-//  restrict: 'AE', // E = Element, A = Attribute, C = Class, M = Comment
-//        template: '<div class="modal fade" id="myModalGrupo"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel2" aria-hidden="true">' + 
-//                     '<div class="modal-dialog">' +
-//         '<div class="modal-content">' +
-//             '<div class="modal-header">' +
-//                 '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>' +
-//                  '<h3 class="modal-title" id="myModalLabel2">CREAR GRUPO</h3> ' +
-//             '</div>' +
-//             '<div class="modal-body"> ' +
-//                  '<div class="row">' +
-//                  '<div class="col-md-1">' +
-//                  '<label>NOMBRE</label>' +
-//                  '</div>' +  
-//                  '</div>' +
-//                  '<div class="row">' +    
-//                  '<div class="col-md-12">' +
-//                  '<input id="nameAcademico" ng-model="academico" type="text" class="form-control" placeholder="Académico" autofocus required/>' +                      
-//                  '</div>' +
-//                  '</div>' + 
-//                  '<div class="row">' +
-//                  '<div class="col-md-1" style="margin-top:30px">' +
-//                  '<label>ESCUELA</label>' +
-//                  '</div>' +  
-//                  '</div>' +                
-//                  '<my-Crearescuela></my-Crearescuela>' +
-//                  '<my-Buttonescuela></my-Buttonescuela> ' +
-//             '</div>' +
-//             '<div class="modal-footer">' +
-//                 '<button  class="btn btn-danger"  id="btnYes2" ng-click= "salvarAcademico();">Si</button>' +
-//                 '<button type="button" class="btn btn-default" data-dismiss="modal">No</button>' +
-//             '</div>' +        
-//         '</div>' +        
-//     '</div>' +    
-// '</div>' +
-// '</div>',
-//       // templateUrl: '',
-//       // replace: true,
-//       // transclude: true,
-//       // compile: function(tElement, tAttrs, function transclude(function(scope, cloneLinkingFn){ return function linking(scope, elm, attrs){}})),
-//       link: function($scope, iElm, iAttrs, controller) {
-        
-//       }
-//     };
-
-//     })
-  
-// .directive('myButtonsemillero', function(){
-//     // Runs during compile
-//     return {
-//       // name: '',
-//       // priority: 1,
-//       // terminal: true,
-//       // scope: {}, // {} = isolate, true = child, false/undefined = no change
-//       restrict: 'E', // E = Element, A = Attribute, C = Class, M = Comment
-//        controller: [ "$scope","$window",'$http', function($scope,$window,$http) {
-//             $scope.showSemillero = function() {
-
-//               $('#myModalSemillero').modal('show');
-                     
-//                 };
-               
-//             }],
-//       // require: 'ngModel', // Array = multiple requires, ? = optional, ^ = check parent elements
-       
-//        template: '<button type="button" class="btn btn-default" ng-click= "showSemillero();">...</button>',
-//       // templateUrl: '',
-//       // replace: true,
-//       // transclude: true,
-//       // compile: function(tElement, tAttrs, function transclude(function(scope, cloneLinkingFn){ return function linking(scope, elm, attrs){}})),
-//       link: function($scope, iElm, iAttrs, controller) {
-        
-//       }
-//     }
-//   })
-//    .directive('myCrearsemillero', function(){
-//     return {
-//           controller: [ "$scope","$window",'$http','TareasResource','$q','$log', function($scope,$window,$http,TareasResource,$q,$log) {
-//                    $scope.datosEscuela= TareasResource.execute.query({Accion: 'S',
-//                           SQL: 'SELECT ESC_CODI,ESC_NOMB FROM sgi_escu'}); 
-
-//                  function validogrupo(existe) {                                      
-
-//                  $scope.viewResult= TareasResource.execute.query({Accion: 'I',
-//                          SQL: "0" + ";sgi_prog_acad;PAC_CODI;INSERT INTO  sgi_prog_acad (PAC_CODI,PAC_NOMB,PAC_ESCU_CODI) " + 
-//                          " VALUES (@@,'" + $scope.academico + "'," + $scope.Escuela + ")" }); 
-
-//                   $scope.Escuela = TareasResource.execute.query({Accion: 'S',
-//                          SQL: 'SELECT ESC_CODI,ESC_NOMB FROM sgi_escu'}); 
-                   
-
-//                      $('#myModalGrupo').modal('hide');
-//                  };
-
-//             $scope.salvargrupo = function() {
-                
-//               var diferir = $q.defer();
-
-//                  diferir.promise.then(validoacademico);
-
-//                 var existe = TareasResource.validaExisteRegistro.result({Tabla: "sgi_prog_acad",Campo: "PAC_NOMB",Valor: $scope.academico})
-
-                  
-//                   .$promise.then(function (existe2) {
-//                        diferir.resolve(existe2);                       
-//                   },
-//                     function(error) {
-//                      window.alert(error.data[0].msg);           
-//           });
-                  
-                 
-
-//       };
-//           }],
-//  restrict: 'AE', // E = Element, A = Attribute, C = Class, M = Comment
-//        template: '<div class="modal fade" id="myModalSemillero"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel2" aria-hidden="true">' + 
-//                     '<div class="modal-dialog">' +
-//         '<div class="modal-content">' +
-//             '<div class="modal-header">' +
-//                 '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>' +
-//                  '<h3 class="modal-title" id="myModalLabel2">CREAR SEMILLERO</h3> ' +
-//             '</div>' +
-//             '<div class="modal-body"> ' +
-//                  '<div class="row">' +
-//                  '<div class="col-md-1">' +
-//                  '<label>NOMBRE</label>' +
-//                  '</div>' +  
-//                  '</div>' +
-//                  '<div class="row">' +    
-//                  '<div class="col-md-12">' +
-//                  '<input id="nameAcademico" ng-model="academico" type="text" class="form-control" placeholder="Semillero" autofocus required/>' +                      
-//                  '</div>' +
-//                  '</div>' + 
-//                  '<div class="row">' +
-//                  '<div class="col-md-1" style="margin-top:30px">' +
-//                  '<label></label>' +
-//                  '</div>' +  
-//                  '</div>' +                
-//                  '<my-Crearescuela></my-Crearescuela>' +
-//                  '<my-Buttonescuela></my-Buttonescuela> ' +
-//             '</div>' +
-//             '<div class="modal-footer">' +
-//                 '<button  class="btn btn-danger"  id="btnYes2" ng-click= "salvarAcademico();">Si</button>' +
-//                 '<button type="button" class="btn btn-default" data-dismiss="modal">No</button>' +
-//             '</div>' +        
-//         '</div>' +        
-//     '</div>' +    
-// '</div>' +
-// '</div>',
-//       // templateUrl: '',
-//       // replace: true,
-//       // transclude: true,
-//       // compile: function(tElement, tAttrs, function transclude(function(scope, cloneLinkingFn){ return function linking(scope, elm, attrs){}})),
-//       link: function($scope, iElm, iAttrs, controller) {
-        
-//       }
-//     };
-
-//     })

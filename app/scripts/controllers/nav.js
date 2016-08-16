@@ -19,6 +19,7 @@ angular.module('listaTareasApp')
       $cookieStore.remove('usuario');
        
       $window.sessionStorage.setItem('usuario',null);
+      $window.sessionStorage.setItem('investigador',null);
 
       $location.path('/inicio');
     };

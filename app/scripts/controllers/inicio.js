@@ -34,16 +34,35 @@ angular.module('listaTareasApp')
          $cookieStore.put('usuario', usr);
          $window.sessionStorage.setItem('usuario', JSON.stringify(usr[0]));
 
+         if (usr[0].Id_tipo==0 && $scope.seleccionado==0)
+         {
+             $location.path('/usuario');
+             return;
+         }
+
+          if ($scope.seleccionado==1 && usr[0].Id_tipo==1)
+          {
+
+            var executesql = TareasResource.SQL({Accion:'S',SQL:'SELECT INV_CODI FROM sgi_inve WHERE INV_CODI_USUA=' + usr[0].Id});
+                executesql.then(function(result){
+                   $window.sessionStorage.setItem('investigador', JSON.stringify(result.data[0]));
+                  $location.path('/edit-investigador/'+ result.data[0].INV_CODI );
+                  return;
+                });            
+            
+          }
+
          if ($scope.seleccionado=="2")
          {
+           var executesql = TareasResource.SQL({Accion:'S',SQL:'SELECT INV_CODI FROM sgi_inve WHERE INV_CODI_USUA=' + usr[0].Id});
+                executesql.then(function(result){
+                   $window.sessionStorage.setItem('investigador', JSON.stringify(result.data[0]));
             $location.path('/grupo');
+            return;
+          });
          }
 
-         if ($scope.seleccionado=="1")
-         {
-            $location.path('/edit-investigador/'+ usr[0].Id );
-
-         }
+        
 
           if ($scope.seleccionado=="3")
          {
@@ -56,7 +75,7 @@ angular.module('listaTareasApp')
     
 
     $scope.showRegistrarse = function(){
-      $location.path('/edit-investigador/0');
+      $location.path('/edit-usuario/-1');
     }  
 
      $scope.iniciarSesion = function() {

@@ -301,7 +301,15 @@
 
     <div class="col-md-8 col-lg-8 ">
 
-        <input name="linkcvlac" ng-model="viewDatos[0].INV_LINK_CVLA" type= "text" class= "form-control" placeholder="Link CVLAC" required>
+      <div class="input-group">
+        <span class="input-group-addon" id="sizing-addon2">http://</span>
+       <input name="linkcvlac" ng-model="viewDatos[0].INV_LINK_CVLA" type= "text" class= "form-control" placeholder="Link CVLAC" required>
+      <span class="input-group-btn">
+        <button class="btn btn-default" title="IR" ng-click="onClicCVLAC(viewDatos[0].INV_LINK_CVLA)" type="button"><i class="glyphicon glyphicon-globe"></i></button>
+      </span>
+    </div>
+
+       
 
     </div>
 
@@ -1195,103 +1203,7 @@
 
 
 
-     </tab> 
-
-
-
- <tab active="tabUsuario" >
-
-
-
-      <tab-heading>
-
-        <i class="glyphicon glyphicon-lock"></i> Usuario
-
-      </tab-heading>      
-
-      <div class="row" style="margin-top:10px">
-
-          <div class="col-md-4 col-lg-4">
-
-            <div class="panel panel-default">
-
-                <div class="panel-heading">
-
-                  <h3 class="panel-title"><label>Inicio de Sesi&oacute;n</label></h3>
-
-                </div>
-
-                <div class="panel-body">
-
-                  <div class="row">
-
-                    <div class="col-md-12 col-lg-12">
-
-                      <label>Usuario</label>
-
-                    </div>
-
-                  </div>  
-
-                  <div class="row">
-
-                      <div class="col-md-12 col-lg-12">
-
-                        <input id="strUser" type="text" class="form-control" ng-model="viewDatos[0].INV_USER" />
-
-                      </div>
-
-                  </div>
-
-                  <div class="row">
-
-                    <div class="col-md-12 col-lg-12">
-
-                      <label>Clave</label>
-
-                    </div>
-
-                  </div>  
-
-                  <div class="row">
-
-                      <div class="col-md-12 col-lg-12">
-
-                        <input id="strPass" type="Password" class="form-control" ng-model="pass.strPass" />
-
-                      </div>
-
-                  </div>
-
-                  <div class="row">
-
-                    <div class="col-md-12 col-lg-12">
-
-                      <label>Repita Clave</label>
-
-                    </div>
-
-                  </div>  
-
-                  <div class="row">
-
-                      <div class="col-md-12 col-lg-12">
-
-                        <input type="Password" class="form-control" ng-model="pass.strRePass" />                        
-
-                      </div>
-
-                  </div>
-
-                </div>
-
-            </div>
-
-          </div>
-
-      </div>        
-
- </tab>     
+     </tab>    
 
 
 

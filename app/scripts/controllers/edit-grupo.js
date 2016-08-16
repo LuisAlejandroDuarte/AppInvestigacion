@@ -5,7 +5,14 @@ angular.module('listaTareasApp')
 
              
 //var user = $cookieStore.get('usuario');
-  var user = JSON.parse($window.sessionStorage.getItem('usuario'));
+ var user = JSON.parse($window.sessionStorage.getItem('investigador'));
+
+    if (user==null || user==undefined)
+    {
+
+      $location.path('/inicio');
+      return;
+    }         
 var IdGrupo = $route.current.params.idGrupo;
 var idInve="";
         if ($route.current.params.idGrupo==0)
@@ -86,7 +93,7 @@ var idInve="";
                          ' ZONA,E.esc_nomb AS Escuela,P.pac_nomb AS Programa ' +
                          ' from sgi_inve AS I INNER JOIN sgi_cent AS C ON I.inv_cent_codi = C.cen_codi INNER JOIN sgi_zona AS Z ON ' +
                          ' Z.zon_codi=C.cen_zona_codi INNER JOIN sgi_prog_acad As P ON P.pac_codi = I.inv_prog_acad_codi INNER JOIN ' +
-                         ' sgi_escu AS E ON E.esc_codi = P.pac_escu_codi WHERE I.inv_codi=' +  user.Id_inve }); 
+                         ' sgi_escu AS E ON E.esc_codi = P.pac_escu_codi WHERE I.inv_codi=' +  user.INV_CODI }); 
 
                             $scope.area =TareasResource.execute.query({Accion:'S',SQL:'SELECT ARE_CODI,ARE_NOMB from sgi_area'});
                             $scope.area.$promise.then(function(result){  
@@ -243,7 +250,7 @@ var idInve="";
                        $scope.Proyectos =  TareasResource.execute.query({Accion: 'S',
                           SQL: "SELECT PROY.PRO_NOMB As NombreProyecto,PROD.Nombre AS NombreProducto,PROD.Id As IdProd,PROY.PRO_CODI AS IdProy,GP.fech_ini,GP.fech_term,GP.id_grup AS IdGrupo " +
                                " FROM sgi_grup_proy As GP INNER JOIN sgi_proy As PROY ON PROY.PRO_CODI = GP.id_proy " +
-                               " INNER JOIN sgi_prod AS PROD ON PROD.Id=GP.id_prod WHERE  GP.Id_grup=" + IdGrupo + " AND GP.Id_inve="+ user[0].Id_inve });
+                               " INNER JOIN sgi_prod AS PROD ON PROD.Id=GP.id_prod WHERE  GP.Id_grup=" + IdGrupo + " AND GP.Id_inve="+  user.INV_CODI });
 
 
                         $scope.Proyectos.$promise.then(function(result){
@@ -635,7 +642,7 @@ $scope.OnClicDescargarPlan = function(a,b)
      { 
 
 
-         if (integrante.Id2==user[0].Id_inve ) 
+         if (integrante.Id2== user.INV_CODI ) 
          {
           $window.alert('No se puede eliminar el Investigador Actual');
           return;
@@ -744,7 +751,7 @@ $scope.OnClicDescargarPlan = function(a,b)
                          SQL: 'SELECT tiv_codi,tiv_desc FROM sgi_tipo_vinc'}); 
 
         $scope.listTipoGrupo = TareasResource.execute.query({Accion: 'S',
-                         SQL: 'SELECT inv_codi AS Id, CONCAT(inv_apel," ",inv_nomb) AS Nombre FROM sgi_inve WHERE sgi_inve.INV_CODI!=' + user[0].Id_inve }); 
+                         SQL: 'SELECT inv_codi AS Id, CONCAT(inv_apel," ",inv_nomb) AS Nombre FROM sgi_inve WHERE sgi_inve.INV_CODI!=' +  user.INV_CODI }); 
 
         $('#cmdLinea').popover('destroy');
         $scope.titleEditar = "Integrantes del Grupo";
@@ -916,7 +923,7 @@ $scope.OnClicEliminarSemilleroGrupo = function(semillero)
                                                            
                              }
                              else
-                                if(value.Id2 !=user[0].Id_inve)
+                                if(value.Id2 != user.INV_CODI)
                                   {
                                    executeSql = TareasResource.execute.query({Accion:'I',                                               
                                   SQL:idGrupo+";INSERT INTO sgi_inve_grup (igr_grup_codi,igr_fech_inic,igr_tipo_vinc_codi,igr_inve_iden,igr_regi_ingr) " +
@@ -986,7 +993,7 @@ $scope.OnClicEliminarSemilleroGrupo = function(semillero)
                                           $scope.listProyectos.$promise.then(function(result){
                                                $scope.listProyectos = [];
                                             var ProyectoProducto =  TareasResource.execute.query({Accion:'D',
-                                                SQL:"DELETE FROM sgi_grup_proy WHERE id_inve=" + user[0].Id_inve + " AND " +
+                                                SQL:"DELETE FROM sgi_grup_proy WHERE id_inve=" +  user.INV_CODI + " AND " +
                                                 " id_grup="+ IdGrupo + ""});
 
                                             ProyectoProducto.$promise.then(function(result){
@@ -1007,13 +1014,13 @@ $scope.OnClicEliminarSemilleroGrupo = function(semillero)
                             
                                executeSql = TareasResource.execute.query({Accion:'I',                                               
                                   SQL:idGrupo+";INSERT INTO sgi_grup_proy (id_proy,id_prod,id_grup,id_inve,fech_ini,fech_term) " +
-                                  " VALUES (" + value.IdProy +"," + value.IdProd +"," + IdGrupo +"," + user[0].Id_inve + ",'"+ value.fech_ini + "','"+ value.fech_term + "')"});
+                                  " VALUES (" + value.IdProy +"," + value.IdProd +"," + IdGrupo +"," +  user.INV_CODI + ",'"+ value.fech_ini + "','"+ value.fech_term + "')"});
                                                            
                              }
                              else                                                              
                                    executeSql = TareasResource.execute.query({Accion:'I',                                               
                                   SQL:idGrupo+";INSERT INTO sgi_grup_proy (id_proy,id_prod,id_grup,id_inve,fech_ini) " +
-                                  " VALUES (" + value.IdProy +"," + value.IdProd +"," + IdGrupo +"," + user[0].Id_inve + ",'"+ value.fech_ini + "')"});
+                                  " VALUES (" + value.IdProy +"," + value.IdProd +"," + IdGrupo +"," +  user.INV_CODI + ",'"+ value.fech_ini + "')"});
                                     executeSql.$promise.then(function(result1){
                                       var re = result1[0].msg;
                                     });
@@ -1183,7 +1190,7 @@ $scope.OnClicEliminarSemilleroGrupo = function(semillero)
                         Query= TareasResource.execute.query({Accion: 'I', 
                          SQL: id + "1;INSERT INTO sgi_inve_grup " + 
                          " (igr_inve_iden,igr_grup_codi,igr_fech_inic,igr_tipo_vinc_codi) " +
-                         " VALUES ("+ user[0].Id_inve + "," + id + ",'" + fecha + "',1)"});              
+                         " VALUES ("+  user.INV_CODI + "," + id + ",'" + fecha + "',1)"});              
 
               Query.$promise.then(function(result){
 

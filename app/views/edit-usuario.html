@@ -1,0 +1,87 @@
+
+
+<div class="margenTop">
+<div class="">
+	
+
+		<div class="panel panel-primary  drop-shadow container" style="width:50%;height:auto;padding-left:0px;padding-right:0px" >
+
+	  		<div class="panel-heading"><h>{{tiTulo}}</h></div>
+
+	  		<form method="post" name="formUsuario" novalidate>
+
+	  			<div class="panel-body">
+	  			<div class="row">
+ 					<div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">
+ 							<div class="form-group">
+								<label>Identificación</label>
+								<input type="text" ng-model="viewDatos[0].USE_IDEN" class="form-control input-sm" required>
+							</div>	
+  					</div>
+	  			</div>
+				<div class="row">
+						<div class="col-lg-6 col-md-3 col-xs-12 col-sm-12">
+							<div class="form-group">
+								<label>Nombre</label>
+								<input type="text" ng-model="viewDatos[0].USE_NOMB" class="form-control input-sm" required>
+							</div>	
+						</div>
+						<div class="col-lg-6 col-md-3 col-xs-12 col-sm-12">
+							<div class="form-group">
+								<label>Apellido</label>
+								<input type="text" ng-model="viewDatos[0].USE_APEL" class="form-control input-sm" required>
+							</div>	
+						</div>
+					</div>	
+					<div class="row">
+							<div class="col-lg-6 col-md-3 col-xs-12 col-sm-12">
+							<div class="form-group">
+								<label>Teléfono</label>
+								<input type="text" ng-model="viewDatos[0].USE_TELE" class="form-control input-sm">
+							</div>	
+						</div>
+						<div class="col-lg-6 col-md-3 col-xs-12 col-sm-12">
+							<div class="form-group">
+								<label>E-mail</label>
+								<input type="email" ng-model="viewDatos[0].USE_EMAI" class="form-control input-sm" required>
+							</div>	
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="col-lg-6 col-md-3 col-xs-12 col-sm-12">
+							<label>Usuario</label>
+							 <div class="input-group">
+							      <input type="text" ng-model="viewDatos[0].USE_USUA" class="form-control input-sm" required>
+							      <span class="input-group-btn">
+							        <button title="Resetear la clave" class="btn btn-default input-sm" type="button"><i class="glyphicon glyphicon-lock"></i></button>
+							      </span>
+    						</div>												
+						</div>
+						<div class="col-lg-6 col-md-3 col-xs-12 col-sm-12">
+							<div class="form-group">
+								<label>Tipo Usuario</label>
+								<select name="" ng-model="viewDatos[0].USE_COD_TIPO"  class="form-control" required>
+									<option value="0" ng-show="{{admin}}" >Administrador</option>
+									<option value="1" ng-show="{{investigador}} || {{admin}}">Investigador</option> 
+								</select>
+							</div>	
+						</div>
+					</div>
+					 <div class="row"> 
+				       <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">   
+				        <div class="form-group">
+				          <button  ng-click= "save(viewDatos[0])"  ng-disabled="formUsuario.$invalid"              
+				                class="btn btn-primary">{{buttonText}}</button>
+				                 <button  ng-click= "volver()"               
+				                class="btn btn-primary">Cancelar</button>
+				       </div>
+				        </div>
+                   
+       				</div>	
+
+	  			</div>
+			</form>
+		</div>
+	</div>
+</div>	

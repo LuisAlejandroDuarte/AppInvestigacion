@@ -87,9 +87,16 @@
 
 
 
- .controller('ControladorConvocatoria', ['$scope','$window','TareasResource', function($scope,$window,TareasResource) {
+ .controller('ControladorConvocatoria', ['$scope','$window','TareasResource','$location', function($scope,$window,TareasResource,$location) {
 
-                                     
+    var user = JSON.parse($window.sessionStorage.getItem('investigador'));
+
+    if (user==null || user==undefined)
+    {
+
+      $location.path('/inicio');
+      return;
+    }                             
 
              moment.locale('es');
          $scope.options = {           
