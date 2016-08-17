@@ -1,17 +1,36 @@
 'use strict';
 
 angular.module('listaTareasApp')
+
+  .directive('myUsuario', [function () {
+    return {
+      restrict: 'AE',     
+       controller: [ "$scope","$window",'$http', function($scope,$window,$http) {
+       }],
+        template : '<div class="modal fade" id="myModal"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">' + 
+                    '<div class="modal-dialog">' +
+        '<div class="modal-content">' +
+            '<div class="modal-header">' +
+                '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
+                '<h4 class="modal-title" id="myModalLabel">Validación Usuario</h4>' +
+            '</div>' +
+            '<div class="modal-body"> ' +
+                 '<h4> Usuario o clave incorrectos </h4> ' +
+                  '<div><label id="nombreCentro"></label>' +
+            '</div>' +
+            '<div class="modal-footer">' +                
+                '<button type="button" class="btn btn-default" data-dismiss="modal"  >ACEPTAR</button>' +
+            '</div>' +        
+        '</div>' +        
+    '</div>' +    
+'</div>' +
+'</div>'
+    };
+  }])
+
+
   .controller('InicioCtrl',['$scope','$modal','$document', '$q', 'TareasResource', '$log', '$cookieStore', '$location','$window', function ($scope,$modal,$document, $q, TareasResource, $log, $cookieStore, $location,$window) {
-   
-    // $scope.iniciarSesion = function() {
-    //   // var usr = TareasResource.iniciar.sesion({nombreUsuario: $scope.usuario.nombreUsuario, clave: $scope.usuario.clave})
-    //   //   .$promise.then(function(usr) {
-    //   //     inisioSesion.resolve(usr);
-    //   //   });
-    //   $scope.dato = TareasResource.objeto.query({Usuario: $scope.usuario, Contrasena: $scope.clave});
-    // };
-    // 
-       
+      
 
      var inicioSesion = $q.defer();
 
@@ -89,31 +108,11 @@ angular.module('listaTareasApp')
            inicioSesion.resolve(usr);         
         },
           function(error) {
-            $scope.result = error.data[0].msg;    
-              var modalInstance = $modal.open({
-         templateUrl: 'myModalContent.html',
-         controller: 'ModalInstanceCtrl',
-          resolve: {
-            result: function () {
-              return $scope.result;
-        }
-      }
-     
-    });        
+                     $('#myModal').modal('show'); 
           });
         }
           }]);
 
-angular.module('listaTareasApp')
-.controller('ModalInstanceCtrl',['$scope', '$modalInstance', 'result', function ($scope, $modalInstance, result) {
-
-  $scope.result = result;
-  
-  $scope.cerrar = function () {
-    $modalInstance.dismiss('cerrar');
-  };
- 
-}]);
    // var datos =  angular.fromJson
 
    //    if ($scope.dato == 'false')
