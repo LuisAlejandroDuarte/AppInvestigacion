@@ -661,11 +661,9 @@ angular.module('listaTareasApp')
         
 
        var grupoinvestigacion =  TareasResource.execute.query({Accion: "S",
-                         SQL:"SELECT grupo.gru_nomb As NombreGrupo,grupo.gru_codi As IdGrupo," +
-                            "linea.lin_codi As IdLinea,linea.lin_desc As NombreLinea, " +
+                         SQL:"SELECT grupo.gru_nomb As NombreGrupo,grupo.gru_codi As IdGrupo," +                           
                             "inve_grup.igr_fech_inic As FechaInicio,inve_grup.igr_fech_term As FechaTermina,'false' As Sel FROM  sgi_inve_grup as inve_grup INNER JOIN " + 
-                            "sgi_grup as grupo on grupo.gru_codi = inve_grup.igr_grup_codi INNER JOIN " +                            
-                            "sgi_line_inve as linea on linea.lin_codi = inve_grup.igr_line_inve_codi " +
+                            "sgi_grup as grupo on grupo.gru_codi = inve_grup.igr_grup_codi " +
                             " WHERE  inve_grup.igr_inve_iden="  + $route.current.params.idInvestigador + "" }); 
 
         
@@ -690,29 +688,35 @@ angular.module('listaTareasApp')
        $scope.semillero = TareasResource.execute.query({Accion: 'S',
                          SQL: 'SELECT sem_codi,sem_nomb FROM sgi_semi'}); 
 
-        var semilleroinvestigacion =  TareasResource.execute.query({Accion: "S",
-                         SQL:"SELECT semillero.sem_nomb As NombreSemillero,semillero.sem_codi As IdSemillero," +
-                            "linea.lin_codi As IdLinea,linea.lin_desc As NombreLinea, " +
+        var semilleroinvestigacion =  TareasResource.SQL({Accion: "S",
+                         SQL:"SELECT semillero.sem_nomb As NombreSemillero,semillero.sem_codi As IdSemillero," +                           
                             "inve_semi.ins_fech_inic As FechaInicio,inve_semi.ins_fech_term As FechaTermina,'false' As Sel FROM  sgi_inve_semi as inve_semi INNER JOIN " + 
-                            "sgi_semi as semillero on semillero.sem_codi = inve_semi.ins_semi_codi INNER JOIN " +                            
-                            "sgi_line_inve as linea on linea.lin_codi = inve_semi.ins_line_inve_codi " +
+                            "sgi_semi as semillero on semillero.sem_codi = inve_semi.ins_semi_codi " +
                             " WHERE  inve_semi.ins_inve_iden="  + $route.current.params.idInvestigador + "" }); 
 
-       $scope.semilleroinvestigacion =[];
-        semilleroinvestigacion.$promise.then(function(result2){
-            tieneDatos = false;
-          angular.forEach(result2, function(value, key){
-            if (value.NombreSemillero==undefined)
-            {              
-              $scope.semilleroinvestigacion =[];              
-            }
-            else
-              tieneDatos =true;
-                        
+          $scope.semilleroinvestigacion =[];
+          semilleroinvestigacion.then(function(result) {
+
+            $scope.semilleroinvestigacion = result.data;       
+
           });
-          if (tieneDatos==true)
-                $scope.semilleroinvestigacion = result2;           
-        });
+
+
+       // $scope.semilleroinvestigacion =[];
+       //  semilleroinvestigacion.$promise.then(function(result2){
+       //      tieneDatos = false;
+       //    angular.forEach(result2, function(value, key){
+       //      if (value.NombreSemillero==undefined)
+       //      {              
+       //        $scope.semilleroinvestigacion =[];              
+       //      }
+       //      else
+       //        tieneDatos =true;
+                        
+       //    });
+       //    if (tieneDatos==true)
+       //          $scope.semilleroinvestigacion = result2;           
+       //  });
 
 
       $scope.tipoinve = TareasResource.execute.query({Accion: 'S',
