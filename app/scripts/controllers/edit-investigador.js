@@ -35,6 +35,7 @@ angular.module('listaTareasApp')
     var oldIdentificacion;
     var strmd5;
 
+    id_inve = parseInt($route.current.params.idInvestigador);
     var user = JSON.parse($window.sessionStorage.getItem('usuario'));
 
     if (user==null || user==undefined)
@@ -62,11 +63,9 @@ angular.module('listaTareasApp')
         };
 
 
-  $scope.options = {           
-            method: 'post',
-            url: '' ,            
+  $scope.options = {                       
           
-          cache: false,
+                cache: false,
                 height: 300,
                 striped: true,
                 pagination: true,
@@ -157,14 +156,8 @@ angular.module('listaTareasApp')
                 id_inve = datos[0].INV_CODI;
                $scope.hideTable=false;  
                $scope.hideProyecto =true;   
-             $('#tableinvestigadoredit').bootstrapTable('refresh',
-              { url:'scripts/services/api.php?url=executeSQL/S/SELECT PI.id_grupo,PI.id_tipoInvestigador,PI.id_convocatoria,PI.id_linea,' +
-                'P.PRO_CODI, P.PRO_NOMB, P.PRO_FINA,PI.fecha_ini,PI.fecha_ter FROM sgi_proy_inve AS PI INNER JOIN sgi_inve AS I ON I.INV_CODI =PI.id_inve INNER JOIN sgi_proy AS P ON  ' + 
-                'P.PRO_CODI=PI.id_proy WHERE  PI.id_inve=' + datos[0].INV_CODI });     
-             $('#myModal').hide();    
-              $scope.viewDatos = datosInvestigador;  
-
-                     var day;
+                  $scope.viewDatos = datosInvestigador; 
+                    var day;
                      var mounth;
                      var year;
                      var fechaStr;
@@ -177,7 +170,32 @@ angular.module('listaTareasApp')
 
                      $scope.viewDatos[0].INV_FECH_NACI =moment(datosInvestigador[0].INV_FECH_NACI).format("DD-MMMM-YYYY");
             
-              oldIdentificacion = datos[0].INV_IDEN;  
+              oldIdentificacion = datos[0].INV_IDEN;   
+               var productos ={
+                  Accion :'S',
+                  SQL:'SELECT PI.id_grupo,PI.id_tipoInvestigador,PI.id_convocatoria,PI.id_linea,' +
+                      'P.PRO_CODI, P.PRO_NOMB, P.PRO_FINA,PI.fecha_ini,PI.fecha_ter FROM sgi_proy_inve AS PI INNER JOIN sgi_inve AS I ON I.INV_CODI =PI.id_inve INNER JOIN sgi_proy AS P ON  ' + 
+                      'P.PRO_CODI=PI.id_proy WHERE  PI.id_inve=' + datos[0].INV_CODI 
+               }
+
+             var consulta = TareasResource.SQL(productos);
+
+                  consulta.then(function(dat){
+
+                      if (dat.data[0]!=null)
+                          $('#tableinvestigadoredit').bootstrapTable('load',dat.data);
+
+                      
+                      $('#myModal').hide();    
+                   
+
+                   
+
+                  })
+
+
+             
+             
 
       });
 
@@ -600,7 +618,7 @@ angular.module('listaTareasApp')
        var items ={
         Accion:"S",
         SQL: 'SELECT G.gru_codi,G.gru_nomb FROM sgi_grup AS G INNER JOIN sgi_inve_grup AS IG ON IG.IGR_GRUP_CODI=G.gru_codi WHERE '+
-                         " IG.IGR_INVE_IDEN=" + user.Id_inve
+                         " IG.IGR_INVE_IDEN=" +  id_inve
        }
 
       var  grupo = TareasResource.SQL(items); 
