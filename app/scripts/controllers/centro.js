@@ -80,7 +80,7 @@
          $scope.options = {           
             method: 'get',
             url: 'scripts/services/api.php?url=executeSQL/S/SELECT C.CEN_CODI,C.CEN_NOMB,Z.ZON_NOMB ' + 
-            		' FROM SGI_CENT AS C INNER JOIN SGI_ZONA AS Z ON ' +
+            		' FROM sgi_cent AS C RIGHT JOIN sgi_zona AS Z ON ' +
 					' Z.ZON_CODI = C.CEN_ZONA_CODI',            
           
  				cache: false,

@@ -245,7 +245,7 @@
 
          <select class="form-control"  ng-model="viewDatos[0].INV_CENT_CODI" 
 
-          ng-options="opt.CEN_CODI as opt.CEN_NOMB for opt in Centro" 
+          ng-options="opt.CEN_CODI as opt.CEN_NOMB for opt in Centro | orderBy:'CEN_NOMB'" 
 
           ng-change="onchangedcentro(viewDatos[0].INV_CENT_CODI)" required>
 
@@ -267,7 +267,7 @@
 
          <select class="form-control"  ng-model="viewDatos[0].INV_PROG_ACAD_CODI"  
 
-          ng-options="opt2.PAC_CODI as opt2.PAC_NOMB for opt2 in Programa" 
+          ng-options="opt2.PAC_CODI as opt2.PAC_NOMB for opt2 in Programa | orderBy:'PAC_NOMB'" 
 
           ng-change="on_changedprograma(viewDatos[0].INV_PROG_ACAD_CODI)" required>
 

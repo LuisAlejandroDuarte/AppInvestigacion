@@ -79,7 +79,7 @@
                 minimumCountColumns: 2,
                 clickToSelect: true,
                 idField:'gru_codi',
-                toolbar: '#custom-toolbararea',
+                toolbar: '#toolbargrupo',
             columns: [{               
                 field: 'Grupo',
                 title: 'GRUPO',

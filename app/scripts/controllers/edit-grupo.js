@@ -716,31 +716,35 @@ $scope.OnClicDescargarPlan = function(a,b)
 
       
 
-        $scope.listTipoGrupo = TareasResource.execute.query({Accion: 'S',
-                         SQL: 'SELECT lin_codi AS Id,lin_desc AS Nombre FROM sgi_line_inve'}); 
+       var executeSql = TareasResource.execute.query({Accion: 'S',
+                         SQL: 'SELECT lin_codi AS Id,lin_desc AS Nombre  FROM sgi_line_inve'}); 
 
-        $('#cmdLinea').popover('destroy');
-        $scope.titleEditar = "Líneas de Investigación";
-        $scope.tipoGrupo = "Seleccione Línea Investigación";
+          executeSql.$promise.then(function (result){
 
-        $scope.idMain = {
-                        Nombre:"",
-                        FechaInicia:null,
-                        FechaTermina:null,
-                        Id:0,
-                        Id2:0,
-                        tipo:1,
-                        accion:'Add'
-                      };  
-         $scope.FechaInicia=null;  
-         $scope.Nombre="";                          
-         $scope.hideVinculacion = true;   
-         $scope.hideFechaTermina =true;  
-         
-         $('#window').jqxWindow({height:230});             
-         $scope.jqxWindowSettings.apply('open');
-       
+             $scope.listTipoGrupo =result;
 
+              $('#cmdLinea').popover('destroy');
+              $scope.titleEditar = "Líneas de Investigación";
+              $scope.tipoGrupo = "Seleccione Línea Investigación";
+
+              $scope.idMain = {
+                              Nombre:"",
+                              FechaInicia:null,
+                              FechaTermina:null,
+                              Id:0,
+                              Id2:0,
+                              tipo:1,
+                              accion:'Add'
+                            };  
+               $scope.FechaInicia=null;  
+               $scope.Nombre="";                          
+               $scope.hideVinculacion = true;   
+               $scope.hideFechaTermina =true;  
+               
+               $('#window').jqxWindow({height:230});             
+               $scope.jqxWindowSettings.apply('open');
+          });
+          
       //$scope.LineasInvestigacion.push({Nombre:linea.lin_desc,FechaInicia:null,FechaTermina:null,IdLinea:linea.lin_codi});      
 
    }    
