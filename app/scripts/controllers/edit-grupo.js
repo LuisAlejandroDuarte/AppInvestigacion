@@ -761,7 +761,7 @@ $scope.OnClicDescargarPlan = function(a,b)
                          SQL: 'SELECT tiv_codi,tiv_desc FROM sgi_tipo_vinc'}); 
 
         $scope.listTipoGrupo = TareasResource.execute.query({Accion: 'S',
-                         SQL: 'SELECT inv_codi AS Id, CONCAT(inv_apel," ",inv_nomb) AS Nombre FROM sgi_inve WHERE sgi_inve.INV_CODI!=' +  user.INV_CODI }); 
+                         SQL: 'SELECT inv_codi AS Id, CONCAT(inv_apel," ",inv_nomb) AS Nombre FROM sgi_inve WHERE sgi_inve.INV_CODI!=' +  user.INV_CODI + ' AND (sgi_inve.INV_CODI_USUA!=0 or sgi_inve.INV_CODI_USUA!=null)'}); 
 
         $('#cmdLinea').popover('destroy');
         $scope.titleEditar = "Integrantes del Grupo";

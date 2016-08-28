@@ -465,7 +465,7 @@
 
 
 
-   <div class="row">
+ <!--   <div class="row">
 
       <div class="col-md-3" style="margin-top: 20px">
 
@@ -491,10 +491,10 @@
 
       </div>
 
-   </div>
+   </div> -->
 
 
-
+<!-- 
      <div class="row">
 
       <div class="col-md-3" >
@@ -547,17 +547,17 @@
 
       </div> 
 
-     </div>
+     </div> -->
 
 
 
-     <div class="row">
+     <!-- <div class="row">
 
      <button ng-click="agregargrupoinvestigacion(selGrupo,selLinea,fechaInicioGrupo,fechaFinGrupo)" class="btn btn-default"  style="margin-left: 20px; margin-top: 10px;background-color: rgb(239, 209, 230);font-size: 12px;font-weight: bold;color:#482CAE">Agregar</button>
 
      <button ng-click="delGrupoInvestigacion()"  class="btn btn-default" type="button" style="margin-left: 20px; margin-top: 10px;background-color: rgb(239, 209, 230);font-size: 12px;font-weight: bold;color:#FD0505">Eliminar</button>
 
-    </div>
+    </div> -->
 
     <div class="row">
 
@@ -571,11 +571,10 @@
 
          <tr>
 
-            <th style="width:10px"></th>
+           
 
             <th style="width:100px">Grupos</th>
-
-            <th style="width:100px">L&iacute;neas</th>
+          
 
             <th style="width:100px">Fecha Inicio</th>
 
@@ -587,24 +586,14 @@
 
         <tr ng-repeat="ginvestigacion in grupoinvestigacion | orderBy :'FechaInicio'">
 
-          <td>
-
-            <input type="checkbox" ng-model="ginvestigacion.Sel">
-
-          </td>
+         
 
           <td>
 
              <span >{{ginvestigacion.NombreGrupo}}</span>
 
           </td>
-
-           <td>
-
-             <span>{{ginvestigacion.NombreLinea }}</span>
-
-          </td>
-
+         
            <td>
 
              <span>{{ginvestigacion.FechaInicio | date:'d MMMM y'}}</span>
@@ -631,101 +620,9 @@
 
 </div>
 
-    <div class="row">
-
-      <div class="col-md-3" style="margin-top: 20px">
-
-        <label>Semillero de Investigaci&oacute;n</label>               
-
-      </div>
-
-       <div class="col-md-3" style="margin-top: 20px">
-
-        <label>Fecha Inicio</label>               
-
-      </div>
-
-       <div class="col-md-3" style="margin-top: 20px">
-
-        <label>Fecha Culminaci&oacute;n</label>               
-
-      </div>
-
-       <div class="col-md-3" style="margin-top: 20px">
-
-        <label>L&iacute;neas de Investigaci&oacute;n</label>               
-
-      </div>
-
-   </div>
+ 
 
 
-
-     <div class="row">
-
-      <div class="col-md-3" >
-
-         <select class="form-control" ng-model="selSemillero"  ng-change="onChangedSemillero(selSemillero)"  
-
-          ng-options="optSemillero.sem_codi as optSemillero.sem_nomb for optSemillero in semillero" >
-
-          </select>           
-
-      </div> 
-
-       <div class="col-md-3" >
-
-           <div class="form-group" ng-class="{'has-error': datepickerForm.date.$invalid}">
-
-   <input type="text" class="form-control" ng-model="fechaInicioSemillero" data-date-format="dd-MMMM-yyyy" date-type="iso" data-max-date="{{fechaFinalSemillero}}"  data-autoclose="1" name="date2" bs-datepicker>
-
-  
-
-  </div>
-
-  
-
-       </div>
-
-             <div class="col-md-3" >
-
-           <div class="form-group" ng-class="{'has-error': datepickerForm.date.$invalid}">
-
-   <input type="text" id ="idfechaFinalSemillero" class="form-control" ng-model="fechaFinalSemillero" data-date-format="dd-MMMM-yyyy" date-type="iso" data-min-date="{{fechaInicioSemillero}}"  data-autoclose="1" name="date2" bs-datepicker>
-
-  
-
-  </div>
-
-  
-
-       </div>
-
-
-
-        <div class="col-md-3" >
-
-         <select class="form-control"   ng-model="selSemillerolinea" 
-
-          ng-options="optsemillerolinea.lin_codi as optsemillerolinea.lin_desc for optsemillerolinea in semillerolinea" >
-
-          
-
-          </select>           
-
-      </div> 
-
-
-
-     </div>
-
-     <div class="row">
-
-     <button ng-click="agregarSemilleroInvestigacion(selSemillero,selSemillerolinea,fechaInicioSemillero,fechaFinalSemillero)" class="btn btn-default"  style="margin-left: 20px; margin-top: 10px;background-color: rgb(239, 209, 230);font-size: 12px;font-weight: bold;color:#482CAE">Agregar</button>
-
-     <button ng-click="delSemilleroInvestigacion()"  class="btn btn-default" type="button" style="margin-left: 20px; margin-top: 10px;background-color: rgb(239, 209, 230);font-size: 12px;font-weight: bold;color:#FD0505">Eliminar</button>
-
-    </div>
 
           <div class="row">
 
@@ -739,12 +636,10 @@
 
          <tr>
 
-            <th style="width:10px"></th>
+           
 
             <th style="width:100px">Semilleros</th>
-
-            <th style="width:100px">L&iacute;neas</th>
-
+          
             <th style="width:100px">Fecha Inicio</th>
 
             <th style="width:100px">Fecha Termina</th>
@@ -755,23 +650,14 @@
 
         <tr ng-repeat="sinvestigacion in semilleroinvestigacion | orderBy :'FechaInicio'">
 
-          <td>
-
-            <input type="checkbox" ng-model="sinvestigacion.Sel">
-
-          </td>
+         
 
           <td>
 
              <span >{{sinvestigacion.NombreSemillero}}</span>
 
           </td>
-
-           <td>
-
-             <span>{{sinvestigacion.NombreLinea }}</span>
-
-          </td>
+        
 
            <td>
 
