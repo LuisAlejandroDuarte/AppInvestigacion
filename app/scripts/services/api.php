@@ -848,7 +848,7 @@ private function insertArea() {
 
          
 
-         $message[0] = array('Id_tipo'=>$usua['USE_COD_TIPO'], 'Id' => $usua['USE_CODI'],'Usuario' => $usua['USE_USUA']);
+         $message[0] = array('Id_tipo'=>$usua['USE_COD_TIPO'], 'Id' => $usua['USE_CODI'],'Usuario' => $usua['USE_USUA'],'Nombre'=>$usua['USE_NOMB'] . ' ' . $usua['USE_APEL']);
 
        
 

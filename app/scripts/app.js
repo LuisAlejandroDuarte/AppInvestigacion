@@ -314,6 +314,12 @@ angular.module("listaTareasApp", ['ngRoute','ngAnimate','ngLocale', 'ngResource'
         
       })
 
+      .when('/cambioclave', {
+        templateUrl: 'views/cambioclave.html',
+        controller: 'cambioclave'
+        
+      })
+
       .when('/edit-propuesta/:idPropuesta', {
         title: 'Editar Propuesta',
         templateUrl: 'views/edit-propuesta.html',

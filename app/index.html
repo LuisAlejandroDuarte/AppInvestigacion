@@ -108,93 +108,45 @@
 
 <nav id="navbar-example" class="navbar navbar-default navbar-fixed-top" role="navigation">
 
-      <div class="container-fluid">      
+      <div class="container-fluid">                    
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">      
+        <li class="dropdown" ng-show="mnuAdmin"> 
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Administrar <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="#/area">Area</a></li>
+            <li><a href="#/atributo">Atributo</a></li>
+            <li><a href="#/centro">Centro</a></li>            
+            <li><a href="#/zona">Zona</a></li>            
+            <li><a href="#/sgiTipoConv">Tipo Convocatoria</a></li>            
+            <li><a href="#/convocatoria">Convocatoria</a></li>            
+            <li><a href="#/escalaEvaluacion">Escala Evaluacion</a></li>
+            <li><a href="#">Parametro Evaluacion</a></li>
+            <li><a href="#">Propuesta atributo</a></li>
+            <li><a href="#">Propuesta atributo convocatoria</a></li>
+            <li><a href="#/propuesta">Propuesta</a></li>
+          </ul>
+        </li>
+         <li class="dropdown" ng-show="mnuInvestiga"> 
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Opciones <span class="caret"></span></a>
+          <ul class="dropdown-menu">            
+            <li><a href="#/edit-investigador/{{idInve}}">Investigador</a></li>            
+            <li><a href="#/cambioclave">Cambio Clave</a></li>            
+
+          </ul>
+        </li>
+      </ul>     
+      <ul class="nav navbar-nav navbar-right">
+        <button class="btn btn-danger btnSalir" ng-click="salir()">Salir</button>
+      </ul>
+    </div>
+        <div class="collapse navbar-collapse bs-example-js-navbar-collapse">
+
+        </div>
 
       
 
-        <div class="collapse navbar-collapse bs-example-js-navbar-collapse">
-
-           <!-- <ul class="nav navbar-nav">
-
-            <li class="dropdown" ng-show=usrConectado.estaConectado>
-
-              <a id="drop1"  role="button" class="dropdown-toggle" data-toggle="dropdown">TABLAS <span class="caret"></span></a>
-
-              <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
-
-                <li role="presentation"><a role="menuitem" tabindex="-1" href="#/granarea">GRAN ÁREA</a></li>
-
-                 <li role="presentation"><a role="menuitem" tabindex="-1" href="#/zona">ZONA</a></li>
-
-                <li role="presentation"><a role="menuitem" tabindex="-1" href="#/centro">CENT</a></li>
-
-                <li role="presentation"><a role="menuitem" tabindex="-1" href="#/area">ÁREAS</a></li>
-
-                
-
-              </ul>
-
-            </li> -->
-
-
-
-            <!-- <li class="dropdown" ng-show=usrConectado.estaConectado>
-
-              <a id="drop1"  role="button" class="dropdown-toggle" data-toggle="dropdown">TABLASII<span class="caret"></span></a>
-
-              <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
-
-                 <li role="presentation"><a role="menuitem" tabindex="-1" href="#/sgiTipoConv">SGI_TIPO_CONV</a></li>
-
-                  <li role="presentation"><a role="menuitem" tabindex="-1" href="#/investigador">Investigador</a></li>
-
-                <li role="presentation"><a role="menuitem" tabindex="-1" href="#/sgiConv">SGI_CONV</a></li>
-
-                 <li role="presentation"><a role="menuitem" tabindex="-1" href="#/sgi_escu">SGI_ESCU</a></li>
-
-                <li role="presentation"><a role="menuitem" tabindex="-1" href="#/sgi_grup">SGI_GRUP</a></li>
-
-                <li role="presentation"><a role="menuitem" tabindex="-1" href="#/sgi_grup_conv">SGI_GRUP_CONV</a></li>
-
-                
-
-              </ul>
-
-            </li> -->
-
-           <!--  <li class="dropdown">
-
-              <a href="#" id="drop2" role="button" class="dropdown-toggle" data-toggle="dropdown">Dropdown 2 <span class="caret"></span></a>
-
-              <ul class="dropdown-menu" role="menu" aria-labelledby="drop2">
-
-                <li role="presentation"><a role="menuitem" tabindex="-1" href="http://twitter.com/fat">Action</a></li>
-
-                <li role="presentation"><a role="menuitem" tabindex="-1" href="http://twitter.com/fat">Another action</a></li>
-
-                <li role="presentation"><a role="menuitem" tabindex="-1" href="http://twitter.com/fat">Something else here</a></li>
-
-                <li role="presentation" class="divider"></li>
-
-                <li role="presentation"><a role="menuitem" tabindex="-1" href="http://twitter.com/fat">Separated link</a></li>
-
-              </ul>
-
-            </li> -->
-
-         <!--  </ul>  -->
-
-          <ul class="nav navbar-nav navbar-right ">
-
-              <button class="btn btn-danger btnSalir" ng-click="salir()">Salir</button>
-
-          </ul>
-
-        </div><!-- /.nav-collapse
-
-      </div><!-- /.container-fluid -->
-
-    </nav> <!-- /navbar-example -->
+</nav> 
 
 
 
@@ -406,6 +358,7 @@
 <script src="scripts/controllers/propuesta-convocatoria-atributo-juez.js"></script>
 
 <script src="scripts/controllers/parametroEvaluacion.js"></script>
+<script src="scripts/controllers/cambioclave.js"></script>
 
 <script src="scripts/controllers/edit-parametroEvaluacion.js"></script>
 

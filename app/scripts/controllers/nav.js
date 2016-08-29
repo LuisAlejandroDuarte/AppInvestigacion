@@ -4,20 +4,22 @@ angular.module('listaTareasApp')
   .controller('ApCtrl', function ($scope, $cookieStore, $location,$window) {
     $scope.usrConectado = {nombre: "", puesto: '', estaConectado: ''};
 
-    var usr = $cookieStore.get('usuario');
+    var usr =  JSON.parse($window.sessionStorage.getItem('usuario'));   
+    if (usr != null ) {
+      if (usr.Id_tipo==0)
+      {
+         $scope.mnuAdmin = true;        
 
-    if (usr != null) {
-      $scope.usrConectado.nombre = usr.nombre;
-      $scope.usrConectado.puesto = usr.puesto;
+      }
+
+      $scope.usrConectado.nombre = usr.Nombre;      
       $scope.usrConectado.estaConectado = true;
     };
 
     $scope.salir = function() {
       $scope.usrConectado = {nombre: "", puesto: '', estaConectado: ''};
-     
-      $cookieStore.remove('estaConectado');
-      $cookieStore.remove('usuario');
-       
+         
+       $scope.mnuAdmin=false;
       $window.sessionStorage.setItem('usuario',null);
       $window.sessionStorage.setItem('investigador',null);
 

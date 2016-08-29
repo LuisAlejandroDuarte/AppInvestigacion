@@ -1,0 +1,59 @@
+<hr>
+<div class="margenTop">
+<div class="view">
+<div class="panel panel-primary  drop-shadow" style="min-width:auto;max-width:400px;height:auto; margin-top:10%;margin-left:30%">
+  <div class="panel-heading"><h>Cambio Clave</h></div>
+  <form method="post" name="myFormCambioClave" role="form" novalidate>
+  <div class="container-fluid">
+  <div class="panel-body">
+  
+    <div class="row">          
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+       <div class="form-group">
+        <label>Clave Actual</label>
+          <input name="name" ng-model="actual" type= "password" class= "form-control"  autofocus required/>
+       </div>
+    </div>    
+  </div>        
+  <div class="row">          
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+       <div class="form-group">
+        <label>Clave Actual</label>
+          <input name="name" ng-model="clave" type= "password" class= "form-control"  autofocus required/>
+       </div>
+    </div>    
+  </div>        
+  <div class="row">          
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+       <div class="form-group">
+        <label>Clave Actual</label>
+          <input name="name" ng-model="reclave" type= "password" class= "form-control"  autofocus required/>
+       </div>
+    </div>    
+  </div>        
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+      <button  ng-click= "save"  ng-disabled="myFormCambioClave.$invalid"              
+                class="btn btn-primary">Aceptar</button>
+              
+                
+
+  <button  ng-click= "volver()"               
+                class="btn btn-primary">Cancelar</button>
+    </div>
+     
+</div>
+  </div>
+
+  </div>
+    
+</form>
+  
+</div>
+</div>
+</div>
+
+
+
+
+ 

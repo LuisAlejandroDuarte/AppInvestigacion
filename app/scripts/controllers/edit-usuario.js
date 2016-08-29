@@ -104,10 +104,10 @@ angular.module('listaTareasApp')
 	 						   						datos ={
 					        						Accion: 'I',
 								        			SQL: "0;sgi_inve;INV_CODI;INSERT INTO  sgi_inve (INV_CODI,INV_IDEN,INV_TIPO_DOCU_CODI, " +
-								        			" INV_NOMB,INV_APEL,INV_FECH_NACI,INV_MAIL,INV_CODI_USUA,INV_PASS) " + 
+								        			" INV_NOMB,INV_APEL,INV_FECH_NACI,INV_MAIL,INV_CODI_USUA,INV_PASS,INV_TELE_CELU) " + 
 								        			" VALUES (@@,'" +  usuario.USE_IDEN + "',1,'" + 
 								        			usuario.USE_NOMB + "','" + usuario.USE_APEL + "','" + moment(new Date()).format('YYYY-MM-DD')  + "','" + 
-								        			usuario.USE_EMAI + "'," + result.data[0].Maximo + ",'" + md5(usuario.USE_USUA) + "')"
+								        			usuario.USE_EMAI + "'," + result.data[0].Maximo + ",'" + md5(usuario.USE_USUA) + "','" + usuario.USE_TELE + "')"
 			      									};       
 
 									      	TareasResource.enviararchivo(datos).then(function(result) { 

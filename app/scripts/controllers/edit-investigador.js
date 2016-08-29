@@ -1331,7 +1331,10 @@ $scope.agregarSemilleroInvestigacion = function(idSemillero,idLinea,fechaInicioS
     }
 };
  $scope.volver = function(){
+      $scope.$parent.mnuInvestiga =false;
+     $scope.$parent.mnuAdmin = false;
     $location.path('/inicio');
+ 
  };
 
 

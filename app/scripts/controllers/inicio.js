@@ -39,15 +39,13 @@ angular.module('listaTareasApp')
 
     function usrASesion(usr) {
    
-  
-
+     
+        
         $scope.usrConectado.nombre = usr.usuario;
          $scope.usrConectado.puesto = 1;
        //  $scope.estado = usr.show;
         $scope.usrConectado.estaConectado = true;
-        $scope.usrConectado.Id = usr.Id_inve;
-
-         $log.info($scope.usrConectado);
+        $scope.usrConectado.Id = usr.Id_inve;      
 
          $cookieStore.put('estaConectado', true);
          $cookieStore.put('usuario', usr);
@@ -55,16 +53,21 @@ angular.module('listaTareasApp')
 
          if (usr[0].Id_tipo==0 && $scope.seleccionado==0)
          {
+            $scope.$parent.mnuAdmin = true;
              $location.path('/usuario');
+            
              return;
          }
 
           if ($scope.seleccionado==1 && usr[0].Id_tipo==1)
           {
+            $scope.$parent.mnuInvestiga =true;
+            $scope.$parent.mnuAdmin = false;
 
             var executesql = TareasResource.SQL({Accion:'S',SQL:'SELECT INV_CODI FROM sgi_inve WHERE INV_CODI_USUA=' + usr[0].Id});
                 executesql.then(function(result){
                    $window.sessionStorage.setItem('investigador', JSON.stringify(result.data[0]));
+                     $scope.$parent.idInve= result.data[0].INV_CODI
                   $location.path('/edit-investigador/'+ result.data[0].INV_CODI );
                   return;
                 });            
@@ -113,71 +116,4 @@ angular.module('listaTareasApp')
         }
           }]);
 
-   // var datos =  angular.fromJson
-
-   //    if ($scope.dato == 'false')
-   //    {
-   //         $scope.usrConectado.nombre = usr.Usuario;
-   //       $scope.usrConectado.puesto = 1;
-   //     //  $scope.estado = usr.show;
-   //      $scope.usrConectado.estaConectado = true;
-   //      $scope.usrConectado.Grupo = true;
-
-   //       $log.info($scope.usrConectado);
-
-   //       $cookieStore.put('estaConectado', true);
-   //       $cookieStore.put('usuario', usr);
-
-   //      // $location.path('/main');
-   //    }
-   //    else
-   //    {
-   //             $scope.result = usr.message;
-   //    var modalInstance = $modal.open({
-   //       templateUrl: 'myModalContent.html',
-   //       controller: 'ModalInstanceCtrl',
-   //        resolve: {
-   //          result: function () {
-   //            return $scope.result;
-   //      }
-   //    }
-     
-    //});
-  
-
-
-    //     .$promise.then(function(usr) {
-    // $scope.estado = usr.show;
-    //        inicioSesion.resolve(usr);
-
-         
-    //     });
-     
-      
-	     // $scope.dato= TareasResource.objeto.query({Usuario: $scope.usuario, Contrasena: $scope.clave});
-      //  var d = $scope.dato;
- // $scope.result = 'Ho existe';
- //      var modalInstance = $modal.open({
- //         templateUrl: 'myModalContent.html',
- //         controller: 'ModalInstanceCtrl',
- //          resolve: {
- //            result: function () {
- //              return $scope.result;
- //        }
- //      }
-     
- //    });
-
- //       modalInstance.result.then(function (selectedItem) {
- //      $scope.selected = selectedItem;
- //    }, function () {
- //      $log.info('Modal dismissed at: ' + new Date());
- //    });
-
-
-
-
-
-
-//carrera 28 56 -57 apto 301
-//ing rodriguez
+   
