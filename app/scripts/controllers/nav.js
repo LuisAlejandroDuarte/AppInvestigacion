@@ -18,7 +18,7 @@ angular.module('listaTareasApp')
 
     $scope.salir = function() {
       $scope.usrConectado = {nombre: "", puesto: '', estaConectado: ''};
-         
+       $scope.mnuInvestiga =false;
        $scope.mnuAdmin=false;
       $window.sessionStorage.setItem('usuario',null);
       $window.sessionStorage.setItem('investigador',null);

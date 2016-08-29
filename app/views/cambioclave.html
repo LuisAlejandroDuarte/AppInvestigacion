@@ -11,7 +11,7 @@
       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
        <div class="form-group">
         <label>Clave Actual</label>
-          <input name="name" ng-model="actual" type= "password" class= "form-control"  autofocus required/>
+          <input name="name" ng-model="claveactual" type= "password" class= "form-control"  autofocus required/>
        </div>
     </div>    
   </div>        
@@ -19,7 +19,7 @@
       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
        <div class="form-group">
         <label>Clave Actual</label>
-          <input name="name" ng-model="clave" type= "password" class= "form-control"  autofocus required/>
+          <input name="name" ng-model="nuevaclave" type= "password" class= "form-control"  autofocus required/>
        </div>
     </div>    
   </div>        
@@ -27,13 +27,13 @@
       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
        <div class="form-group">
         <label>Clave Actual</label>
-          <input name="name" ng-model="reclave" type= "password" class= "form-control"  autofocus required/>
+          <input name="name" ng-model="repitaclave" type= "password" class= "form-control"  autofocus required/>
        </div>
     </div>    
   </div>        
   <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-      <button  ng-click= "save"  ng-disabled="myFormCambioClave.$invalid"              
+      <button  ng-click= "save()"  ng-disabled="myFormCambioClave.$invalid"              
                 class="btn btn-primary">Aceptar</button>
               
                 

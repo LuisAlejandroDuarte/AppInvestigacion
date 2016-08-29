@@ -54,6 +54,7 @@ angular.module('listaTareasApp')
          if (usr[0].Id_tipo==0 && $scope.seleccionado==0)
          {
             $scope.$parent.mnuAdmin = true;
+            $scope.$parent.mnuInvestiga =true;
              $location.path('/usuario');
             
              return;
