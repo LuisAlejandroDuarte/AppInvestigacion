@@ -31,6 +31,12 @@ angular.module('listaTareasApp')
 
   .controller('InicioCtrl',['$scope','$modal','$document', '$q', 'TareasResource', '$log', '$cookieStore', '$location','$window', function ($scope,$modal,$document, $q, TareasResource, $log, $cookieStore, $location,$window) {
       
+      if ( $window.sessionStorage.getItem('usuario') == "")
+      {
+          $scope.$parent.mnuInvestiga =false;
+            $scope.$parent.mnuAdmin = false;
+            $scope.$parent.mnuConvocatoria = false;
+      }
 
      var inicioSesion = $q.defer();
 
@@ -41,11 +47,11 @@ angular.module('listaTareasApp')
    
      
         
-        $scope.usrConectado.nombre = usr.usuario;
+        $scope.usrConectado.nombre = usr[0].Usuario;
          $scope.usrConectado.puesto = 1;
        //  $scope.estado = usr.show;
         $scope.usrConectado.estaConectado = true;
-        $scope.usrConectado.Id = usr.Id_inve;      
+       // $scope.usrConectado.Id = usr.Id_inve;      
 
          $cookieStore.put('estaConectado', true);
          $cookieStore.put('usuario', usr);
@@ -53,8 +59,8 @@ angular.module('listaTareasApp')
 
          if (usr[0].Id_tipo==0 && $scope.seleccionado==0)
          {
-            $scope.$parent.mnuAdmin = true;
-            $scope.$parent.mnuInvestiga =true;
+            $scope.$parent.mnuAdmin = true;           
+
              $location.path('/usuario');
             
              return;
@@ -64,6 +70,7 @@ angular.module('listaTareasApp')
           {
             $scope.$parent.mnuInvestiga =true;
             $scope.$parent.mnuAdmin = false;
+            $scope.$parent.mnuConvocatoria = false;
 
             var executesql = TareasResource.SQL({Accion:'S',SQL:'SELECT INV_CODI FROM sgi_inve WHERE INV_CODI_USUA=' + usr[0].Id});
                 executesql.then(function(result){
@@ -87,7 +94,7 @@ angular.module('listaTareasApp')
 
         
 
-          if ($scope.seleccionado=="3")
+          if ($scope.seleccionado=="3" &&  usr[0].Id_tipo==1)
          {
             $location.path('/convocatoria');
 

@@ -91,7 +91,7 @@ module('listaTareasApp')
 						 		$selEvaluacion = $scope.listEvaluacion[0];
 
 						 		 var juez =TareasResource.execute.query({Accion:'S',
-													SQL:'SELECT concat(INV_NOMB," ",INV_APEL) AS PER_NOMB, INV_CODI  FROM sgi_inve WHERE INV_TIPO=1'});
+													SQL:'SELECT concat(USE_NOMB," ",USE_APEL) AS USE_NOMB, USE_CODI  FROM sgi_user WHERE USE_COD_TIPO=2'});
 
 								 juez.$promise.then(function (result) {
 						 			$scope.listPersona =result;
@@ -158,8 +158,8 @@ module('listaTareasApp')
 			PCJU_PCAT_NOMB:selPropuestaConvocatoriaAtributo.PCAT_NOMB,
 			PCJU_EEVA_CODI:selEvaluacion.EEV_CODI,
 			PCJU_EEV_NOMB:selEvaluacion.EEV_NOMB,
-			PCJU_INV_CODI:selJuez.INV_CODI,
-			PCJU_PER_NOMB:selJuez.PER_NOMB
+			PCJU_INV_CODI:selJuez.USE_CODI,
+			PCJU_PER_NOMB:selJuez.USE_NOMB
 		}
 
 
@@ -237,8 +237,8 @@ module('listaTareasApp')
 													" ON PCA.PCAT_CONV_CODI = C.CON_CODI INNER JOIN sgi_prop_atrib AS PA " +
 													" ON PCAT_PATR_CODI = PA.PATR_CODI INNER JOIN sgi_prop AS P " +
 													" ON PA.PATR_PROP_CODI = P.PRO_CODI INNER JOIN sgi_atrib AS A " +
-													" ON PA.PATR_ATRI_CODI = A.ATR_CODI INNER JOIN sgi_inve AS I ON " + 
-													" PCJ.PCJU_INV_CODI = I.INV_CODI  INNER JOIN sgi_esca_eval AS EE " +
+													" ON PA.PATR_ATRI_CODI = A.ATR_CODI INNER JOIN sgi_user AS U ON " + 
+													" PCJ.PCJU_INV_CODI = U.USE_CODI  INNER JOIN sgi_esca_eval AS EE " +
 													" ON EE.EEV_CODI = PCJ.PCJU_EEVA_CODI INNER JOIN sgi_para_eval AS PE " +
 													" ON EE.EEV_PARA_EVAL = PE.PEV_CODI WHERE I.INV_TIPO=1"
 								                    }

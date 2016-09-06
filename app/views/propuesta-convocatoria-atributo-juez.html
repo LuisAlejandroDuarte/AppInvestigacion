@@ -1,85 +1,169 @@
-<div class="margenTop">
-	
-	<div class="row" style="margin-left:0px">				
-		<div class="col-md-6 col-lg-6 col-xs-6">
-			<h5>PROPUESTA ATRIBUTO CONVOCATORIA</h5>
-		</div>				
-		<div class="col-md-3 col-lg-3 col-xs-3">
-			<h5>EVALUACIÓN</h5>
-		</div>				
-		<div class="col-md-3 col-lg-3 col-xs-3">
-			<h5>JUEZ</h5>
-		</div>			
-	</div>
-
-	<div class="row">
-		<div class="col-md-6 col-lg-6 col-xs-6">
-			<select class="form-control"  ng-model="selPropuestaConvocatoriaAtributo" 
-          ng-options="propuestaConvocatoriaAtributo as propuestaConvocatoriaAtributo.PCAT_NOMB for propuestaConvocatoriaAtributo in listPropuestaConvocatoriaAtributo" required>
-          </select>
-		</div>		
-		<div class="col-md-3 col-lg-3 col-xs-3">
-			<select class="form-control"  ng-model="selEvaluacion" 
-          ng-options="evaluacion as evaluacion.EEV_NOMB for evaluacion in listEvaluacion" required>
-          </select>
-		</div>		
-		<div class="col-md-3 col-lg-3 col-xs-3">
-			<select class="form-control"  ng-model="selJuez" 
-          ng-options="persona as persona.PER_NOMB for persona in listPersona" required>
-          </select>
-  			</div>
-		</div>
-	</div>	
-	<div class="row" style="margin-top:20px">
-		<div class="col-md-2 col-lg-2 col-xs-2">
-			<button type="button" class="btn btn-primary" ng-click="onClicAgregar(selPropuestaConvocatoriaAtributo,selEvaluacion,selJuez)">Agregar</button>
-		</div>
-	</div>		
-		
-	<my-modaleliminarpropuestaconvocatoriaatributojuez></my-modaleliminarpropuestaconvocatoriaatributojuez>
-	<div class="row" style="margin-top:20px">
-		<div class="col-md-12 col-lg-12 col-xs-12">           
-		   <jqx-panel jqx-settings="settingsPanel">		     
-		     <ul ng-repeat="propuestaConvocatoriaAtributoJuez in listPropuestaConvocatoriaAtributoJuez" class="list-group">		
-			<li class="list-group-item">
-				<div class="row">
-					<div class="col-md-5 col-lg-5 col-xs-5">
-						<label style="color:blue;font-size: 13px;font-weight: 100">PROPUESTA ATRIBUTO CONVOCATORIA</label>
-					</div>					
-					<div class="col-md-3 col-lg-3 col-xs-3">
-						<label style="color:blue;font-size: 13px;font-weight: 100">Evaluación</label>
-					</div>
-					<div class="col-md-3 col-lg-3 col-xs-3">
-						<label style="color:blue;font-size: 13px;font-weight: 100">Juez</label>
-					</div>
-					<div class="col-md-1 col-lg-1 col-xs-1">
-						<label style="color:red;font-size: 13px;font-weight: 300">Eliminar</label>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-5 col-lg-5 col-xs-5">
-						<label style="font-size: 13px;font-weight: 100">{{propuestaConvocatoriaAtributoJuez.PCJU_PCAT_NOMB}}</label>
-					</div>					
-					<div class="col-md-3 col-lg-3 col-xs-3">
-						<label style="font-size: 12px;font-weight: 100">{{propuestaConvocatoriaAtributoJuez.PCJU_EEV_NOMB}}</label>
-					</div>		
-					<div class="col-md-3 col-lg-3 col-xs-3">
-						<label style="font-size: 12px;font-weight: 100">{{propuestaConvocatoriaAtributoJuez.PCJU_PER_NOMB}}</label>
-					</div>			
-					<div class="col-md-1 col-lg-1 col-xs-1">
-						<jqx-button   ng-click="onClicEliminar(propuestaConvocatoriaAtributoJuez,this)">  <i class="glyphicon glyphicon-ban-circle" style="cursor:pointer"  ></i> </jqx-button>
-					</div>
-				</div>	
-
-			</li>			     	     
-	     </ul>		   
-	</jqx-panel>
-	</div>
-	</div>
-	<div class="row" style="margin-top: 10px">
-		<div class="col-md-offset-11 col-lg-offset-11 col-xs-offset-11">
-				<button type="button" class="btn btn-success" ng-click="onClicGuardar()">Guardar</button>
-					</div>
-    	</div>		
-
+<div class="margenTop">
+
+	
+
+	<div class="row" style="margin-left:0px">				
+
+		<div class="col-md-6 col-lg-6 col-xs-6">
+
+			<h5>PROPUESTA ATRIBUTO CONVOCATORIA</h5>
+
+		</div>				
+
+		<div class="col-md-3 col-lg-3 col-xs-3">
+
+			<h5>EVALUACIÓN</h5>
+
+		</div>				
+
+		<div class="col-md-3 col-lg-3 col-xs-3">
+
+			<h5>JUEZ</h5>
+
+		</div>			
+
+	</div>
+
+
+
+	<div class="row">
+
+		<div class="col-md-6 col-lg-6 col-xs-6">
+
+			<select class="form-control"  ng-model="selPropuestaConvocatoriaAtributo" 
+
+          ng-options="propuestaConvocatoriaAtributo as propuestaConvocatoriaAtributo.PCAT_NOMB for propuestaConvocatoriaAtributo in listPropuestaConvocatoriaAtributo" required>
+
+          </select>
+
+		</div>		
+
+		<div class="col-md-3 col-lg-3 col-xs-3">
+
+			<select class="form-control"  ng-model="selEvaluacion" 
+
+          ng-options="evaluacion as evaluacion.EEV_NOMB for evaluacion in listEvaluacion" required>
+
+          </select>
+
+		</div>		
+
+		<div class="col-md-3 col-lg-3 col-xs-3">
+
+			<select class="form-control"  ng-model="selJuez" 
+
+          ng-options="persona as persona.USE_NOMB for persona in listPersona" required>
+
+          </select>
+
+  			</div>
+
+		</div>
+
+	</div>	
+
+	<div class="row" style="margin-top:20px">
+
+		<div class="col-md-2 col-lg-2 col-xs-2">
+
+			<button type="button" class="btn btn-primary" ng-click="onClicAgregar(selPropuestaConvocatoriaAtributo,selEvaluacion,selJuez)">Agregar</button>
+
+		</div>
+
+	</div>		
+
+		
+
+	<my-modaleliminarpropuestaconvocatoriaatributojuez></my-modaleliminarpropuestaconvocatoriaatributojuez>
+
+	<div class="row" style="margin-top:20px">
+
+		<div class="col-md-12 col-lg-12 col-xs-12">           
+
+		   <jqx-panel jqx-settings="settingsPanel">		     
+
+		     <ul ng-repeat="propuestaConvocatoriaAtributoJuez in listPropuestaConvocatoriaAtributoJuez" class="list-group">		
+
+			<li class="list-group-item">
+
+				<div class="row">
+
+					<div class="col-md-5 col-lg-5 col-xs-5">
+
+						<label style="color:blue;font-size: 13px;font-weight: 100">PROPUESTA ATRIBUTO CONVOCATORIA</label>
+
+					</div>					
+
+					<div class="col-md-3 col-lg-3 col-xs-3">
+
+						<label style="color:blue;font-size: 13px;font-weight: 100">Evaluación</label>
+
+					</div>
+
+					<div class="col-md-3 col-lg-3 col-xs-3">
+
+						<label style="color:blue;font-size: 13px;font-weight: 100">Juez</label>
+
+					</div>
+
+					<div class="col-md-1 col-lg-1 col-xs-1">
+
+						<label style="color:red;font-size: 13px;font-weight: 300">Eliminar</label>
+
+					</div>
+
+				</div>
+
+				<div class="row">
+
+					<div class="col-md-5 col-lg-5 col-xs-5">
+
+						<label style="font-size: 13px;font-weight: 100">{{propuestaConvocatoriaAtributoJuez.PCJU_PCAT_NOMB}}</label>
+
+					</div>					
+
+					<div class="col-md-3 col-lg-3 col-xs-3">
+
+						<label style="font-size: 12px;font-weight: 100">{{propuestaConvocatoriaAtributoJuez.PCJU_EEV_NOMB}}</label>
+
+					</div>		
+
+					<div class="col-md-3 col-lg-3 col-xs-3">
+
+						<label style="font-size: 12px;font-weight: 100">{{propuestaConvocatoriaAtributoJuez.PCJU_PER_NOMB}}</label>
+
+					</div>			
+
+					<div class="col-md-1 col-lg-1 col-xs-1">
+
+						<jqx-button   ng-click="onClicEliminar(propuestaConvocatoriaAtributoJuez,this)">  <i class="glyphicon glyphicon-ban-circle" style="cursor:pointer"  ></i> </jqx-button>
+
+					</div>
+
+				</div>	
+
+
+
+			</li>			     	     
+
+	     </ul>		   
+
+	</jqx-panel>
+
+	</div>
+
+	</div>
+
+	<div class="row" style="margin-top: 10px">
+
+		<div class="col-md-offset-11 col-lg-offset-11 col-xs-offset-11">
+
+				<button type="button" class="btn btn-success" ng-click="onClicGuardar()">Guardar</button>
+
+					</div>
+
+    	</div>		
+
+
+
 </div>

@@ -89,21 +89,20 @@
 
  .controller('ControladorConvocatoria', ['$scope','$window','TareasResource','$location', function($scope,$window,TareasResource,$location) {
 
-    var user = JSON.parse($window.sessionStorage.getItem('investigador'));
+    var user = JSON.parse($window.sessionStorage.getItem('usuario'));
 
     if (user==null || user==undefined)
     {
 
       $location.path('/inicio');
       return;
-    }                             
+    }   
+    else
+
+         $scope.$parent.mnuConvocatoria = true;                          
 
              moment.locale('es');
-         $scope.options = {           
-            method: 'post',
-            url: 'scripts/services/api.php?url=executeSQL/S/SELECT CON_CODI,CON_NUME,CON_DESC,CON_FECH_INIC,CON_FECH_FINA,CON_TEXT,CON_TEXT_NOMB,CON_RESO,CON_RESO_NOMB ' + 
-                    ' FROM sgi_conv ',
-          
+         $scope.options = {                           
  				cache: false,
                 height: 500,
                 striped: true,
@@ -187,12 +186,12 @@
                 width: 40,                
                  formatter: function(value, row, index) {
                         if (value!=null)
-                                                 {
-                                                    return '<a  href="http://' + value + '" target=_blank  class="ver ml10 btn btn-default btn-xs" title="Ver Documento"><span class="glyphicon glyphicon-download"></span></a>';
-                                                }
-                                                else
-                                                    return "N/A";
-                   
+                         {
+                            return '<a  href="http://' + value + '" target=_blank  class="ver ml10 btn btn-default btn-xs" title="Ver Documento"><span class="glyphicon glyphicon-download"></span></a>';
+                        }
+                        else
+                            return "N/A";
+
                   
                    
                  },
@@ -229,7 +228,21 @@
 
 
             }]
-        };              
+        };  
+
+
+        var datos = {
+
+            Accion:"S",
+            SQL:"SELECT CON_CODI,CON_NUME,CON_DESC,CON_FECH_INIC,CON_FECH_FINA,CON_TEXT,CON_TEXT_NOMB,CON_RESO,CON_RESO_NOMB " + 
+                    " FROM sgi_conv"
+
+        }
+
+        var convocatoria = TareasResource.SQL(datos);
+            convocatoria.then(function(result){
+                $('#tableconvocatoria').bootstrapTable('load',result.data);        
+            })    
                
     }])
 

@@ -11,6 +11,10 @@ angular.module('listaTareasApp')
          $scope.mnuAdmin = true;        
 
       }
+      else
+      {
+        $scope.mnuConvocatoria=true;
+      }
 
       $scope.usrConectado.nombre = usr.Nombre;      
       $scope.usrConectado.estaConectado = true;
@@ -20,6 +24,7 @@ angular.module('listaTareasApp')
       $scope.usrConectado = {nombre: "", puesto: '', estaConectado: ''};
        $scope.mnuInvestiga =false;
        $scope.mnuAdmin=false;
+        $scope.mnuConvocatoria=false;
       $window.sessionStorage.setItem('usuario',null);
       $window.sessionStorage.setItem('investigador',null);
 
