@@ -376,6 +376,12 @@ angular.module("listaTareasApp", ['ngRoute','ngAnimate','ngLocale', 'ngResource'
         
       })
 
+
+      .when('/evaluador', {
+        templateUrl: 'views/evaluador.html',
+        controller: 'EvaluadorCtrl'
+      })
+
       .when('/propuestaConvocatoriaAtributoJuez', {
         templateUrl: 'views/propuesta-convocatoria-atributo-juez.html',
       controller:'controllerPropuestaConvocatoriaAtributoJuez'
