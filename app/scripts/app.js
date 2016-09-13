@@ -382,11 +382,37 @@ angular.module("listaTareasApp", ['ngRoute','ngAnimate','ngLocale', 'ngResource'
         controller: 'EvaluadorCtrl'
       })
 
+
+
       .when('/propuestaConvocatoriaAtributoJuez', {
         templateUrl: 'views/propuesta-convocatoria-atributo-juez.html',
       controller:'controllerPropuestaConvocatoriaAtributoJuez'
 
-    })
+      })  
+
+
+      .when('/semillero', {
+        templateUrl: 'views/semillero.html',
+        controller: 'SemilleroCtrl'
+      })
+
+
+        .when('/edit-semillero/:idSemillero', {
+        title: 'Editar',
+        templateUrl: 'views/edit-semillero.html',
+        controller: 'editSemillero',
+         resolve: {
+          datosSemillero: function($route,TareasResource){
+            var semilleroID = parseInt($route.current.params.idSemillero); 
+
+             return    TareasResource.execute.query({Accion: 'S',
+                         SQL: ' SELECT semi.sem_codi,semi.sem_nomb, inve_semi.INS_FECH_INIC,semi.SEM_AVAL_UNAD,inve.inv_nomb + " "  + inv_apel As Investigador ' + 
+                              ' FROM sgi_semi as semi inner join sgi_inve_semi as inve_semi on inve_semi.INS_SEMI_CODI= semi.SEM_CODI' +
+                              ' inner join sgi_inve as inve on inve.INV_CODI=inve_semi.INS_INVE_IDEN WHERE semi.sem_codi = ' + semilleroID });
+
+          }
+        }
+      })
 
       .otherwise({
         redirectTo: '/'

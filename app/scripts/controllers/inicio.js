@@ -100,7 +100,21 @@ angular.module('listaTareasApp')
 
          }
        
-        
+          if ($scope.seleccionado=="4")
+         {
+          $scope.$parent.mnuInvestiga =false;
+            $scope.$parent.mnuAdmin = false;
+            $scope.$parent.mnuConvocatoria = false;
+           var executesql = TareasResource.SQL({Accion:'S',SQL:'SELECT INV_CODI FROM sgi_inve WHERE INV_CODI_USUA=' + usr[0].Id});
+                executesql.then(function(result){
+                   $window.sessionStorage.setItem('investigador', JSON.stringify(result.data[0]));
+            $location.path('/semillero');
+            return;
+          });
+         }
+
+
+
     };
     
 

@@ -1,0 +1,16 @@
+<div class="margenTop">
+
+<div ng-controller="ListControllersemillero as list">
+      
+ <my-modalsemillero></my-modalsemillero> 
+  <div ng-controller="SemilleroCtrl as ctrl">
+    <div id="custom-toolbarsemillero">
+     <div class="form-inline" role="form">    
+        <a ng-click="list.btnNovoClick()" target="_self" class="btn btn-default btn-primary btn-sm"><span class="glyphicon glyphicon-plus"></span> Nuevo</a>
+     </div>
+    </div>
+   <table id="tablesemillero" init-tablasemillero="options" >
+   </table>
+  </div>
+ </div>
+</div>

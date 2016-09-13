@@ -1407,8 +1407,11 @@ function actualizarTablasRelacionadas(id){
                                         {
                                           if (result[0].estado=="ok")
                                           {
+                                            if ($scope.semilleroinvestigacion[0]!=null)
+                                            {
                                               for(var i=0;i<$scope.semilleroinvestigacion.length;i++)
                                                 {
+
                                                 if ($scope.semilleroinvestigacion[i].Sel=="false" || $scope.semilleroinvestigacion[i].Sel==false)
                                                    {
 
@@ -1437,6 +1440,7 @@ function actualizarTablasRelacionadas(id){
                                                      fecha_fin + "," + id + ")"});                        
                                                    }
                                                 }
+                                              }
                                               executeSql.$promise.then(function (result)
                                               {
                                                 if (result[0].estado=="ok")
