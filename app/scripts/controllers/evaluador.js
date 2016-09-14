@@ -15,7 +15,7 @@ angular.module('listaTareasApp')
 
          $scope.$parent.mnuConvocatoria = true;                          
 		 
-     	
+     	A
 	 $scope.save = function(usuario){
 
 	 
