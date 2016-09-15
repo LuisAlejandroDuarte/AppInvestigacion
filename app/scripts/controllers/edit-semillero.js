@@ -17,5 +17,15 @@ angular.module('listaTareasApp')
             $scope.$parent.mnuAdmin = false;
             $scope.$parent.mnuConvocatoria = false;     
     }
+
+
+    $scope.jqxPanelSettings =
+      {
+        height: '200',
+        autoUpdate:true,
+        theme:'bootstrap',
+        width:'auto',
+        sizeMode:'fixed'
+      }
      	
 });
