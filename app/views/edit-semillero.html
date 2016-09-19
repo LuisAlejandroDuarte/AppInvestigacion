@@ -1,7 +1,7 @@
-<div class="margenTop">
+
 	<div class="view">
 	  
-		<div class="panel panel-primary  drop-shadow" style="min-width:auto;max-width:1200px;height:auto; margin-top:10%">
+		<div class="panel panel-primary  drop-shadow" style="min-width:auto;max-width:1400px;height:auto; margin-top:5%">
   		<div class="panel-heading"><h>{{tiTulo}}</h></div>
 		  <form method="post" name="myFormSemillero" role="form" novalidate>
 		  
@@ -187,6 +187,14 @@
 
                         						</select> 
   										</div>
+  										<ul class="list-group">
+                 								<jqx-panel id="jqxPanel" jqx-settings="jqxPanelSettings">
+                  									<li class="list-group-item" ng-repeat="item in ['Nombre','Nombre2']">
+                  										   <span>{{item}}</span>
+													</li>
+												</jqx-panel>
+
+										</ul>			
 									</div>
 									<div class="col-lg-4 col-md-4 col-xs-12 col-ms-12">
 										<div class="form-group">
@@ -196,10 +204,72 @@
 
                         						</select> 
   										</div>
+  										<ul class="list-group">
+                 								<jqx-panel id="jqxPanel" jqx-settings="jqxPanelSettings">
+                  									<li class="list-group-item" ng-repeat="item in ['Nombre','Nombre2']">
+                  										   <span>{{item}}</span>
+													</li>
+												</jqx-panel>
+
+										</ul>			
 									</div>
 								</div>
-							</div>																				
+								<div class="row">
+									<div class="col-lg-6 col-md-6 col-xs-12 col-ms-12">
+										<div class="panel panel-info">
+							  				<div class="panel-heading">
+							    				<h3 class="panel-title"><label>Estrategias del Semillero</label></h3>
+							  					</div>
+							  				<div class="panel-body">		
+												<div class="row">
+													<div class="col-lg-4 col-md-4 col-xs-12 col-ms-12">
+														<div class="form-group">
+															<label>Tipo de Estrategia</label>
+															<select class="form-control input-sm" ng-options	="item as item.Nombre for item in 	listEstrategia">
+															</select>
+														</div>
 
+													</div>
+													<div class="col-lg-8 col-md-8 col-xs-12 col-ms-12">
+														<div class="form-group">
+															<label>Descripción Estrategia</label>
+															<input class="form-control input-sm" ng-model="txtDescripcion"/>
+															
+														</div>
+
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-lg-12 col-md-12 col-xs-12 col-ms-12">
+														<ul class="list-group">
+       														<jqx-panel id="jqxPanel" jqx-settings="jqxPanelSettings">
+		                  									<li class="list-group-item" ng-repeat="item in ['Nombre','Nombre2']">
+                										   <span>{{item}}</span>
+															</li>
+													</jqx-panel>
+												</ul>		
+												</div>
+												</div>													
+							  				</div>
+										</div>								  				
+									</div>					
+									<div class="col-lg-6 col-md-6 col-xs-12 col-ms-12">
+										<div class="panel panel-info">
+							  				<div class="panel-heading">
+							    				<h3 class="panel-title"><label>Visualización Grupos Semilleros</label></h3>
+							  					</div>
+							  				<div class="panel-body">		
+												<div class="row">
+													<div class="col-lg-4 col-md-4 col-xs-12 col-ms-12">														
+
+													</div>
+												</div>
+							  				</div>
+										</div>								  				
+									</div>																		
+								</div>
+  							</div>
+																									
   						</tab>
   						<tab active="tabProyectosProductos">
 	      					<tab-heading>
@@ -218,4 +288,3 @@
 		</div>
 		
 	</div>	
-</div>
