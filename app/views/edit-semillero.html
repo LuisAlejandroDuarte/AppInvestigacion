@@ -290,15 +290,15 @@
 								</div>
 							</div>
 							<div class="row">
-								<div class="col-lg-3 col-md-3 col-xs-12 col-sm-12">
-									<div class="form-group">
+								<div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">
+									<div class="form-group col-lg-4">
 										<h4><span class="label label-default">Estado Proyecto</span></h4>	
 										<select class="form-control input-sm" ng-model="selEstadoProyecto" ng-options="item as item.Nombre for item in listEstadoProyecto">																			
 										</select>
 									</div>
 								</div>
 								<div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">
-									<div class="form-group">
+									<div class="form-group col-lg-4">
 										<h4><span class="label label-default">Estado del Producto</span></h4>	
 									<select class="form-control input-sm" ng-model="selEstadoProducto" ng-options="item as item.Nombre for item in listEstadoProducto">
 																						
@@ -306,16 +306,82 @@
 									</div>
 								</div>
 							</div>
+								<div class="row">
+									<div class="col-lg-12 col-md-12 col-xs-12 col-ms-12">
+											<ul class="list-group">
+       											<jqx-panel id="jqxPanel" jqx-settings="jqxPanelSettings">
+		                  									<li class="list-group-item" ng-repeat="item in ['Nombre','Nombre2']">
+                										   <span>{{item}}</span>
+															</li>
+												</jqx-panel>
+											</ul>		
+									</div>
+								</div>													
   						</tab>
   						<tab active="tabDocumentos">
 	      					<tab-heading>
 	        					<i class="glyphicon glyphicon-paperclip"></i> Documentos
 	      					</tab-heading>
+								<div class="row" style="margin-top:20px">
+									<div class="col-lg-3 col-md-3 col-xs-6 col-ms-6">
+									<div class="panel panel-info">
+							  				<div class="panel-heading">
+							    				<h6 class="panel-title"></h6>
+							  					</div>
+							  				<div class="panel-body">		
+												<div class="row">
+													<div class="col-lg-12 col-md-12 col-xs-12 col-ms-12">											 <div class="form-group">
+								            <label>Documento</label>    
+								                <span class="fileinput-button glyphicon glyphicon-upload"  ng-class="{disabled:    disabled}" style="margin-left:20px"><input title="Cargar documento" type="file" name="files" onchange="angular.element(this).scope().uploadFileTexto(this) " accept="application/pdf, application/msword"> 
+								               </span>    
+								               <span title="Eliminar documento" ng-click="EliminarTexto()" class="glyphicon glyphicon-remove" style="cursor: pointer;"></span>
+								               <div class="row">
+								                  <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">
+								                  <a href="http://{{nombreLinkArchivoTexto}}" target="_blank"><span class="label label-danger" style="white-space:normal">{{nombreArchivoTexto}}</span></a>   
+								                  </div>
+								               </div>                              
+     								    </div>			
+
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+															<div class="form-group">
+										<label for="disabledTextInput">Nombre</label>
+											<input type="text" id="disabledTextInput" class="form-control input-sm" />
+										</div>
+
+
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+														<button type="button" class="btn btn-info">Agregar</button>
+
+													</div>
+												</div>
+							  				</div>
+										</div>					
+
+
+
+
+
+										
+									</div>
+									
+								</div>
   						</tab>
+
   					</tabset>
+  					<div class="row">
+						<div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+							<button type="button" class="btn btn-info">Guardar</button>
+
+						</div>
+					</div>
 				  </div>	  							  	
 			</div>  		
 		  </form>		
-		</div>
-		
+		</div>		
 	</div>	
