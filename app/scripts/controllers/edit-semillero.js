@@ -35,7 +35,11 @@ angular.module('listaTareasApp')
   
        $scope.mostrarDatosInvestigador= function(id);
        {
-
+          var consulta =
+          {
+            Accion:'S',
+            SQL:'SELECT '
+          }
        }
 
 });
