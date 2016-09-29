@@ -162,9 +162,16 @@ angular.module('listaTareasApp')
               insertSemilero =  TareasResource.SQL(datos);
               insertSemilero.then(function(result){
 
+                  
+
+
+
                   $('#myModal').hide();
                   $window.alert("Semillero Guardado");
-                   $location.path('/semillero');                    
+                   $location.path('/semillero');  
+
+
+
 
               });    	
     		});
