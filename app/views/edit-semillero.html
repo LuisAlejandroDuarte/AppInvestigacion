@@ -13,7 +13,7 @@
 	        					<i class="glyphicon glyphicon-list-alt"></i> Informaci&oacute;n General
 	      					</tab-heading>							
 							
-							 <div class="well-lg">
+						 <div class="well-lg">
 							<div class="row">
 								<div class="col-lg-6 col-md-6 col-xs-12 col-ms-12">
 									<div class="panel panel-info">
@@ -27,13 +27,13 @@
 						    						
 														<div class="form-group">
     													<label for="disabledTextInput">Nombres</label>
-      															<input type="text" id="disabledTextInput" class="form-control input-sm" />
+      															<input type="text" id="disabledTextInput" class="form-control input-sm" ng-model="nombreInvestigador" />
   														</div>
 												</div>
 												<div class="col-lg-6 col-md-6 col-xs-12 col-ms-12">  														
   															<div class="form-group">
     															<label for="disabledTextInput">Apellidos</label>
-      															<input type="text" id="disabledTextInput" class="form-control input-sm" />
+      															<input type="text" id="disabledTextInput" class="form-control input-sm" ng-model="apellidoInvestigador"/>
   															</div>
 													
 													</div>
@@ -43,85 +43,88 @@
 						    						
 														<div class="form-group">
     													<label for="disabledTextInput">Zona</label>
-      															<input type="text" id="disabledTextInput" class="form-control input-sm" />
+      															<input type="text" id="disabledTextInput" class="form-control input-sm" ng-model="zonaInvestigador"/>
   														</div>
 												</div>
 												<div class="col-lg-6 col-md-6 col-xs-12 col-ms-12">  														
   															<div class="form-group">
     															<label for="disabledTextInput">Centro</label>
-      															<input type="text" id="disabledTextInput" class="form-control input-sm" />
+      															<input type="text" id="disabledTextInput" class="form-control input-sm" ng-model="centroInvestigador"/>
   															</div>													
 													</div>
-												</div>							    												    				 <div class="row">
+												</div>							    												    			 <div class="row">
 							    					<div class="col-lg-6 col-md-6 col-xs-12 col-ms-12">						    						
 															<div class="form-group">
 	    													<label for="disabledTextInput">Escuela</label>
-	      															<input type="text" id="disabledTextInput" class="form-control input-sm" />
+	      															<input type="text" id="disabledTextInput" class="form-control input-sm" ng-model="escuelaInvestigador"/>
 	  														</div>
 													</div>
 												<div class="col-lg-6 col-md-6 col-xs-12 col-ms-12">  														
   															<div class="form-group">
     															<label for="disabledTextInput">Programa</label>
-      															<input type="text" id="disabledTextInput" class="form-control input-sm" />
+      															<input type="text" id="disabledTextInput" class="form-control input-sm" ng-model="programaInvestigador"/>
   															</div>
 													
 													</div>
 												</div>					
 											 </fieldset>	
 						    				</div>
+						  				
 						  				</div>
-									</div>	
-									<div class="col-lg-6 col-md-6 col-xs-12 col-ms-12">
-									
-									<div class="panel panel-info">
-							  					<div class="panel-heading">
-							    					<h3 class="panel-title"><label>Semillero de investigación</label></h3>
-							  					</div>
-							  				<div class="panel-body">
-							    				<div class="row">
-							    					<div class="col-lg-6 col-md-6 col-xs-12 col-ms-12">						    						
-															<div class="form-group">
-	    													<label for="disabledTextInput">Nombre</label>
-	      															<input type="text" id="disabledTextInput" class="form-control input-sm" />
-	  														</div>
-													</div>
-												<div class="col-lg-6 col-md-6 col-xs-12 col-ms-12">  														
-  															<div class="form-group">
-    															<label for="disabledTextInput">Fecha Creación</label>
-      															 <input id="fechaInicioProyecto" type="text" class="form-control input-sm" ng-model="fechaInicioProyecto" data-date-format="dd-MMMM-yyyy" date-type="iso" data-max-date="{{fechaHoy}}"  data-autoclose="1" name="date2" bs-datepicker>     
-  															</div>
-													
-													</div>
-												</div>	
-												<div class="row">
-							    					<div class="col-lg-12 col-md-12 col-xs-12 col-ms-12">						    						
-															<div class="form-group">
-	    													<label for="disabledTextInput">Misión</label>
-	      															<input type="text" id="disabledTextInput" class="form-control input-sm" />
-	  														</div>
-													</div>
-												</div>	
-												<div class="row">												
-													<div class="col-lg-12 col-md-12 col-xs-12 col-ms-12">  														
-  															<div class="form-group">
-    															<label for="disabledTextInput">Visión</label>
-      															<input type="text" id="disabledTextInput" class="form-control input-sm" />
-  															</div>
-													
-													</div>
-												</div>									
-							  				</div>
-									</div>		
+								</div>								
 
-									</div>	
+								<div class="col-lg-6 col-md-6 col-xs-12 col-ms-12">
+									
+										<div class="panel panel-info">
+								  					<div class="panel-heading">
+								    					<h3 class="panel-title"><label>Semillero de investigación</label></h3>
+								  					</div>
+								  				<div class="panel-body">
+								    				<div class="row">
+								    					<div class="col-lg-6 col-md-6 col-xs-12 col-ms-12">						    						
+																<div class="form-group"  ng-class="{ 'has-error': myFormSemillero.nombre.$invalid}">
+		    													<label for="disabledTextInput">Nombre</label>
+		      															<input type="text" id="disabledTextInput" name="nombre" class="form-control input-sm" ng-model="semillero.strNombre" required />
+		  														</div>
+														</div>
+													<div class="col-lg-6 col-md-6 col-xs-12 col-ms-12">  														
+	  															<div class="form-group"  ng-class="{ 'has-error': myFormSemillero.fecha.$invalid}">
+	    															<label>Fecha Creación</label>
+	      															 <input   class="form-control input-sm" 
+	      															 name="fecha" ng-model="semillero.strFecha" data-date-format="dd-MMMM-yyyy" date-type="iso" data-autoclose="1"  bs-datepicker required />     
+	  															</div>
+														
+														</div>
+													</div>	
+													<div class="row">
+								    					<div class="col-lg-12 col-md-12 col-xs-12 col-ms-12">						    						
+																<div class="form-group" ng-class="{ 'has-error': myFormSemillero.mision.$invalid}">
+		    													<label>Misión</label>
+		      															<input type="text" ng-model="semillero.strMision" name="mision"  class="form-control input-sm" required />
+		  														</div>
+														</div>
+													</div>	
+													<div class="row">												
+														<div class="col-lg-12 col-md-12 col-xs-12 col-ms-12">  														
+	  															<div class="form-group" ng-class="{ 'has-error': myFormSemillero.vision.$invalid}">
+	    															<label>Visión</label>
+	      															<input type="text" ng-model="semillero.strVision" name="vision"  class="form-control input-sm" required />
+	  															</div>
+														
+														</div>
+													</div>									
+								  				</div>
+										</div>		
+
 								</div>	
+							</div>	
 								
 								<div class="row">
 
 									<div class="col-lg-12 col-md-12 col-xs-12 col-ms-12">  														
-										<div class="form-group">
-										<label for="disabledTextInput">Objetivos</label>
-											<input type="text" id="disabledTextInput" class="form-control input-sm" />
+										<div class="form-group" ng-class="{ 'has-error': myFormSemillero.objetivo.$invalid}">
+										<label>Objetivos</label>
+											<input type="text" ng-model="semillero.strObjetivo" name="objetivo"  class="form-control input-sm" required />
 										</div>
 													
 									</div>
@@ -130,9 +133,9 @@
 								<div class="row">
 
 									<div class="col-lg-12 col-md-12 col-xs-12 col-ms-12">  														
-										<div class="form-group">
-										<label for="disabledTextInput">Proyecci&oacute;n Regional</label>
-											<input type="text" id="disabledTextInput" class="form-control input-sm" />
+										<div class="form-group" ng-class="{ 'has-error': myFormSemillero.proyeccionRegional.$invalid}">
+										<label>Proyecci&oacute;n Regional</label>
+											<input type="text" ng-model="semillero.strProyeccionRegional" name="proyeccionRegional"  class="form-control input-sm" required />
 										</div>
 													
 									</div>
@@ -141,9 +144,9 @@
 								<div class="row">
 
 									<div class="col-lg-12 col-md-12 col-xs-12 col-ms-12">  														
-										<div class="form-group">
+										<div class="form-group" ng-class="{ 'has-error': myFormSemillero.tematicaInvestigacion.$invalid}">
 										<label for="disabledTextInput">Temáticas de Investigacion</label>
-											<input type="text" id="disabledTextInput" class="form-control input-sm" />
+											<input type="text" ng-model="semillero.strTematicaInvestigacion" name="tematicaInvestigacion"  class="form-control input-sm" required />
 										</div>
 													
 									</div>
@@ -214,7 +217,8 @@
 										</ul>			
 									</div>
 								</div>
-								<div class="row">
+							</div>
+							<div class="row">
 									<div class="col-lg-6 col-md-6 col-xs-12 col-ms-12">
 										<div class="panel panel-info">
 							  				<div class="panel-heading">
@@ -267,9 +271,7 @@
 							  				</div>
 										</div>								  				
 									</div>																		
-								</div>
-  							</div>
-																									
+							</div>  							
   						</tab>
   						<tab active="tabProyectosProductos">
 	      					<tab-heading>
@@ -361,27 +363,21 @@
 													</div>
 												</div>
 							  				</div>
-										</div>					
-
-
-
-
-
-										
-									</div>
-									
+										</div>															
+									</div>									
 								</div>
   						</tab>
 
   					</tabset>
   					<div class="row">
-						<div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
-							<button type="button" class="btn btn-info">Guardar</button>
-
+						<div class="col-lg-offset-10 col-md-offset-10-12 col-xs-offset-12 col-smoffset-12">
+							<button type="button" class="btn btn-primary btn-sm" ng-disabled="myFormSemillero.$invalid" ng-click="onClickGuardar()">{{btnGuardar}}</button>
+							<button type="button" class="btn btn-primary btn-sm" ng-click="onClickCancelar()">Cancelar</button>
 						</div>
 					</div>
-				  </div>	  							  	
+										  	
 			</div>  		
 		  </form>		
 		</div>		
 	</div>	
+

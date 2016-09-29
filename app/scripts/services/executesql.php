@@ -34,7 +34,7 @@
        {
        	  $result = mysqli_query($conexion,$SQL);  
        	   if ($result)      
-              $message[0] = array('estado'=>'ok','msg' =>'Insertado','valor'=>$result);
+              $message[0] = array('estado'=>'ok','msg' =>'Insertado','valor'=>mysqli_insert_id($conexion));
           else
               $message[0] = array('estado'=>'fallo','msg' => mysqli_error($conexion),'sql'=>$SQL);
 
