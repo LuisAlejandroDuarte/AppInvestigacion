@@ -67,7 +67,7 @@
                 valign: 'middle',
                 sortable: true
             },{
-                field: 'INS_FECH_INIC',
+                field: 'SEM_FECH_CREA',
                 title: 'Fecha de Creación',
                 align: 'left',
                 valign: 'middle',
@@ -82,7 +82,12 @@
                 title: 'Avaluado',
                 align: 'left',
                 valign: 'middle',
-                sortable: true
+                sortable: true,
+                  formatter: function(value, row, index) {
+
+                      return value=="1"? "SI":"NO" ;
+
+                 }
             },{
                 title: '',
                 width: 75,
@@ -114,7 +119,7 @@
         var datos = {
 
         	Accion:'S',
-        	SQL:'SELECT semi.sem_codi,semi.sem_nomb, inve_semi.INS_FECH_INIC,semi.SEM_AVAL_UNAD,inve.inv_nomb + " "  + inv_apel As Investigador ' + 
+        	SQL:'SELECT semi.sem_codi,semi.sem_nomb, semi.SEM_FECH_CREA,semi.SEM_AVAL_UNAD,inve.inv_nomb + " "  + inv_apel As Investigador ' + 
         		' FROM sgi_semi as semi inner join sgi_inve_semi as inve_semi on inve_semi.INS_SEMI_CODI= semi.SEM_CODI' +
 				' inner join sgi_inve as inve on inve.INV_CODI=inve_semi.INS_INVE_IDEN WHERE inve.inv_codi = ' + user.INV_CODI
 
