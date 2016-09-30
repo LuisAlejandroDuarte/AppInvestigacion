@@ -100,7 +100,7 @@
                         },
 
                         'click .edit': function (e, value, row, index) {
-                                 $window.location.href ="#/edit-atributo/" + row.ATR_CODI + "";                           
+                                 $window.location.href ="#/edit-semillero/" + row.sem_codi + "";                           
                         }
 
                 }
