@@ -78,8 +78,19 @@ angular.module('listaTareasApp')
             lista.then(function(result){
 
               $scope.lstIntegrantesSemillero = result.data;
+          datos = {
+            Accion:"S",
+            SQL:"SELECT PAC_CODI,PAC_NOMB AS Nombre FROM   sgi_prog_acad ORDER BY PAC_NOMB"
+            }             
 
-               datos = {
+          if( $scope.lstProgramaAcademico==undefined) $scope.lstProgramaAcademico=[];
+
+            lista = TareasResource.SQL(datos);
+            lista.then(function(result){
+
+               $scope.lstProgramaAcademico = result.data;
+
+                datos = {
                   Accion:'S',
                     SQL:'SELECT I.INV_NOMB AS Nombres, I.INV_APEL AS Apellidos, C.CEN_NOMB AS' +
                     ' Centro,Z.ZON_NOMB As Zona,P.PAC_NOMB As Programa,E.ESC_NOMB AS Escuela ' +
@@ -107,11 +118,8 @@ angular.module('listaTareasApp')
                   $scope.escuelaInvestigador = result.data[0].Escuela;
                   $scope.mostrarDatosSemillero(idSemillero);
                   })
-
             });
-
-
- 
+        }); 
    		});
     }
 
@@ -120,9 +128,39 @@ angular.module('listaTareasApp')
       $scope.lstIntegranteSemilleroFecha.splice(item.$index,1);
     }
 
+    $scope.onClicEliminarProgramaAcademico = function(item){
+
+      $scope.lstProgramaAcademicoFecha.splice(item.$index,1);
+
+    }
+
     $scope.onClicEliminarLineasInvestigacion = function(item)
     {
         $scope.lstLineasInvestigacionFecha.splice(item.$index,1);
+    }
+
+    $scope.onClicAgregarProgramaAcademico = function() {
+
+       if ($scope.semillero.selProgramaAcademico==undefined || $scope.semillero.selProgramaAcademico=="")
+      {
+        $window.alert("Seleccione un Programa Académico")
+        return;
+      }
+
+      if ($scope.semillero.fechaProgramaAcademico==undefined || $scope.semillero.fechaProgramaAcademico=="")
+      {
+        $window.alert("Seleccione una fecha Programa Académico")
+        return;
+      }
+
+        if ($scope.lstProgramaAcademicoFecha==undefined) $scope.lstProgramaAcademicoFecha=[];
+
+           $scope.lstProgramaAcademicoFecha.splice(0,0,
+              { Nombre:$scope.semillero.selProgramaAcademico.Nombre,
+                PAS_FECH_INIC:moment($scope.semillero.fechaProgramaAcademico).format("DD MMMM YYYY"),
+                PAS_CODI:-1,
+                PASPACA_CODI:$scope.semillero.selProgramaAcademico.PAC_CODI});  
+
     }
 
     $scope.onClicAgregarIntegranteSemillero = function()
