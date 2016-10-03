@@ -1,4 +1,7 @@
 <mostrariconoespera></mostrariconoespera>
+<mostrarfechaeliminacion></mostrarfechaeliminacion>
+
+
 	<div class="view">
 	  
 		<div class="panel panel-primary  drop-shadow" style="max-width:1900px;height:auto; margin-top:5%">
@@ -88,10 +91,10 @@
 		  														</div>
 														</div>
 													<div class="col-lg-6 col-md-6 col-xs-12 col-ms-12">  														
-	  															<div class="form-group"  ng-class="{ 'has-error': myFormSemillero.fecha.$invalid}">
+	  															<div class="form-group">
 	    															<label>Fecha Creación</label>
 	      															 <input   class="form-control input-sm" 
-	      															 name="fecha" ng-model="semillero.strFecha" data-date-format="dd-MMMM-yyyy" date-type="iso" data-autoclose="1"  bs-datepicker required />     
+	      															 name="fechaCreacion" ng-model="semillero.strFecha" data-date-format="dd-MMMM-yyyy" date-type="iso" data-autoclose="1"  bs-datepicker  />     
 	  															</div>
 														
 														</div>
@@ -192,13 +195,13 @@
 										</div>	
 										<div class="col-lg-5 col-md-5 col-xs-12 col-sm-12">
 											<div class="form-group">
-    												<label for="exampleInputEmail1">Fecha Inicio</label>
-	    											  <input   class="form-control input-sm" 
-		      											 name="fecha" ng-model="semillero.fechaLineaInvestigacion" 
-		      											 data-date-format="dd-MMMM-yyyy" 
-		      											 date-type="iso" data-autoclose="1"  
-		      											 bs-datepicker required />     
-  												</div>				
+												<label for="exampleInputEmail1">Fecha Inicio</label>
+    											  <input   class="form-control input-sm" 
+	      											 name="fechaLineasInvestigacion" ng-model="semillero.fechaLineaInvestigacion" 
+	      											 data-date-format="dd-MMMM-yyyy" 
+	      											 data-autoclose="1"  
+	      											 bs-datepicker  />     
+  											</div>				
 										</div>												
 								   </div>
 									 <div class="row">
@@ -210,7 +213,7 @@
 								   		<div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
 											<ul class="list-group">
                  								<jqx-panel id="jqxPanel" jqx-settings="jqxPanelSettings">
-                  							<li class="list-group-item" style="display: inline-block;width:100%" ng-repeat="item in lstLineasInvestigacionFecha">
+                  							<li class="list-group-item" style="display: inline-block;width:100%" ng-repeat="item in lstLineasInvestigacionFecha | filter:{LIS_FECH_FINA:null}">
                   							  <div class="col-lg-4 col-md-4 col-xs-12 col-ms-4">
                   							  	<span>{{item.Nombre}}</span>
                   							  </div>
@@ -219,7 +222,7 @@
 		      											 name="fecha" ng-model="item.LIS_FECH_INI" 
 		      											 data-date-format="dd-MMMM-yyyy" 
 		      											 date-type="iso" data-autoclose="1"  
-		      											 bs-datepicker required />     
+		      											 bs-datepicker  />     
                   							  </div>
                   							  <div class="col-lg-2 col-md-2 col-xs-12 col-ms-4">
                   							  		<a class="remove ml10 btn btn-default btn-xs" title="Eliminar" ng-click="onClicEliminarLineasInvestigacion(this)"><span class="glyphicon glyphicon-trash"></span></a>
@@ -245,8 +248,8 @@
 	    											  <input   class="form-control input-sm" 
 		      											 name="fecha" ng-model="semillero.fechaIntegranteSemillero" 
 		      											 data-date-format="dd-MMMM-yyyy" 
-		      											 date-type="iso" data-autoclose="1"  
-		      											 bs-datepicker required />     
+		      											 data-autoclose="1"  
+		      											 bs-datepicker  />     
   												</div>				
 										</div>												
 								   </div>
@@ -259,16 +262,16 @@
 								   		<div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
 										<ul class="list-group">
                  								<jqx-panel id="jqxPanel" jqx-settings="jqxPanelSettings">
-                  							<li class="list-group-item" style="display: inline-block;width:100%" ng-repeat="item in lstIntegranteSemilleroFecha">
+                  							<li class="list-group-item" style="display: inline-block;width:100%" ng-repeat="item in lstIntegranteSemilleroFecha | filter:{IS_FECH_FIN:null}">
                   							  <div class="col-lg-4 col-md-4 col-xs-12 col-ms-4">
                   							  	<span>{{item.Nombre}}</span>
                   							  </div>
                   							  <div class="col-lg-6 col-md-6 col-xs-12 col-ms-4">
                   							  <input   class="form-control input-sm" 
-		      											 name="fecha" ng-model="item.INS_FECH_INIC" 
+		      											 name="fecha" ng-model="item.IS_FECH_INI" 
 		      											 data-date-format="dd-MMMM-yyyy" 
 		      											 date-type="iso" data-autoclose="1"  
-		      											 bs-datepicker required />     
+		      											 bs-datepicker  />     
                   							  </div>
                   							  <div class="col-lg-2 col-md-2 col-xs-12 col-ms-4">
                   							  		<a class="remove ml10 btn btn-default btn-xs" title="Eliminar" ng-click="onClicEliminarIntegranteSemillero(this)"><span class="glyphicon glyphicon-trash"></span></a>
@@ -297,7 +300,7 @@
 		      											 name="fecha" ng-model="semillero.fechaProgramaAcademico" 
 		      											 data-date-format="dd-MMMM-yyyy" 
 		      											 date-type="iso" data-autoclose="1"  
-		      											 bs-datepicker required />     
+		      											 bs-datepicker  />     
   												</div>				
 										</div>												
 								   </div>
@@ -310,16 +313,16 @@
 								   		<div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
 										<ul class="list-group">
                  								<jqx-panel id="jqxPanel" jqx-settings="jqxPanelSettings">
-                  							<li class="list-group-item" style="display: inline-block;width:100%" ng-repeat="item in lstProgramaAcademicoFecha">
+                  							<li class="list-group-item" style="display: inline-block;width:100%" ng-repeat="item in lstProgramaAcademicoFecha | filter:{PAS_FECH_FIN:null}">
                   							  <div class="col-lg-4 col-md-4 col-xs-12 col-ms-4">
                   							  	<span>{{item.Nombre}}</span>
                   							  </div>
                   							  <div class="col-lg-6 col-md-6 col-xs-12 col-ms-4">
                   							  <input   class="form-control input-sm" 
-		      											 name="fecha" ng-model="item.PAS_FECH_INIC" 
+		      											 name="fecha" ng-model="item.PAS_FECH_INI" 
 		      											 data-date-format="dd-MMMM-yyyy" 
 		      											 date-type="iso" data-autoclose="1"  
-		      											 bs-datepicker required />     
+		      											 bs-datepicker  />     
                   							  </div>
                   							  <div class="col-lg-2 col-md-2 col-xs-12 col-ms-4">
                   							  		<a class="remove ml10 btn btn-default btn-xs" title="Eliminar" ng-click="onClicEliminarProgramaAcademico(this)"><span class="glyphicon glyphicon-trash"></span></a>
@@ -333,21 +336,46 @@
 								</div>
 								<div class="form-group col-lg-6 col-md-6 col-xs-12 col-sm-12">
 								   <div class="row">
-										<div class="col-lg-3 col-md-3 col-xs-12 col-sm-12">
+										<div class="col-lg-4 col-md-4 col-xs-12 col-sm-12">
 											<label for="exampleInputEmail1">Tipo Estrategia</label>
-										 	<select class="form-control input-sm"  ng-model="selLineas"  
-	                							ng-options="opt.IdGrupo as opt.NombreGrupo for opt in grupoinvestigacion " >
+										 	<select class="form-control input-sm"  ng-model="semillero.selTipoEstrategia"  
+	                							ng-options="item as item.Nombre for item in lstTipoEstrategia" >
 	            							</select> 
 										</div>	
-										<div class="col-lg-9 col-md-9 col-xs-12 col-sm-12">
+										<div class="col-lg-8 col-md-8 col-xs-12 col-sm-12">
 											<div class="form-group">
     												<label for="exampleInputEmail1">Descripción</label>
-	    											  <input type="text"  class="form-control input-sm" 
+	    											  <input class="form-control input-sm" ng-model="semillero.txtTipoEstrategia"
 		      											/>     
   												</div>				
 										</div>												
 								   </div>
-										
+								    <div class="row">
+									   	<div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+									   		<a ng-click="onClicAgregarTipoEstrategia()" target="_self" class="btn btn-default btn-primary btn-sm"><span class="glyphicon glyphicon-plus"></span>Agregar</a>
+									   	</div>
+								   </div>
+									<div class="row" style="margin-top:10px">
+								   		<div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+										<ul class="list-group">
+                 								<jqx-panel id="jqxPanel" jqx-settings="jqxPanelSettings">
+                  							<li class="list-group-item" style="display: inline-block;width:100%" ng-repeat="item in lstTipoEstrategica">
+                  							  <div class="col-lg-4 col-md-4 col-xs-12 col-ms-4">
+                  							  	<span>{{item.Nombre}}</span>
+                  							  </div>
+                  							  <div class="col-lg-6 col-md-6 col-xs-12 col-ms-4">
+                  							  <input   class="form-control input-sm" 
+		      											 name="desc" ng-model="item.TES_DESC" 		      											
+		      											   />     
+                  							  </div>
+                  							  <div class="col-lg-2 col-md-2 col-xs-12 col-ms-4">
+                  							  		<a class="remove ml10 btn btn-default btn-xs" title="Eliminar" ng-click="onClicEliminarTipoEstrategia(this)"><span class="glyphicon glyphicon-trash"></span></a>
+                  							  </div>                  							                     							     
+											</li>
+										</jqx-panel>
+									</ul>					
+								   		</div>
+								   </div>	
 								</div>
 								</div>			
 										
