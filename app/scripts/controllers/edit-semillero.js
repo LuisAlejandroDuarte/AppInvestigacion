@@ -325,7 +325,7 @@ angular.module('listaTareasApp')
                               var investigador = TareasResource.SQL(datos);
                                 investigador.then(function(result){
 
-                                  if (result.data==null)
+                                  if (result.data[0]==null)
                                   {
                                     $window.alert("Faltan completar los datos del investigador");
                                           $location.path('/inicio');
