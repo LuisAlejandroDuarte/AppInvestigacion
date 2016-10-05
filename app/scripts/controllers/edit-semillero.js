@@ -312,6 +312,26 @@ angular.module('listaTareasApp')
                           $scope.lstProgramaAcademicoFecha =result.data;
                         }
 
+                          datos = {
+
+                            Accion:"S",
+                            SQL:"SELECT TipoEstrategia.TIE_NOMB AS Nombre," +
+                            " EstrategiaSemillero.TES_CODI,EstrategiaSemillero.TES_TIES_CODI,EstrategiaSemillero.TES_DESC " +
+                            " FROM sgi_tipo_estr_semi AS EstrategiaSemillero " +
+                            " INNER JOIN sgi_tipo_estr AS TipoEstrategia " + 
+                            " ON EstrategiaSemillero.TES_TIES_CODI = TipoEstrategia.TIE_CODI  WHERE EstrategiaSemillero.TES_SEMI_CODI = " + idSemillero
+
+                            }
+
+                             lista = TareasResource.SQL(datos);
+                             lista.then(function(result){ 
+
+                                if (result.data[0]!=null)    
+                                    {
+                                        $scope.lstTipoEstrategica = result.data;
+                                    }
+
+
                               datos = {
                                 Accion:'S',
                                   SQL:'SELECT I.INV_NOMB AS Nombres, I.INV_APEL AS Apellidos, C.CEN_NOMB AS' +
@@ -339,7 +359,10 @@ angular.module('listaTareasApp')
                                 $scope.programaInvestigador = result.data[0].Programa;
                                 $scope.escuelaInvestigador = result.data[0].Escuela;
                                 $scope.mostrarDatosSemillero(idSemillero);
-                                })
+                                })                                    
+
+                             });
+
                    });         
 
               });
@@ -732,6 +755,12 @@ angular.module('listaTareasApp')
 
          insertSemilero =  TareasResource.SQL(datos);
               insertSemilero.then(function(result){
+
+                 datos = {
+                  Accion:''
+
+                 } 
+
 
                   $('#myModal').hide();
                   $window.alert("Semillero Actualizado");
