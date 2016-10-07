@@ -352,13 +352,22 @@ angular.module('listaTareasApp')
                                       return;
                                   }
 
-                                  $scope.nombreInvestigador = result.data[0].Nombres;
+                                $scope.nombreInvestigador = result.data[0].Nombres;
                                 $scope.apellidoInvestigador = result.data[0].Apellidos;
                                 $scope.centroInvestigador = result.data[0].Centro;
                                 $scope.zonaInvestigador = result.data[0].Zona;
                                 $scope.programaInvestigador = result.data[0].Programa;
                                 $scope.escuelaInvestigador = result.data[0].Escuela;
                                 $scope.mostrarDatosSemillero(idSemillero);
+
+
+                               datos = {
+                                Accion:'S',
+                                  SQL:'SELECT  FROM sgi_grup AS G INNER JOIN sgi_inve_grup As GI ON GI.IGR_GRUP_CODI=G.gru_codi ' +
+                                  ' WHERE GI.IGR_INVE_IDEN =' + id
+                                }
+
+
                                 })                                    
 
                              });
@@ -704,7 +713,7 @@ angular.module('listaTareasApp')
                   datos = {
                     Accion:"I",
                     SQL:"INSERT INTO sgi_prog_acad_semi (PAS_SEMI_CODI,PAS_PACA_CODI,PAS_FECH_INI) VALUES " +
-                        " (" + idSemillero + "," + value.PAS_PACA_CODI + ",'" + moment(value.PAS_FECH_INIC).format("YYYY-MM-DD") + "')"
+                        " (" + idSemillero + "," + value.PAS_PACA_CODI + ",'" + moment(value.PAS_FECH_INI).format("YYYY-MM-DD") + "')"
                   }
 
                   insert.splice(0,0,datos);                  
@@ -754,23 +763,127 @@ angular.module('listaTareasApp')
         }
 
          insertSemilero =  TareasResource.SQL(datos);
-              insertSemilero.then(function(result){
+              insertSemilero.then(function(result){                  
+               
+                var insert =[];
+                angular.forEach($scope.lstLineasInvestigacionFecha, function(value, key) {
 
-                 datos = {
-                  Accion:''
+                  if ( value.LIS_CODI==-1)
+                  {
+                    datos = {
+                      Accion:"I",
+                      SQL:"INSERT INTO sgi_line_inve_semi (LIS_SEMI_CODI,LIS_LINE_INVE_CODI,LIS_FECH_INI) VALUES " +
+                          " (" + idSemillero + "," + value.LIS_LINE_INVE_CODI + ",'" + moment(value.LIS_FECH_INI).format("YYYY-MM-DD") + "')"
+                    }
+                  }
+                  else
+                  {
 
-                 } 
+                    var fecha =  (value.LIS_FECH_FINA!=null)?   "'" + moment(value.LIS_FECH_FINA).format("YYYY-MM-DD") + "'" : null;
+                     datos = {
+                      Accion:"U",
+                      SQL:"UPDATE sgi_line_inve_semi set " +
+                          " LIS_FECH_INI ='" + moment(value.LIS_FECH_INI).format("YYYY-MM-DD") + "', " +
+                          " LIS_FECH_FINA =" + fecha + " " +
+                          " WHERE LIS_CODI =" + value.LIS_CODI
+                      
+                    }
+                  }
+                 
+                  insert.splice(0,0,datos);                  
+
+               });
+
+              angular.forEach($scope.lstIntegranteSemilleroFecha, function(value, key) {
+
+                  if (value.IS_CODI==-1)
+                  {
+
+                    datos = {
+                      Accion:"I",
+                      SQL:"INSERT INTO sgi_inte_semi (IS_SEMI_CODI,IS_INVE_CODI,IS_FECH_INI) VALUES " +
+                          " (" + idSemillero + "," + value.IS_INVE_CODI + ",'" + moment(value.IS_FECH_INI).format("YYYY-MM-DD") + "')"
+                    }
+                  }
+                  else
+                  {
+                   var fecha =  (value.IS_FECH_FIN!=null)?   "'" + moment(value.IS_FECH_FIN).format("YYYY-MM-DD") + "'" : null;
+
+                    datos = {
+                      Accion:"U",
+                      SQL:"UPDATE sgi_inte_semi set " +
+                          " IS_FECH_INI='" + moment(value.IS_FECH_INI).format("YYYY-MM-DD")  + "', " +
+                          " IS_FECH_FIN=" + fecha + " WHERE IS_CODI=" + value.IS_CODI 
+                    }
+
+                  }
 
 
-                  $('#myModal').hide();
-                  $window.alert("Semillero Actualizado");
-                   $location.path('/semillero');                 
+                  insert.splice(0,0,datos);                  
 
-              });     
+               });
+                
 
-      }
+               angular.forEach($scope.lstProgramaAcademicoFecha, function(value, key) {
+
+                  if (value.PAS_CODI==-1)
+                  {
+
+                    datos = {
+                      Accion:"I",
+                      SQL:"INSERT INTO sgi_prog_acad_semi (PAS_SEMI_CODI,PAS_PACA_CODI,PAS_FECH_INI) VALUES " +
+                          " (" + idSemillero + "," + value.PAS_PACA_CODI + ",'" + moment(value.PAS_FECH_INI).format("YYYY-MM-DD") + "')"
+                    }
+
+                  }
+                  else
+                  {
+                    var fecha =  (value.PAS_FECH_FIN!=null)?   "'" + moment(value.PAS_FECH_FIN).format("YYYY-MM-DD") + "'" : null;
+
+                     datos = {
+                      Accion:"U",
+                      SQL:"UPDATE sgi_prog_acad_semi set " +
+                          " PAS_FECH_INI='" + moment(value.PAS_FECH_INI).format("YYYY-MM-DD") + "'," +
+                          " PAS_FECH_FIN =" + fecha + " WHERE PAS_CODI=" + value.PAS_CODI
+                    }                     
+                  }
+
+                  insert.splice(0,0,datos);                  
+
+               });     
 
 
+                datos = {
+                    Accion:"D",
+                    SQL:"DELETE FROM sgi_tipo_estr_semi WHERE TES_SEMI_CODI = " + idSemillero
+                  }    
+
+               insert.splice(insert.length-1,0,datos);               
+
+                angular.forEach($scope.lstTipoEstrategica, function(value, key) {
+
+                  datos = {
+                    Accion:"I",
+                    SQL:"INSERT INTO sgi_tipo_estr_semi (TES_SEMI_CODI,TES_TIES_CODI,TES_DESC) VALUES " +
+                        " (" + idSemillero + "," + value.TES_TIES_CODI + ",'" + value.TES_DESC + "')"
+                  }
+
+                 insert.splice(insert.length-1,0,datos);                
+
+               });           
+              
+
+
+                insertSemilero = TareasResource.SQLMulti(insert);
+                    insertSemilero.then(function(){
+
+                      $('#myModal').hide();
+                      $window.alert("Semillero Actualizado");
+                      $location.path('/semillero');   
+                      });              
+
+                    });                     
+           }
     }
      	
 });
