@@ -392,8 +392,10 @@
 							  					</div>
 							  				<div class="panel-body">		
 												<div class="row">
-													<div class="col-lg-12 col-md-12 col-xs-12 col-ms-12">														
+													<div class="col-lg-12 col-md-12 col-xs-12 col-ms-12">												
 
+														  <table id="tablegrupos" init-tablagrupos="optionsgrupos" ></table>
+												
 													</div>
 												</div>
 							  				</div>
@@ -406,48 +408,25 @@
 	      					<tab-heading>
 	        					<i class="glyphicon glyphicon-cog"></i> Proyectos y Productos
 	      					</tab-heading>
-							<div class="row">
-								<div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">
-									<div class="form-group">
-										<h4><span class="label label-default">Nombre del Proyecto</span></h4>	
-									<textarea class="form-control" row=2 style="resize:vertical"></textarea>
-									</div>
-								</div>
-								<div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">
-									<div class="form-group">
-										<h4><span class="label label-default">Productos asociados al proyecto</span></h4>	
-									<textarea class="form-control" row=2 style="resize:vertical"></textarea>
-									</div>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">
-									<div class="form-group col-lg-4">
-										<h4><span class="label label-default">Estado Proyecto</span></h4>	
-										<select class="form-control input-sm" ng-model="selEstadoProyecto" ng-options="item as item.Nombre for item in listEstadoProyecto">																			
-										</select>
-									</div>
-								</div>
-								<div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">
-									<div class="form-group col-lg-4">
-										<h4><span class="label label-default">Estado del Producto</span></h4>	
-									<select class="form-control input-sm" ng-model="selEstadoProducto" ng-options="item as item.Nombre for item in listEstadoProducto">
-																						
-										</select>
-									</div>
-								</div>
-							</div>
-								<div class="row">
-									<div class="col-lg-12 col-md-12 col-xs-12 col-ms-12">
-											<ul class="list-group">
-       											<jqx-panel id="jqxPanel" jqx-settings="jqxPanelSettings">
-		                  									<li class="list-group-item" ng-repeat="item in ['Nombre','Nombre2']">
-                										   <span>{{item}}</span>
-															</li>
-												</jqx-panel>
-											</ul>		
-									</div>
-								</div>													
+	      					<div class="row" style="margin-top:20px">
+								<div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+									<button type="button" class="btn btn-primary btn-sm" ng-click="onClickNewProyProd()">Agregar</button>
+								</div>										
+							</div>	      						
+							<div class="row" style="margin-top:20px">
+								<div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+									<ul class="list-group">
+                 								<jqx-panel id="jqxPanel" jqx-settings="jqxPanelSettings">
+                  							<li class="list-group-item" style="display: inline-block;width:100%" ng-repeat="item in listProyectosProductos">
+                  							
+                  							  <div class="col-lg-2 col-md-2 col-xs-12 col-ms-4">
+                  							  		<a class="remove ml10 btn btn-default btn-xs" title="Eliminar" ng-click="onClicEliminarTipoEstrategia(this)"><span class="glyphicon glyphicon-trash"></span></a>
+                  							  </div>                  							                     							     
+											</li>
+										</jqx-panel>
+									</ul>				
+								</div>								
+							</div>															
   						</tab>
   						<tab active="tabDocumentos">
 	      					<tab-heading>

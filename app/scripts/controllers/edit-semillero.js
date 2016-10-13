@@ -87,7 +87,7 @@ angular.module('listaTareasApp')
                   '<label id="item"></label>' +
                    '<div class="row"> ' +
                     '<div class="col-lg-5 col-md-5 col-xs-6 col-sm-6">' +
-                      '<label>Fecha Terminación</label>' +
+                      '<label>Fecha TerminaciÃ³n</label>' +
                     '</div>' +
                   '</div>' +  
                   '<div class="row"> ' +
@@ -114,51 +114,119 @@ angular.module('listaTareasApp')
 })
 
 
+.directive('initTablagrupos', ['$compile', function($compile) {
+        return {
+            restrict: 'A',
+
+      link: function(scope, el, attrs) {
+                var opts = scope.$eval(attrs.initTablagrupos);   
+                opts.onLoadSuccess = function() {
+                    $compile(el.contents())(scope); 
+            };
+             el.bootstrapTable(opts);
+              scope.$watch(el, function (bstable) {
+                    $compile(el.contents())(scope);
+                });    
+                el.bind('body-changed.bs.table', function () {
+                    var body = el.find('tbody')[0];
+                    console.log('get here one more time');
+                    $compile(body)(scope);
+                });
+            }
+        }
+    }])
+
+
   .controller('editSemillero', function($scope,$location,datosSemillero,TareasResource,$route,$window) {
 
-   	 $('#myModal').hide();
-  	  moment.locale('es');
-  		$scope.semillero = {
+   $('#myModal').hide();
+      moment.locale('es');
+    $scope.optionsgrupos = {                                
+          cache: false,
+          height: 200,
+          striped: true,
+          pagination: true,                
+          pageList: [10, 25, 50, 100, 200],                
+          minimumCountColumns: 2,         
+          idField:'IGR_CODI',                                       
+      columns: [
 
-  			strNombre:'',
-  			strFecha:'',
-  			strMision:'',
-  			strVision:'',
-  			strObjetivo:'',
-  			strProyeccionRegional:'',
-  			strTematicaInvestigacion:'',
+      {
+          field: 'Nombre',
+          title: 'GRUPO',
+          align: 'left',
+          valign: 'middle',
+          sortable: true
+      },{
+          field: 'FechaInicio',
+          title: 'Fecha Inicio',
+          align: 'left',
+          valign: 'middle',
+          sortable: true,
+           formatter: function(value, row, index) {
+
+                return moment(value).format("DD MMMM YYYY");
+
+           }
+      },{
+          field: 'Fechafin',
+          title: 'Fecha Fin',
+          align: 'left',
+          valign: 'middle',
+          sortable: true,
+            formatter: function(value, row, index) {
+
+                if (value==null) return;
+                return moment(value).format("DD MMMM YYYY");
+
+           }
+        }
+
+      ]
+    }
+
+   
+      $scope.semillero = {
+
+        strNombre:'',
+        strFecha:'',
+        strMision:'',
+        strVision:'',
+        strObjetivo:'',
+        strProyeccionRegional:'',
+        strTematicaInvestigacion:'',
         avaluado:1
 
-  		}
-  		  var idSemillero = ($route.current.params.idSemillero) ? parseInt($route.current.params.idSemillero) :0 ;
+      }
+        var idSemillero = ($route.current.params.idSemillero) ? parseInt($route.current.params.idSemillero) :0 ;
 
-  		  if (idSemillero==0)  		  
-  		  	$scope.btnGuardar="Guardar";
-  		  else
-  		  {
-  		  	$scope.btnGuardar="Actualizar";
-  		  	
-  		  }
+        if (idSemillero==0)       
+          $scope.btnGuardar="Guardar";
+        else
+        {
+          $scope.btnGuardar="Actualizar";
+          
+        }
 
-		$scope.jqxPanelMain =
-		{
-			height: '300',
-	        autoUpdate:true,
-	        theme:'bootstrap',
-	        width:'auto',
-	        sizeMode:'fixed'	       
-		}
+    $scope.jqxPanelMain =
+    {
+      height: '300',
+          autoUpdate:true,
+          theme:'bootstrap',
+          width:'auto',
+          sizeMode:'fixed'         
+    }
 
-   	    $scope.jqxPanelSettings =
-	      {
-	        height: '200',
-	        autoUpdate:true,
-	        theme:'bootstrap',
-	        width:'auto',
-	        sizeMode:'fixed'
-	      }
+        $scope.jqxPanelSettings =
+        {
+          height: '200',
+          autoUpdate:true,
+          theme:'bootstrap',
+          width:'auto',
+          sizeMode:'fixed'
+        }
 
-  	 var user = JSON.parse($window.sessionStorage.getItem('investigador'));
+     var user = JSON.parse($window.sessionStorage.getItem('investigador'));
 
 
 
@@ -166,17 +234,17 @@ angular.module('listaTareasApp')
     $scope.mostrarDatosInvestigador = function(id)
     {
 
-    var	datos = {
+    var datos = {
 
-    		Accion:"S",
-    		SQL:"SELECT lin_codi,lin_desc AS Nombre FROM sgi_line_inve ORDER BY lin_desc"
+        Accion:"S",
+        SQL:"SELECT lin_codi,lin_desc AS Nombre FROM sgi_line_inve ORDER BY lin_desc"
 
-    	}
+      }
 
-   	var lista = TareasResource.SQL(datos);
-   		lista.then(function(result){
+    var lista = TareasResource.SQL(datos);
+      lista.then(function(result){
 
-   			$scope.lstLineasInvestigacion = result.data;
+        $scope.lstLineasInvestigacion = result.data;
 
         datos = {
           Accion:"S",
@@ -331,8 +399,26 @@ angular.module('listaTareasApp')
                                         $scope.lstTipoEstrategica = result.data;
                                     }
 
+                            datos = {
 
-                              datos = {
+                                  Accion:'S',
+                                  SQL:'SELECT PY.PRS_NOMB AS NombreProyecto,PD.PDS_NOMB AS NombreProducto,' + 
+                                    ' PPR_EPY_CODI,PPR_EPD_CODI,PPR_FECH_INI,PPR_FECH_FIN' +
+                                    ' FROM sgi_proy_prod_semi AS PPS INNER JOIN sgi_proy_s AS PY ON ' +
+                                    ' PY.PRS_CODI = PPS.PPR_PROY_CODI INNER JOIN sgi_prod_s AS PD ON ' +
+                                    ' PD.PDS_CODI = PPS.PPR_PROD_CODI WHERE PPS.PPR_SEMI_CODI = ' + idSemillero
+
+                                }
+
+                             lista = TareasResource.SQL(datos);
+                             lista.then(function(result){ 
+
+                                if (result.data[0]==null) return;
+
+                                $scope.listProyectosProductos=result.data;
+
+
+                             datos = {
                                 Accion:'S',
                                   SQL:'SELECT I.INV_NOMB AS Nombres, I.INV_APEL AS Apellidos, C.CEN_NOMB AS' +
                                   ' Centro,Z.ZON_NOMB As Zona,P.PAC_NOMB As Programa,E.ESC_NOMB AS Escuela ' +
@@ -358,29 +444,36 @@ angular.module('listaTareasApp')
                                 $scope.zonaInvestigador = result.data[0].Zona;
                                 $scope.programaInvestigador = result.data[0].Programa;
                                 $scope.escuelaInvestigador = result.data[0].Escuela;
-                                $scope.mostrarDatosSemillero(idSemillero);
+                                  datos = {
+                                          Accion:'S',
+                                          SQL:'SELECT  G.gru_nomb AS Nombre,GI.IGR_FECH_INIC AS FechaInicio,GI.IGR_FECH_TERM AS Fechafin,GI.IGR_CODI ' +
+                                          ' FROM sgi_grup AS G INNER JOIN sgi_inve_grup As GI ON GI.IGR_GRUP_CODI=G.gru_codi ' +
+                                         ' WHERE GI.IGR_INVE_IDEN =' + id
+                                     }
 
+                                investigador = TareasResource.SQL(datos);
+                                investigador.then(function(result){
 
-                               datos = {
-                                Accion:'S',
-                                  SQL:'SELECT  FROM sgi_grup AS G INNER JOIN sgi_inve_grup As GI ON GI.IGR_GRUP_CODI=G.gru_codi ' +
-                                  ' WHERE GI.IGR_INVE_IDEN =' + id
-                                }
+                                
 
+                                    $('#tablegrupos').bootstrapTable('load',result.data);                                      
+                                     $scope.mostrarDatosSemillero(idSemillero);                          
 
-                                })                                    
+                                  });                               
 
-                             });
+                                })  
 
+                             });               
+                                    
+                         });
                    });         
-
               });
 
              });
            });
          });
        }); 
-   		});
+      });
     }
 
     $scope.onClicEliminarIntegranteSemillero = function(item){
@@ -461,13 +554,13 @@ angular.module('listaTareasApp')
 
        if ($scope.semillero.selProgramaAcademico==undefined || $scope.semillero.selProgramaAcademico=="")
       {
-        $window.alert("Seleccione un Programa Académico")
+        $window.alert("Seleccione un Programa AcadÃ©mico")
         return;
       }
 
       if ($scope.semillero.fechaProgramaAcademico==undefined || $scope.semillero.fechaProgramaAcademico=="")
       {
-        $window.alert("Seleccione una fecha Programa Académico")
+        $window.alert("Seleccione una fecha Programa AcadÃ©mico")
         return;
       }
 
@@ -528,17 +621,17 @@ angular.module('listaTareasApp')
 
     $scope.onClicAgregarLineasInvestigacion = function()
     {
-    	if ($scope.semillero.selLineas==undefined || $scope.semillero.selLineas=="")
-    	{
-    		$window.alert("Seleccione una línea de Investigación")
-    		return;
-    	}
+      if ($scope.semillero.selLineas==undefined || $scope.semillero.selLineas=="")
+      {
+        $window.alert("Seleccione una lÃ­nea de InvestigaciÃ³n")
+        return;
+      }
 
-    	if ($scope.semillero.fechaLineaInvestigacion==undefined || $scope.semillero.fechaLineaInvestigacion=="")
-    	{
-    		$window.alert("Seleccione una fecha de línea de  Investigación")
-    		return;
-    	}
+      if ($scope.semillero.fechaLineaInvestigacion==undefined || $scope.semillero.fechaLineaInvestigacion=="")
+      {
+        $window.alert("Seleccione una fecha de lÃ­nea de  InvestigaciÃ³n")
+        return;
+      }
 
     if ($scope.lstLineasInvestigacionFecha==undefined) $scope.lstLineasInvestigacionFecha=[];
 
@@ -573,7 +666,7 @@ angular.module('listaTareasApp')
 
       if ($scope.semillero.txtTipoEstrategia==undefined || $scope.semillero.txtTipoEstrategia=="")
       {
-          $window.alert("Falta descripción tipo estrategia")
+          $window.alert("Falta descripciÃ³n tipo estrategia")
           return;
       }
 
@@ -596,41 +689,41 @@ angular.module('listaTareasApp')
 
 
 
-    	if (idSemillero>0)
-    	{
-	    	var datos = {
-	    		Accion:'S',
-	    		SQL:'SELECT SEM_NOMB,SEM_MISI,SEM_VISI,' +
-	    			' SEM_OBJE,SEM_PROY_REGI,SEM_TEMA_INVE,SEM_FECH_CREA,SEM_AVAL_UNAD ' + 
-	    			' FROM sgi_semi WHERE SEM_CODI =' + idSemillero    			
-	    	}
+      if (idSemillero>0)
+      {
+        var datos = {
+          Accion:'S',
+          SQL:'SELECT SEM_NOMB,SEM_MISI,SEM_VISI,' +
+            ' SEM_OBJE,SEM_PROY_REGI,SEM_TEMA_INVE,SEM_FECH_CREA,SEM_AVAL_UNAD ' + 
+            ' FROM sgi_semi WHERE SEM_CODI =' + idSemillero         
+        }
 
-	      var select = TareasResource.SQL(datos);
+        var select = TareasResource.SQL(datos);
 
-	          select.then(function(result){
+            select.then(function(result){
 
-	              $scope.semillero.strNombre = result.data[0].SEM_NOMB;
-	              $scope.semillero.strMision = result.data[0].SEM_MISI;
-	              $scope.semillero.strVision = result.data[0].SEM_VISI;
-	              $scope.semillero.strObjetivo= result.data[0].SEM_OBJE;
-	              $scope.semillero.strProyeccionRegional= result.data[0].SEM_PROY_REGI;
-	              $scope.semillero.strTematicaInvestigacion= result.data[0].SEM_TEMA_INVE;
-	              $scope.semillero.avaluado =  result.data[0].SEM_AVAL_UNAD; 
-	               var day = moment(result.data[0].SEM_FECH_CREA).format("D");
-	               var mounth = moment(result.data[0].SEM_FECH_CREA).format("M");
-	               var year = moment(result.data[0].SEM_FECH_CREA).format("YYYY");
+                $scope.semillero.strNombre = result.data[0].SEM_NOMB;
+                $scope.semillero.strMision = result.data[0].SEM_MISI;
+                $scope.semillero.strVision = result.data[0].SEM_VISI;
+                $scope.semillero.strObjetivo= result.data[0].SEM_OBJE;
+                $scope.semillero.strProyeccionRegional= result.data[0].SEM_PROY_REGI;
+                $scope.semillero.strTematicaInvestigacion= result.data[0].SEM_TEMA_INVE;
+                $scope.semillero.avaluado =  result.data[0].SEM_AVAL_UNAD; 
+                 var day = moment(result.data[0].SEM_FECH_CREA).format("D");
+                 var mounth = moment(result.data[0].SEM_FECH_CREA).format("M");
+                 var year = moment(result.data[0].SEM_FECH_CREA).format("YYYY");
 
-	               var  fechaStr = year + "," + mounth + "," + day;
+                 var  fechaStr = year + "," + mounth + "," + day;
 
-	              $scope.semillero.strFecha = new Date(fechaStr);
+                $scope.semillero.strFecha = new Date(fechaStr);              
 
-	          })
+            })
       }
 
     }
 
 
-	if (user==null || user==undefined)
+  if (user==null || user==undefined)
     {
 
       $location.path('/inicio');
@@ -638,7 +731,7 @@ angular.module('listaTareasApp')
     }
     else
     {
-    	    $scope.$parent.mnuInvestiga =false;
+          $scope.$parent.mnuInvestiga =false;
             $scope.$parent.mnuAdmin = false;
             $scope.$parent.mnuConvocatoria = false;     
             $scope.mostrarDatosInvestigador(user.INV_CODI);
@@ -646,21 +739,21 @@ angular.module('listaTareasApp')
 
    $scope.onClickCancelar = function()
    {
-   	 $location.path('/semillero');
+     $location.path('/semillero');
       return;
    }
 
     $scope.onClickGuardar = function(){
           $('#myModal').show();
-    	if (idSemillero==0)
-    	{
-    		var datos = {
+      if (idSemillero==0)
+      {
+        var datos = {
 
-    			Accion:'I',
-    			SQL:"INSERT INTO sgi_semi (" + 
-    				" sem_nomb,sem_misi,sem_visi,sem_obje,sem_proy_regi," + 
+          Accion:'I',
+          SQL:"INSERT INTO sgi_semi (" + 
+            " sem_nomb,sem_misi,sem_visi,sem_obje,sem_proy_regi," + 
             " sem_tema_inve,sem_fech_crea,sem_aval_unad) " +
-    				" VALUES ('" + $scope.semillero.strNombre + "'," +
+            " VALUES ('" + $scope.semillero.strNombre + "'," +
             " '"  +  $scope.semillero.strMision + "'," + 
             " '" + $scope.semillero.strVision + "'," + 
             " '" + $scope.semillero.strObjetivo + "'," +
@@ -669,10 +762,10 @@ angular.module('listaTareasApp')
             " '" + moment($scope.semillero.strFecha).format("YYYY-MM-DD") + "', " +
             " " + $scope.semillero.avaluado + ")" 
 
-    		}
+        }
 
-    		var insertSemilero =  TareasResource.SQL(datos);
-    		insertSemilero.then(function(result){
+        var insertSemilero =  TareasResource.SQL(datos);
+        insertSemilero.then(function(result){
 
             idSemillero = result.data[0].valor;
             datos = {
@@ -742,9 +835,9 @@ angular.module('listaTareasApp')
 
                     });
 
-              });    	
-    		});
-    	}
+              });     
+        });
+      }
 
       else
       {
@@ -885,6 +978,6 @@ angular.module('listaTareasApp')
                     });                     
            }
     }
-     	
+      
 });
 
