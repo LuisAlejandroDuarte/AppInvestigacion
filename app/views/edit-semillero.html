@@ -4,7 +4,7 @@
 
 	<div class="view">
 	  
-		<div class="panel panel-primary  drop-shadow" style="max-width:1900px;height:auto; margin-top:5%">
+		<div class="panel panel-primary  drop-shadow" style="max-width:1900px;height:auto;width:1300px; margin-top:5%">
   		<div class="panel-heading"><h>{{tiTulo}}</h></div>
 		  <form method="post" name="myFormSemillero" role="form" novalidate>
 		  
@@ -417,11 +417,59 @@
 								<div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
 									<ul class="list-group">
                  								<jqx-panel id="jqxPanel" jqx-settings="jqxPanelSettings">
+<<<<<<< HEAD
                   							<li class="list-group-item" style="display: inline-block;width:100%" ng-repeat="item in listProyectosProductos">
                   							
                   							  <div class="col-lg-2 col-md-2 col-xs-12 col-ms-4">
                   							  		<a class="remove ml10 btn btn-default btn-xs" title="Eliminar" ng-click="onClicEliminarTipoEstrategia(this)"><span class="glyphicon glyphicon-trash"></span></a>
                   							  </div>                  							                     							     
+=======
+                  							<li class="list-group-item" style="display: inline-block;width:100%" ng-repeat="item in listProyectosProductos">                  									
+
+											<div class="row">
+												<div class="col-lg-3 col-md-3 col-xs-12 col-ms-12">
+													<label>Proyecto</label>
+												</div>	
+												<div class="col-lg-2 col-md-2 col-xs-12 col-ms-12">
+													<label>Estado</label>
+												</div>	
+												<div class="col-lg-2 col-md-2 col-xs-12 col-ms-12">
+													<label>Producto</label>
+												</div>	
+												<div class="col-lg-2 col-md-2 col-xs-12 col-ms-12">
+													<label>Estado</label>
+												</div>	
+												<div class="col-lg-2 col-md-2 col-xs-12 col-ms-12">
+													<label>Fecha Inicio</label>
+												</div>	
+											</div>
+											<div class="row">
+											<div class="col-lg-3 col-md-3 col-xs-12 col-ms-12">
+												<input ng-model="item.NombreProyecto" class="form-control input-sm" />							
+											</div>					
+											
+											<div class="col-lg-2 col-md-2 col-xs-12 col-ms-12">
+												<select class="form-control input-sm"   ng-model="PPR_EPY_CODI"  ng-options="item.ESPROYS_CODI as item.Nombre for item in lstEstadoProyecto"></select>					
+											</div>	
+
+											<div class="col-lg-2 col-md-2 col-xs-12 col-ms-12">
+												<input ng-model="item.NombreProducto" class="form-control input-sm" />							
+											</div>		
+											
+											<div class="col-lg-2 col-md-2 col-xs-12 col-ms-12">
+												<select class="form-control input-sm"   ng-model="PPR_EPD_CODI"  ng-options="item.ESPRODS_CODI as item.Nombre for item in lstEstadoProducto"></select>					
+											</div>	
+											
+											<div class="col-lg-2 col-md-2 col-xs-12 col-ms-12">
+												 <input   class="form-control input-sm" 
+	      										 name="fechaCreacion" ng-model="PPR_FECH_INI" data-date-format="dd-MMMM-yyyy" date-type="iso" data-autoclose="1"  bs-datepicker  />  			
+											</div>		
+
+                  							  <div class="col-lg-1 col-md-1 col-xs-12 col-ms-4">
+                  							  		<a class="remove ml10 btn btn-default btn-xs" title="Eliminar" ng-click="onClicEliminarTipoEstrategia(this)"><span class="glyphicon glyphicon-trash"></span></a>
+                  							  </div>  
+                  							 </div>                 							                     							     
+>>>>>>> e02743c559536bda7103f0f8a9eb2ae41140b861
 											</li>
 										</jqx-panel>
 									</ul>				

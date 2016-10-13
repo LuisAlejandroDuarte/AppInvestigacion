@@ -595,10 +595,23 @@ angular.module('listaTareasApp')
     $scope.fechaHoy = new Date(yyyy, mm, dd);
   	
 
-    
+    var datos = {
 
-     $scope.Documento = TareasResource.execute.query({Accion: 'S',
-                         SQL: 'SELECT TID_CODI,TID_NOMB FROM sgi_tipo_docu'}); 
+        Accion:'S',
+        SQL:'SELECT TID_CODI,TID_NOMB FROM sgi_tipo_docu'
+
+    }
+
+    var select = TareasResource.SQL(datos);
+        select.then(function(result){
+
+          $scope.Documento = result.data;
+
+        });
+
+
+
+
 
       $scope.Centro = TareasResource.execute.query({Accion: 'S',
                          SQL: 'SELECT CEN_CODI,CEN_NOMB FROM sgi_cent'}); 

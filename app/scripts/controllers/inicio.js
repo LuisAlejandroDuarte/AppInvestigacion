@@ -74,7 +74,13 @@ angular.module('listaTareasApp')
 
             var executesql = TareasResource.SQL({Accion:'S',SQL:'SELECT INV_CODI FROM sgi_inve WHERE INV_CODI_USUA=' + usr[0].Id});
                 executesql.then(function(result){
+                  if (result.data[0]==null) 
+                  {
+                    $window.alert("No existe el investigador para el actual usuario");
+                    return;
+                  }
                    $window.sessionStorage.setItem('investigador', JSON.stringify(result.data[0]));
+
                      $scope.$parent.idInve= result.data[0].INV_CODI
                   $location.path('/edit-investigador/'+ result.data[0].INV_CODI );
                   return;
