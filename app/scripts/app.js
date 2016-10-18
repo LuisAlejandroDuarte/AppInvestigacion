@@ -8,25 +8,7 @@ angular.module("listaTareasApp", ['ngRoute','ngAnimate','ngLocale', 'ngResource'
 
   .run(function($rootScope, $location, $cookieStore) {
     $rootScope.$on('$routeChangeStart', function(event, next, current) {
-      if ($cookieStore.get('estaConectado') == false || $cookieStore.get('estaConectado') == null) {
-        if(next.templateUrl == 'views/tareas.html' || next.templateUrl == 'views/empleados.html' || 
-          next.templateUrl == 'views/edit-granarea.html' ) {
-          $location.path('/inicio');
-        }
-      }
-      else {
-        var usuario = $cookieStore.get('usuario');
-     
-     // $location.path('/grupo');
-        // if(next.templateUrl == 'views/inicio.html'  ) {
-        //   $location.path('/main');          
-        // }
-        // else
-        // {
-        // if(next.templateUrl == 'views/edit-granarea.html') {
-        //   $location.path('/edit-granarea/:idGranA');
-        // }
-      }
+   
       
     })
   })
@@ -58,6 +40,13 @@ angular.module("listaTareasApp", ['ngRoute','ngAnimate','ngLocale', 'ngResource'
           }
         }
       })
+
+       .when('/menu', {
+         templateUrl: 'views/menu.html',
+        controller: 'MenuCtrl'
+
+       })
+
       .when('/inicio', {
         templateUrl: 'views/inicio.html',
         controller: 'InicioCtrl'
@@ -415,7 +404,7 @@ angular.module("listaTareasApp", ['ngRoute','ngAnimate','ngLocale', 'ngResource'
       })
 
       .otherwise({
-        redirectTo: '/'
+        redirectTo: '/menu'
       });
      
 

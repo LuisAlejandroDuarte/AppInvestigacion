@@ -59,7 +59,7 @@
   <!-- endbuild -->
 
   <!-- build:css({.tmp,app}) styles/main.css -->
-
+<link href="https://fonts.googleapis.com/css?family=Oswald:700" rel="stylesheet">
   <link rel="stylesheet" href="styles/main.css">
 
   <link rel="stylesheet" href="styles/animaciones.css">
@@ -106,7 +106,7 @@
 
 
 
-<nav id="navbar-example" class="navbar navbar-default navbar-fixed-top" role="navigation">
+<!-- <nav id="navbar-example" class="navbar navbar-default navbar-fixed-top" role="navigation">
 
       <div class="container-fluid">                    
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -159,17 +159,17 @@
 
       
 
-</nav> 
+</nav>  -->
 
 
 
 
 
-  <div class="container">
-
+  
+<div class="container-fluid">
     <div ng-view=""></div>
-
-  </div>
+</div>
+ 
 
 </div>
 
@@ -382,6 +382,7 @@
 <script src="scripts/controllers/semillero.js"></script>
 <script src="scripts/controllers/edit-semillero.js"></script>
 <script src="scripts/controllers/edit-usuario.js"></script>
+<script src="scripts/controllers/menu.js"></script>
 
 <script src="scripts/services/crud.js"></script>
 

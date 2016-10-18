@@ -29,8 +29,26 @@ angular.module('listaTareasApp')
   }])
 
 
-  .controller('InicioCtrl',['$scope','$modal','$document', '$q', 'TareasResource', '$log', '$cookieStore', '$location','$window', function ($scope,$modal,$document, $q, TareasResource, $log, $cookieStore, $location,$window) {
+  .controller('InicioCtrl',['$scope','$modal','$document', '$q', 'TareasResource', '$log', '$cookieStore', '$location','$window', function ($scope,$modal,$document,$q,TareasResource, $log, $cookieStore, $location,$window) {
       
+    if ($window.sessionStorage.getItem('tipoUsuario') == "null" )
+      {
+         $location.path('/menu');
+         return;
+
+       }
+
+      if ($window.sessionStorage.getItem('tipoUsuario')==0)
+         {
+          $scope.Titulo ="Administrador";
+         }
+
+      if ($window.sessionStorage.getItem('tipoUsuario')==1)
+      {
+        $scope.Titulo ="Investigador";
+      }         
+
+
       if ( $window.sessionStorage.getItem('usuario') == "")
       {
           $scope.$parent.mnuInvestiga =false;
@@ -38,9 +56,9 @@ angular.module('listaTareasApp')
             $scope.$parent.mnuConvocatoria = false;
       }
 
-     var inicioSesion = $q.defer();
+    //  var inicioSesion = $q.defer();
 
-    inicioSesion.promise.then(usrASesion);
+    // inicioSesion.promise.then(usrASesion);
  
 
     function usrASesion(usr) {
@@ -57,7 +75,7 @@ angular.module('listaTareasApp')
          $cookieStore.put('usuario', usr);
          $window.sessionStorage.setItem('usuario', JSON.stringify(usr[0]));
 
-         if (usr[0].Id_tipo==0 && $scope.seleccionado==0)
+         if ($window.sessionStorage.getItem('tipoUsuario')==0 && usr[0].Id_tipo ==0)
          {
             $scope.$parent.mnuAdmin = true;           
 
@@ -66,7 +84,7 @@ angular.module('listaTareasApp')
              return;
          }
 
-          if ($scope.seleccionado==1 && usr[0].Id_tipo==1)
+          if  ($window.sessionStorage.getItem('tipoUsuario')==1 && usr[0].Id_tipo ==1)
           {
             $scope.$parent.mnuInvestiga =true;
             $scope.$parent.mnuAdmin = false;
@@ -124,23 +142,51 @@ angular.module('listaTareasApp')
     };
     
 
+    $scope.onClicSalir = function()
+    {
+      $window.sessionStorage.setItem('tipoUsuario',null); 
+      $location.path('/menu');
+    }
+
     $scope.showRegistrarse = function(){
       $location.path('/edit-usuario/-1');
     }  
 
      $scope.iniciarSesion = function() {
+
+      var datos =
+      {
+        Accion :'S',
+        SQL:"SELECT USE_COD_TIPO AS Id_tipo,USE_CODI AS Id,USE_USUA AS Usuario," +
+        " concat(USE_NOMB,' ',USE_APEL) AS Nombre FROM sgi_user WHERE USE_USUA ='" + $scope.usuario + "' AND USE_CLAV ='" +  md5($scope.clave) + "'"
+      }
+
+      var loguearse = TareasResource.SQL(datos);
+        loguearse.then(function(result){
+
+         if (result.data[0]!=null)
+
+            {
+              usrASesion(result.data);
+            }
+            else
+            {
+               $('#myModal').modal('show'); 
+            }
+
+        });
    
-  var usr = TareasResource.login.query({Usuario: $scope.usuario, Contrasena: md5($scope.clave)})
+  // var usr = TareasResource.login.query({Usuario: $scope.usuario, Contrasena: md5($scope.clave)})
 
 
   
-            usr.$promise.then(function(usr) { 
+  //           usr.$promise.then(function(usr) { 
               
-           inicioSesion.resolve(usr);         
-        },
-          function(error) {
-                     $('#myModal').modal('show'); 
-          });
+  //          inicioSesion.resolve(usr);         
+  //       },
+  //         function(error) {
+  //                    $('#myModal').modal('show'); 
+  //         });
         }
           }]);
 

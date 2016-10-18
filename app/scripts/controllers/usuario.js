@@ -15,7 +15,7 @@
          $scope.options = {           
                 method: 'post',                     
                 cache: false,
-                height: 500,
+                height: 300,
                 striped: true,
                 pagination: true,                
                 pageList: [10, 25, 50, 100, 200],
@@ -99,6 +99,14 @@
             usuarios.then(function(result){
                 $('#tableusuario').bootstrapTable('load',result.data);                
             });
+
+        $scope.onClicSalir = function()
+        {
+            $window.sessionStorage.setItem('tipoUsuario',null);
+            $window.sessionStorage.setItem('usuario',null);
+            $window.location.href = "#/menu/";
+        }
+
     }])
 
 
