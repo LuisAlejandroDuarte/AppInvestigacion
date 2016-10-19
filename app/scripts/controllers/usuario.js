@@ -9,8 +9,14 @@
     {
       $location.path('/inicio');
       return;
-      }
-   
+     }
+    
+    if ($window.sessionStorage.getItem('tipoUsuario')!=0)
+    {
+      $location.path('/inicio');
+      return;
+    }
+
 
          $scope.options = {           
                 method: 'post',                     

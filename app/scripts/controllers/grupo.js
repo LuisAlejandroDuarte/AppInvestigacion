@@ -125,6 +125,14 @@
             }]
         };
 
+
+     $scope.onClicSalir = function()
+    {
+        $window.sessionStorage.setItem('tipoUsuario',null);
+        $window.sessionStorage.setItem('usuario',null);
+        $window.location.href = "#/menu/";
+    }
+
     }])
 
 
@@ -150,6 +158,8 @@
             }
         }
     }])
+
+
 
 
 .controller('ListControllerGrupo', ['$window','$scope', function($window,$scope) {

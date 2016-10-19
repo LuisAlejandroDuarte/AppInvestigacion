@@ -32,14 +32,38 @@
 	$scope.onClicAdministrador = function()
 	{
 		$window.sessionStorage.setItem('tipoUsuario',0);
-		$location.path('/usuario');
+		$location.path('/inicio');
 	}
 
+	
 	$scope.onClicInvestigador = function()
 	{
 		$window.sessionStorage.setItem('tipoUsuario',1);
-		$location.path('/usuario');
+		$location.path('/inicio');
 	}
+
+
+	$scope.onClicGrupo = function()
+	{
+		$window.sessionStorage.setItem('tipoUsuario',2);
+		$location.path('/inicio');
+	}
+
+
+	$scope.onClicConvocatoria = function()
+	{
+		$window.sessionStorage.setItem('tipoUsuario',3);
+		$location.path('/inicio');
+	}
+
+
+	$scope.onClicPropuesta = function()
+	{
+		$window.sessionStorage.setItem('tipoUsuario',4);
+		$location.path('/inicio');
+	}
+
+	
 
 }]);
 

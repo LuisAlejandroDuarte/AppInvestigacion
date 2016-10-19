@@ -1346,6 +1346,8 @@ $scope.agregarSemilleroInvestigacion = function(idSemillero,idLinea,fechaInicioS
  $scope.volver = function(){
       $scope.$parent.mnuInvestiga =false;
      $scope.$parent.mnuAdmin = false;
+     $window.sessionStorage.setItem('usuario',null);
+     $window.sessionStorage.setItem('tipoUsuario',null);
     $location.path('/inicio');
  
  };

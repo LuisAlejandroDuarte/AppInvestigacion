@@ -43,10 +43,26 @@ angular.module('listaTareasApp')
           $scope.Titulo ="Administrador";
          }
 
-      if ($window.sessionStorage.getItem('tipoUsuario')==1)
-      {
-        $scope.Titulo ="Investigador";
-      }         
+        if ($window.sessionStorage.getItem('tipoUsuario')==1)
+        {
+          $scope.Titulo ="Investigador";
+        }    
+
+       if($window.sessionStorage.getItem('tipoUsuario')==2)
+        {
+          $scope.Titulo ="GRUPO";
+        }
+
+
+         if($window.sessionStorage.getItem('tipoUsuario')==3)
+        {
+          $scope.Titulo ="CONVOCATORIA";
+        }
+
+        if($window.sessionStorage.getItem('tipoUsuario')==4)
+        {
+          $scope.Titulo ="PROPUESTAS";
+        }
 
 
       if ( $window.sessionStorage.getItem('usuario') == "")
@@ -95,6 +111,8 @@ angular.module('listaTareasApp')
                   if (result.data[0]==null) 
                   {
                     $window.alert("No existe el investigador para el actual usuario");
+                     $window.sessionStorage.setItem('tipoUsuario',null);
+                      $window.sessionStorage.setItem('usuario',null);
                     return;
                   }
                    $window.sessionStorage.setItem('investigador', JSON.stringify(result.data[0]));
@@ -106,7 +124,7 @@ angular.module('listaTareasApp')
             
           }
 
-         if ($scope.seleccionado=="2")
+         if  ($window.sessionStorage.getItem('tipoUsuario')==2 && usr[0].Id_tipo ==1)
          {
            var executesql = TareasResource.SQL({Accion:'S',SQL:'SELECT INV_CODI FROM sgi_inve WHERE INV_CODI_USUA=' + usr[0].Id});
                 executesql.then(function(result){
@@ -117,14 +135,26 @@ angular.module('listaTareasApp')
          }
 
         
+          if  ($window.sessionStorage.getItem('tipoUsuario')==4 && usr[0].Id_tipo ==1)
+         {
+           var executesql = TareasResource.SQL({Accion:'S',SQL:'SELECT INV_CODI FROM sgi_inve WHERE INV_CODI_USUA=' + usr[0].Id});
+                executesql.then(function(result){
+                   $window.sessionStorage.setItem('investigador', JSON.stringify(result.data[0]));
+            $location.path('/mnuPropuesta');
+            return;
+          });
+         }
 
-          if ($scope.seleccionado=="3" &&  usr[0].Id_tipo==1)
+
+        if  ($window.sessionStorage.getItem('tipoUsuario')==3 && usr[0].Id_tipo ==0)
          {
             $location.path('/convocatoria');
-
+            return;
          }
        
-          if ($scope.seleccionado=="4")
+
+
+           if  ($window.sessionStorage.getItem('tipoUsuario')==5 && usr[0].Id_tipo ==1)
          {
           $scope.$parent.mnuInvestiga =false;
             $scope.$parent.mnuAdmin = false;
@@ -137,7 +167,10 @@ angular.module('listaTareasApp')
           });
          }
 
+      // $window.alert("El usuario no concuerda con el tipo de usuario seleccionado"); 
 
+      // $window.sessionStorage.setItem('tipoUsuario',null);
+      // $window.sessionStorage.setItem('usuario',null);
 
     };
     
@@ -167,7 +200,16 @@ angular.module('listaTareasApp')
          if (result.data[0]!=null)
 
             {
-              usrASesion(result.data);
+
+              
+
+              if (($window.sessionStorage.getItem('tipoUsuario') !=0 &&  $window.sessionStorage.getItem('tipoUsuario')!=3 )  && result.data[0].Id_tipo==0)
+              {
+                $window.alert("El usuario no corresponde con el tipo seleccionado");
+                return;
+              }
+              else
+                usrASesion(result.data);
             }
             else
             {
@@ -188,6 +230,6 @@ angular.module('listaTareasApp')
   //                    $('#myModal').modal('show'); 
   //         });
         }
-          }]);
+  }]);
 
    
