@@ -116,6 +116,8 @@
     }
         
 
+
+
         var datos = {
 
         	Accion:'S',
@@ -130,6 +132,12 @@
        			$('#tablesemillero').bootstrapTable('load',result.data);	
        		});
         
+          $scope.onClicSalir = function()
+        {
+            $window.sessionStorage.setItem('tipoUsuario',null);
+            $window.sessionStorage.setItem('usuario',null);
+            $window.location.href = "#/menu/";
+        }    
 
 
 }])
