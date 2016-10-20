@@ -63,7 +63,11 @@
 		$location.path('/inicio');
 	}
 
-	
+	$scope.onClicSemillero = function()
+	{
+		$window.sessionStorage.setItem('tipoUsuario',5);
+		$location.path('/inicio');
+	}
 
 }]);
 

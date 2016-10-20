@@ -40,5 +40,10 @@
             $window.location.href = "#/menu/";
 	}
 
+	$scope.onClicListaPropuestas = function() {
+
+		 $window.location.href = "#/propuesta/";
+	}
+
 
  }]);

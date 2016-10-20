@@ -24,7 +24,7 @@
             }
         }
     }])
-.controller('SemilleroCtrl', ['$scope','$window','TareasResource', function($scope,$window,TareasResource) {
+.controller('SemilleroCtrl', ['$scope','$window','TareasResource','$location', function($scope,$window,TareasResource,$location) {
 
 	 var user = JSON.parse($window.sessionStorage.getItem('investigador'));
 

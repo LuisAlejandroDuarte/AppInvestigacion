@@ -174,6 +174,12 @@
             }]
         };
 
+        $scope.onClicSalir = function()
+        {
+           
+            $window.location.href = "#/mnuPropuesta/";
+        }
+
     }])
 
 	.controller('ListControllerpropuesta', ['$window','$scope', function($window,$scope) {

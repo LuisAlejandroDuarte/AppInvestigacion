@@ -64,6 +64,10 @@ angular.module('listaTareasApp')
           $scope.Titulo ="PROPUESTAS";
         }
 
+          if($window.sessionStorage.getItem('tipoUsuario')==5)
+        {
+          $scope.Titulo ="SEMILLERO";
+        }
 
       if ( $window.sessionStorage.getItem('usuario') == "")
       {
