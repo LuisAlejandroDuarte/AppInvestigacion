@@ -5,9 +5,9 @@
 	"default": {
 
 		"host": "ftp.giaunad.com",
-		"username": "admin@giaunad.com",  // or null for anonymous login
+		"username": "giaunadc",  // or null for anonymous login
 		"password": "jamecru2016",
-		"path": "/",
+		"path": "/public_html/AppInvestigacion",
 
 		"upload_on_save": true, // set *false* if you do not want to upload on save!
 

@@ -46,4 +46,11 @@
 	}
 
 
+	$scope.onClicAtributo = function() {
+
+	$window.location.href = "#/atributo/";	
+
+	}
+
+
  }]);

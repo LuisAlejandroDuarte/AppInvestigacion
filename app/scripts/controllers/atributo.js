@@ -151,6 +151,13 @@
             }]
         };
 
+     $scope.onClicSalir = function()
+        {
+            
+            $window.location.href = "#/mnuPropuesta/";
+        }
+
+
       // var dat ={
       //                                   Accion:'S',
       //                                   SQL:'SELECT ATR_CODI,ATR_DESC FROM sgi_atrib'
