@@ -61,7 +61,7 @@
 						<div class="col-lg-6 col-md-3 col-xs-12 col-sm-12">
 							<div class="form-group">
 								<label>Tipo Usuario</label>
-								<select name="" ng-model="viewDatos[0].USE_COD_TIPO"  class="form-control" required>
+								<select name="" ng-model="viewDatos[0].USE_COD_TIPO" ng-disabled="disabledTipoUsuario" class="form-control" required>
 									<option value="0" ng-show="admin" >Administrador</option>
 						q			<option value="1" ng-show="investigador || admin">Investigador</option> 
 						<option value="2" ng-show="admin" >Juez</option>

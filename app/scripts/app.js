@@ -47,7 +47,7 @@ angular.module("listaTareasApp", ['ngRoute','ngAnimate','ngLocale', 'ngResource'
 
        })
 
-
+     
        .when('/mnuPropuesta', {
          templateUrl: 'views/mnuPropuesta.html',
         controller: 'mnuPropuestaCtrl'

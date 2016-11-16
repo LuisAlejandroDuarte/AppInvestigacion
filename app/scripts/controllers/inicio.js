@@ -95,6 +95,16 @@ angular.module('listaTareasApp')
          $cookieStore.put('usuario', usr);
          $window.sessionStorage.setItem('usuario', JSON.stringify(usr[0]));
 
+
+          if ($window.sessionStorage.getItem('tipoUsuario')==-1)
+         {
+            $scope.$parent.mnuAdmin = true;           
+
+             $location.path('/edit-usuario/' + usr[0].Id);
+            
+             return;
+         }
+
          if ($window.sessionStorage.getItem('tipoUsuario')==0 && usr[0].Id_tipo ==0)
          {
             $scope.$parent.mnuAdmin = true;           
@@ -205,7 +215,11 @@ angular.module('listaTareasApp')
 
             {
 
-              
+               if ($window.sessionStorage.getItem('tipoUsuario') ==-1)
+               {
+                 usrASesion(result.data);
+                 return;
+               }
 
               if (($window.sessionStorage.getItem('tipoUsuario') !=0 &&  $window.sessionStorage.getItem('tipoUsuario')!=3 )  && result.data[0].Id_tipo==0)
               {

@@ -4,6 +4,7 @@ angular.module('listaTareasApp')
   .controller('editUsuario', function($scope,$location,datosUsuario,TareasResource,$route,$window) {
     	var id;
     	var identificacion;
+    	$scope.disabledTipoUsuario = ($window.sessionStorage.getItem('tipoUsuario')==-1) ? true:false;
   		 datosUsuario.$promise.then(function(result){
 
   		 	$scope.viewDatos= result;

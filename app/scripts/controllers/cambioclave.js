@@ -3,14 +3,16 @@
 angular.module('listaTareasApp')
   .controller('cambioclave', function($scope,$location,TareasResource,$route,$window) {
 
-  	 var user = JSON.parse($window.sessionStorage.getItem('usuario'));
+  	var user; // = JSON.parse($window.sessionStorage.getItem('usuario'));
 
   	$scope.save = function() {
+
+
 
   		var datos = {
 
   			Accion:"S",
-  			SQL:"Select * from sgi_user where USE_USUA='" + user.Usuario + "' and USE_CLAV='" + md5($scope.claveactual)  + "' "
+  			SQL:"Select * from sgi_user where USE_USUA='" + $scope.usuario + "' and USE_CLAV='" + md5($scope.claveactual)  + "' "
 
   		};
 
@@ -19,9 +21,13 @@ angular.module('listaTareasApp')
 
   			if (result.data[0]==null)
   			{
-  				$window.alert("La clave actual no corresponde con la escrita");
+  				$window.alert("La clave y el usuario no corresponden");
   				return;
   			}
+        else
+        {
+          user= result.data[0]
+        }
 
   			if ($scope.repitaclave !=$scope.nuevaclave)
   			{
@@ -32,7 +38,7 @@ angular.module('listaTareasApp')
 		datos = {
 
   			Accion:"U",
-  			SQL:"Update sgi_user set USE_CLAV='" + md5($scope.nuevaclave) + "' where USE_CODI=" + user.Id
+  			SQL:"Update sgi_user set USE_CLAV='" + md5($scope.nuevaclave) + "' where USE_CODI=" + user.USE_CODI
 
   		};
 
@@ -45,7 +51,7 @@ angular.module('listaTareasApp')
       			  $window.sessionStorage.setItem('usuario',null);
                   $window.sessionStorage.setItem('investigador',null);
 
-  				$location.path('/inicio');
+  				$location.path('/menu');
 
   			});
   		});
@@ -59,7 +65,7 @@ angular.module('listaTareasApp')
 		$scope.$parent.mnuAdmin=false;
       	$window.sessionStorage.setItem('usuario',null);
         $window.sessionStorage.setItem('investigador',null);
-        $location.path('/inicio');
+        $location.path('/menu');
 
   	}
   		

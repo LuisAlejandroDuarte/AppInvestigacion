@@ -26,7 +26,18 @@
 		 'display': 'table-cell',
     	 'vertical-align': 'middle',
     	'position': 'relative',
-    	'top':screen.height/7
+    	'top':screen.height/12
+	}
+
+	$scope.onClicCambioClave = function() {
+
+		$location.path('/cambioclave');
+	}
+
+	$scope.onClicPerfil = function()
+	{
+		$window.sessionStorage.setItem('tipoUsuario',-1);
+		$location.path('/inicio');
 	}
 
 	$scope.onClicAdministrador = function()
