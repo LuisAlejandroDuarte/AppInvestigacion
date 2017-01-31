@@ -643,9 +643,10 @@ angular.module('listaTareasApp')
 
 
        var informacionacademica =TareasResource.execute.query({Accion: "S",
-                         SQL: "SELECT NIN_NIV_CODI AS Codi,NIN_TITU_OBTE AS titulo,NIN_INST As Instituto, " +
-                         " NIN_AGNO AS Agno, Concat(NIN_TITU_OBTE, ' ',NIN_INST, ' ',NIN_AGNO) As Nombre,'false' As Sel FROM sgi_nive_inve where " +
-                         " NIN_INV_CODI =" + $route.current.params.idInvestigador + "" });
+                         SQL: "SELECT SNI.NIN_NIV_CODI AS Codi,SNI.NIN_TITU_OBTE AS titulo,SNI.NIN_INST As Instituto, " +
+                         " SNI.NIN_AGNO AS Agno, Concat(SNF.NIV_NOMB,' ', SNI.NIN_TITU_OBTE, ' ',SNI.NIN_INST, ' ',SNI.NIN_AGNO) As Nombre,'false' As Sel " +
+                         " FROM sgi_nive_inve AS SNI INNER JOIN sgi_nive_form AS SNF ON SNF.NIV_CODI = SNI.NIN_NIV_CODI  where " +
+                         " SNI.NIN_INV_CODI =" + $route.current.params.idInvestigador + "" });
 
         // var informacionacademica =TareasResource.execute.query({Accion: "S",
         //                  SQL: "SELECT * from sgi_inve where inv_iden=0"});
@@ -1009,34 +1010,36 @@ $scope.onChangedGrupProducto = function(idGrupo,idLinea){
 
           datosformacion.$promise.then(function (result) { 
 
-              angular.forEach($scope.informacionacademica,function(item){
-              if (myformacion.NIV_NOMB!="PROFESIONAL")
-                {
-                 if (item.Codi==myformacion.NIV_CODI)
-                  {
-                    existe = true;
-                  }
-                }
-                else
-                {
-
-                }
-
-
-               });
-
-               if (existe==true)
-                  {
-                     $window.alert("El nivel de Formación " + myformacion.NIV_NOMB + " ya está Incluido");
-                  }
-                  else
-                  {
-                   $scope.informacionacademica.splice(0,0,{Consecutivo:$scope.informacionacademica.length, Nombre:result[0].niv_nomb + ' ' + tituloformacion + ' ' + institucion + ' ' + Agno,Sel:false,Codi:myformacion.NIV_CODI, titulo:tituloformacion,Instituto:institucion,Agno:Agno});                      
+              $scope.informacionacademica.splice(0,0,{Consecutivo:$scope.informacionacademica.length, Nombre:result[0].niv_nomb + ' ' + tituloformacion + ' ' + institucion + ' ' + Agno,Sel:false,Codi:myformacion.NIV_CODI, titulo:tituloformacion,Instituto:institucion,Agno:Agno});                      
                    $('#tituloformacion').val("");
                    $('#institucion').val("");
                    $('#Agno').val("");
 
-                  }
+              // angular.forEach($scope.informacionacademica,function(item){
+              // if (myformacion.NIV_NOMB!="PROFESIONAL")
+              //   {
+              //    if (item.Codi==myformacion.NIV_CODI)
+              //     {
+              //       existe = true;
+              //     }
+              //   }
+              //   else
+              //   {
+
+              //   }
+
+
+              //  });
+
+              //  if (existe==true)
+              //     {
+              //        $window.alert("El nivel de Formación " + myformacion.NIV_NOMB + " ya está Incluido");
+              //     }
+              //     else
+              //     {
+                   
+
+              //     }
 
           });
 
