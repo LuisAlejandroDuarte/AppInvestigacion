@@ -6,6 +6,71 @@
 
 angular.module("listaTareasApp", ['ngRoute','ngAnimate','ngLocale', 'ngResource', 'ngAnimate', 'ngCookies','ui.bootstrap','mgcrea.ngStrap','base64','jqwidgets'])
 
+.directive('numeroValido', function () {
+
+    return {
+        require: '?ngModel',      
+        link: function (scope, element, attrs, ngModelCtrl) {
+
+            var sinsigno = scope.sinsigno;
+
+            if (!ngModelCtrl)
+            {
+                return;
+            }
+
+            ngModelCtrl.$parsers.push(function (val) {
+
+                if (angular.isUndefined(val)) {
+                    var val = '';
+                }
+
+                var clean = val.replace(/[^-0-9\.,]/g, '');
+                var negativeCheck = clean.split('-');
+                var decimalCheck = clean.split('.');
+                var comaCheck = clean.split(',');
+
+              
+                if (!angular.isUndefined(decimalCheck[1])) {
+                    decimalCheck[1] = decimalCheck[1].slice(0, 5);
+                    clean = decimalCheck[0] + '.' + decimalCheck[1];
+                }
+
+                if (!angular.isUndefined(comaCheck[1])) {
+                    clean = clean.replace(',', '.');
+                }
+
+                if (!angular.isUndefined(negativeCheck[1])) {
+                    negativeCheck[1] = negativeCheck[1].replace('-', '');
+
+                    if (negativeCheck[1].indexOf('.') > 0)
+                    {
+                        negativeCheck[1]= negativeCheck[1].split('.')[0] + '.' + negativeCheck[1].split('.')[1].slice(0, 5).replace(',','');
+                    }
+
+                    clean = '-' + negativeCheck[0] + negativeCheck[1];                   
+                }
+
+
+                if (val !== clean) {
+                    ngModelCtrl.$setViewValue(clean);
+                    ngModelCtrl.$render();
+                }
+                return clean;
+
+            });
+            element.bind('keypress', function (event) {
+                if (event.keyCode === 32) {
+                    event.preventDefault();
+                }
+            });
+
+        }
+
+    }
+
+})
+
   .run(function($rootScope, $location, $cookieStore) {
     $rootScope.$on('$routeChangeStart', function(event, next, current) {
    
@@ -13,6 +78,7 @@ angular.module("listaTareasApp", ['ngRoute','ngAnimate','ngLocale', 'ngResource'
     })
   })
 
+  
 
 
   .config(['$routeProvider',function ($routeProvider) {
@@ -416,6 +482,8 @@ angular.module("listaTareasApp", ['ngRoute','ngAnimate','ngLocale', 'ngResource'
      
 
   }]);
+
+
 
 
   //TareasResource.objeto.query({Usuario: $scope.usuario, Contrasena: $scope.clave})

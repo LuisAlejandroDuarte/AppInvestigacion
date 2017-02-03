@@ -208,7 +208,9 @@ angular.module('listaTareasApp')
           selEntidad:codi.id_convocatoria,          
           selGrupoProducto:codi.id_grupo          
         };
-        $scope.onChangedGrupProducto(codi.id_grupo,codi.id_linea);          
+
+        if (codi.id_grupo!=undefined && codi.id_linea!=undefined)
+            $scope.onChangedGrupProducto(codi.id_grupo,codi.id_linea);          
         $scope.idProyecto = codi.PRO_CODI;
         
 
@@ -374,6 +376,8 @@ angular.module('listaTareasApp')
       $scope.salvarProyecto = function()
       {
 
+        moment.locale('es');
+
         if ($scope.proyectoProducto.length==0)
         {
           $window.alert('Debe ingresar al menos un producto');
@@ -472,7 +476,7 @@ angular.module('listaTareasApp')
                                                             " (id_inve,id_proy,fecha_ini,id_grupo," +
                                                              "id_tipoInvestigador,id_convocatoria,id_linea) " +
                                                             " VALUES (" + idInvestigador + "," + idProyecto + "," + 
-                                                              "'" + fechaInicioProyecto + "', " + $scope.proy.selGrupoProducto + ", " +
+                                                              "'" + moment($scope.$$childTail.fechaInicioProy).format("YYYY-MM-DD") + "', " + $scope.proy.selGrupoProducto + ", " +
                                                             "" + $scope.proy.selTipoInvestigador + ", " + $scope.proy.selEntidad +  "," + $scope.proy.selLineaInvestigador +  ")"});    
 
                        r.$promise.then(function(result2){
@@ -496,7 +500,7 @@ angular.module('listaTareasApp')
                         TareasResource.enviarProyectoProducto(datos).then(function(result) { 
 
                           var resultado = result;
-                         
+                              $('#myModal').hide(); 
                               $window.alert("Guardado");
                               $scope.pass.strPass="";
                               $scope.pass.strRePass="";
@@ -1366,134 +1370,59 @@ function actualizarTablasRelacionadas(id){
     {
       if (result[0].estado=="ok")
       {
+
+
+        var multiple = [];
+        
+        
         for(var i=0;i<$scope.informacionacademica.length;i++)
            {
            if ($scope.informacionacademica[i].Sel=="false" || $scope.informacionacademica[i].Sel==false)
               {
-                  executeSql= TareasResource.execute.query({Accion: "I",SQL:id + ";INSERT INTO sgi_nive_inve " +
-                   " (NIN_INV_CODI,NIN_NIV_CODI,NIN_INST,NIN_AGNO,NIN_TITU_OBTE) " +
+
+                  multiple.splice(0,0,
+                    {
+                      SQL:"INSERT INTO sgi_nive_inve  (NIN_INV_CODI,NIN_NIV_CODI,NIN_INST,NIN_AGNO,NIN_TITU_OBTE) " +
                    " VALUES (" + id + "," + $scope.informacionacademica[i].Codi + ",'" + 
                    $scope.informacionacademica[i].Instituto + "'," + 
                    $scope.informacionacademica[i].Agno + ",'" +
-                   $scope.informacionacademica[i].titulo + "')"}); 
-
+                   $scope.informacionacademica[i].titulo + "')",
+                   Accion:'I'
+                    })
+                  // executeSql= TareasResource.execute.query({Accion: "I",SQL:id + ";INSERT INTO sgi_nive_inve " +
+                  //  " (NIN_INV_CODI,NIN_NIV_CODI,NIN_INST,NIN_AGNO,NIN_TITU_OBTE) " +
+                  //  " VALUES (" + id + "," + $scope.informacionacademica[i].Codi + ",'" + 
+                  //  $scope.informacionacademica[i].Instituto + "'," + 
+                  //  $scope.informacionacademica[i].Agno + ",'" +
+                  //  $scope.informacionacademica[i].titulo + "')"}); 
               }
            }
-          executeSql.$promise.then(function (result)
-          {         
-            if (result[0].estado=="ok")
-               {
-                  executeSql= TareasResource.execute.query({Accion: "D",SQL:"DELETE FROM sgi_inve_grup " +
-                  " WHERE IGR_INVE_IDEN = " + id });                   
-                      executeSql.$promise.then(function (result)
+            TareasResource.SQLMulti(multiple).then(function(result) { 
+
+                  if (result.data[0]=="fallo")
+                  {
+                      $window.alert(result.data[0].msg);
+                  }    
+                  else
+                  {
+                      if ($scope.hideProyecto==false)
                       {
-                        if (result[0].estado="ok")
-                        {
-                          for(var i=0;i<$scope.grupoinvestigacion.length;i++)
-                            {
-                               if ($scope.grupoinvestigacion[i].Sel=="false" || $scope.grupoinvestigacion[i].Sel==false)
-                                 {
-                                     
-                                      fechaini = moment($scope.grupoinvestigacion[i].FechaInicio).format("YYYY-MM-DD");                                      
-                                      // fechaini = fechaini.getFullYear() + '-' + parseInt(fechaini.getMonth()+1) + '-' + fechaini.getDate();
-                                      fechafin = new Date($scope.grupoinvestigacion[i].FechaTermina);                                      
-                                      // fechafin = fechafin.getFullYear() + '-' + parseInt(fechafin.getMonth()+1) + '-' + fechafin.getDate();
 
-                                      var fecha_fin='NULL';
+                          $scope.salvarProyecto();                                                        
+                      }
+                      else
+                      {
+                        $('#myModal').hide(); 
+                          $window.alert("Guardado");
+                          $scope.pass.strPass="";
+                          $scope.pass.strRePass="";
+                          $location.path('/edit-investigador/'+ id);
+                      }                                                                                    
+                     
+                  }              
 
-                                      if ($scope.grupoinvestigacion[i].FechaTermina!="")
-                                      {
-                                           fecha_fin ="'" + moment($scope.grupoinvestigacion[i].FechaTermina).format("YYYY-MM-DD") + "'";                                                                                
-                                      }
-
-
-                                      executeSql= TareasResource.execute.query({Accion: "I",SQL:"1;INSERT INTO sgi_inve_grup " +
-                                      " (IGR_GRUP_CODI,igr_line_inve_codi,IGR_FECH_INIC,IGR_FECH_TERM,IGR_INVE_IDEN,IGR_TIPO_VINC_CODI,igr_regi_ingr) " +
-                                      " VALUES (" + $scope.grupoinvestigacion[i].IdGrupo + "," + $scope.grupoinvestigacion[i].IdLinea + ",'" + 
-                                       fechaini + "'," + 
-                                       fecha_fin + "," + id + ",1,0)"});                        
-                                 }                                  
-
-                            }
-                             executeSql.$promise.then(function (result){
-                                 if (result[0].estado=="ok")
-                                    {
-
-                                        executeSql= TareasResource.execute.query({Accion: "D",SQL:"DELETE FROM sgi_inve_semi " +
-                                        " WHERE INS_INVE_IDEN = " + id });
-                                        executeSql.$promise.then(function (result)
-                                        {
-                                          if (result[0].estado=="ok")
-                                          {
-                                            if ($scope.semilleroinvestigacion[0]!=null)
-                                            {
-                                              for(var i=0;i<$scope.semilleroinvestigacion.length;i++)
-                                                {
-
-                                                if ($scope.semilleroinvestigacion[i].Sel=="false" || $scope.semilleroinvestigacion[i].Sel==false)
-                                                   {
-
-                                                       fechaini = moment($scope.semilleroinvestigacion[i].FechaInicio).format("YYYY-MM-DD");   
-                                                        // fechafin = moment($scope.semilleroinvestigacion[i].FechaTermina).format("YYYY-MM-DD");                                      
-                                                        // fechaini = fechaini.getFullYear() + '-' + parseInt(fechaini.getMonth()+1) + '-' + fechaini.getDate();
-                                                        // fechafin = new Date($scope.semilleroinvestigacion[i].FechaTermina);                                      
-                                                        // fechafin = fechafin.getFullYear() + '-' + parseInt(fechafin.getMonth()+1) + '-' + fechafin.getDate();
-
-                                                        var fecha_fin='NULL';
-
-                                                        if ($scope.semilleroinvestigacion[i].FechaTermina!="")
-                                                        {
-                                                             fecha_fin ="'" + moment($scope.semilleroinvestigacion[i].FechaTermina).format("YYYY-MM-DD") + "'";                                                                                
-                                                        }
-
-                                                     // fechaini = new Date($scope.semilleroinvestigacion[i].FechaInicio);                                      
-                                                     // fechaini = fechaini.getFullYear() + '-' + parseInt(fechaini.getMonth()+1) + '-' + fechaini.getDate();
-                                                     // fechafin = new Date($scope.semilleroinvestigacion[i].FechaTermina);                                      
-                                                     // fechafin = fechafin.getFullYear() + '-' + parseInt(fechafin.getMonth()+1) + '-' + fechafin.getDate(); 
-
-                                                     executeSql= TareasResource.execute.query({Accion: "I",SQL:"0;sgi_inve_semi;INS_CODI;INSERT INTO sgi_inve_semi " +
-                                                     " (INS_CODI,INS_SEMI_CODI,ins_line_inve_codi,INS_FECH_INIC,INS_FECH_TERM,INS_INVE_IDEN) " +
-                                                     " VALUES (@@," + $scope.semilleroinvestigacion[i].IdSemillero + "," + $scope.semilleroinvestigacion[i].IdLinea + ",'" + 
-                                                     fechaini + "'," + 
-                                                     fecha_fin + "," + id + ")"});                        
-                                                   }
-                                                }
-                                              }
-                                              executeSql.$promise.then(function (result)
-                                              {
-                                                if (result[0].estado=="ok")
-                                                { 
-                                                    if ($scope.hideProyecto==false)
-                                                    {
-
-                                                        $scope.salvarProyecto();                                                        
-                                                    }
-                                                    else
-                                                    {
-                                                      $('#myModal').hide(); 
-                                                        $window.alert("Guardado");
-                                                        $scope.pass.strPass="";
-                                                        $scope.pass.strRePass="";
-                                                        $location.path('/edit-investigador/'+ id);
-                                                    }                                                                                    
-                                                }
-                                              });
-                                          }  
-                                            else
-                                            $window.alert(result[0].msg);
-                                        });                                     
-                                    }
-                                      else
-                                      $window.alert(result[0].msg);
-                             });
-                        } 
-                        else
-                        $window.alert(result[0].msg);                       
-                      });
-                }  
-                else
-                $window.alert(result[0].msg);                  
-          });   
+                });  
+     
       }
       else
         $window.alert(result[0].msg);

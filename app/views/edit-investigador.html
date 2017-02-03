@@ -771,7 +771,7 @@
 
                  <div class="col-md-12 col-lg-12">                    
 
-                    <input type="number" id="strFinanciacion" style="width:90%" class="form-control" ng-model="strFinanciacion"/>                 
+                    <input type="number" id="strFinanciacion" style="width:90%" class="form-control" ng-model="strFinanciacion" pattern="[0-9.\-]{1,8}$" numero-valido/>                 
 
                  </div>
 
@@ -809,7 +809,7 @@
 
                        <div class="form-group" ng-class="{'has-error': datepickerForm.date.$invalid}">
 
-                         <input id="fechaInicioProyecto" type="text" class="form-control" ng-model="fechaInicioProyecto" data-date-format="dd-MMMM-yyyy" date-type="iso" data-max-date="{{fechaHoy}}"  data-autoclose="1" name="date2" bs-datepicker>              
+                         <input id="fechaInicioProyecto" type="text" class="form-control" ng-model="fechaInicioProy" data-date-format="dd-MMMM-yyyy" date-type="iso" data-max-date="{{fechaHoy}}"  data-autoclose="1" name="date1" bs-datepicker>              
 
                         </div>       
 
