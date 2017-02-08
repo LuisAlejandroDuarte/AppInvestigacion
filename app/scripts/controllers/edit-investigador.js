@@ -28,20 +28,22 @@ angular.module('listaTareasApp')
 
 
   
-  .controller('editInvestigador', function($scope,$window,$location,datosInvestigador,TareasResource,$route,$base64,$q) {
+  .controller('editInvestigador', function($scope,$timeout,$window,$location,datosInvestigador,TareasResource,$route,$base64,$q) {
     var id_inve;
     var idInvestigador;    
     var oldUser;
     var oldIdentificacion;
     var strmd5;
 
+    $scope.mostrarboton=true;
+   
     id_inve = parseInt($route.current.params.idInvestigador);
     var user = JSON.parse($window.sessionStorage.getItem('usuario'));
 
     if (user==null || user==undefined)
     {
 
-      $location.path('/inicio');
+      $location.path('/menu');
       return;
       }
 
@@ -53,6 +55,26 @@ angular.module('listaTareasApp')
   $scope.pass ={
     strPass:'',
     strRePass:''
+  };
+
+   $scope.mostrarboton2 = function() {
+  
+     $scope.mostrarboton=true;
+   
+  };
+
+   $scope.mostrarboton3 = function() {
+  
+     $scope.mostrarboton=false;
+      $scope.volverLista();
+
+   
+  };
+
+  $scope.nomostrarboton = function() {
+   
+     $scope.mostrarboton=false;
+  
   };
 
    $scope.proy ={
@@ -72,6 +94,7 @@ angular.module('listaTareasApp')
                 pageList: [10, 25, 50, 100, 200],
                 search: true,
                 showColumns: true,
+                toolbar:'#toolbarinvestigadoredit',
                 showRefresh: true,
                 minimumCountColumns: 2,                            
                
@@ -88,25 +111,34 @@ angular.module('listaTareasApp')
                 title: 'NOMBRE',
                 align: 'left',
                 valign: 'middle',
-                width: 100,
+                width: 400,
                 sortable: true
             }, {
                 field: 'PRO_FINA',
-                title: 'FIANACIACION',
+                title: 'FINANCIACIÓN',
                 align: 'left',
                 valign: 'middle',
-                sortable: true
+                 width: 200,
+                sortable: true,
+                formatter: function(value, row, index) {
+
+                       return '$ ' + formatNumero(value);
+
+                },
+
             }, {
                 field: 'fecha_ini',
-                title: 'F.Inicio',
+                title: 'Fechas Inicio',
                 align: 'left',
                 valign: 'middle',
+                 width: 100,
                 sortable: true
             }, {
                 field: 'fecha_ter',
-                title: 'F.Termina',
+                title: 'Fecha Termina',
                 align: 'left',
                 valign: 'middle',
+                width: 100,
                 sortable: true
             },{
                 field: 'id_grupo',
@@ -143,9 +175,20 @@ angular.module('listaTareasApp')
 
                                  $scope.hideTable=true;  
                                  $scope.hideProyecto =false; 
-
+                                 $scope.showProyecto(row);   
+                                  $timeout(function() {
+                                               
+                                  $scope.$$childTail.myFormProductos.date1.$invalid=false;     
+                                    $scope.$$childTail.myFormProductos.fechaLibro.$invalid=false;     
+                                     $scope.$$childTail.myFormProductos.grupo.$invalid=false;  
+                                      $scope.$$childTail.myFormProductos.idstrFinanciacion.$invalid=false;   
+                                               
+                                   $scope.$$childTail.myFormProductos.$invalid=false;                
+                                   $scope.$apply()
+                                  });
+                               
                                  //$scope.$apply();   
-                                 $scope.showProyecto(row);                        
+                               
                         }
 
                 }
@@ -253,6 +296,7 @@ angular.module('listaTareasApp')
 
         $('#strNombreProyecto').val(codi.PRO_NOMB);
         $('#strFinanciacion').val(codi.PRO_FINA);  
+        format($('#strFinanciacion')[0]);
         $scope.selGrupoProducto = codi.id_grupo;
         var fecha  =new Date(codi.fecha_ini);
 
@@ -339,8 +383,17 @@ angular.module('listaTareasApp')
             PRO_CODI:0
           }
           $scope.hideTable=true;  
-          $scope.hideProyecto =false;                   
+          $scope.hideProyecto =false;     
+          $scope.mostrarboton=false;
+          $scope.limpiarFormProductos();          
           $scope.showProyecto(codi);    
+      }
+
+      $scope.limpiarFormProductos = function() {
+        $scope.strNombreProyecto ="";
+        $scope.strFinanciacion ="";
+        $scope.fechaInicioProy ="";
+        $scope.fechaTerminaProy="";
       }
 
       function formatoFecha(fecha) {
@@ -378,11 +431,7 @@ angular.module('listaTareasApp')
 
         moment.locale('es');
 
-        if ($scope.proyectoProducto.length==0)
-        {
-          $window.alert('Debe ingresar al menos un producto');
-          return;
-        }
+      
 
        var Meses =["Enero","Febrero","Marzo","Abril","Mayo","Junio",
                   "Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"
@@ -394,6 +443,12 @@ angular.module('listaTareasApp')
 
         var strNombreProyecto = $('#strNombreProyecto').val();        
         var strFinanciacion = $('#strFinanciacion').val();
+
+        while (strFinanciacion.indexOf(".")>0)
+        {
+         strFinanciacion= strFinanciacion.replace(".","");
+        }
+
         var fechaInicioProyecto = $('#fechaInicioProyecto').val();
 
         if (fechaInicioProyecto=="")
@@ -471,45 +526,72 @@ angular.module('listaTareasApp')
 
                 // =" +     + ",id_tipoInvestigador=" +  + "," +
                 //   " =" +  + ",  =" +  + 
+                var fechaT = $scope.$$childTail.fechaInicioProy!=undefined?  moment($scope.$$childTail.fechaTerminaProy).format("YYYY-MM-DD"): '';
 
-                r= TareasResource.execute.query({Accion: "I",SQL:"1;INSERT INTO sgi_proy_inve " +
-                                                            " (id_inve,id_proy,fecha_ini,id_grupo," +
+                if (fechaT=='')
+                {
+                  r= TareasResource.execute.query({Accion: "I",SQL:"1;INSERT INTO sgi_proy_inve " +
+                     " (id_inve,id_proy,fecha_ini,fecha_ter,id_grupo," +
+                    "id_tipoInvestigador,id_convocatoria,id_linea) " +
+                    " VALUES (" + idInvestigador + "," + idProyecto + "," + 
+                   "'" + moment($scope.$$childTail.fechaInicioProy).format("YYYY-MM-DD") + "',null, " + $scope.proy.selGrupoProducto + ", " +
+                  "" + $scope.proy.selTipoInvestigador + ", " + $scope.proy.selEntidad +  "," + $scope.proy.selLineaInvestigador +  ")"});    
+
+                }
+                else
+                {
+                   r= TareasResource.execute.query({Accion: "I",SQL:"1;INSERT INTO sgi_proy_inve " +
+                                                            " (id_inve,id_proy,fecha_ini,fecha_ter,id_grupo," +
                                                              "id_tipoInvestigador,id_convocatoria,id_linea) " +
                                                             " VALUES (" + idInvestigador + "," + idProyecto + "," + 
-                                                              "'" + moment($scope.$$childTail.fechaInicioProy).format("YYYY-MM-DD") + "', " + $scope.proy.selGrupoProducto + ", " +
+                                                              "'" + moment($scope.$$childTail.fechaInicioProy).format("YYYY-MM-DD") + "','" + fechaT + "', " + $scope.proy.selGrupoProducto + ", " +
                                                             "" + $scope.proy.selTipoInvestigador + ", " + $scope.proy.selEntidad +  "," + $scope.proy.selLineaInvestigador +  ")"});    
 
+                }
+
+               
                        r.$promise.then(function(result2){
                           $scope.idProyecto = result2[0].valor;
 
                               $scope.Lista =[];
-                          angular.forEach( $scope.proyectoProducto,function(item){
-                            if (item.IdProducto==0)
-                            {
-                             $scope.Lista.splice(0,0,{IdProducto:0,IdTipoProducto:item.IdTipoProducto,NombreTipoProducto:item.NombreTipoProducto,NombreProducto:item.NombreProducto,TituloProducto:item.TituloProducto,Fecha:formatoFecha(item.Fecha)});
+                          if ($scope.proyectoProducto.length>0)
+                          {                              
+                            angular.forEach( $scope.proyectoProducto,function(item){
+                              if (item.IdProducto==0)
+                              {
+                               $scope.Lista.splice(0,0,{IdProducto:0,IdTipoProducto:item.IdTipoProducto,NombreTipoProducto:item.NombreTipoProducto,NombreProducto:item.NombreProducto,TituloProducto:item.TituloProducto,Fecha:formatoFecha(item.Fecha)});
+                              }
+
+                            });
+                           
+                            var datos = {
+                              Lista:$scope.Lista,
+                              idProy:idProyecto,
+                              idInve: idInvestigador
                             }
 
+                          TareasResource.enviarProyectoProducto(datos).then(function(result) { 
+
+                            var resultado = result;
+                                $('#myModal').hide(); 
+                                $window.alert("Guardado");
+                                $scope.pass.strPass="";
+                                $scope.pass.strRePass="";
+                                $scope.volverLista();
+                              
+
                           });
-                         
-                          var datos = {
-                            Lista:$scope.Lista,
-                            idProy:idProyecto,
-                            idInve: idInvestigador
-                          }
-
-                        TareasResource.enviarProyectoProducto(datos).then(function(result) { 
-
-                          var resultado = result;
-                              $('#myModal').hide(); 
-                              $window.alert("Guardado");
-                              $scope.pass.strPass="";
-                              $scope.pass.strRePass="";
-                              $location.path('/edit-investigador/'+ idInvestigador);
-                            
-
-                        });
+                       }
+                       else
+                       {
+                          $('#myModal').hide(); 
+                                $window.alert("Guardado");
+                                $scope.pass.strPass="";
+                                $scope.pass.strRePass="";
+                                $scope.volverLista();
+                       }
                
-                       });
+                  });
 
             });
           
@@ -522,13 +604,28 @@ angular.module('listaTareasApp')
             r.$promise.then(function(result2){
               if (result2[0].estado=="ok")                                                                                                                       
               {
-                 r= TareasResource.execute.query({Accion: "M",SQL:"UPDATE sgi_proy_inve set  fecha_ini ='" + fechaInicioProyecto + "'," + 
-                  " id_grupo=" +   $scope.proy.selGrupoProducto  + ",id_tipoInvestigador=" + $scope.proy.selTipoInvestigador + "," +
+                  var fechaT = $scope.$$childTail.fechaTerminaProy!=undefined?  moment($scope.$$childTail.fechaTerminaProy).format("YYYY-MM-DD"): '';
+
+                 if (fechaT=='')
+                 {
+                   r= TareasResource.execute.query({Accion: "M",SQL:"UPDATE sgi_proy_inve set  fecha_ini ='" + moment($scope.$$childTail.fechaInicioProy).format("YYYY-MM-DD") + "'," + 
+                  " fecha_ter=null, id_grupo=" +   $scope.proy.selGrupoProducto  + ",id_tipoInvestigador=" + $scope.proy.selTipoInvestigador + "," +
+                  " id_convocatoria=" + $scope.proy.selEntidad + ", id_linea =" + $scope.proy.selLineaInvestigador + 
+                  " WHERE id_inve=" + idInvestigador + " AND id_proy=" + $scope.idProyecto + ""});  
+                 }   
+                 else
+                 {
+
+                 r= TareasResource.execute.query({Accion: "M",SQL:"UPDATE sgi_proy_inve set  fecha_ini ='" + moment($scope.$$childTail.fechaInicioProy).format("YYYY-MM-DD") + "'," + 
+                  " fecha_ter='" + fechaT + "', id_grupo=" +   $scope.proy.selGrupoProducto  + ",id_tipoInvestigador=" + $scope.proy.selTipoInvestigador + "," +
                   " id_convocatoria=" + $scope.proy.selEntidad + ", id_linea =" + $scope.proy.selLineaInvestigador + 
                   " WHERE id_inve=" + idInvestigador + " AND id_proy=" + $scope.idProyecto + ""});    
+                }
                  r.$promise.then(function(result2){
                     if (result2[0].estado=="ok")
                     {
+                     if ($scope.proyectoProducto.length>0)
+                       {   
                        var  r6= TareasResource.execute.query({Accion: "D",SQL:"DELETE FROM sgi_prod_proy " +
                                                             " WHERE  id_proy = " +  $scope.idProyecto + " AND id_inve="+ idInvestigador + ""});
                                           r6.$promise.then(function(result2){
@@ -536,6 +633,7 @@ angular.module('listaTareasApp')
                                              {
 
                                               $scope.Lista =[];
+                                               
                                               angular.forEach( $scope.proyectoProducto,function(item){
 
                                                  $scope.Lista.splice(0,0,{IdProducto:0,IdTipoProducto:item.IdTipoProducto,NombreTipoProducto:item.NombreTipoProducto,NombreProducto:item.NombreProducto,TituloProducto:item.TituloProducto,Fecha:formatoFecha(item.Fecha)});
@@ -551,16 +649,27 @@ angular.module('listaTareasApp')
                                             TareasResource.enviarProyectoProducto(datos).then(function(result) { 
 
                                               var resultado = result;
-                                              
+                                                   $('#myModal').hide();
                                                   $window.alert("Actualizado");
                                                   $scope.pass.strPass="";
                                                   $scope.pass.strRePass="";
-                                                  $location.path('/edit-investigador/'+ idInvestigador);
+                                                   $scope.volverLista();
                                               
                                               });
+                                               
                                             }
                                        });
                                     }  
+                                      else
+                                     {
+                                     $('#myModal').hide(); 
+                                      $window.alert("Actualizado");
+                                      $scope.pass.strPass="";
+                                      $scope.pass.strRePass="";
+                                      $scope.volverLista();
+                                     }
+                                  }
+                                
                              });
                         }
              });

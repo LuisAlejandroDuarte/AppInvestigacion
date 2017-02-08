@@ -25,7 +25,7 @@ angular.module("listaTareasApp", ['ngRoute','ngAnimate','ngLocale', 'ngResource'
                     var val = '';
                 }
 
-                var clean = val.replace(/[^-0-9\.,]/g, '');
+                var clean = val.replace(/[^-0-9\.,$]/g, '');
                 var negativeCheck = clean.split('-');
                 var decimalCheck = clean.split('.');
                 var comaCheck = clean.split(',');
@@ -65,6 +65,9 @@ angular.module("listaTareasApp", ['ngRoute','ngAnimate','ngLocale', 'ngResource'
                 }
             });
 
+             element.bind('focusout', function (event) {
+                event.currentTarget.value="111111";
+            });
         }
 
     }

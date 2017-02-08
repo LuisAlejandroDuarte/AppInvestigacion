@@ -10,7 +10,7 @@ angular.module('listaTareasApp')
     if (user==null || user==undefined)
     {
 
-      $location.path('/inicio');
+      $location.path('/menu');
       return;
     }         
 var IdGrupo = $route.current.params.idGrupo;

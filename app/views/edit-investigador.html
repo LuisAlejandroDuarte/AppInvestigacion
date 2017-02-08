@@ -5,13 +5,13 @@
 
   <div class="panel-heading"><h>{{tiTulo}}</h></div>
 
-  <form  name="myForm"  novalidate>
+ 
 
   <div class="panel-body">
 
- <tabset>
+ <tabset active="active">
 
- <tab active="tabPersonal">
+ <tab  index="0" select="mostrarboton2()">
 
       <tab-heading>
 
@@ -331,7 +331,7 @@
 
   
 
-    <tab active="tabAcedemico">
+    <tab index="1" select="mostrarboton2()">
 
       <tab-heading>
 
@@ -415,7 +415,7 @@
 
     <div class="row">
 
-     <button ng-click="agregarformacion(myformacion,tituloformacion,institucion,Agno,myformacion)" class="btn btn-default"  style="margin-left: 20px; margin-top: 10px;background-color: rgb(239, 209, 230);font-size: 12px;font-weight: bold;color:#482CAE">Agregar</button>    
+     <button ng-click="agregarformacion(myformacion,tituloformacion,institucion,Agno,myformacion)" class="btn btn-default btn-sm"  style="margin-left: 20px; margin-top: 10px;background-color: rgb(239, 209, 230);font-size: 12px;font-weight: bold;color:#482CAE">Agregar</button>    
 
     </div>
 
@@ -455,7 +455,7 @@
 
      </tab>
 
-      <tab active="tabGrupo">
+      <tab index="2" select="nomostrarboton()" >
 
       <tab-heading>
 
@@ -465,99 +465,7 @@
 
 
 
- <!--   <div class="row">
-
-      <div class="col-md-3" style="margin-top: 20px">
-
-        <label>Grupo de Investigaci&oacute;n</label>               
-
-      </div>
-
-       <div class="col-md-3" style="margin-top: 20px">
-
-        <label>Fecha Inicio</label>               
-
-      </div>
-
-       <div class="col-md-3" style="margin-top: 20px">
-
-        <label>Fecha Culminaci&oacute;n</label>               
-
-      </div>
-
-       <div class="col-md-3" style="margin-top: 20px">
-
-        <label>L&iacute;neas de Investigaci&oacute;n</label>               
-
-      </div>
-
-   </div> -->
-
-
-<!-- 
-     <div class="row">
-
-      <div class="col-md-3" >
-
-         <select class="form-control"  ng-model="selGrupo"  ng-change="onChangedGrup(selGrupo)"  
-
-          ng-options="opt.gru_nomb for opt in grupo" >
-
-          </select>           
-
-      </div> 
-
-       <div class="col-md-3" >
-
-           <div  class="form-group" ng-class="{'has-error': datepickerForm.date.$invalid}">
-
-   <input id="idFechaInicioGrupo" type="text" class="form-control" ng-model="fechaInicioGrupo"  timezone='UTC'  data-date-format="dd-MMMM-yyyy" date-type="iso" data-max-date="{{fechaFinGrupo}}"  data-autoclose="1" name="date2" bs-datepicker>
-
-  
-
-  </div>
-
-  
-
-       </div>
-
-             <div class="col-md-3" >
-
-           <div  class="form-group" ng-class="{'has-error': datepickerForm.date.$invalid}">
-
-   <input id="idFechaFinGrupo" type="text" class="form-control" ng-model="fechaFinGrupo" timezone='UTC' data-date-format="dd-MMMM-yyyy" date-type="iso" data-min-date="{{fechaInicioGrupo}}"  data-autoclose="1" name="date2" bs-datepicker>
-
-  
-
-  </div>
-
-  
-
-       </div>
-
-
-
-        <div class="col-md-3" >
-
-          <select class="form-control" ng-model="selLinea" 
-
-                    ng-options="itemgrupolinea.lin_codi as itemgrupolinea.lin_desc for itemgrupolinea in grupolinea">
-
-          </select>     
-
-      </div> 
-
-     </div> -->
-
-
-
-     <!-- <div class="row">
-
-     <button ng-click="agregargrupoinvestigacion(selGrupo,selLinea,fechaInicioGrupo,fechaFinGrupo)" class="btn btn-default"  style="margin-left: 20px; margin-top: 10px;background-color: rgb(239, 209, 230);font-size: 12px;font-weight: bold;color:#482CAE">Agregar</button>
-
-     <button ng-click="delGrupoInvestigacion()"  class="btn btn-default" type="button" style="margin-left: 20px; margin-top: 10px;background-color: rgb(239, 209, 230);font-size: 12px;font-weight: bold;color:#FD0505">Eliminar</button>
-
-    </div> -->
+ 
 
     <div class="row">
 
@@ -695,7 +603,7 @@
 
      </tab>
 
-    <tab active="tabProducto">
+    <tab index="3" select="mostrarboton3()">
 
 
 
@@ -712,26 +620,30 @@
          <div ng-hide="hideTable">
 
         
+           <div class="container-fluid">
+         <div class="row" style="margin-top:10px">
+           <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+              <div id="toolbarinvestigadoredit">
 
-         <div id="custom-toolbarinvestigadoredit">
-
-           <div class="form-inline" role="form">    
-
+        
               <a ng-click="btnNovoClick()" target="_self" class="btn btn-default btn-primary btn-sm"><span class="glyphicon glyphicon-plus"></span> Nuevo</a>
-
-           </div>
+         
 
          </div>
 
          <table id="tableinvestigadoredit"  init-tablainvestigadoredit="options" >
 
-         </table>  
-
+         </table> 
+           </div>
+         </div>  
+         
+         </div>
         
 
          </div>
 
          <div ng-hide="hideProyecto">
+        <div ng-form="myFormProductos" novalidate>
 
          <div class="row" style="margin-top:10px">
 
@@ -751,7 +663,7 @@
 
                  <div class="col-md-12 col-lg-12">
 
-                    <textarea type="text" id="strNombreProyecto"  class="form-control" ng-model="strNombreProyecto" style="width:90%;height:75px;"></textarea>              
+                    <textarea type="text" id="strNombreProyecto"  class="form-control" ng-model="strNombreProyecto" style="width:90%;height:75px;" required></textarea>              
 
                  </div>
 
@@ -761,7 +673,7 @@
 
                  <div class="col-md-12 col-lg-12">                   
 
-                   <label>Finanaciaci&oacute;n</label>                 
+                   <label>Financiaci&oacute;n</label>                 
 
                  </div>                
 
@@ -771,7 +683,7 @@
 
                  <div class="col-md-12 col-lg-12">                    
 
-                    <input type="number" id="strFinanciacion" style="width:90%" class="form-control" ng-model="strFinanciacion" pattern="[0-9.\-]{1,8}$" numero-valido/>                 
+                    <input  id="strFinanciacion" style="width:90%" class="form-control" name="idstrFinanciacion" ng-model="strFinanciacion" onkeyup="format(this)" onchange="format(this)" required />                 
 
                  </div>
 
@@ -809,7 +721,7 @@
 
                        <div class="form-group" ng-class="{'has-error': datepickerForm.date.$invalid}">
 
-                         <input id="fechaInicioProyecto" type="text" class="form-control" ng-model="fechaInicioProy" data-date-format="dd-MMMM-yyyy" date-type="iso" data-max-date="{{fechaHoy}}"  data-autoclose="1" name="date1" bs-datepicker>              
+                         <input id="fechaInicioProyecto" type="text" class="form-control" ng-model="fechaInicioProy" data-date-format="dd-MMMM-yyyy" date-type="iso" data-max-date="{{fechaHoy}}"  data-autoclose="1" name="date1" bs-datepicker required>              
 
                         </div>       
 
@@ -819,7 +731,7 @@
 
                       <div class="form-group" ng-class="{'has-error': datepickerForm.date.$invalid}">
 
-                        <input id="fechaTerminaProyecto" type="text" class="form-control" ng-model="fechaTerminaProyecto" data-date-format="dd-MMMM-yyyy" date-type="iso" data-min-date="{{fechaInicioProyecto}}"  data-max-date="{{fechaHoy}}" data-autoclose="1" name="date2" bs-datepicker>
+                        <input id="fechaTerminaProyecto" type="text" class="form-control" ng-model="fechaTerminaProy" data-date-format="dd-MMMM-yyyy" date-type="iso" data-min-date="{{fechaInicioProyecto}}"  data-max-date="{{fechaHoy}}" data-autoclose="1" name="date2" bs-datepicker>
 
                       </div>            
 
@@ -829,9 +741,9 @@
 
                    <div  class="col-md-4">
 
-                        <select class="form-control"  ng-model="proy.selGrupoProducto"  ng-change="onChangedGrupProducto(proy.selGrupoProducto,0)"  
+                        <select class="form-control"  ng-model="proy.selGrupoProducto"  ng-change="onChangedGrupProducto(proy.selGrupoProducto,0)"  name="grupo"
 
-                            ng-options="opt.IdGrupo as opt.NombreGrupo for opt in grupoinvestigacion " >
+                            ng-options="opt.IdGrupo as opt.NombreGrupo for opt in grupoinvestigacion " required>
 
                         </select> 
 
@@ -865,9 +777,9 @@
 
                       <div class="col-md-4" >
 
-                           <select class="form-control"  ng-model="proy.selTipoInvestigador"  
+                           <select class="form-control"  ng-model="proy.selTipoInvestigador"  name="idTipoInvestigacion"
 
-                              ng-options="opt.tiv_codi as opt.tiv_desc for opt in tipoinve" >
+                              ng-options="opt.tiv_codi as opt.tiv_desc for opt in tipoinve" required>
 
                         </select>        
 
@@ -875,7 +787,7 @@
 
                         <div class="col-md-4" >
 
-                           <select class="form-control"  ng-model="proy.selEntidad"  
+                           <select class="form-control"  ng-model="proy.selEntidad" name="idEntidad" required 
 
                               ng-options="convoca.con_codi as convoca.con_desc for convoca in convocatoria" > 
 
@@ -885,7 +797,7 @@
 
                        <div class="col-md-4" >
 
-                         <select class="form-control"  ng-model="proy.selLineaInvestigador"  
+                         <select class="form-control"  ng-model="proy.selLineaInvestigador" name="lineaInvestigacion" required 
 
                               ng-options="optline.lin_codi as optline.lin_desc for optline in grupolineaproducto" > 
 
@@ -931,7 +843,7 @@
 
            <div class="col-md-3">
 
-               <select id="selProducto" class="form-control"  ng-model="selProducto"   ng-change="onChangedProducto(selProducto.id)"
+               <select id="selProducto" class="form-control"  ng-model="selProducto" name="Producto"  ng-change="onChangedProducto(selProducto.id)"
 
                   ng-options="optline as optline.Descripcion for optline in productos" > 
 
@@ -971,7 +883,7 @@
 
               <button  ng-click= "agregarProducto()"               
 
-                      class="btn btn-default">Agregar</button>
+                      class="btn btn-default btn-sm">Agregar</button>
 
                     
 
@@ -981,7 +893,7 @@
 
              <button  ng-click= "eliminarProducto()"               
 
-                      class="btn btn-default" >Eliminar</button>
+                      class="btn btn-default btn-sm" >Eliminar</button>
 
         
 
@@ -1067,8 +979,8 @@
 
   <button  ng-click= "volverLista()"               
 
-                class="btn btn-success" >Lista de Proyectos</button>
-
+                class="btn btn-success btn-sm" >Cancelar</button>
+<button  ng-click= "save(viewDatos[0])"  ng-disabled="myFormProductos.$invalid" class="btn btn-primary btn-sm">Guardar</button>
   
 
 </div>
@@ -1077,6 +989,7 @@
 
       </div>  
 
+ </div>
          </div> 
 
         </div>
@@ -1101,9 +1014,9 @@
 
 
 
-        <button  ng-click= "save(viewDatos[0])"  ng-disabled="myForm.$invalid"              
+        <button  ng-click= "save(viewDatos[0])"     ng-show="mostrarboton"           
 
-                class="btn btn-primary">{{buttonText}}</button>
+                class="btn btn-primary btn-sm">{{buttonText}}</button>
 
               
 
@@ -1111,9 +1024,9 @@
 
 
 
-  <button  ng-click= "volver()"               
+  <button  ng-click= "volver()"           
 
-                class="btn btn-primary" >Cancelar</button>
+                class="btn btn-danger btn-sm" ><i class="glyphicon glyphicon-log-out" > Salir</i></button>
 
   
 
@@ -1123,7 +1036,7 @@
 
   </div>
 
-</form>
+
 
    
 

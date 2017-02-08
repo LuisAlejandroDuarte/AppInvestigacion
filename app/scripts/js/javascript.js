@@ -22,3 +22,28 @@ function validateExtension(v)
 }
 
 
+function format(input)
+{
+var num = input.value.replace(/\./g,'');
+if(!isNaN(num)){
+num = num.toString().split('').reverse().join('').replace(/(?=\d*\.?)(\d{3})/g,'$1.');
+num = num.split('').reverse().join('').replace(/^[\.]/,'');
+input.value = num;
+}
+  
+else{ 
+input.value = input.value.replace(/[^\d\.]*/g,'');
+}
+}
+
+function formatNumero(value)
+{
+  var num = value.replace(/\./g,'');
+  if(!isNaN(num)){
+  num = num.toString().split('').reverse().join('').replace(/(?=\d*\.?)(\d{3})/g,'$1.');
+  num = num.split('').reverse().join('').replace(/^[\.]/,'');
+  return num;
+  }
+}
+
+

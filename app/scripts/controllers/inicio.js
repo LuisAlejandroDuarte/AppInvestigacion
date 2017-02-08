@@ -127,6 +127,7 @@ angular.module('listaTareasApp')
                     $window.alert("No existe el investigador para el actual usuario");
                      $window.sessionStorage.setItem('tipoUsuario',null);
                       $window.sessionStorage.setItem('usuario',null);
+                       $location.path('/menu');
                     return;
                   }
                    $window.sessionStorage.setItem('investigador', JSON.stringify(result.data[0]));

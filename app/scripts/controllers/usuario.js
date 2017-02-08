@@ -7,13 +7,13 @@
 
     if (user==null || user==undefined)
     {
-      $location.path('/inicio');
+      $location.path('/menu');
       return;
      }
     
     if ($window.sessionStorage.getItem('tipoUsuario')!=0)
     {
-      $location.path('/inicio');
+      $location.path('/menu');
       return;
     }
 
