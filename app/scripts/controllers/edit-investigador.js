@@ -3,6 +3,81 @@
 angular.module('listaTareasApp')
   
 
+.directive('myModalproyectos', function() {
+       return {
+        restrict : 'AE',    
+        controller: [ "$scope","$window",'$http','TareasResource', function($scope,$window,$http,TareasResource) {
+            $scope.afirmaEliminar = function() {
+                      var Codigo =parseInt($('#myModalEliminaProyecto').data('id').toString());
+
+                       var datos ={
+                                Accion:'D',
+                                SQL:'DELETE FROM sgi_prod_proy where id_proy=' + Codigo
+                            }
+
+                        var borrar =TareasResource.SQL(datos);
+                            borrar.then(function(res){
+
+                          datos ={
+                                Accion:'D',
+                                SQL:'DELETE FROM sgi_prod_inve where id_proy=' + Codigo
+                            }
+
+                         borrar =TareasResource.SQL(datos);
+                            borrar.then(function(res){
+                            datos ={
+                                Accion:'D',
+                                SQL:'DELETE FROM sgi_proy where pro_codi=' + Codigo
+                            }
+
+                            borrar =TareasResource.SQL(datos);
+                            borrar.then(function(res){
+
+                               datos ={
+                                Accion:'D',
+                                SQL:'DELETE FROM sgi_proy_inve where id_proy=' + Codigo
+                            }
+
+                            borrar =TareasResource.SQL(datos);
+                            borrar.then(function(res){
+
+                                $('#tableinvestigadoredit').bootstrapTable('removeByUniqueId', Codigo);
+                                 $('#myModalEliminaProyecto').data('id', 0).modal('hide');  
+
+
+                            });
+                            
+                         });       
+                      });
+                       
+                    });                    
+                };
+               
+            }],
+
+        template : '<div class="modal fade" id="myModalEliminaProyecto"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">' + 
+                    '<div class="modal-dialog">' +
+        '<div class="modal-content">' +
+            '<div class="modal-header">' +
+                '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>' +
+                 '<h3 class="modal-title" id="myModalLabel">Advertencia!</h3> ' +
+            '</div>' +
+            '<div class="modal-body"> ' +
+                 '<h4> Desea Borrar el proyecto? </h4> ' +
+                  '<div><label id="nombreProyecto"></label>' +
+            '</div>' +
+            '<div class="modal-footer">' +
+                '<button ng-click= "afirmaEliminar();" class="btn btn-danger"  id="btnYes" >Si</button>' +
+                '<button type="button" class="btn btn-default" data-dismiss="modal"  >No</button>' +
+            '</div>' +        
+        '</div>' +        
+    '</div>' +    
+'</div>' +
+'</div>',
+  
+    }
+})  
+
 .directive('initTablainvestigadoredit', ['$compile', function($compile) {
         return {
             restrict: 'A',
@@ -94,6 +169,7 @@ angular.module('listaTareasApp')
                 pageList: [10, 25, 50, 100, 200],
                 search: true,
                 showColumns: true,
+                uniqueId:'PRO_CODI',
                 toolbar:'#toolbarinvestigadoredit',
                 showRefresh: true,
                 minimumCountColumns: 2,                            
@@ -188,6 +264,25 @@ angular.module('listaTareasApp')
                                   });
                                
                                  //$scope.$apply();   
+                               
+                        }
+
+                }
+            },{
+                title: '',
+                width: 35,
+                switchable:false,
+                formatter: function(value, row, index) {
+
+                       return '<a class="edit ml10 btn btn-default btn-xs" title="Editar"><span class="glyphicon glyphicon-trash"></span></a>';
+
+                },
+                events:  window.operateEvents = {                        
+
+                        'click .edit': function (e, value, row, index) {
+
+                                 $('#nombreProyecto').text(row.PRO_NOMB);
+                                  $('#myModalEliminaProyecto').data('id', row.PRO_CODI).modal('show');   
                                
                         }
 
