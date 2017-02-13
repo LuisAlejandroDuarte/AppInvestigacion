@@ -56,7 +56,7 @@
     if (user==null || user==undefined)
     {
 
-      $location.path('/inicio');
+      $location.path('/menu');
       return;
       }
    

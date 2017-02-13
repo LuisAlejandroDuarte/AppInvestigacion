@@ -10,13 +10,25 @@ angular.module('listaTareasApp')
             $scope.afirmaEliminar = function() {
                       var Codigo =parseInt($('#myModalEliminaProyecto').data('id').toString());
 
-                       var datos ={
+
+                       var result= TareasResource.validaExisteRegistro.query({Tabla:"sgi_prod_proy",Campo:"id_proy",Valor:Codigo});
+                       result.$promise.then(function(result2){
+
+                        if (result[0]['existe']=="true")
+                            {
+                              $window.alert("Debe primero eliminar los productos relacionados al proyecto");
+                              $('#myModalEliminaProyecto').data('id', 0).modal('hide'); 
+                              return;
+                            }
+                            else
+                            {
+                                var datos ={
                                 Accion:'D',
                                 SQL:'DELETE FROM sgi_prod_proy where id_proy=' + Codigo
                             }
 
-                        var borrar =TareasResource.SQL(datos);
-                            borrar.then(function(res){
+                          var borrar =TareasResource.SQL(datos);
+                              borrar.then(function(res){
 
                           datos ={
                                 Accion:'D',
@@ -51,6 +63,11 @@ angular.module('listaTareasApp')
                       });
                        
                     });                    
+                  }
+                });
+
+
+                     
                 };
                
             }],
@@ -719,9 +736,16 @@ angular.module('listaTareasApp')
                  r.$promise.then(function(result2){
                     if (result2[0].estado=="ok")
                     {
-                     if ($scope.proyectoProducto.length>0)
-                       {   
-                       var  r6= TareasResource.execute.query({Accion: "D",SQL:"DELETE FROM sgi_prod_proy " +
+
+                      var  r6= TareasResource.execute.query({Accion: "D",SQL:"DELETE FROM sgi_prod_proy " +
+                                                            " WHERE  id_proy = " +  $scope.idProyecto + " AND id_inve="+ idInvestigador + ""});
+                            r6.$promise.then(function(result2){
+                               if (result2[0].estado=="ok")
+                               {
+
+                                  if ($scope.proyectoProducto.length>0)
+                                    {   
+                                         r6= TareasResource.execute.query({Accion: "D",SQL:"DELETE FROM sgi_prod_proy " +
                                                             " WHERE  id_proy = " +  $scope.idProyecto + " AND id_inve="+ idInvestigador + ""});
                                           r6.$promise.then(function(result2){
                                              if (result2[0].estado=="ok")
@@ -763,10 +787,15 @@ angular.module('listaTareasApp')
                                       $scope.pass.strRePass="";
                                       $scope.volverLista();
                                      }
-                                  }
-                                
+                               }
                              });
-                        }
+
+
+                   
+                   }
+                                
+                });
+                }
              });
         } 
   }
