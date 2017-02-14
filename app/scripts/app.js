@@ -241,23 +241,8 @@ angular.module("listaTareasApp", ['ngRoute','ngAnimate','ngLocale', 'ngResource'
 
       .when('/edit-grupo/:idGrupo', {
         templateUrl: 'views/edit-grupo.html',
-        controller: 'ControladorEditGrupo',
-                 resolve: {
-          datosGrupo: function($route,TareasResource){
-            var grupoID = parseInt($route.current.params.idGrupo);
-            var dat = TareasResource.execute.query({Accion: 'S',
-                         SQL: "SELECT IG.igr_codi,G.gru_nomb AS Grupo,G.gru_codi, G.gru_colc_codi,G.gru_cate_colc, I.inv_codi," + 
-            " IG.igr_fech_inic AS Fecha,CONCAT(I.inv_nomb,'',I.inv_apel) As Investigador,G.gru_area_codi As selArea,G.gru_cent_codi As selCentro" + 
-            " FROM sgi_inve_grup AS IG  INNER JOIN sgi_grup AS G ON G.gru_codi = IG.igr_grup_codi " + 
-            " INNER JOIN sgi_inve As I ON I.inv_codi = IG.igr_inve_iden WHERE G.gru_codi =" + grupoID + "" });   
+        controller: 'ControladorEditGrupo'
 
-            dat.$promise.then(function(investigador){
-              dat = investigador;
-            });
-
-            return dat;         
-          }
-        }
       })
 
        .when('/edit-investigador/:idInvestigador', {
