@@ -15,15 +15,26 @@ angular.module('listaTareasApp')
     }  
 
 
+    $scope.dateSettingslineasInvestigacion = {
+      width: 120,height: 20,formatString:'yyyy-MM-dd',culture: 'es-CO'
+    }
+
        $scope.dateInputSettings =
             {
                 width: 120,
                 height: 20,
                 formatString:'yyyy-MM-dd',
-                culture: 'es-CO',
-                max:new Date()
+                culture: 'es-CO',                
             }
             
+
+       // $scope.dateSettingsInvestiga =
+
+       // {
+       //  width: 120,
+       //  height: 20,
+       //                                                                                                                             formatString:'yyyy-MM-dd',
+       //                                                                                                                             culture: 'es-CO',min:investiga.FechaInicia}
 
       $scope.jqxPanelSettingsProyecto=
       {
@@ -56,7 +67,42 @@ angular.module('listaTareasApp')
            $scope.jqxWindowSettings = {
                 maxHeight: 500, maxWidth: 480, minHeight: 30, minWidth: 50, height: 250, width: 400,
                 resizable: false, isModal: true, autoOpen: false, modalOpacity: 0.3,showCloseButton:true
-            }       
+            }  
+
+$scope.onChangeFechaTerminaInvestigacion = function(linea,habilita)
+{
+
+  linea.FechaTermina =habilita==false? '':linea.FechaTermina;
+}
+
+
+$scope.onChangeFechaTerminaSemilla = function(semilla,habilita)
+{
+ 
+  semilla.FechaTermina =habilita.checkFechaTerminaSemilla==false? '':semilla.FechaTermina;
+}
+
+
+$scope.onChangeFechaTerminaUsuario = function(usuario,habilita)
+{
+  var user = JSON.parse($window.sessionStorage.getItem('investigador'));
+  //user.INV_CODI
+
+    if (user.INV_CODI==usuario.Id2 && habilita.checkFechaTerminaInvestiga==true) 
+    {
+      habilita.checkFechaTerminaInvestiga=false;
+      usuario.FechaTermina=null;
+
+      return;
+
+    }
+    else  {
+    usuario.FechaTermina =habilita.checkFechaTerminaInvestiga==false? '':usuario.FechaTermina;
+    }
+}
+
+
+
 var IdGrupo = $route.current.params.idGrupo;
 var idInve="";
         if ($route.current.params.idGrupo==0)
@@ -75,8 +121,7 @@ var idInve="";
               selCentro:""
             }]          
         }
-        else 
-        {
+      
 
               var dat = TareasResource.execute.query({Accion: 'S',
                          SQL: "SELECT IG.igr_codi,G.gru_nomb AS Grupo,G.gru_codi, G.gru_colc_codi,G.gru_cate_colc, I.inv_codi," + 
@@ -124,7 +169,7 @@ var idInve="";
                                      " sgi_grup As G INNER JOIN sgi_grup_line_inve AS GL ON " +
                                      " G.gru_codi = GL.gli_grup_codi INNER JOIN sgi_line_inve AS LI ON " +
                                      " LI.lin_codi = GL.gli_line_inve_codi " + 
-                                     " WHERE G.gru_codi = " +  IdGrupo + " AND GL.gli_fech_term is null "}); 
+                                     " WHERE G.gru_codi = " +  IdGrupo + ""}); 
 
                                         var  tieneDatos=false;
                                           $scope.LineasInvestigacion  =[];      
@@ -197,7 +242,7 @@ var idInve="";
                                                          " sgi_grup As G INNER JOIN sgi_inve_grup AS IG ON " +
                                                          " G.gru_codi = IG.igr_grup_codi INNER JOIN sgi_inve AS I ON " +
                                                          " I.inv_codi = IG.igr_inve_iden " + 
-                                                         " WHERE IG.igr_grup_codi = " +  IdGrupo + " AND IG.igr_fech_term is null "});   
+                                                         " WHERE IG.igr_grup_codi = " +  IdGrupo });   
                                            var tieneDatos1=false;
                                            
                                              $scope.Investigadores  =[];   
@@ -302,7 +347,7 @@ var idInve="";
             });
                
 
-        }
+        
             
 
 
@@ -944,26 +989,31 @@ $scope.OnClicEliminarSemilleroGrupo = function(semillero)
   {
     var executeSql;
     var result;
-
+    var multiple=[];
     executeSql = TareasResource.execute.query({Accion:'D',
-                   SQL:"DELETE FROM sgi_grup_line_inve WHERE gli_grup_codi=" + idGrupo + " AND " +
-                   " gli_fech_term is  null "});
+                   SQL:"DELETE FROM sgi_grup_line_inve WHERE gli_grup_codi=" + idGrupo });
        executeSql.$promise.then(function (result){
         if (result[0].estado=="ok")
         {
 
-            var multiple=[];
+           
 
             angular.forEach($scope.LineasInvestigacion, function(value, key){                    
 
                 var fecha = '';
                 
                   
-                  if (value.FechaTermina!=null)
+                  if (value.FechaTermina!=null && value.FechaTermina!="")
                   {
                     fecha =value.FechaTermina;
                     
-                    multiple.splice(0,0,{SQL:"UPDATE sgi_grup_line_inve set gli_fech_term ='" + value.FechaTermina + "' WHERE gli_codi=" + value.Id + "",Accion:"U"});
+                     multiple.splice(0,0,
+                      {
+                        SQL:"INSERT INTO sgi_grup_line_inve (gli_grup_codi,gli_fech_inic,gli_line_inve_codi,gli_fech_term) " +
+                        " VALUES (" + idGrupo +",'"+ value.FechaInicia + "'," + value.Id2 + ",'" + value.FechaTermina + "')",
+                        Accion:"I"
+                      }); 
+
 
                     // executeSql = TareasResource.execute.query({Accion:'M',                 
                     // SQL:"UPDATE sgi_grup_line_inve set gli_fech_term ='" + value.FechaTermina + "' WHERE gli_codi=" + value.Id + ""});
@@ -982,13 +1032,173 @@ $scope.OnClicEliminarSemilleroGrupo = function(semillero)
                     //  executeSql = TareasResource.execute.query({Accion:'I',                 
                     // SQL:idGrupo+";INSERT INTO sgi_grup_line_inve (gli_grup_codi,gli_fech_inic,gli_line_inve_codi) " +
                     // " VALUES (" + idGrupo +",'"+ value.FechaInicia + "'," + value.Id2 + ")"});
-            });
+                 });
 
-              TareasResource.SQLMulti(multiple).then(function(result) { 
+                TareasResource.SQLMulti(multiple).then(function(result) { 
 
-                  $window.alert('Guardado');
-                  $location.path('/edit-grupo/'+ idGrupo);
+                   var user = JSON.parse($window.sessionStorage.getItem('investigador'));
 
+                   executeSql = TareasResource.execute.query({Accion:'D',
+                   SQL:"DELETE FROM sgi_inve_grup WHERE igr_grup_codi=" + idGrupo + " AND " +
+                   " IGR_INVE_IDEN<>" + user.INV_CODI});
+                   executeSql.$promise.then(function (result){
+                  if (result[0].estado=="ok")
+                      {
+                        multiple=[];
+                         angular.forEach($scope.Investigadores, function(value, key){                                                                          
+                            if (value.FechaTermina!=null && value.FechaTermina!="")
+                            {
+                               if(value.Id2 != user.INV_CODI)
+                                  {
+
+                                     multiple.splice(0,0,
+                                     {
+                                      SQL:"INSERT INTO sgi_inve_grup (igr_grup_codi,igr_fech_inic,igr_tipo_vinc_codi,igr_inve_iden,igr_regi_ingr,igr_fech_term) " +
+                                      " VALUES (" + idGrupo +",'" + value.FechaInicia + "'," + value.IdVincula + "," + value.Id2 + ",1,'" + value.FechaTermina + "')",
+                                      Accion:"I"
+                                     });    
+                                 }
+                                                           
+                             }
+                             else
+                                if(value.Id2 != user.INV_CODI)
+                                  {
+
+                                     multiple.splice(0,0,
+                                     {
+                                      SQL:"INSERT INTO sgi_inve_grup (igr_grup_codi,igr_fech_inic,igr_tipo_vinc_codi,igr_inve_iden,igr_regi_ingr) " +
+                                      " VALUES (" + idGrupo +",'"+ value.FechaInicia + "'," + value.IdVincula + "," + value.Id2 + ",1)",
+                                      Accion:"I"
+                                     });                                     
+                                 }
+                            });
+                             TareasResource.SQLMulti(multiple).then(function(result) { 
+
+
+                                   executeSql = TareasResource.execute.query({Accion:'D',
+                                    SQL:"DELETE FROM sgi_grup_semi WHERE sgr_grup_codi=" + idGrupo });
+
+                                     executeSql.$promise.then(function (result) {
+                                     if (result[0].estado=="ok")
+                                     {
+                                       multiple=[];
+                                        angular.forEach($scope.Semilleros, function(value, key){                                                                          
+                                       if (value.FechaTermina!=null && value.FechaTermina!="")
+                                        { 
+
+                                           multiple.splice(0,0,
+                                           {
+                                            SQL:"INSERT INTO sgi_grup_semi (sgr_grup_codi,sgr_fech_inic,sgr_semi_codi,sgr_fech_term) " +
+                                            " VALUES (" + idGrupo +",'"+ value.FechaInicia + "'," + value.Id2 + ",'"+ value.FechaTermina +"')",
+                                            Accion:"I"
+                                           });     
+                                                                                
+                                                                       
+                                         }
+                                         else
+                                          multiple.splice(0,0,
+                                           {
+                                            SQL:"INSERT INTO sgi_grup_semi (sgr_grup_codi,sgr_fech_inic,sgr_semi_codi) " +
+                                            " VALUES (" + idGrupo +",'"+ value.FechaInicia + "'," + value.Id2 + ")",
+                                            Accion:"I"
+                                           });     
+                                         });  
+                                        TareasResource.SQLMulti(multiple).then(function(result) { 
+
+                                              var  Investigadores = TareasResource.execute.query({Accion: 'S',
+                                               SQL: "SELECT IG.igr_codi AS Id,I.inv_codi AS Id2, CONCAT(I.inv_apel,'',I.inv_nomb) AS Nombre," +
+                                               " IG.igr_fech_inic AS FechaInicia,IG.igr_fech_term AS FechaTermina,IG.igr_tipo_vinc_codi AS IdVincula, " + 
+                                               " 2 AS Tipo FROM " + 
+                                               " sgi_grup As G INNER JOIN sgi_inve_grup AS IG ON " +
+                                               " G.gru_codi = IG.igr_grup_codi INNER JOIN sgi_inve AS I ON " +
+                                               " I.inv_codi = IG.igr_inve_iden " + 
+                                               " WHERE IG.igr_grup_codi = " +  idGrupo + " AND IG.igr_fech_term is null "});   
+                                              var tieneDatos1=false;
+
+                                                 $scope.Investigadores  =[];   
+                                                  Investigadores.$promise.then(function(result1){
+                                                      angular.forEach(result1, function(value, key){
+                                                        if (value.Nombre==undefined ||value.Nombre=="")                                
+                                                        {
+                                                          $scope.Investigadores  =[];                                
+                                                        }
+                                                        else
+                                                        {
+                                                          idInve =idInve + value.Id2  + ',';
+                                                          tieneDatos1 =true;
+                                                        }
+                                                                    
+                                                      });
+                                                      if (tieneDatos1==true)
+                                                      {
+                                                           $scope.Investigadores = result1;  
+                                                           idInve = idInve.substring(0,idInve.length-1); 
+                                                           if (idInve!="")
+                                                           {
+                                                             $scope.listProyectos =  TareasResource.execute.query({Accion: 'S',
+                                                                  SQL: "SELECT P.pro_nomb,P.pro_codi FROM sgi_proy As P INNER JOIN sgi_proy_inve AS PI ON P.pro_codi = PI.id_proy WHERE " +
+                                                                  " PI.id_inve IN (" + idInve + ") "});
+
+                                                              $scope.listProyectos.$promise.then(function(result){
+                                                                   $scope.listProyectos = [];
+                                                                var ProyectoProducto =  TareasResource.execute.query({Accion:'D',
+                                                                    SQL:"DELETE FROM sgi_grup_proy WHERE id_inve=" +  user.INV_CODI + " AND " +
+                                                                    " id_grup="+ IdGrupo + ""});
+
+                                                                ProyectoProducto.$promise.then(function(result){
+
+                                                                       if (result[0].estado=="ok")
+                                                                        {
+                                                                             multiple=[];
+                                                                            angular.forEach($scope.Proyectos, function(value, key){                                                                          
+                                                                                  if (value.fech_term!=null)
+                                                                                  {                              
+                                                                                    
+                                                                                      multiple.splice(0,0,
+                                                                                       {
+                                                                                        SQL:"INSERT INTO sgi_grup_proy (id_proy,id_prod,id_grup,id_inve,fech_ini,fech_term) " +
+                                                                                        " VALUES (" + value.IdProy +"," + value.IdProd +"," + IdGrupo +"," +  user.INV_CODI + ",'"+ value.fech_ini + "','"+ value.fech_term + "')",
+                                                                                        Accion:"I"
+                                                                                       });                                                                                         
+                                                                                                                 
+                                                                                   }
+                                                                                   else                              
+                                                                                      multiple.splice(0,0,
+                                                                                       {
+                                                                                        SQL:"INSERT INTO sgi_grup_proy (id_proy,id_prod,id_grup,id_inve,fech_ini) " +
+                                                                                        " VALUES (" + value.IdProy +"," + value.IdProd +"," + IdGrupo +"," +  user.INV_CODI + ",'"+ value.fech_ini + "')",
+                                                                                        Accion:"I"
+                                                                                       });                                                                                              
+                                                                                      
+                                                                                  });
+
+                                                                               TareasResource.SQLMulti(multiple).then(function(result) { 
+
+                                                                                    $window.alert('Guardado');
+                                                                                    $location.path('/edit-grupo/'+ idGrupo);
+
+                                                                               });                                                                                                  
+                                                                        }
+
+                                                                 });
+                                                             });  
+                                                           }     
+                                                         }
+
+                                                      });   
+
+
+                                             
+                                         });
+
+                                      }                                       
+                                       
+                                    });
+                               
+                             });
+                      }
+                    });
+                   
               });
 
 
