@@ -316,7 +316,8 @@ var idInve="";
                                                                                 
                                                                   });
                                                                   if (tieneDatos2==true)
-                                                                        $scope.Semilleros = result2;           
+                                                                        $scope.Semilleros = result2;    
+                                                                         $('#myModal').hide();         
                                                               }); 
 
                                                             
@@ -1174,8 +1175,55 @@ $scope.OnClicEliminarSemilleroGrupo = function(semillero)
 
                                                                                TareasResource.SQLMulti(multiple).then(function(result) { 
 
-                                                                                    $window.alert('Guardado');
-                                                                                    $location.path('/edit-grupo/'+ idGrupo);
+                                                                                   var plan =  TareasResource.execute.query({Accion:'D',
+                                                                                    SQL:"DELETE FROM sgi_plnt_grup WHERE  " +
+                                                                                    " pgr_grup_codi="+ IdGrupo + ""});
+
+                                                                                  plan.$promise.then(function(result){
+                                                                                      
+
+                                                                                      multiple=[];
+                                                                                    angular.forEach($scope.planTrabajo, function(value, key){  
+                                                                                       if (value.FechaTermina!=null)
+                                                                                        {
+
+                                                                                             multiple.splice(0,0,
+                                                                                               {
+                                                                                                SQL:"INSERT INTO  sgi_plnt_grup (pgr_grup_codi,pgr_nombre,pgr_fech_inic,pgr_fech_term,pgr_path) " +
+                                                                                                  " VALUES (" + idGrupo +",'" + value.Nombre +"','"+ value.FechaInicio + "','"+ value.FechaTermina + "','" + value.Path  + "')",
+                                                                                                Accion:"I"
+                                                                                               });           
+
+                                                                                         
+                                                                                        }
+
+                                                                                        else
+                                                                                            {
+
+
+                                                                                                multiple.splice(0,0,
+                                                                                               {
+                                                                                                SQL:"INSERT INTO  sgi_plnt_grup (pgr_grup_codi,pgr_nombre,pgr_fech_inic,pgr_path) " +
+                                                                                                " VALUES (" + idGrupo +",'" + value.Nombre +"','"+ value.FechaInicio + "','" + value.Path  + "')",
+                                                                                                Accion:"I"
+                                                                                               });       
+                                                                                              
+                                                                                           
+                                                                                            }
+
+                                                                                              // executeSql = TareasResource.execute.query({Accion:'I',                                               
+                                                                                              // SQL:"1;INSERT INTO  sgi_plnt_grup (pgr_grup_codi,pgr_nombre,pgr_fech_inic,pgr_path) " +
+                                                                                              // " VALUES (" + idGrupo +",'" + value.Nombre +"','"+ value.FechaInicio + "','" + value.Path  + "')"});                              
+
+                                                                                    });
+
+                                                                                       TareasResource.SQLMulti(multiple).then(function(result) { 
+                                                                                             $('#myModal').hide();  
+                                                                                            $window.alert('Guardado');
+                                                                                              $location.path('/edit-grupo/'+ idGrupo);
+                                                                                        });
+                                                                                    
+                                                                                  });                                                                                    
 
                                                                                });                                                                                                  
                                                                         }
@@ -1269,7 +1317,7 @@ $scope.OnClicEliminarSemilleroGrupo = function(semillero)
     var id = (datos.gru_codi) ? datos.gru_codi :'0' ;
     var mes =0;
     var agno =0;      
-    
+     $('#myModal').show();  
      if (id==0 || id==undefined)
      {
 
