@@ -250,15 +250,15 @@
                              <jqx-date-time-input  ng-model="lineas.FechaInicia"  jqx-settings="dateInputSettings"></jqx-date-time-input>    
                           </div>
                         </div>
-                        <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
+                        <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7" >
                           <div class="form-inline">
                              
                                 <label>Fecha Termina</label>    
                                  <div class="checkbox" ng-init="checkFechaTermina=(lineas.FechaTermina!=null)"> 
-                                <input type="checkbox" ng-model="checkFechaTermina"  ng-change="onChangeFechaTerminaInvestigacion(lineas,checkFechaTermina)"/>                      
+                                <input type="checkbox" ng-model="checkFechaTermina" ng-disabled="lineas.FechaTermina!=null"  ng-change="onChangeFechaTerminaInvestigacion(lineas,checkFechaTermina)"/>                      
                               </div>                                                                                                          
                            </div>                                                 
-                            <jqx-date-time-input   ng-model="lineas.FechaTermina" ng-disabled="!checkFechaTermina"  jqx-settings="dateSettingslineasInvestigacion"> 
+                            <jqx-date-time-input   ng-model="lineas.FechaTermina" ng-disabled="!checkFechaTermina || lineas.FechaTermina!=null"  jqx-settings="dateSettingslineasInvestigacion"> 
                           </jqx-date-time-input>                                                       
                                                 
                         </div>                         
@@ -322,10 +322,10 @@
                              
                                 <label>Fecha Termina</label>    
                                  <div class="checkbox" ng-init="checkFechaTerminaInvestiga=(investiga.FechaTermina!=null)"> 
-                                <input type="checkbox" ng-model="checkFechaTerminaInvestiga" ng-change="onChangeFechaTerminaUsuario(investiga,this)" />                      
+                                <input type="checkbox" ng-model="checkFechaTerminaInvestiga" ng-disabled="investiga.FechaTermina!=null"  ng-change="onChangeFechaTerminaUsuario(investiga,this)" />                      
                               </div>                                                                                                          
                            </div>                                                 
-                            <jqx-date-time-input   ng-model="investiga.FechaTermina" ng-disabled="!checkFechaTerminaInvestiga"  jqx-settings="dateInputSettings"> </jqx-date-time-input>                                                       
+                            <jqx-date-time-input   ng-model="investiga.FechaTermina" ng-disabled="!checkFechaTerminaInvestiga || investiga.FechaTermina!=null"  jqx-settings="dateInputSettings"> </jqx-date-time-input>                                                       
                                                 
                         </div>                         
                       </div>                                            
@@ -389,10 +389,10 @@
                              
                                 <label>Fecha Termina</label>    
                                  <div class="checkbox" ng-init="checkFechaTerminaSemilla=(semilla.FechaTermina!=null)"> 
-                                <input type="checkbox" ng-model="checkFechaTerminaSemilla" ng-change="onChangeFechaTerminaSemilla(semilla,this)" />                      
+                                <input type="checkbox" ng-model="checkFechaTerminaSemilla" ng-disabled="semilla.FechaTermina!=null" ng-change="onChangeFechaTerminaSemilla(semilla,this)" />                      
                               </div>                                                                                                          
                            </div>                                                 
-                            <jqx-date-time-input   ng-model="semilla.FechaTermina" ng-disabled="!checkFechaTerminaSemilla"  jqx-settings="dateInputSettings"> </jqx-date-time-input>                                                       
+                            <jqx-date-time-input   ng-model="semilla.FechaTermina" ng-disabled="!checkFechaTerminaSemilla || semilla.FechaTermina!=null"  jqx-settings="dateInputSettings"> </jqx-date-time-input>                                                       
                                                 
                         </div>                         
                       </div>                                            

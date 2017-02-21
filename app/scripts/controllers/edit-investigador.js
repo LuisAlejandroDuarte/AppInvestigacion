@@ -277,7 +277,7 @@ angular.module('listaTareasApp')
                                       $scope.$$childTail.myFormProductos.idstrFinanciacion.$invalid=false;   
                                                
                                    $scope.$$childTail.myFormProductos.$invalid=false;                
-                                   $scope.$apply()
+                                   $scope.$$childTail.$apply()
                                   });
                                
                                  //$scope.$apply();   
@@ -480,13 +480,25 @@ angular.module('listaTareasApp')
 
       $scope.eliminarProducto = function()
       {
+          $('#myModal').show();    
+          var eliminar=[];
         for(var i=0;i<$scope.proyectoProducto.length;i++)
         {
           if ($scope.proyectoProducto[i].Sel==true)
           {
-            $scope.proyectoProducto.splice(i,1);
+              eliminar.splice(0,0, {
+               Accion:"D",
+               SQL:"DELETE FROM sgi_prod  WHERE  id = " + $scope.proyectoProducto[i].IdProducto
+
+               });
+            $scope.proyectoProducto.splice(i,1);          
           }
         }
+
+         TareasResource.SQLMulti(eliminar).then(function(result) { 
+            $('#myModal').hide();    
+         });
+
       }
 
       $scope.btnNovoClick = function() {
@@ -566,6 +578,7 @@ angular.module('listaTareasApp')
         if (fechaInicioProyecto=="")
         {
             $window.alert("Falta fecha Inicio Proyecto");
+            $('#myModal').hide(); 
             return;
         }
 
@@ -616,6 +629,8 @@ angular.module('listaTareasApp')
         if (strNombreProyecto=="")
         {
             $window.alert("Falta nombre del Proyecto");
+             $('#myModal').hide(); 
+
             return;
         }
 
@@ -624,6 +639,7 @@ angular.module('listaTareasApp')
             if (strFinanciacion=="")
         {
             $window.alert("Falta financiación del Proyecto");
+            $('#myModal').hide(); 
             return;
         }
 
@@ -745,16 +761,13 @@ angular.module('listaTareasApp')
 
                                   if ($scope.proyectoProducto.length>0)
                                     {   
-                                         r6= TareasResource.execute.query({Accion: "D",SQL:"DELETE FROM sgi_prod_proy " +
-                                                            " WHERE  id_proy = " +  $scope.idProyecto + " AND id_inve="+ idInvestigador + ""});
-                                          r6.$promise.then(function(result2){
-                                             if (result2[0].estado=="ok")
-                                             {
+                                                                                   
 
                                               $scope.Lista =[];
-                                               
+                                             
                                               angular.forEach( $scope.proyectoProducto,function(item){
 
+                                                
                                                  $scope.Lista.splice(0,0,{IdProducto:0,IdTipoProducto:item.IdTipoProducto,NombreTipoProducto:item.NombreTipoProducto,NombreProducto:item.NombreProducto,TituloProducto:item.TituloProducto,Fecha:formatoFecha(item.Fecha)});
 
                                               });
@@ -765,19 +778,20 @@ angular.module('listaTareasApp')
                                                 idInve: idInvestigador
                                               }
 
-                                            TareasResource.enviarProyectoProducto(datos).then(function(result) { 
+                                           
 
-                                              var resultado = result;
-                                                   $('#myModal').hide();
-                                                  $window.alert("Actualizado");
-                                                  $scope.pass.strPass="";
-                                                  $scope.pass.strRePass="";
-                                                   $scope.volverLista();
-                                              
-                                              });
-                                               
-                                            }
-                                       });
+                                                  TareasResource.enviarProyectoProducto(datos).then(function(result) { 
+
+                                                  var resultado = result;
+                                                       $('#myModal').hide();
+                                                      $window.alert("Actualizado");
+                                                      $scope.pass.strPass="";
+                                                      $scope.pass.strRePass="";
+                                                       $scope.volverLista();                                                  
+                                                  });
+                                                                                                                          
+                                     
+                                      
                                     }  
                                       else
                                      {

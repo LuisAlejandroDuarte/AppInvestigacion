@@ -185,6 +185,7 @@ var idInve="";
                                                   }
                                                               
                                                 });
+                                                $('#myModal').hide();  
                                                 if (tieneDatos==true)
                                                       $scope.LineasInvestigacion = result;           
                                             });
@@ -690,6 +691,7 @@ $scope.OnClicDescargarPlan = function(a,b)
           {
 
             $scope.jqxWindowSettings.apply('close');
+            if ($scope.Semilleros==undefined) $scope.Semilleros=[];
             $scope.Semilleros.splice(0,0,{Nombre:$scope.selTipoGrupo.Nombre,FechaInicia:$scope.FechaInicia,FechaTermina:null,Id:$scope.idMain.Id,Id2:$scope.selTipoGrupo.Id});
           }
         }
