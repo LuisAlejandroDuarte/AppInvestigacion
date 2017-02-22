@@ -642,17 +642,17 @@
 
       <div class="row" style="margin-top:20px">
 
-            <div class="col-md-12">
+            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
 
               <ul class="list-group">
 
                  <jqx-panel id="jqxPanel" jqx-settings="jqxPanelSettingsPlan" >
 
-                  <li class="list-group-item" ng-repeat="plan in planTrabajo | filter :{FechaTermina: '!'}" >
+                  <li class="list-group-item" ng-repeat="plan in planTrabajo" >
 
                     <div class="row">
 
-                      <div class="col-md-4">
+                      <div class="col-lg-4 col-md-4 col-xs-4 col-sm-4">
 
                         <label class="" style="color:blue;font-size:14px">Nombre</label>
 
@@ -662,19 +662,25 @@
 
                    
 
-                     <div class="col-md-4">
+                     <div class="col-lg-3 col-md-3 col-xs-3 col-sm-3">
 
-                      <label class="" style="color:blue;font-size:14px">Fecha</label>
+                      <label class="" style="color:blue;font-size:14px">Fecha Inicio</label>
 
                      </div>
 
-                     <div class="col-md-2">
+                       <div class="col-lg-3 col-md-3 col-xs-3 col-sm-3">
+
+                      <label class="" style="color:blue;font-size:14px">Fecha Termina</label>
+
+                     </div>
+
+                     <div class="col-lg-1 col-md-1 col-xs-1 col-sm-1">
 
                       <label class="" style="color:blue;font-size:14px">Descargar</label>
 
                      </div>
 
-                     <div class="col-md-2">
+                     <div class="col-lg-1 col-md-1 col-xs-1 col-sm-1">
 
                       <label class="" style="color:blue;font-size:14px">Eliminar</label>
 
@@ -684,7 +690,7 @@
 
                     <div class="row">
 
-                      <div class="col-md-4">
+                      <div class="col-lg-4 col-md-4 col-xs-4 col-sm-4">
 
                           <span class="">{{plan.Nombre}}</span>
 
@@ -696,13 +702,19 @@
 
                       </div>
 
-                      <div class="col-md-4">
+                    <div class="col-lg-3 col-md-3 col-xs-3 col-sm-3">
 
                           <jqx-date-time-input ng-model="plan.FechaInicio" jqx-settings="dateInputSettings"></jqx-date-time-input>    
 
                       </div>   
 
-                      <div title="Descargar {{plan.Path}}" class="col-md-2" >
+                        <div class="col-lg-3 col-md-3 col-xs-3 col-sm-3">
+
+                          <jqx-date-time-input ng-model="plan.FechaTermina" jqx-settings="dateInputSettings"></jqx-date-time-input>    
+
+                      </div>   
+                      <div title="Descargar {{plan.Path}}" class="col-lg-1 col-md-1 col-xs-1 col-sm-1"> 
+
 
                          <div style="cursor:hand" >
 
@@ -712,7 +724,7 @@
 
                       </div>
 
-                      <div title="Eliminar {{plan.Nombre}}" class="col-md-2" >
+                      <div title="Eliminar {{plan.Nombre}}" class="col-lg-1 col-md-1 col-xs-1 col-sm-1">
 
                          <div style="cursor:hand" >
 

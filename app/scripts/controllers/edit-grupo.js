@@ -40,8 +40,7 @@ angular.module('listaTareasApp')
       {
         height: "100",
         autoUpdate:true,
-        theme:'bootstrap',
-        width:"1000"
+        theme:'bootstrap'       
       }
 
       $scope.jqxPanelSettingsPlan =
@@ -49,7 +48,7 @@ angular.module('listaTareasApp')
         height: "100",
         autoUpdate:true,
         theme:'bootstrap',
-        width:"800"
+        width:"1000"
       }
 
          $scope.jqxPanelSettings =
@@ -475,27 +474,27 @@ var idInve="";
 
    $scope.OnClicEliminarPlan = function(plan,sele)
    {
-    if (plan.IdGrupo==0)    
+   
        $scope.planTrabajo.splice(sele.$index,1);           
 
-     else
-     {
-            $scope.hideFechaTermina ="false";      
-            $scope.tipoGrupo = "Nombre";
-            $scope.Nombre = plan.Nombre;
-            $scope.FechaInicio = plan.FechaInicio;
-            $scope.FechaTermina =null;
-            $scope.hidelblNombre =false;
-            $scope.hideVinculacion = true;
-            $scope.hideCmdTipoGrupo=true;
-            $scope.hideVinculacion = true;
-            $scope.titleEditar = "Plan";
-            $scope.idMain = plan;
-            $scope.idMain.accion="Del";
-            $scope.idMain.tipo =5;
-            $('#window').jqxWindow({height:210});
-            $scope.jqxWindowSettings.apply('open');
-     }
+     // else
+     // {
+     //        $scope.hideFechaTermina ="false";      
+     //        $scope.tipoGrupo = "Nombre";
+     //        $scope.Nombre = plan.Nombre;
+     //        $scope.FechaInicio = plan.FechaInicio;
+     //        $scope.FechaTermina =null;
+     //        $scope.hidelblNombre =false;
+     //        $scope.hideVinculacion = true;
+     //        $scope.hideCmdTipoGrupo=true;
+     //        $scope.hideVinculacion = true;
+     //        $scope.titleEditar = "Plan";
+     //        $scope.idMain = plan;
+     //        $scope.idMain.accion="Del";
+     //        $scope.idMain.tipo =5;
+     //        $('#window').jqxWindow({height:210});
+     //        $scope.jqxWindowSettings.apply('open');
+     // }
     
    }
 
@@ -634,22 +633,22 @@ $scope.OnClicDescargarPlan = function(a,b)
               }
               else
               {
-
-              
-                var existe=false;
-               angular.forEach($scope.Investigadores, function(value, key){
-                  if (value.Id2 == $scope.selTipoGrupo.Id)
-                  {
-                    existe=true;
-                  }
-               });
-               if (existe==false)
-                   {
-                    $scope.Investigadores.splice(0,0,{Nombre:$scope.selTipoGrupo.Nombre,FechaInicia:$scope.FechaInicia,FechaTermina:null,Id:$scope.idMain.Id,Id2:$scope.selTipoGrupo.Id,IdVincula:$scope.selTipoVinculacion.tiv_codi});                   
+                 $scope.Investigadores.splice(0,0,{Nombre:$scope.selTipoGrupo.Nombre,FechaInicia:$scope.FechaInicia,FechaTermina:null,Id:$scope.idMain.Id,Id2:$scope.selTipoGrupo.Id,IdVincula:$scope.selTipoVinculacion.tiv_codi});                   
                     $scope.jqxWindowSettings.apply('close');
-                  }
-               else
-                $window.alert("Ya está seleccionado");     
+              
+               //  var existe=false;
+               // angular.forEach($scope.Investigadores, function(value, key){
+               //    if (value.Id2 == $scope.selTipoGrupo.Id)
+               //    {
+               //      existe=true;
+               //    }
+               // });
+               // if (existe==false)
+               //     {
+                   
+               //    }
+               // else
+               //  $window.alert("Ya está seleccionado");     
              }  
            }
      }

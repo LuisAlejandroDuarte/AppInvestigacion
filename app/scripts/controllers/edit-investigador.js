@@ -38,8 +38,8 @@ angular.module('listaTareasApp')
                          borrar =TareasResource.SQL(datos);
                             borrar.then(function(res){
                             datos ={
-                                Accion:'D',
-                                SQL:'DELETE FROM sgi_proy where pro_codi=' + Codigo
+                                Accion:'D',                               
+                                  SQL:'DELETE FROM sgi_proy_inve where id_proy=' + Codigo
                             }
 
                             borrar =TareasResource.SQL(datos);
@@ -47,7 +47,7 @@ angular.module('listaTareasApp')
 
                                datos ={
                                 Accion:'D',
-                                SQL:'DELETE FROM sgi_proy_inve where id_proy=' + Codigo
+                                 SQL:'DELETE FROM sgi_proy where pro_codi=' + Codigo
                             }
 
                             borrar =TareasResource.SQL(datos);
@@ -402,7 +402,10 @@ angular.module('listaTareasApp')
                         
           });
           if (tieneDatos==true)
-                $scope.proyectoProducto = result2;           
+          {
+                $scope.proyectoProducto = result2;     
+                if ($scope.eliminarProducto2==undefined) $scope.eliminarProducto2=result2;      
+              }
         });
 
 
@@ -482,15 +485,14 @@ angular.module('listaTareasApp')
       {
           $('#myModal').show();    
           var eliminar=[];
+           
         for(var i=0;i<$scope.proyectoProducto.length;i++)
         {
           if ($scope.proyectoProducto[i].Sel==true)
           {
-              eliminar.splice(0,0, {
-               Accion:"D",
-               SQL:"DELETE FROM sgi_prod  WHERE  id = " + $scope.proyectoProducto[i].IdProducto
 
-               });
+           
+            
             $scope.proyectoProducto.splice(i,1);          
           }
         }
@@ -759,7 +761,19 @@ angular.module('listaTareasApp')
                                if (result2[0].estado=="ok")
                                {
 
-                                  if ($scope.proyectoProducto.length>0)
+                                  var eliminar=[];
+                                  angular.forEach($scope.eliminarProducto2,function(item) {
+
+                                      eliminar.splice(0,0,{
+                                        Accion:'D',
+                                        SQL:'DELETE FROM sgi_prod WHERE id=' + item.IdProducto
+
+                                      });
+
+                                  });
+
+                                  TareasResource.SQLMulti(eliminar).then(function(){
+                                     if ($scope.proyectoProducto.length>0)
                                     {   
                                                                                    
 
@@ -801,6 +815,9 @@ angular.module('listaTareasApp')
                                       $scope.pass.strRePass="";
                                       $scope.volverLista();
                                      }
+                                  });
+
+                                 
                                }
                              });
 
