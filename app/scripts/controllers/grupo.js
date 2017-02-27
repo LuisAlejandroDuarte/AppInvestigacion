@@ -52,7 +52,7 @@
  .controller('ControladorGrupo', ['$scope','$window','$cookieStore','$location', function($scope,$window,$cookieStore,$location) {
 
     var user = JSON.parse($window.sessionStorage.getItem('investigador'));
-
+    moment.locale('es');
     if (user==null || user==undefined)
     {
 
@@ -64,7 +64,7 @@
          $scope.options = {           
             method: 'post',
             url: 'scripts/services/api.php?url=executeSQL/S/SELECT IG.igr_grup_codi,G.gru_nomb AS Grupo,G.gru_codi,' + 
-            ' IG.igr_fech_inic AS Fecha,CONCAT(I.inv_nomb," ",I.inv_apel) As Investigador ' + 
+            ' G.gru_fech_ini AS Fecha,CONCAT(I.inv_nomb," ",I.inv_apel) As Investigador ' + 
             ' FROM sgi_inve_grup AS IG  INNER JOIN sgi_grup AS G ON G.gru_codi = IG.igr_grup_codi ' + 
             ' INNER JOIN sgi_inve As I ON I.inv_codi = IG.igr_inve_iden WHERE IG.igr_tipo_vinc_codi=1 AND IG.igr_inve_iden=' + user.INV_CODI,
           
@@ -91,7 +91,12 @@
                 title: 'FECHA',
                 align: 'left',
                 valign: 'middle',
-                sortable: true
+                sortable: true,
+                 formatter: function(value, row, index) {
+
+                    return moment(value).format("DD MMMM YYYY");
+                 },
+
             }, {
                 field: 'Investigador',
                 title: 'Director',

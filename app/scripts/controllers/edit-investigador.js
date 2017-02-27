@@ -1,3 +1,4 @@
+var eliminarProducto2;
 'use strict';
 
 angular.module('listaTareasApp')
@@ -65,10 +66,8 @@ angular.module('listaTareasApp')
                     });                    
                   }
                 });
-
-
                      
-                };
+              };
                
             }],
 
@@ -176,7 +175,7 @@ angular.module('listaTareasApp')
           selGrupoProducto:''          
         };
 
-
+   moment.locale('es');
   $scope.options = {                       
           
                 cache: false,
@@ -221,18 +220,31 @@ angular.module('listaTareasApp')
 
             }, {
                 field: 'fecha_ini',
-                title: 'Fechas Inicio',
+                title: 'Fecha Inicio',
                 align: 'left',
                 valign: 'middle',
                  width: 100,
-                sortable: true
+                sortable: true,
+                 formatter: function(value, row, index) {
+                      if (value==null)
+                          return '';
+                        else
+                          return moment(value).format("DD MMMM YYYY");
+                      },
             }, {
                 field: 'fecha_ter',
                 title: 'Fecha Termina',
                 align: 'left',
                 valign: 'middle',
                 width: 100,
-                sortable: true
+                sortable: true,
+                  formatter: function(value, row, index) {
+                      if (value==null)
+                          return '';
+                        else
+                          return moment(value).format("DD MMMM YYYY");
+
+                },
             },{
                 field: 'id_grupo',
                 title: '',                
@@ -404,7 +416,8 @@ angular.module('listaTareasApp')
           if (tieneDatos==true)
           {
                 $scope.proyectoProducto = result2;     
-                if ($scope.eliminarProducto2==undefined) $scope.eliminarProducto2=result2;      
+                if (eliminarProducto2==undefined) eliminarProducto2=JSON.stringify(result2);   
+                eliminarProducto2=JSON.stringify(result2);   
               }
         });
 
@@ -417,16 +430,19 @@ angular.module('listaTareasApp')
 
 
 
-        $('#fechaInicioProyecto').val(codi.fecha_ini); 
+        $('#fechaInicioProyecto').val(moment(codi.fecha_ini).format("DD") + '-' + moment(codi.fecha_ini).format("MMMM")[0].toUpperCase() + moment(codi.fecha_ini).format("MMMM").substring(1) + '-' + moment(codi.fecha_ini).format("YYYY")); 
 
         if (codi.fecha_ter==null)
         {
+
+
           $('#fechaTerminaProyecto').val("");
+         // $scope.fechaTerminaProy=moment();
         }
         else
         {
           fecha  =new Date(codi.fecha_ter);
-          $('#fechaTerminaProyecto').val(codi.fecha_ter);
+          $('#fechaTerminaProyecto').val(moment(codi.fecha_ter).format("DD") + '-' + moment(codi.fecha_ter).format("MMMM")[0].toUpperCase() + moment(codi.fecha_ter).format("MMMM").substring(1) + '-' +moment(codi.fecha_ter).format("YYYY"));
 
         }
 
@@ -479,6 +495,7 @@ angular.module('listaTareasApp')
         }
        
         $scope.proyectoProducto.splice(0,0,{IdProducto:0,IdTipoProducto:selProducto,NombreTipoProducto:strNombreTipoProducto,NombreProducto:strNombreProducto,TituloProducto:strTituloProducto,Fecha:fecha});
+        eliminarProducto2 = JSON.stringify($scope.proyectoProducto);   
       }
 
       $scope.eliminarProducto = function()
@@ -496,6 +513,8 @@ angular.module('listaTareasApp')
             $scope.proyectoProducto.splice(i,1);          
           }
         }
+
+      //  eliminarProducto2=JSON.stringify($scope.proyectoProducto);   
 
          TareasResource.SQLMulti(eliminar).then(function(result) { 
             $('#myModal').hide();    
@@ -552,6 +571,14 @@ angular.module('listaTareasApp')
 
       }
 
+      function parseDate(s) {
+        if (s=='') return '';
+        var months = {Enero:0,Febrero:1,Marzo:2,Abril:3,Mayo:4,Junio:5,
+                      Julio:6,Agosto:7,Septiembre:8,Octubre:9,Noviembre:10,Diciembre:11};
+        var p = s.split('-');
+        return new Date(p[2], months[p[1]], p[0]);
+      }
+
       $scope.salvarProyecto = function()
       {
 
@@ -575,7 +602,7 @@ angular.module('listaTareasApp')
          strFinanciacion= strFinanciacion.replace(".","");
         }
 
-        var fechaInicioProyecto = $('#fechaInicioProyecto').val();
+      
 
         if (fechaInicioProyecto=="")
         {
@@ -584,49 +611,49 @@ angular.module('listaTareasApp')
             return;
         }
 
-        var dat = fechaInicioProyecto.split("-");
+        // var dat = fechaInicioProyecto.split("-");
 
-        if (dat[1]==Meses[0] || dat[1]=="01") mes ="01";
-        if (dat[1]==Meses[1] || dat[1]=="02") mes ="02";
-        if (dat[1]==Meses[2] || dat[1]=="03") mes ="03";
-        if (dat[1]==Meses[3] || dat[1]=="04") mes ="04";
-        if (dat[1]==Meses[4] || dat[1]=="05") mes ="05";
-        if (dat[1]==Meses[5] || dat[1]=="06") mes ="06";
-        if (dat[1]==Meses[6] || dat[1]=="07") mes ="07";
-        if (dat[1]==Meses[7] || dat[1]=="08") mes ="08";
-        if (dat[1]==Meses[8] || dat[1]=="09") mes ="09";
-        if (dat[1]==Meses[9] || dat[1]=="10") mes ="10";
-        if (dat[1]==Meses[10] || dat[1]=="11") mes ="11";
-        if (dat[1]==Meses[11] || dat[1]=="12") mes ="12";
+        // if (dat[1]==Meses[0] || dat[1]=="01") mes ="01";
+        // if (dat[1]==Meses[1] || dat[1]=="02") mes ="02";
+        // if (dat[1]==Meses[2] || dat[1]=="03") mes ="03";
+        // if (dat[1]==Meses[3] || dat[1]=="04") mes ="04";
+        // if (dat[1]==Meses[4] || dat[1]=="05") mes ="05";
+        // if (dat[1]==Meses[5] || dat[1]=="06") mes ="06";
+        // if (dat[1]==Meses[6] || dat[1]=="07") mes ="07";
+        // if (dat[1]==Meses[7] || dat[1]=="08") mes ="08";
+        // if (dat[1]==Meses[8] || dat[1]=="09") mes ="09";
+        // if (dat[1]==Meses[9] || dat[1]=="10") mes ="10";
+        // if (dat[1]==Meses[10] || dat[1]=="11") mes ="11";
+        // if (dat[1]==Meses[11] || dat[1]=="12") mes ="12";
          
-         if (isNaN(dat[1])==false)
+        //  if (isNaN(dat[1])==false)
 
-            fechaInicioProyecto = dat[0] + "-" + mes + "-" + dat[2];
-          else
-            fechaInicioProyecto = dat[2] + "-" + mes + "-" + dat[0];
+        //     fechaInicioProyecto = dat[0] + "-" + mes + "-" + dat[2];
+        //   else
+        //     fechaInicioProyecto = dat[2] + "-" + mes + "-" + dat[0];
 
-        var fechaTerminaProyecto = $('#fechaTerminaProyecto').val();
-
-            dat = fechaTerminaProyecto.split("-");
-        if (dat[1]==Meses[0] || dat[1]=="01") mes ="01";
-        if (dat[1]==Meses[1] || dat[1]=="02") mes ="02";
-        if (dat[1]==Meses[2] || dat[1]=="03") mes ="03";
-        if (dat[1]==Meses[3] || dat[1]=="04") mes ="04";
-        if (dat[1]==Meses[4] || dat[1]=="05") mes ="05";
-        if (dat[1]==Meses[5] || dat[1]=="06") mes ="06";
-        if (dat[1]==Meses[6] || dat[1]=="07") mes ="07";
-        if (dat[1]==Meses[7] || dat[1]=="08") mes ="08";
-        if (dat[1]==Meses[8] || dat[1]=="09") mes ="09";
-        if (dat[1]==Meses[9] || dat[1]=="10") mes ="10";
-        if (dat[1]==Meses[10] || dat[1]=="11") mes ="11";
-        if (dat[1]==Meses[11] || dat[1]=="12") mes ="12";
         
 
-        if (isNaN(dat[1])==false)
+        //     dat = fechaTerminaProyecto.split("-");
+        // if (dat[1]==Meses[0] || dat[1]=="01") mes ="01";
+        // if (dat[1]==Meses[1] || dat[1]=="02") mes ="02";
+        // if (dat[1]==Meses[2] || dat[1]=="03") mes ="03";
+        // if (dat[1]==Meses[3] || dat[1]=="04") mes ="04";
+        // if (dat[1]==Meses[4] || dat[1]=="05") mes ="05";
+        // if (dat[1]==Meses[5] || dat[1]=="06") mes ="06";
+        // if (dat[1]==Meses[6] || dat[1]=="07") mes ="07";
+        // if (dat[1]==Meses[7] || dat[1]=="08") mes ="08";
+        // if (dat[1]==Meses[8] || dat[1]=="09") mes ="09";
+        // if (dat[1]==Meses[9] || dat[1]=="10") mes ="10";
+        // if (dat[1]==Meses[10] || dat[1]=="11") mes ="11";
+        // if (dat[1]==Meses[11] || dat[1]=="12") mes ="12";
+        
 
-            fechaTerminaProyecto = dat[0] + "-" + mes + "-" + dat[2];
-          else
-            fechaTerminaProyecto = dat[2] + "-" + mes + "-" + dat[0];                 
+        // if (isNaN(dat[1])==false)
+
+        //     fechaTerminaProyecto = dat[0] + "-" + mes + "-" + dat[2];
+        //   else
+        //     fechaTerminaProyecto = dat[2] + "-" + mes + "-" + dat[0];                 
 
         if (strNombreProyecto=="")
         {
@@ -645,6 +672,8 @@ angular.module('listaTareasApp')
             return;
         }
 
+         var fechaInicioProyecto = parseDate($('#fechaInicioProyecto').val());
+         var fechaTerminaProyecto = parseDate($('#fechaTerminaProyecto').val());
         if ( $scope.idProyecto==0)
         {
 
@@ -656,15 +685,15 @@ angular.module('listaTareasApp')
 
                 // =" +     + ",id_tipoInvestigador=" +  + "," +
                 //   " =" +  + ",  =" +  + 
-                var fechaT = $scope.$$childTail.fechaInicioProy!=undefined?  moment($scope.$$childTail.fechaTerminaProy).format("YYYY-MM-DD"): '';
+                var fechaT =(fechaTerminaProyecto!='')? moment(new Date(fechaTerminaProyecto)).format("YYYY-MM-DD"):fechaTerminaProyecto;
 
                 if (fechaT=='')
                 {
                   r= TareasResource.execute.query({Accion: "I",SQL:"1;INSERT INTO sgi_proy_inve " +
-                     " (id_inve,id_proy,fecha_ini,fecha_ter,id_grupo," +
+                     " (id_inve,id_proy,fecha_ini,id_grupo," +
                     "id_tipoInvestigador,id_convocatoria,id_linea) " +
                     " VALUES (" + idInvestigador + "," + idProyecto + "," + 
-                   "'" + moment($scope.$$childTail.fechaInicioProy).format("YYYY-MM-DD") + "',null, " + $scope.proy.selGrupoProducto + ", " +
+                   "'" + moment($scope.$$childTail.fechaInicioProy).format("YYYY-MM-DD") + "', " + $scope.proy.selGrupoProducto + ", " +
                   "" + $scope.proy.selTipoInvestigador + ", " + $scope.proy.selEntidad +  "," + $scope.proy.selLineaInvestigador +  ")"});    
 
                 }
@@ -734,11 +763,11 @@ angular.module('listaTareasApp')
             r.$promise.then(function(result2){
               if (result2[0].estado=="ok")                                                                                                                       
               {
-                  var fechaT = $scope.$$childTail.fechaTerminaProy!=undefined?  moment($scope.$$childTail.fechaTerminaProy).format("YYYY-MM-DD"): '';
+                   var fechaT =(fechaTerminaProyecto!='')? moment(new Date(fechaTerminaProyecto)).format("YYYY-MM-DD"):fechaTerminaProyecto;
 
                  if (fechaT=='')
                  {
-                   r= TareasResource.execute.query({Accion: "M",SQL:"UPDATE sgi_proy_inve set  fecha_ini ='" + moment($scope.$$childTail.fechaInicioProy).format("YYYY-MM-DD") + "'," + 
+                   r= TareasResource.execute.query({Accion: "M",SQL:"UPDATE sgi_proy_inve set  fecha_ini ='" + moment(new Date(fechaInicioProyecto)).format("YYYY-MM-DD") + "'," + 
                   " fecha_ter=null, id_grupo=" +   $scope.proy.selGrupoProducto  + ",id_tipoInvestigador=" + $scope.proy.selTipoInvestigador + "," +
                   " id_convocatoria=" + $scope.proy.selEntidad + ", id_linea =" + $scope.proy.selLineaInvestigador + 
                   " WHERE id_inve=" + idInvestigador + " AND id_proy=" + $scope.idProyecto + ""});  
@@ -746,7 +775,7 @@ angular.module('listaTareasApp')
                  else
                  {
 
-                 r= TareasResource.execute.query({Accion: "M",SQL:"UPDATE sgi_proy_inve set  fecha_ini ='" + moment($scope.$$childTail.fechaInicioProy).format("YYYY-MM-DD") + "'," + 
+                 r= TareasResource.execute.query({Accion: "M",SQL:"UPDATE sgi_proy_inve set  fecha_ini ='" + moment(new Date(fechaInicioProyecto)).format("YYYY-MM-DD") + "'," + 
                   " fecha_ter='" + fechaT + "', id_grupo=" +   $scope.proy.selGrupoProducto  + ",id_tipoInvestigador=" + $scope.proy.selTipoInvestigador + "," +
                   " id_convocatoria=" + $scope.proy.selEntidad + ", id_linea =" + $scope.proy.selLineaInvestigador + 
                   " WHERE id_inve=" + idInvestigador + " AND id_proy=" + $scope.idProyecto + ""});    
@@ -755,18 +784,23 @@ angular.module('listaTareasApp')
                     if (result2[0].estado=="ok")
                     {
 
-                      var  r6= TareasResource.execute.query({Accion: "D",SQL:"DELETE FROM sgi_prod_proy " +
-                                                            " WHERE  id_proy = " +  $scope.idProyecto + " AND id_inve="+ idInvestigador + ""});
-                            r6.$promise.then(function(result2){
-                               if (result2[0].estado=="ok")
-                               {
+                             
 
                                   var eliminar=[];
-                                  angular.forEach($scope.eliminarProducto2,function(item) {
+                                  if (eliminarProducto2!=undefined || eliminarProducto2!='')
+                                  angular.forEach(JSON.parse(eliminarProducto2),function(item) {
+                                     
 
-                                      eliminar.splice(0,0,{
+                                       eliminar.splice(0,0,{
                                         Accion:'D',
-                                        SQL:'DELETE FROM sgi_prod WHERE id=' + item.IdProducto
+                                        SQL:'DELETE FROM sgi_prod_proy WHERE id_prod=' + item.IdProducto + ' AND id_proy=' + $scope.idProyecto
+
+                                          }); 
+                                         eliminar.splice(0,0,{
+                                           Accion:'D',
+                                            SQL:'DELETE FROM sgi_prod WHERE id=' + item.IdProducto 
+
+                                         
 
                                       });
 
@@ -818,8 +852,8 @@ angular.module('listaTareasApp')
                                   });
 
                                  
-                               }
-                             });
+                             
+                          
 
 
                    

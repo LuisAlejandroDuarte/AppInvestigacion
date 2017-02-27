@@ -40,7 +40,8 @@ angular.module('listaTareasApp')
       {
         height: "100",
         autoUpdate:true,
-        theme:'bootstrap'       
+        theme:'bootstrap',
+        width:"1000"       
       }
 
       $scope.jqxPanelSettingsPlan =
