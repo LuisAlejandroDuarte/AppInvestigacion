@@ -2,8 +2,7 @@
 
 angular.module('listaTareasApp')
   .controller('ControladorEditGrupo', function($scope,$cookieStore,$location,TareasResource,$route,$window,$http) {
-
-             
+   moment.locale('es');
 //var user = $cookieStore.get('usuario');
  var user = JSON.parse($window.sessionStorage.getItem('investigador'));
 
@@ -1160,7 +1159,7 @@ $scope.OnClicEliminarSemilleroGrupo = function(semillero)
                                                                                       multiple.splice(0,0,
                                                                                        {
                                                                                         SQL:"INSERT INTO sgi_grup_proy (id_proy,id_prod,id_grup,id_inve,fech_ini,fech_term) " +
-                                                                                        " VALUES (" + value.IdProy +"," + value.IdProd +"," + IdGrupo +"," +  user.INV_CODI + ",'"+ value.fech_ini + "','"+ value.fech_term + "')",
+                                                                                        " VALUES (" + value.IdProy +"," + value.IdProd +"," + IdGrupo +"," +  user.INV_CODI + ",'" + moment(value.fech_ini).format("YYYY-MM-DD") + "','"+ moment(value.fech_term).format("YYYY-MM-DD") + "')",
                                                                                         Accion:"I"
                                                                                        });                                                                                         
                                                                                                                  
@@ -1169,7 +1168,7 @@ $scope.OnClicEliminarSemilleroGrupo = function(semillero)
                                                                                       multiple.splice(0,0,
                                                                                        {
                                                                                         SQL:"INSERT INTO sgi_grup_proy (id_proy,id_prod,id_grup,id_inve,fech_ini) " +
-                                                                                        " VALUES (" + value.IdProy +"," + value.IdProd +"," + IdGrupo +"," +  user.INV_CODI + ",'"+ value.fech_ini + "')",
+                                                                                        " VALUES (" + value.IdProy +"," + value.IdProd +"," + IdGrupo +"," +  user.INV_CODI + ",'"+ moment(value.fech_ini).format("YYYY-MM-DD") + "')",
                                                                                         Accion:"I"
                                                                                        });                                                                                              
                                                                                       
@@ -1312,7 +1311,7 @@ $scope.OnClicEliminarSemilleroGrupo = function(semillero)
       return;
     }
     
-    moment.locale('es');
+   
 
     var fecha =moment($scope.datos2[0].Fecha).format("YYYY-MM-DD");
 
@@ -1320,6 +1319,9 @@ $scope.OnClicEliminarSemilleroGrupo = function(semillero)
     var mes =0;
     var agno =0;      
      $('#myModal').show();  
+
+     var codigoColciencias=($scope.datos2[0].gru_colc_codi==undefined)? '': $scope.datos2[0].gru_colc_codi;
+     var caterizacionColciencias =($scope.datos2[0].gru_cate_colc==undefined)? '':$scope.datos2[0].gru_cate_colc;
      if (id==0 || id==undefined)
      {
 
@@ -1329,7 +1331,7 @@ $scope.OnClicEliminarSemilleroGrupo = function(semillero)
                          SQL: "1;INSERT INTO sgi_grup " + 
                          " (gru_nomb,gru_fech_ini,gru_area_codi,gru_cent_codi,gru_colc_codi,gru_cate_colc) " +
                          " VALUES ('" + $scope.datos2[0].Grupo + "','" + fecha + "'," + $scope.datos2[0].selArea + "," + 
-                          + $scope.datos2[0].selCentro + ",'" + $scope.datos2[0].gru_colc_codi + "','"+ $scope.datos2[0].gru_cate_colc + "')"});
+                          + $scope.datos2[0].selCentro + ",'" + codigoColciencias + "','" + caterizacionColciencias + "')"});
 
           Query.$promise.then(function(result){
 
@@ -1363,8 +1365,8 @@ $scope.OnClicEliminarSemilleroGrupo = function(semillero)
        var Query= TareasResource.execute.query({Accion: 'M',
                          SQL: "UPDATE sgi_grup " + 
                          " set gru_nomb='" + $scope.datos2[0].Grupo + "',gru_fech_ini='" + fecha + "' ,gru_area_codi=" + $scope.datos2[0].selArea + ", " + 
-                         " gru_cent_codi=" + $scope.datos2[0].selCentro + ",gru_colc_codi='" + $scope.datos2[0].gru_colc_codi + "'," + 
-                         " gru_cate_colc='"+ $scope.datos2[0].gru_cate_colc + "' WHERE gru_codi =" + id + " "});
+                         " gru_cent_codi=" + $scope.datos2[0].selCentro + ",gru_colc_codi='" + codigoColciencias + "'," + 
+                         " gru_cate_colc='"+ caterizacionColciencias + "' WHERE gru_codi =" + id + " "});
            Query.$promise.then(function(result){
 
             if (result[0].estado=="ok")

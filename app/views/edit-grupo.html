@@ -4,20 +4,21 @@
     
 
 
-
+ <div role="form"  ng-form="myForm" novalidate="">
 <div class="panel panel-primary  drop-shadow" style="width:100%;height:100%;  margin-left:0%; margin-top:2%">
 
 
 
 <div class="panel-heading"><h>Editando Grupo</h></div>
-
-  <form  name="myForm" >
+  
+  
+  
 
   <div class="panel-body">
 
  <tabset>
 
- <tab active="tabInformacion">
+ <tab active="tabInformacion"> 
 
 	 <tab-heading>
 
@@ -144,7 +145,7 @@
 		  <div class="col-lg-7 col-md-7 col-xs-7 col-sm-7">       
         <div class="form-group">
             <label>Nombre del Grupo</label>
-            <input class="form-control" ng-model="datos2[0].Grupo"/>    
+            <input class="form-control" ng-model="datos2[0].Grupo" name="nombreGrupo" ng-required="true"/>    
         </div>			
 		</div>	
 
@@ -152,7 +153,7 @@
 
           <div class="form-group"  ng-class="{'has-error': datepickerForm.date.$invalid}">
               <label>Fecha de Creación</label>
-              <input id="FechaCreaGrupo" type="text" class="form-control" ng-model="datos2[0].Fecha" data-date-format="dd-MMMM-yyyy" date-type="iso"   data-max-date="today" data-autoclose="1" name="dateCreacionGrupo" bs-datepicker/>    
+              <input id="FechaCreaGrupo" type="text" class="form-control" ng-model="datos2[0].Fecha" data-date-format="dd-MMMM-yyyy" date-type="iso"   data-max-date="today" data-autoclose="1" name="dateCreacionGrupo" bs-datepicker ng-required="true"/>    
         </div>    		
 		</div>	
 	</div>
@@ -183,14 +184,14 @@
     <div class="col-lg-6 col-md-6 col-xs-6 col-sm-6">        
 
       <label>Área</label>
-       <select class="form-control" ng-model="datos2[0].selArea" ng-options="value1.ARE_CODI as value1.ARE_NOMB  for value1 in listArea"   ></select>
+       <select class="form-control" ng-model="datos2[0].selArea" ng-options="value1.ARE_CODI as value1.ARE_NOMB  for value1 in listArea | orderBy : 'ARE_NOMB'" ng-required="true"  ></select>
 
     </div>  
 
      <div class="col-lg-6 col-md-6 col-xs-6 col-sm-6">             
 
       <label>Centro</label>
-       <select class="form-control" ng-model="datos2[0].selCentro" ng-options="value2.CEN_CODI as value2.CEN_NOMB  for value2 in listCentro"   ></select>
+       <select class="form-control" ng-model="datos2[0].selCentro" ng-options="value2.CEN_CODI as value2.CEN_NOMB  for value2 in listCentro | orderBy : 'CEN_NOMB'"  ng-required="true" ></select>
 
     </div>  
 
@@ -494,25 +495,34 @@
 
                     <div class="row">
 
-             <div class="col-md-4">
+             <div class="col-lg-3 col-md-3 col-xs-3 col-sm-3">
 
                <label class="" style="color:blue;font-size:14px">Proyecto</label>
 
              </div>
 
-              <div class="col-md-4">
+             <div class="col-lg-3 col-md-3 col-xs-3 col-sm-3">
 
                <label class="" style="color:blue;font-size:14px">Producto</label>              
 
              </div>
 
-             <div class="col-md-3">
+            <div class="col-lg-2 col-md-2 col-xs-2 col-sm-2">
 
                <label class="" style="color:blue;font-size:14px">Fecha Inicial</label>               
 
              </div>
 
-             <div class="col-md-1">
+                 <div class="col-lg-2 col-md-2 col-xs-2 col-sm-2">
+
+
+               <label class="" style="color:blue;font-size:14px">Fecha Termina</label>               
+
+             </div>
+
+
+             <div class="col-lg-2 col-md-2 col-xs-2 col-sm-2">
+
 
                <label class="" style="color:red;font-size:14px">Eliminar</label>               
 
@@ -522,25 +532,31 @@
 
                     <div class="row">
 
-                      <div class="col-md-4">
+                      <div class="col-lg-3 col-md-3 col-xs-3 col-sm-3">
 
                           <span class="">{{proyecto.NombreProyecto}}</span>
 
                       </div>
 
-                        <div class="col-md-4">
+                       <div class="col-lg-3 col-md-3 col-xs-3 col-sm-3">
 
                           <span class="">{{proyecto.NombreProducto}}</span>
 
                       </div>
 
-                      <div class="col-md-3">
+                      <div class="col-lg-2 col-md-2 col-xs-2 col-sm-2">
 
                           <jqx-date-time-input ng-model="proyecto.fech_ini" jqx-settings="dateInputSettings"></jqx-date-time-input>    
 
                       </div>   
 
-                      <div title="Eliminar {{proyecto.NombreProyecto}}" class="col-md-1" >
+                       <div class="col-lg-2 col-md-2 col-xs-2 col-sm-2">
+
+                          <jqx-date-time-input ng-model="proyecto.fech_term" jqx-settings="dateInputSettings"></jqx-date-time-input>    
+
+                      </div>  
+
+                      <div title="Eliminar {{proyecto.NombreProyecto}}" class="col-lg-2 col-md-2 col-xs-2 col-sm-2" >
 
                          <div style="cursor:hand" >
 
@@ -762,7 +778,7 @@
 
 
 
-        <button  ng-click= "save(datos2[0])"              
+        <button  ng-click= "save(datos2[0])"  ng-disabled="myForm.$invalid"            
 
                 class="btn btn-primary">Actualizar</button>
 
@@ -784,7 +800,7 @@
 
  </div>
 
- </form>
+ </div>
 
 </div>
 
