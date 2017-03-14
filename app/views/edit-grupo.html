@@ -491,7 +491,7 @@
 
                  <jqx-panel id="jqxPanel" jqx-settings="jqxPanelSettingsProyecto" >
 
-                  <li class="list-group-item" ng-repeat="proyecto in Proyectos | filter :{fech_term: '!'}" >
+                  <li class="list-group-item" ng-repeat="proyecto in Proyectos" >
 
                     <div class="row">
 
@@ -552,11 +552,11 @@
 
                        <div class="col-lg-2 col-md-2 col-xs-2 col-sm-2">
 
-                          <jqx-date-time-input ng-model="proyecto.fech_term" jqx-settings="dateInputSettings"></jqx-date-time-input>    
+                          <jqx-date-time-input ng-model="proyecto.fech_term" ng-show="(proyecto.fech_term!=null)" ng-disabled="true" jqx-settings="dateInputSettings"></jqx-date-time-input>    
 
                       </div>  
 
-                      <div title="Eliminar {{proyecto.NombreProyecto}}" class="col-lg-2 col-md-2 col-xs-2 col-sm-2" >
+                      <div title="Eliminar {{proyecto.NombreProyecto}}" class="col-lg-2 col-md-2 col-xs-2 col-sm-2" ng-show="(proyecto.fech_term==null)">
 
                          <div style="cursor:hand" >
 
@@ -592,19 +592,19 @@
 
       <div class="row" style="margin-top:20px">
 
-         <div class="col-md-1">
+         <div class="col-lg-1 col-md-1 col-xs-1 col-sm-1">
 
           <label>Documento</label>
 
          </div>
 
-          <div class="col-md-2">
+       <div class="col-lg-2 col-md-2 col-xs-2 col-sm-2">
 
             
 
         </div>
 
-        <div class="col-md-2">
+        <div class="col-lg-2 col-md-2 col-xs-2 col-sm-2">
 
             <label>Nombre</label>
 
@@ -614,7 +614,7 @@
 
       <div class="row" style="">
 
-        <div class="col-md-1">
+        <div class="col-lg-1 col-md-1 col-xs-1 col-sm-1">
 
             <span class="fileinput-button glyphicon glyphicon-file"  ng-class="{disabled:    disabled}" style="margin-left:20px"><input type="file" name="files" onchange="angular.element(this).scope().uploadFile(this) " accept="PDF/pdf"> 
 
@@ -622,19 +622,19 @@
 
         </div> 
 
-        <div class="col-md-2">
+        <div class="col-lg-2 col-md-2 col-xs-2 col-sm-2">
 
             {{nameArch}}
 
         </div>        
 
-        <div class="col-md-2">
+         <div class="col-lg-2 col-md-2 col-xs-2 col-sm-2">
 
             <input id="nombrePlan" class="form-control" type="text" ng-model="nombrePlan" />
 
         </div>
 
-        <div class="col-md-2">
+         <div class="col-lg-2 col-md-2 col-xs-2 col-sm-2">
 
             <button class="btn  btn-success"  ng-click="OnClicAddPlan(nameArch,nombrePlan)">Adicionar a la lista</button>   
 
@@ -648,7 +648,7 @@
 
    <div class="row">
 
-       <div class="col-md-8 col-lg-8">
+        <div class="col-lg-8 col-md-8 col-xs-8 col-sm-8">
 
         
 
@@ -726,10 +726,10 @@
 
                         <div class="col-lg-3 col-md-3 col-xs-3 col-sm-3">
 
-                          <jqx-date-time-input ng-model="plan.FechaTermina" jqx-settings="dateInputSettings"></jqx-date-time-input>    
+                          <jqx-date-time-input ng-model="plan.FechaTermina"  jqx-settings="dateInputSettings"></jqx-date-time-input>    
 
                       </div>   
-                      <div title="Descargar {{plan.Path}}" class="col-lg-1 col-md-1 col-xs-1 col-sm-1"> 
+                      <div title="Descargar" class="col-lg-1 col-md-1 col-xs-1 col-sm-1"> 
 
 
                          <div style="cursor:hand" >

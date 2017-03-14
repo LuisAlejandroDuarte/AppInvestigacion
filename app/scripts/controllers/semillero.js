@@ -33,7 +33,7 @@
 	if (user==null || user==undefined)
     {
 
-      $location.path('/inicio');
+      $location.path('/menu');
       return;
     }
     else
@@ -79,7 +79,7 @@
                  }
             },{
                 field: 'SEM_AVAL_UNAD',
-                title: 'Avaluado',
+                title: 'Avalado',
                 align: 'left',
                 valign: 'middle',
                 sortable: true,
@@ -129,7 +129,10 @@
 
        var listaSemilleros= TareasResource.SQL(datos);
        		listaSemilleros.then(function(result){
-       			$('#tablesemillero').bootstrapTable('load',result.data);	
+                if (result.data[0]!=null)
+       			      $('#tablesemillero').bootstrapTable('load',result.data);	
+                  else
+                     $('#tablesemillero').bootstrapTable('load',{});   
        		});
         
           $scope.onClicSalir = function()

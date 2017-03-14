@@ -4,7 +4,7 @@
 
 	<div class="view">
 	  
-		<div class="panel panel-primary  drop-shadow" style="max-width:1900px;height:auto;margin-left:17%;width:1300px; margin-top:5%">
+		<div class="panel panel-primary  drop-shadow" style="max-width:2000px;height:auto;margin-left:17%;width:1300px; margin-top:2%">
   		<div class="panel-heading"><h>{{tiTulo}}</h></div>
 		  <form method="post" name="myFormSemillero" role="form" novalidate>
 		  
@@ -103,7 +103,7 @@
 								    					<div class="col-lg-12 col-md-12 col-xs-12 col-ms-12">						    						
 																<div class="form-group" ng-class="{ 'has-error': myFormSemillero.mision.$invalid}">
 		    													<label>Misión</label>
-		      															<input type="text" ng-model="semillero.strMision" name="mision"  class="form-control input-sm" required />
+		      															<textarea type="text" ng-model="semillero.strMision" name="mision"  class="form-control input-sm" required />
 		  														</div>
 														</div>
 													</div>	
@@ -111,7 +111,7 @@
 														<div class="col-lg-12 col-md-12 col-xs-12 col-ms-12">  														
 	  															<div class="form-group" ng-class="{ 'has-error': myFormSemillero.vision.$invalid}">
 	    															<label>Visión</label>
-	      															<input type="text" ng-model="semillero.strVision" name="vision"  class="form-control input-sm" required />
+	      															<textarea type="text" ng-model="semillero.strVision" name="vision"  class="form-control input-sm" required />
 	  															</div>
 														
 														</div>
@@ -125,14 +125,13 @@
 								<div class="row">
 									<div class="col-lg-2 col-md-2 col-xs-6 col-sm-6">
 										<div class="form-group">
-											<label>Avaluado por la unad</label>
-												<div class="radio">
-											 	<input type="radio" ng-model="semillero.avaluado"   value="1" checked>
-	    											SI
-	  											
+											<label>Avalado por la Unad</label>
+												<div class="radio" ng-init="semillero.avaluado='0'">
+											 	<input type="radio" ng-model="semillero.avaluado" ng-disabled="true"  value="1" checked>
+	    											SI	  											
 	  											</div>
 	  												<div class="radio">
-											<input type="radio" ng-model="semillero.avaluado"   value="0" >
+											<input type="radio" ng-model="semillero.avaluado" ng-disabled="true"  value="0" >
 	    										NO
 	    									</div>	    									
 	  										
@@ -185,15 +184,15 @@
 								<div class="container-fluid" style="margin-top:10px">
 									
 								<div class="row">
-								<div class="form-group col-lg-6 col-md-6 col-xs-12 col-sm-12">
+								<div class="form-group col-lg-4 col-md-4 col-xs-12 col-sm-12">
 								   <div class="row">
-										<div class="col-lg-7 col-md-7 col-xs-12 col-sm-12">
+										<div class="col-lg-5 col-md-5 col-xs-12 col-sm-12">
 											<label for="exampleInputEmail1">Líneas de investigación</label>
 										 	<select class="form-control input-sm"  ng-model="semillero.selLineas"  
 	                							ng-options="item as item.Nombre for item in lstLineasInvestigacion" >
 	            							</select> 
 										</div>	
-										<div class="col-lg-5 col-md-5 col-xs-12 col-sm-12">
+										<div class="col-lg-7 col-md-7 col-xs-12 col-sm-12">
 											<div class="form-group">
 												<label for="exampleInputEmail1">Fecha Inicio</label>
     											  <input   class="form-control input-sm" 
@@ -234,7 +233,7 @@
 								   </div>
 																									
 								</div>
-								<div class="form-group col-lg-6 col-md-6 col-xs-12 col-sm-12">
+								<div class="form-group col-lg-4 col-md-4 col-xs-12 col-sm-12">
 								   <div class="row">
 										<div class="col-lg-7 col-md-7 col-xs-12 col-sm-12">
 											<label for="exampleInputEmail1">Integrantes semillero</label>
@@ -520,7 +519,7 @@
   					<div class="row">
 						<div class="col-lg-offset-10 col-md-offset-10-12 col-xs-offset-12 col-smoffset-12">
 							<button type="button" class="btn btn-primary btn-sm" ng-disabled="myFormSemillero.$invalid" ng-click="onClickGuardar()">{{btnGuardar}}</button>
-							<button type="button" class="btn btn-primary btn-sm" ng-click="onClickCancelar()">Cancelar</button>
+							<button type="button" class="btn btn-primary btn-sm" ng-click="onClickCancelar()">Salir</button>
 						</div>
 					</div>
 										  	

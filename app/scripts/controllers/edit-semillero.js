@@ -169,14 +169,14 @@ angular.module('listaTareasApp')
 
            }
       },{
-          field: 'Fechafin',
+          field: 'FechaFin',
           title: 'Fecha Fin',
           align: 'left',
           valign: 'middle',
           sortable: true,
             formatter: function(value, row, index) {
 
-                if (value==null) return;
+                if (value==null || moment(value).format("DD MMMM YYYY")=='Invalid date') return '';
                 return moment(value).format("DD MMMM YYYY");
 
            }
@@ -427,9 +427,10 @@ angular.module('listaTareasApp')
 
                               datos = {
                                   Accion:'S',
-                                  SQL:'SELECT PPS.PPR_CODI, PPS.PPR_NOMB_PROY AS NombreProyecto,PPS.PPR_NOMB_PROD AS NombreProducto,' + 
+                                  SQL:'SELECT PPS.PPR_CODI,P.PDS_NOMB AS NombreProducto, PR.PRS_NOMB AS NombreProyecto,' + 
                                     ' PPR_EPY_CODI,PPR_EPD_CODI,PPR_FECH_INI,PPR_FECH_FIN' +
-                                    ' FROM sgi_proy_prod_semi AS PPS WHERE PPS.PPR_SEMI_CODI = ' + idSemillero
+                                    ' FROM sgi_proy_prod_semi AS PPS INNER JOIN sgi_prod_s AS P ON P.PDS_CODI=PPS.PPR_EPD_CODI INNER JOIN sgi_proy_s AS PR ' +
+                                    ' ON PR.PRS_CODI = PPS.PPR_PROY_CODI WHERE PPS.PPR_SEMI_CODI = ' + idSemillero
 
                                 }
 
@@ -486,7 +487,7 @@ angular.module('listaTareasApp')
                                   if (result.data[0]==null)
                                   {
                                     $window.alert("Faltan completar los datos del investigador");
-                                          $location.path('/inicio');
+                                          $location.path('/menu');
                                       return;
                                   }
 
@@ -498,9 +499,11 @@ angular.module('listaTareasApp')
                                 $scope.escuelaInvestigador = result.data[0].Escuela;
                                   datos = {
                                           Accion:'S',
-                                          SQL:'SELECT  G.gru_nomb AS Nombre,GI.IGR_FECH_INIC AS FechaInicio,GI.IGR_FECH_TERM AS Fechafin,GI.IGR_CODI ' +
-                                          ' FROM sgi_grup AS G INNER JOIN sgi_inve_grup As GI ON GI.IGR_GRUP_CODI=G.gru_codi ' +
-                                         ' WHERE GI.IGR_INVE_IDEN =' + id
+                                          SQL:'SELECT distinct G.gru_nomb As Nombre,G.gru_fech_ini AS FechaInicio,G.gru_fech_term As FechaFin ' + 
+                                          ' FROM sgi_grup AS G INNER JOIN  sgi_grup_semi AS GS ON GS.sgr_grup_codi = G.gru_codi INNER JOIN ' +
+                                          ' sgi_inve_grup AS SIG ON (SIG.IGR_GRUP_CODI=G.gru_codi)' +
+                                          ' INNER JOIN sgi_inve_semi  AS INVESEMI ON INVESEMI.INS_INVE_IDEN='+ id + ' AND GS.sgr_semi_codi=INVESEMI.INS_SEMI_CODI' +
+                                          ' WHERE SIG.IGR_INVE_IDEN=' + id
                                      }
 
                                 investigador = TareasResource.SQL(datos);
@@ -786,7 +789,7 @@ angular.module('listaTareasApp')
   if (user==null || user==undefined)
     {
 
-      $location.path('/inicio');
+      $location.path('/menu');
       return;
     }
     else
@@ -912,6 +915,8 @@ angular.module('listaTareasApp')
 
                  angular.forEach($scope.listProyectosProductos, function(value, key) {
 
+                  if (value!=null)
+                  {
                   datos = {
                     Accion:"I",
                     SQL:"INSERT INTO sgi_proy_prod_semi (PPR_SEMI_CODI,PPR_NOMB_PROY,PPR_NOMB_PROD,PPR_EPD_CODI,PPR_EPY_CODI,PPR_FECH_INI) VALUES " +
@@ -920,6 +925,7 @@ angular.module('listaTareasApp')
                   }
 
                   insert.splice(0,0,datos);                  
+                }
 
                });
 
@@ -1073,8 +1079,8 @@ angular.module('listaTareasApp')
 
                angular.forEach($scope.listProyectosProductos, function(value, key) {
 
-
-
+                if (value!=null)
+                {
                   datos = {
                     Accion:"I",
                     SQL:"INSERT INTO sgi_proy_prod_semi (PPR_SEMI_CODI,PPR_NOMB_PROY,PPR_NOMB_PROD,PPR_EPD_CODI,PPR_EPY_CODI,PPR_FECH_INI) VALUES " +
@@ -1082,8 +1088,9 @@ angular.module('listaTareasApp')
                          value.PPR_EPY_CODI + ",'" +  moment(value.PPR_FECH_INI).format("YYYY-MM-DD") + "')"
                   }  
 
-                   insert.splice(insert.length-1,0,datos);      
 
+                   insert.splice(insert.length-1,0,datos);      
+                 }
                   });       
               
 

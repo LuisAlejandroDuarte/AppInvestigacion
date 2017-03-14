@@ -1191,7 +1191,7 @@ $scope.OnClicEliminarSemilleroGrupo = function(semillero)
                                                                                              multiple.splice(0,0,
                                                                                                {
                                                                                                 SQL:"INSERT INTO  sgi_plnt_grup (pgr_grup_codi,pgr_nombre,pgr_fech_inic,pgr_fech_term,pgr_path) " +
-                                                                                                  " VALUES (" + idGrupo +",'" + value.Nombre +"','"+ value.FechaInicio + "','"+ value.FechaTermina + "','" + value.Path  + "')",
+                                                                                                  " VALUES (" + idGrupo +",'" + value.Nombre +"','"+ moment(value.FechaInicio).format("YYYY-MM-DD") + "','"+ moment(value.FechaTermina).format("YYYY-MM-DD") + "','" + value.Path  + "')",
                                                                                                 Accion:"I"
                                                                                                });           
 
@@ -1205,7 +1205,7 @@ $scope.OnClicEliminarSemilleroGrupo = function(semillero)
                                                                                                 multiple.splice(0,0,
                                                                                                {
                                                                                                 SQL:"INSERT INTO  sgi_plnt_grup (pgr_grup_codi,pgr_nombre,pgr_fech_inic,pgr_path) " +
-                                                                                                " VALUES (" + idGrupo +",'" + value.Nombre +"','"+ value.FechaInicio + "','" + value.Path  + "')",
+                                                                                                " VALUES (" + idGrupo +",'" + value.Nombre +"','" + moment(value.FechaInicio).format("YYYY-MM-DD") + "','" + value.Path  + "')",
                                                                                                 Accion:"I"
                                                                                                });       
                                                                                               
