@@ -26,7 +26,7 @@ angular.module('listaTareasApp')
                      var  fechaStr = year + "," + mounth + "," + day;
                      
 
-                      item.LIS_FECH_FINA = new Date(fechaStr);  
+                      item.LIS_FECH_FINA = moment(new Date(fechaStr));  
                         $('#myFechaEliminacion').modal('hide');        
 
                 }
@@ -44,7 +44,7 @@ angular.module('listaTareasApp')
                      var  fechaStr = year + "," + mounth + "," + day;
                      
 
-                      item.IS_FECH_FIN = new Date(fechaStr);  
+                      item.IS_FECH_FIN = moment(new Date(fechaStr));  
                         $('#myFechaEliminacion').modal('hide');      
 
                   
@@ -63,7 +63,7 @@ angular.module('listaTareasApp')
                      var  fechaStr = year + "," + mounth + "," + day;
                      
 
-                      item.PAS_FECH_FIN = new Date(fechaStr);  
+                      item.PAS_FECH_FIN = moment(new Date(fechaStr));  
                         $('#myFechaEliminacion').modal('hide');      
 
                   
@@ -210,7 +210,7 @@ angular.module('listaTareasApp')
 
     $scope.jqxPanelMain =
     {
-      height: '300',
+      height: '500',
           autoUpdate:true,
           theme:'bootstrap',
           width:'auto',
@@ -402,27 +402,28 @@ angular.module('listaTareasApp')
                             
                             datos = {
 
-                               Accion:'S',
-                               SQL:'SELECT  ESPROYS_CODI,ESPROYS_DESC AS Nombre FROM sgi_esproy_semi' 
+                               Accion:'S',                              
+                                SQL:'SELECT ESPRODS_CODI,ESPRODS_NOMB AS Nombre FROM sgi_esprod_semi' 
 
                             }      
 
                              lista = TareasResource.SQL(datos);
                              lista.then(function(result){ 
+                                $scope.lstEstadoProducto = result.data;
+                              
+                              // $scope.lstEstadoProducto = result.data;
 
-                              $scope.lstEstadoProyecto = result.data;
-
-                                 datos = {
+                               var  datos2 = {
 
                                   Accion:'S',
-                                  SQL:'SELECT  ESPRODS_CODI,ESPRODS_NOMB AS Nombre FROM sgi_esprod_semi' 
+                                   SQL:'SELECT  ESPROYS_CODI,ESPROYS_DESC AS Nombre FROM sgi_esproy_semi' 
 
                                 }      
 
-                             lista = TareasResource.SQL(datos);
-                             lista.then(function(result){ 
+                            var lista2 = TareasResource.SQL(datos2);
+                             lista2.then(function(result2){ 
 
-                                  $scope.lstEstadoProducto = result.data;
+                                 $scope.lstEstadoProyecto = result2.data;
 
 
                               datos = {
@@ -447,7 +448,7 @@ angular.module('listaTareasApp')
                                      result.data[key].PPR_FECH_INI = new Date(fechaStr);      
 
                                    });
-
+                                 if (result.data[0]!=null)
                                 $scope.listProyectosProductos=result.data;
 
                               // angular.forEach($scope.listProyectosProductos, function(value, key) {
@@ -809,7 +810,7 @@ angular.module('listaTareasApp')
         NombreProducto:'', 
         PPR_EPY_CODI :1,
         PPR_EPD_CODI :1,
-        PPR_FECH_INI :new Date(),
+        PPR_FECH_INI :moment(new Date()),
         PPR_CODI:-1,
         PPR_FECH_FIN :null
 
