@@ -548,43 +548,59 @@
 												<div class="col-lg-3 col-md-3 col-xs-12 col-ms-12">
 													<label>Proyecto</label>
 												</div>	
-												<div class="col-lg-2 col-md-2 col-xs-12 col-ms-12">
+												<div class="col-lg-1 col-md-1 col-xs-12 col-ms-12">
 													<label>Estado</label>
 												</div>	
 												<div class="col-lg-2 col-md-2 col-xs-12 col-ms-12">
 													<label>Producto</label>
 												</div>	
-												<div class="col-lg-2 col-md-2 col-xs-12 col-ms-12">
+												<div class="col-lg-1 col-md-1 col-xs-12 col-ms-12">
 													<label>Estado</label>
 												</div>	
 												<div class="col-lg-2 col-md-2 col-xs-12 col-ms-12">
 													<label>Fecha Inicio</label>
 												</div>	
+												<div class="col-lg-2 col-md-2 col-xs-12 col-ms-12">
+
+													 <div class="form-inline">
+                             
+                               							 <label>Fecha Termina</label>    
+                                 								<div class="checkbox"> 
+                               									 	<input type="checkbox" ng-model="item.checkFechaFin" ng-disabled="item.deshabilitarFecha" ng-change="onChangedFechaTermina(this)"/>                      
+                          									 </div>                                                                                                          
+                           							</div>                                                                         											
+												</div>	
 											</div>
 											<div class="row">
 											<div class="col-lg-3 col-md-3 col-xs-12 col-ms-12">
-												<input ng-model="item.NombreProyecto" class="form-control input-sm" />							
+												<select class="form-control input-sm"   ng-model="item.PPR_PROY_CODI"  ng-options="item2 as item2.Nombre for item2 in lstProyecto"></select>					
 											</div>					
 											
-											<div class="col-lg-2 col-md-2 col-xs-12 col-ms-12">
-												<select class="form-control input-sm"   ng-model="PPR_EPY_CODI"  ng-options="item as item.Nombre for item in lstEstadoProyecto"></select>					
+											<div class="col-lg-1 col-md-1 col-xs-12 col-ms-12">
+												<select class="form-control input-sm"   ng-model="item.PPR_EPY_CODI"  ng-options="item2 as item2.Nombre for item2 in lstEstadoProyecto"></select>				
 											</div>	
 
 											<div class="col-lg-2 col-md-2 col-xs-12 col-ms-12">
-												<input ng-model="item.NombreProducto" class="form-control input-sm" />							
+												<select class="form-control input-sm"   ng-model="item.PPR_PROD_CODI"  ng-options="item2 as item2.Nombre for item2 in lstProducto"></select>				
 											</div>		
 											
-											<div class="col-lg-2 col-md-2 col-xs-12 col-ms-12">
-												<select class="form-control input-sm"   ng-model="PPR_EPD_CODI"  ng-options="item as item.Nombre for item in lstEstadoProducto"></select>					
+											<div class="col-lg-1 col-md-1 col-xs-12 col-ms-12">
+												<select class="form-control input-sm"   ng-model="item.PPR_EPD_CODI"  ng-options="item2 as item2.Nombre for item2 in lstEstadoProducto"></select>					
 											</div>	
 											
 											<div class="col-lg-2 col-md-2 col-xs-12 col-ms-12">
 												 <input   class="form-control input-sm" 
-	      										 name="fechaCreacion" ng-model="PPR_FECH_INI" data-date-format="dd-MMMM-yyyy" date-type="iso" data-autoclose="1"  bs-datepicker  />  			
+	      										 name="fechaCreacion" ng-model="item.PPR_FECH_INI" data-date-format="dd-MMMM-yyyy" date-type="iso" data-autoclose="1"  bs-datepicker  />  			
 											</div>		
 
+											<div class="col-lg-2 col-md-2 col-xs-12 col-ms-12" >
+												 <input   class="form-control input-sm" ng-disabled="item.deshabilitarFecha"
+	      										 name="fechaCreacion" ng-model="item.PPR_FECH_FIN" data-date-format="dd-MMMM-yyyy" date-type="iso" data-autoclose="1"  bs-datepicker  />  			
+											</div>	
+
+
                   							  <div class="col-lg-1 col-md-1 col-xs-12 col-ms-4">
-                  							  		<a class="remove ml10 btn btn-default btn-xs" title="Eliminar" ng-click="onClicEliminarTipoEstrategia(this)"><span class="glyphicon glyphicon-trash"></span></a>
+                  							  		<a class="remove ml10 btn btn-default btn-xs" title="Eliminar" ng-click="onClicEliminarProyectoProducto(this)"><span class="glyphicon glyphicon-trash"></span></a>
                   							  </div>  
                   							 </div>                 							                     							     
 											</li>
@@ -605,7 +621,8 @@
 							  					</div>
 							  				<div class="panel-body">		
 												<div class="row">
-													<div class="col-lg-12 col-md-12 col-xs-12 col-ms-12">											 <div class="form-group">
+													<div class="col-lg-12 col-md-12 col-xs-12 col-ms-12">
+														<div class="form-group">
 								            <label>Documento</label>    
 								                <span class="fileinput-button glyphicon glyphicon-upload"  ng-class="{disabled:    disabled}" style="margin-left:20px"><input title="Cargar documento" type="file" name="files" onchange="angular.element(this).scope().uploadFileTexto(this) " accept="application/pdf, application/msword"> 
 								               </span>    

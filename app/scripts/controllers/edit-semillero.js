@@ -425,15 +425,38 @@ angular.module('listaTareasApp')
 
                                  $scope.lstEstadoProyecto = result2.data;
 
+                                      datos2 = {
 
-                              datos = {
-                                  Accion:'S',
-                                  SQL:'SELECT PPS.PPR_CODI,P.PDS_NOMB AS NombreProducto, PR.PRS_NOMB AS NombreProyecto,' + 
-                                    ' PPR_EPY_CODI,PPR_EPD_CODI,PPR_FECH_INI,PPR_FECH_FIN' +
-                                    ' FROM sgi_proy_prod_semi AS PPS INNER JOIN sgi_prod_s AS P ON P.PDS_CODI=PPS.PPR_EPD_CODI INNER JOIN sgi_proy_s AS PR ' +
-                                    ' ON PR.PRS_CODI = PPS.PPR_PROY_CODI WHERE PPS.PPR_SEMI_CODI = ' + idSemillero
+                                          Accion:'S',
+                                           SQL:'SELECT  PRS_CODI,PRS_NOMB AS Nombre FROM sgi_proy_s' 
 
-                                }
+                                        }      
+
+                                     lista2 = TareasResource.SQL(datos2);
+                                        lista2.then(function(result2){ 
+
+                                          $scope.lstProyecto = result2.data
+
+                                              datos2 = {
+
+                                                Accion:'S',
+                                                 SQL:'SELECT  PDS_CODI,PDS_NOMB AS Nombre FROM sgi_prod_s' 
+
+                                              }      
+
+                                           lista2 = TareasResource.SQL(datos2);
+                                              lista2.then(function(result2){  
+
+                                                  $scope.lstProducto = result2.data
+
+                                        datos = {
+                                            Accion:'S',
+                                            SQL:'SELECT PPS.PPR_CODI,P.PDS_NOMB AS NombreProducto, PR.PRS_NOMB AS NombreProyecto,P.PDS_CODI,PR.PRS_CODI,' + 
+                                              ' PPR_EPY_CODI,PPR_EPD_CODI,PPR_FECH_INI,PPR_FECH_FIN' +
+                                              ' FROM sgi_proy_prod_semi AS PPS INNER JOIN sgi_prod_s AS P ON P.PDS_CODI=PPS.PPR_EPD_CODI INNER JOIN sgi_proy_s AS PR ' +
+                                              ' ON PR.PRS_CODI = PPS.PPR_PROY_CODI WHERE PPS.PPR_SEMI_CODI = ' + idSemillero
+
+                                          }
 
                              lista = TareasResource.SQL(datos);
                              lista.then(function(result){ 
@@ -444,12 +467,54 @@ angular.module('listaTareasApp')
                                       var yyyy = moment(value.PPR_FECH_INI).format("YYYY");
                                       var mes = moment(value.PPR_FECH_INI).format("MM");
                                       var dia = moment(value.PPR_FECH_INI).format("DD"); 
+
+
+
                                        var  fechaStr = yyyy + "," + mes + "," + dia;
-                                     result.data[key].PPR_FECH_INI = new Date(fechaStr);      
+                                       result.data[key].PPR_FECH_INI = new Date(fechaStr);  
+
+                                       var fechaFin =null;
+                                       if (value.PPR_FECH_FIN!=null)
+                                          {
+                                            fechaFin =  moment(value.PPR_FECH_FIN).format("YYYY") + "," + moment(value.PPR_FECH_FIN).format("MM") + "," + moment(value.PPR_FECH_FIN).format("DD")
+                                          }
+
+                                      var datos = {
+
+                                          NombreProyecto:result.data[key].NombreProyecto,
+                                          NombreProducto:result.data[key].NombreProducto,
+                                          PPR_EPY_CODI : Enumerable.From($scope.lstEstadoProyecto)    
+                                                               .Where(function (x) { return x.ESPROYS_CODI == result.data[key].PPR_EPY_CODI })          
+                                                               .ToArray()[0],
+                                          PPR_EPD_CODI : Enumerable.From($scope.lstEstadoProducto)                            
+                                                                 .Where(function (x) { return x.ESPRODS_CODI == result.data[key].PPR_EPD_CODI})   
+                                                               .ToArray()[0],
+                                                                                            
+                                          PPR_PROY_CODI:Enumerable.From($scope.lstProyecto)    
+                                                               .Where(function (x) { return x.PRS_CODI == result.data[key].PRS_CODI })                          
+                                                               .ToArray()[0],
+
+                                          PPR_PROD_CODI:Enumerable.From($scope.lstProducto)                            
+                                                               .Where(function (x) { return x.PDS_CODI == result.data[key].PDS_CODI })      
+                                                               .ToArray()[0],
+
+
+                                          PPR_FECH_INI : new Date(fechaStr),
+                                          PPR_CODI:result.data[key].PPR_CODI,
+                                          PPR_FECH_FIN :(fechaFin==null)? null:new Date(fechaFin),
+                                          checkFechaFin:(fechaFin==null)? false:true,
+                                          deshabilitarFecha:(fechaFin!=null)? true:false
+
+
+                                        }
+
+                                        if ($scope.listProyectosProductos==undefined) $scope.listProyectosProductos=[];
+
+                                        $scope.listProyectosProductos.splice(0,0,datos);
 
                                    });
-                                 if (result.data[0]!=null)
-                                $scope.listProyectosProductos=result.data;
+                                
+                                
 
                               // angular.forEach($scope.listProyectosProductos, function(value, key) {
 
@@ -516,29 +581,41 @@ angular.module('listaTareasApp')
                                      $scope.mostrarDatosSemillero(idSemillero);                          
 
                                   });                               
-
                                 })  
-
                              }); 
-
-                                  });
-
-
-                             });
-
-
-              
-                                    
-                         });
-                   });         
+                            });
+                          });
+                        });
+                     });
+                   });
+                });         
               });
-
              });
            });
          });
        }); 
       });
     }
+
+
+    $scope.onChangedFechaTermina = function(item)
+    {
+      if (item.item.checkFechaFin==true)
+      {
+        item.item.PPR_FECH_FIN = new Date();
+      }
+      else
+
+      {
+        item.item.PPR_FECH_FIN=null;
+      }
+    }
+
+    $scope.onClicEliminarProyectoProducto = function(item)
+    {
+      $scope.listProyectosProductos.splice(item.$index,1);
+    }
+
 
     $scope.onClicEliminarIntegranteSemillero = function(item){
 
@@ -808,11 +885,23 @@ angular.module('listaTareasApp')
 
         NombreProyecto:'',
         NombreProducto:'', 
-        PPR_EPY_CODI :1,
-        PPR_EPD_CODI :1,
-        PPR_FECH_INI :moment(new Date()),
+        PPR_EPY_CODI : Enumerable.From($scope.lstEstadoProyecto)                            
+                             .ToArray()[0],
+        PPR_EPD_CODI : Enumerable.From($scope.lstEstadoProducto)                            
+                             .ToArray()[0],
+                
+        
+        PPR_PROY_CODI:Enumerable.From($scope.lstProyecto)                            
+                             .ToArray()[0],
+
+        PPR_PROD_CODI:Enumerable.From($scope.lstProducto)                            
+                             .ToArray()[0],
+
+
+        PPR_FECH_INI :new Date(),
         PPR_CODI:-1,
-        PPR_FECH_FIN :null
+        PPR_FECH_FIN :null,
+        checkFechaFin :false
 
 
       }
@@ -918,12 +1007,24 @@ angular.module('listaTareasApp')
 
                   if (value!=null)
                   {
-                  datos = {
-                    Accion:"I",
-                    SQL:"INSERT INTO sgi_proy_prod_semi (PPR_SEMI_CODI,PPR_NOMB_PROY,PPR_NOMB_PROD,PPR_EPD_CODI,PPR_EPY_CODI,PPR_FECH_INI) VALUES " +
-                        " (" + idSemillero + "," + value.NombreProyecto + ",'" + value.NombreProducto + "'," + value.PPR_EPD_CODI + "," +
-                         value.PPR_EPY_CODI + ",'" +  moment(value.PPR_FECH_INI).format("YYYY-MM-DD") + "')"
-                  }
+                  if (value.PPR_FECH_FIN==null)
+                   {   
+                      datos = { 
+                        Accion:"I",
+                       SQL:"INSERT INTO sgi_proy_prod_semi (PPR_SEMI_CODI,PPR_PROY_CODI,PPR_PROD_CODI,PPR_EPD_CODI,PPR_EPY_CODI,PPR_FECH_INI) VALUES " +
+                            " (" + idSemillero + "," + value.PPR_PROY_CODI.PRS_CODI + "," + value.PPR_PROD_CODI.PDS_CODI + "," + value.PPR_EPD_CODI.ESPRODS_CODI + "," +
+                             value.PPR_EPY_CODI.ESPROYS_CODI + ",'" +  moment(value.PPR_FECH_INI).format("YYYY-MM-DD") + "')"
+                      } 
+                   }
+                   else
+                   {
+                      datos = { 
+                        Accion:"I",
+                       SQL:"INSERT INTO sgi_proy_prod_semi (PPR_SEMI_CODI,PPR_PROY_CODI,PPR_PROD_CODI,PPR_EPD_CODI,PPR_EPY_CODI,PPR_FECH_INI,PPR_FECH_FIN) VALUES " +
+                            " (" + idSemillero + "," + value.PPR_PROY_CODI.PRS_CODI + "," + value.PPR_PROD_CODI.PDS_CODI + "," + value.PPR_EPD_CODI.ESPRODS_CODI + "," +
+                             value.PPR_EPY_CODI.ESPROYS_CODI + ",'" +  moment(value.PPR_FECH_INI).format("YYYY-MM-DD") + "','" +  moment(value.PPR_FECH_FIN).format("YYYY-MM-DD") + "')"
+                      } 
+                   } 
 
                   insert.splice(0,0,datos);                  
                 }
@@ -979,6 +1080,9 @@ angular.module('listaTareasApp')
                   {
 
                     var fecha =  (value.LIS_FECH_FINA!=null)?   "'" + moment(value.LIS_FECH_FINA).format("YYYY-MM-DD") + "'" : null;
+
+                    
+
                      datos = {
                       Accion:"U",
                       SQL:"UPDATE sgi_line_inve_semi set " +
@@ -1082,17 +1186,30 @@ angular.module('listaTareasApp')
 
                 if (value!=null)
                 {
-                  datos = {
-                    Accion:"I",
-                    SQL:"INSERT INTO sgi_proy_prod_semi (PPR_SEMI_CODI,PPR_NOMB_PROY,PPR_NOMB_PROD,PPR_EPD_CODI,PPR_EPY_CODI,PPR_FECH_INI) VALUES " +
-                        " (" + idSemillero + ",'" + value.NombreProyecto + "','" + value.NombreProducto + "'," + value.PPR_EPD_CODI + "," +
-                         value.PPR_EPY_CODI + ",'" +  moment(value.PPR_FECH_INI).format("YYYY-MM-DD") + "')"
-                  }  
+
+                  if (value.PPR_FECH_FIN==null)
+                   {   
+                      datos = { 
+                        Accion:"I",
+                       SQL:"INSERT INTO sgi_proy_prod_semi (PPR_SEMI_CODI,PPR_PROY_CODI,PPR_PROD_CODI,PPR_EPD_CODI,PPR_EPY_CODI,PPR_FECH_INI) VALUES " +
+                            " (" + idSemillero + "," + value.PPR_PROY_CODI.PRS_CODI + "," + value.PPR_PROD_CODI.PDS_CODI + "," + value.PPR_EPD_CODI.ESPRODS_CODI + "," +
+                             value.PPR_EPY_CODI.ESPROYS_CODI + ",'" +  moment(value.PPR_FECH_INI).format("YYYY-MM-DD") + "')"
+                      } 
+                   }
+                   else
+                   {
+                      datos = { 
+                        Accion:"I",
+                       SQL:"INSERT INTO sgi_proy_prod_semi (PPR_SEMI_CODI,PPR_PROY_CODI,PPR_PROD_CODI,PPR_EPD_CODI,PPR_EPY_CODI,PPR_FECH_INI,PPR_FECH_FIN) VALUES " +
+                            " (" + idSemillero + "," + value.PPR_PROY_CODI.PRS_CODI + "," + value.PPR_PROD_CODI.PDS_CODI + "," + value.PPR_EPD_CODI.ESPRODS_CODI + "," +
+                             value.PPR_EPY_CODI.ESPROYS_CODI + ",'" +  moment(value.PPR_FECH_INI).format("YYYY-MM-DD") + "','" +  moment(value.PPR_FECH_FIN).format("YYYY-MM-DD") + "')"
+                      } 
+                   } 
 
 
                    insert.splice(insert.length-1,0,datos);      
                  }
-                  });       
+               });       
               
 
 
@@ -1107,6 +1224,15 @@ angular.module('listaTareasApp')
                     });                     
            }
     }
+
+
+    $scope.uploadFileTexto = function(item)
+    {
+
+
+
+    }
+
       
 });
 
