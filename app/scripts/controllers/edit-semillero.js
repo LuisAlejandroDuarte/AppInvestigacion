@@ -428,27 +428,16 @@ angular.module('listaTareasApp')
                                       datos2 = {
 
                                           Accion:'S',
-                                           SQL:'SELECT  PRS_CODI,PRS_NOMB AS Nombre FROM sgi_proy_s' 
+                                          SQL:'SELECT P.PRO_NOMB AS Nombre,P.PRO_CODI  FROM sgi_proy AS P INNER JOIN sgi_proy_inve AS PI ON P.PRO_CODI=PI.id_proy WHERE PI.id_inve=' + user.INV_CODI
 
                                         }      
+
 
                                      lista2 = TareasResource.SQL(datos2);
                                         lista2.then(function(result2){ 
 
-                                          $scope.lstProyecto = result2.data
-
-                                              datos2 = {
-
-                                                Accion:'S',
-                                                 SQL:'SELECT  PDS_CODI,PDS_NOMB AS Nombre FROM sgi_prod_s' 
-
-                                              }      
-
-                                           lista2 = TareasResource.SQL(datos2);
-                                              lista2.then(function(result2){  
-
-                                                  $scope.lstProducto = result2.data
-
+                                          $scope.lstProyecto = result2.data       
+                                         
                                         datos = {
                                             Accion:'S',
                                             SQL:'SELECT PPS.PPR_CODI,P.PDS_NOMB AS NombreProducto, PR.PRS_NOMB AS NombreProyecto,P.PDS_CODI,PR.PRS_CODI,' + 
@@ -462,6 +451,7 @@ angular.module('listaTareasApp')
                              lista.then(function(result){ 
 
                                 if (result.data[0]!=null) 
+
 
                                    angular.forEach(result.data, function(value, key) {
                                       var yyyy = moment(value.PPR_FECH_INI).format("YYYY");
@@ -588,8 +578,7 @@ angular.module('listaTareasApp')
                         });
                      });
                    });
-                });         
-              });
+                });                     
              });
            });
          });
@@ -602,13 +591,85 @@ angular.module('listaTareasApp')
     {
       if (item.item.checkFechaFin==true)
       {
+        item.item.deshabilitarFecha2 =false;
         item.item.PPR_FECH_FIN = new Date();
       }
       else
 
       {
         item.item.PPR_FECH_FIN=null;
+        item.item.deshabilitarFecha2 =true;
       }
+    }
+
+
+
+    $scope.onClickNewProyProd = function() {
+
+            if ($scope.lstProyecto[0]==null)
+                {
+                  $window.alert("El investigador no tiene proyectos");
+                  return;
+                }
+
+           var datos2 = {
+
+              Accion:'S',
+              SQL:'SELECT  P.id,P.Nombre FROM sgi_prod_proy AS PP INNER JOIN sgi_prod AS P ON P.id=PP.id_prod WHERE PP.id_proy=' + $scope.lstProyecto[0].PRO_CODI
+
+             }      
+              var  lista2 = TareasResource.SQL(datos2);
+              lista2.then(function(result2){  
+                    var datos = {
+
+                        NombreProyecto:'',
+                        NombreProducto:'', 
+                        PPR_EPY_CODI : Enumerable.From($scope.lstEstadoProyecto)                            
+                                             .ToArray()[0],
+                        PPR_EPD_CODI : Enumerable.From($scope.lstEstadoProducto)                            
+                                             .ToArray()[0],
+                        
+                        LST_PRODUCTOS:result2.data,        
+                        
+                        PPR_PROY_CODI:Enumerable.From($scope.lstProyecto)                            
+                                             .ToArray()[0],
+
+                        PPR_PROD_CODI:result2.data[0],
+
+
+                        PPR_FECH_INI :new Date(),
+                        PPR_CODI:-1,
+                        PPR_FECH_FIN :null,
+                        checkFechaFin :false
+
+
+                      }
+
+                  if ( $scope.listProyectosProductos==undefined)  $scope.listProyectosProductos =[];
+
+
+                  $scope.listProyectosProductos.splice(0,0,datos);
+
+         });
+
+        
+    }
+
+    $scope.onChangedProyecto = function(item) {
+       var datos2 = {
+
+          Accion:'S',
+           SQL:'SELECT  P.id,P.Nombre FROM sgi_prod_proy AS PP INNER JOIN sgi_prod AS P ON P.id=PP.id_prod WHERE PP.id_proy=' + item.PPR_PROY_CODI.PRO_CODI 
+
+        }      
+
+    var  lista2 = TareasResource.SQL(datos2);
+        lista2.then(function(result2){  
+
+            $scope.lstProducto = result2.data               
+            item.LST_PRODUCTOS =    $scope.lstProducto;               
+            item.PPR_PROD_CODI = $scope.lstProducto[0];
+          });
     }
 
     $scope.onClicEliminarProyectoProducto = function(item)
@@ -879,39 +940,7 @@ angular.module('listaTareasApp')
     }
 
 
-    $scope.onClickNewProyProd = function() {
 
-      var datos = {
-
-        NombreProyecto:'',
-        NombreProducto:'', 
-        PPR_EPY_CODI : Enumerable.From($scope.lstEstadoProyecto)                            
-                             .ToArray()[0],
-        PPR_EPD_CODI : Enumerable.From($scope.lstEstadoProducto)                            
-                             .ToArray()[0],
-                
-        
-        PPR_PROY_CODI:Enumerable.From($scope.lstProyecto)                            
-                             .ToArray()[0],
-
-        PPR_PROD_CODI:Enumerable.From($scope.lstProducto)                            
-                             .ToArray()[0],
-
-
-        PPR_FECH_INI :new Date(),
-        PPR_CODI:-1,
-        PPR_FECH_FIN :null,
-        checkFechaFin :false
-
-
-      }
-
-      if ( $scope.listProyectosProductos==undefined)  $scope.listProyectosProductos =[];
-
-
-      $scope.listProyectosProductos.splice(0,0,datos);
-
-    }
 
    $scope.onClickCancelar = function()
    {
@@ -1012,7 +1041,7 @@ angular.module('listaTareasApp')
                       datos = { 
                         Accion:"I",
                        SQL:"INSERT INTO sgi_proy_prod_semi (PPR_SEMI_CODI,PPR_PROY_CODI,PPR_PROD_CODI,PPR_EPD_CODI,PPR_EPY_CODI,PPR_FECH_INI) VALUES " +
-                            " (" + idSemillero + "," + value.PPR_PROY_CODI.PRS_CODI + "," + value.PPR_PROD_CODI.PDS_CODI + "," + value.PPR_EPD_CODI.ESPRODS_CODI + "," +
+                            " (" + idSemillero + "," + value.PPR_PROY_CODI.PRO_CODI + "," + value.PPR_PROD_CODI.PDS_CODI + "," + value.PPR_EPD_CODI.ESPRODS_CODI + "," +
                              value.PPR_EPY_CODI.ESPROYS_CODI + ",'" +  moment(value.PPR_FECH_INI).format("YYYY-MM-DD") + "')"
                       } 
                    }
@@ -1021,7 +1050,7 @@ angular.module('listaTareasApp')
                       datos = { 
                         Accion:"I",
                        SQL:"INSERT INTO sgi_proy_prod_semi (PPR_SEMI_CODI,PPR_PROY_CODI,PPR_PROD_CODI,PPR_EPD_CODI,PPR_EPY_CODI,PPR_FECH_INI,PPR_FECH_FIN) VALUES " +
-                            " (" + idSemillero + "," + value.PPR_PROY_CODI.PRS_CODI + "," + value.PPR_PROD_CODI.PDS_CODI + "," + value.PPR_EPD_CODI.ESPRODS_CODI + "," +
+                            " (" + idSemillero + "," + value.PPR_PROY_CODI.PRO_CODI + "," + value.PPR_PROD_CODI.id + "," + value.PPR_EPD_CODI.ESPRODS_CODI + "," +
                              value.PPR_EPY_CODI.ESPROYS_CODI + ",'" +  moment(value.PPR_FECH_INI).format("YYYY-MM-DD") + "','" +  moment(value.PPR_FECH_FIN).format("YYYY-MM-DD") + "')"
                       } 
                    } 
@@ -1192,7 +1221,7 @@ angular.module('listaTareasApp')
                       datos = { 
                         Accion:"I",
                        SQL:"INSERT INTO sgi_proy_prod_semi (PPR_SEMI_CODI,PPR_PROY_CODI,PPR_PROD_CODI,PPR_EPD_CODI,PPR_EPY_CODI,PPR_FECH_INI) VALUES " +
-                            " (" + idSemillero + "," + value.PPR_PROY_CODI.PRS_CODI + "," + value.PPR_PROD_CODI.PDS_CODI + "," + value.PPR_EPD_CODI.ESPRODS_CODI + "," +
+                            " (" + idSemillero + "," + value.PPR_PROY_CODI.PRO_CODI + "," + value.PPR_PROD_CODI.id + "," + value.PPR_EPD_CODI.ESPRODS_CODI + "," +
                              value.PPR_EPY_CODI.ESPROYS_CODI + ",'" +  moment(value.PPR_FECH_INI).format("YYYY-MM-DD") + "')"
                       } 
                    }
@@ -1201,7 +1230,7 @@ angular.module('listaTareasApp')
                       datos = { 
                         Accion:"I",
                        SQL:"INSERT INTO sgi_proy_prod_semi (PPR_SEMI_CODI,PPR_PROY_CODI,PPR_PROD_CODI,PPR_EPD_CODI,PPR_EPY_CODI,PPR_FECH_INI,PPR_FECH_FIN) VALUES " +
-                            " (" + idSemillero + "," + value.PPR_PROY_CODI.PRS_CODI + "," + value.PPR_PROD_CODI.PDS_CODI + "," + value.PPR_EPD_CODI.ESPRODS_CODI + "," +
+                            " (" + idSemillero + "," + value.PPR_PROY_CODI.PRO_CODI + "," + value.PPR_PROD_CODI.id + "," + value.PPR_EPD_CODI.ESPRODS_CODI + "," +
                              value.PPR_EPY_CODI.ESPROYS_CODI + ",'" +  moment(value.PPR_FECH_INI).format("YYYY-MM-DD") + "','" +  moment(value.PPR_FECH_FIN).format("YYYY-MM-DD") + "')"
                       } 
                    } 
@@ -1214,7 +1243,7 @@ angular.module('listaTareasApp')
 
 
                 insertSemilero = TareasResource.SQLMulti(insert);
-                    insertSemilero.then(function(){
+                    insertSemilero.then(function(resulta){
 
                       $('#myModal').hide();
                       $window.alert("Semillero Actualizado");

@@ -572,16 +572,16 @@
 												</div>	
 											</div>
 											<div class="row">
-											<div class="col-lg-3 col-md-3 col-xs-12 col-ms-12">
-												<select class="form-control input-sm"   ng-model="item.PPR_PROY_CODI"  ng-options="item2 as item2.Nombre for item2 in lstProyecto"></select>					
+											<div class="col-lg-3 col-md-3 col-xs-12 col-ms-12" ng-init='item.PPR_PROY_CODI=lstProyecto[0]'>
+												<select class="form-control input-sm"   ng-model="item.PPR_PROY_CODI"  ng-options="item2 as item2.Nombre for item2 in lstProyecto" ng-change="onChangedProyecto(item)"></select>					
 											</div>					
 											
 											<div class="col-lg-1 col-md-1 col-xs-12 col-ms-12">
 												<select class="form-control input-sm"   ng-model="item.PPR_EPY_CODI"  ng-options="item2 as item2.Nombre for item2 in lstEstadoProyecto"></select>				
 											</div>	
 
-											<div class="col-lg-2 col-md-2 col-xs-12 col-ms-12">
-												<select class="form-control input-sm"   ng-model="item.PPR_PROD_CODI"  ng-options="item2 as item2.Nombre for item2 in lstProducto"></select>				
+											<div class="col-lg-2 col-md-2 col-xs-12 col-ms-12" >
+												<select class="form-control input-sm"   ng-model="item.PPR_PROD_CODI"  ng-options="item2 as item2.Nombre for item2 in item.LST_PRODUCTOS"></select>				
 											</div>		
 											
 											<div class="col-lg-1 col-md-1 col-xs-12 col-ms-12">
@@ -593,8 +593,8 @@
 	      										 name="fechaCreacion" ng-model="item.PPR_FECH_INI" data-date-format="dd-MMMM-yyyy" date-type="iso" data-autoclose="1"  bs-datepicker  />  			
 											</div>		
 
-											<div class="col-lg-2 col-md-2 col-xs-12 col-ms-12" >
-												 <input   class="form-control input-sm" ng-disabled="item.deshabilitarFecha"
+											<div class="col-lg-2 col-md-2 col-xs-12 col-ms-12" ng-init ="item.deshabilitarFecha2=1">
+												 <input   class="form-control input-sm" ng-disabled="item.deshabilitarFecha2"
 	      										 name="fechaCreacion" ng-model="item.PPR_FECH_FIN" data-date-format="dd-MMMM-yyyy" date-type="iso" data-autoclose="1"  bs-datepicker  />  			
 											</div>	
 
