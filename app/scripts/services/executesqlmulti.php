@@ -2,7 +2,7 @@
 
 	 require_once("config.php");  
 	  $d= json_decode(file_get_contents("php://input"),TRUE); 
-     
+      $resultadoselect ='';
    	   $conexion= mysqli_connect(DB_SERVER,DB_USER, DB_PASS,DB_NAME)
        or die("Lo sentimos pero no se pudo conectar a nuestra db");
 
@@ -20,9 +20,9 @@
               			while ($tuple= mysqli_fetch_assoc($resultado)) {                        
                         		$resultArray[] = $tuple;         
                      	}  
-
-            		 echo json_encode($resultArray);     
-
+                     $resultadoselect =$resultadoselect . ';' . json_encode($resultArray);
+            		    
+            		 $message[0]['estado']='ok';
 	 			break;
 	 			case "I" :
 	 			
@@ -58,12 +58,29 @@
 	 		}	 		
 
 	 }
-	 if ($message[0]['estado'] =="fallo")
-	 	{
-	 		echo "Falló";
-	 	}
-	 	else
-	 		echo "ok";
+
+	if ($d[0]['Accion']!='S')
+	{	
+	  if ($message[0]['estado'] =="fallo")
+		 	{
+		 		echo "Falló";
+		 	}
+		 	else
+		 		echo "ok";
+	}
+	else
+
+		echo $resultadoselect;  
+
+	 // if ($d[0]['Accion']!='S'
+	 // {
+		//  if ($message[0]['estado'] =="fallo")
+		//  	{
+		//  		echo "Falló";
+		//  	}
+		//  	else
+		//  		echo "ok";
+	 // }
 
 	// foreach($d as $posicion=>$jugador)
 	// {

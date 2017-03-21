@@ -139,6 +139,8 @@ angular.module('listaTareasApp')
 
   .controller('editSemillero', function($scope,$location,datosSemillero,TareasResource,$route,$window) {
 
+    var formData = [];
+
    $('#myModal').hide();
       moment.locale('es');
     $scope.optionsgrupos = {                                
@@ -148,11 +150,11 @@ angular.module('listaTareasApp')
           pagination: true,                
           pageList: [10, 25, 50, 100, 200],                
           minimumCountColumns: 2,         
-          idField:'IGR_CODI',                                       
+          idField:'gru_codi',                                       
       columns: [
 
       {
-          field: 'Nombre',
+          field: 'gru_nomb',
           title: 'GRUPO',
           align: 'left',
           valign: 'middle',
@@ -180,6 +182,28 @@ angular.module('listaTareasApp')
                 return moment(value).format("DD MMMM YYYY");
 
            }
+        }
+
+      ]
+    }
+
+
+    $scope.optionsdocu = {                                
+          cache: false,
+          height: 200,
+          striped: true,
+          pagination: true,                
+          pageList: [10, 25, 50, 100, 200],                
+          minimumCountColumns: 2,         
+          idField:'id',                                       
+      columns: [
+
+        {
+            field: 'nombre',
+            title: 'Nombre',
+            align: 'left',
+            valign: 'middle',
+            sortable: true
         }
 
       ]
@@ -440,10 +464,8 @@ angular.module('listaTareasApp')
                                          
                                         datos = {
                                             Accion:'S',
-                                            SQL:'SELECT PPS.PPR_CODI,P.PDS_NOMB AS NombreProducto, PR.PRS_NOMB AS NombreProyecto,P.PDS_CODI,PR.PRS_CODI,' + 
-                                              ' PPR_EPY_CODI,PPR_EPD_CODI,PPR_FECH_INI,PPR_FECH_FIN' +
-                                              ' FROM sgi_proy_prod_semi AS PPS INNER JOIN sgi_prod_s AS P ON P.PDS_CODI=PPS.PPR_EPD_CODI INNER JOIN sgi_proy_s AS PR ' +
-                                              ' ON PR.PRS_CODI = PPS.PPR_PROY_CODI WHERE PPS.PPR_SEMI_CODI = ' + idSemillero
+                                            SQL:'SELECT PPR_CODI,PPR_SEMI_CODI,PPR_PROY_CODI,PPR_PROD_CODI,PPR_EPY_CODI,PPR_EPD_CODI,PPR_FECH_INI,PPR_FECH_FIN' +
+                                              ' FROM sgi_proy_prod_semi   WHERE PPR_SEMI_CODI = ' + idSemillero
 
                                           }
 
@@ -451,8 +473,7 @@ angular.module('listaTareasApp')
                              lista.then(function(result){ 
 
                                 if (result.data[0]!=null) 
-
-
+                                   
                                    angular.forEach(result.data, function(value, key) {
                                       var yyyy = moment(value.PPR_FECH_INI).format("YYYY");
                                       var mes = moment(value.PPR_FECH_INI).format("MM");
@@ -471,8 +492,8 @@ angular.module('listaTareasApp')
 
                                       var datos = {
 
-                                          NombreProyecto:result.data[key].NombreProyecto,
-                                          NombreProducto:result.data[key].NombreProducto,
+                                        //  NombreProyecto:result.data[key].NombreProyecto,
+                                         // NombreProducto:result.data[key].NombreProducto,
                                           PPR_EPY_CODI : Enumerable.From($scope.lstEstadoProyecto)    
                                                                .Where(function (x) { return x.ESPROYS_CODI == result.data[key].PPR_EPY_CODI })          
                                                                .ToArray()[0],
@@ -480,13 +501,13 @@ angular.module('listaTareasApp')
                                                                  .Where(function (x) { return x.ESPRODS_CODI == result.data[key].PPR_EPD_CODI})   
                                                                .ToArray()[0],
                                                                                             
-                                          PPR_PROY_CODI:Enumerable.From($scope.lstProyecto)    
-                                                               .Where(function (x) { return x.PRS_CODI == result.data[key].PRS_CODI })                          
+                                          PPR_PROY_CODI:Enumerable.From($scope.lstProyecto)                            
+                                                                 .Where(function (x) { return x.PRO_CODI == result.data[key].PPR_PROY_CODI})   
                                                                .ToArray()[0],
 
-                                          PPR_PROD_CODI:Enumerable.From($scope.lstProducto)                            
-                                                               .Where(function (x) { return x.PDS_CODI == result.data[key].PDS_CODI })      
-                                                               .ToArray()[0],
+                                          LST_PRODUCTOS:null,                            
+
+                                          PPR_PROD_CODI:result.data[key].PPR_PROD_CODI,
 
 
                                           PPR_FECH_INI : new Date(fechaStr),
@@ -503,6 +524,56 @@ angular.module('listaTareasApp')
                                         $scope.listProyectosProductos.splice(0,0,datos);
 
                                    });
+                                  
+                                  var select=[];
+                                  angular.forEach($scope.listProyectosProductos, function(value, key) {
+
+                                        var datos2 = {
+
+                                          Accion:'S',
+                                          SQL:'SELECT PP.id_proy,  P.id,P.Nombre FROM sgi_prod_proy AS PP INNER JOIN sgi_prod AS P ON P.id=PP.id_prod WHERE PP.id_proy=' + value.PPR_PROY_CODI.PRO_CODI
+
+                                         }      
+                                         select.splice(0,0,datos2);
+
+                                         
+
+                                                                     
+                                     });
+
+
+
+                                     var  lista2 =  TareasResource.SQLMulti(select);
+                                          lista2.then(function(result2){  
+
+                                            angular.forEach(result2.data.split("ok")[0].split(";"), function(value2, key2) {
+
+                                              if (value2!="")
+                                              {
+                                                var dd = value2;
+
+                                             
+
+                                              var item = Enumerable.From($scope.listProyectosProductos)                            
+                                                                 .Where(function (x) { return x.PPR_PROY_CODI.PRO_CODI ==JSON.parse(value2)[0].id_proy})   
+                                                               .ToArray()[0];
+
+                                              item.LST_PRODUCTOS =JSON.parse(value2);    
+
+                                              item.PPR_PROD_CODI =Enumerable.From( item.LST_PRODUCTOS)                            
+                                                                 .Where(function (x) { return x.id ==item.PPR_PROD_CODI})   
+                                                               .ToArray()[0];
+
+
+                                               //  value.LST_PRODUCTOS = JSON.parse(result2.data.split("ok")[0]);
+
+
+                                              }
+                                            });
+                                            
+                                           
+
+                                      });        
                                 
                                 
 
@@ -555,11 +626,7 @@ angular.module('listaTareasApp')
                                 $scope.escuelaInvestigador = result.data[0].Escuela;
                                   datos = {
                                           Accion:'S',
-                                          SQL:'SELECT distinct G.gru_nomb As Nombre,G.gru_fech_ini AS FechaInicio,G.gru_fech_term As FechaFin ' + 
-                                          ' FROM sgi_grup AS G INNER JOIN  sgi_grup_semi AS GS ON GS.sgr_grup_codi = G.gru_codi INNER JOIN ' +
-                                          ' sgi_inve_grup AS SIG ON (SIG.IGR_GRUP_CODI=G.gru_codi)' +
-                                          ' INNER JOIN sgi_inve_semi  AS INVESEMI ON INVESEMI.INS_INVE_IDEN='+ id + ' AND GS.sgr_semi_codi=INVESEMI.INS_SEMI_CODI' +
-                                          ' WHERE SIG.IGR_INVE_IDEN=' + id
+                                          SQL:'SELECT G.gru_codi,G.gru_nomb,IG.IGR_FECH_INIC As FechaInicio FROM sgi_grup AS G INNER JOIN sgi_inve_grup AS IG ON IG.IGR_GRUP_CODI = G.gru_codi WHERE IG.  IGR_INVE_IDEN =' + id
                                      }
 
                                 investigador = TareasResource.SQL(datos);
@@ -567,7 +634,11 @@ angular.module('listaTareasApp')
 
                                   if (result.data[0]!=null)
 
-                                      $('#tablegrupos').bootstrapTable('load',result.data);                                      
+                                      $('#tablegrupos').bootstrapTable('load',result.data);          
+
+                                      $scope.lstDocu = [];
+
+                                      $('#tabledocu').bootstrapTable('load',$scope.lstDocu);                                    
                                      $scope.mostrarDatosSemillero(idSemillero);                          
 
                                   });                               
@@ -1254,10 +1325,17 @@ angular.module('listaTareasApp')
            }
     }
 
-
+     var formData;
     $scope.uploadFileTexto = function(item)
     {
 
+      //$scope.lstDocu.
+      formData.append("file",item.files[0]._file);       
+      var data = item.files[0];
+
+    }
+
+    $scope.onClicKAgregarDocumento = function() {
 
 
     }
