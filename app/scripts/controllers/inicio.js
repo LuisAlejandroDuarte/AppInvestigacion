@@ -120,7 +120,7 @@ angular.module('listaTareasApp')
             $scope.$parent.mnuAdmin = false;
             $scope.$parent.mnuConvocatoria = false;
 
-            var executesql = TareasResource.SQL({Accion:'S',SQL:'SELECT INV_CODI FROM sgi_inve WHERE INV_CODI_USUA=' + usr[0].Id});
+            var executesql = TareasResource.SQL({Accion:'S',SQL:'SELECT INV_CODI,INV_NOMB,INV_APEL FROM sgi_inve WHERE INV_CODI_USUA=' + usr[0].Id});
                 executesql.then(function(result){
                   if (result.data[0]==null) 
                   {
@@ -141,7 +141,7 @@ angular.module('listaTareasApp')
 
          if  ($window.sessionStorage.getItem('tipoUsuario')==2 && usr[0].Id_tipo ==1)
          {
-           var executesql = TareasResource.SQL({Accion:'S',SQL:'SELECT INV_CODI FROM sgi_inve WHERE INV_CODI_USUA=' + usr[0].Id});
+           var executesql = TareasResource.SQL({Accion:'S',SQL:'SELECT INV_CODI,INV_NOMB,INV_APEL FROM sgi_inve WHERE INV_CODI_USUA=' + usr[0].Id});
                 executesql.then(function(result){
                    $window.sessionStorage.setItem('investigador', JSON.stringify(result.data[0]));
             $location.path('/grupo');
@@ -152,7 +152,7 @@ angular.module('listaTareasApp')
         
           if  ($window.sessionStorage.getItem('tipoUsuario')==4 && usr[0].Id_tipo ==1)
          {
-           var executesql = TareasResource.SQL({Accion:'S',SQL:'SELECT INV_CODI FROM sgi_inve WHERE INV_CODI_USUA=' + usr[0].Id});
+           var executesql = TareasResource.SQL({Accion:'S',SQL:'SELECT INV_CODI,INV_NOMB,INV_APEL FROM sgi_inve WHERE INV_CODI_USUA=' + usr[0].Id});
                 executesql.then(function(result){
                    $window.sessionStorage.setItem('investigador', JSON.stringify(result.data[0]));
             $location.path('/mnuPropuesta');
@@ -174,7 +174,7 @@ angular.module('listaTareasApp')
           $scope.$parent.mnuInvestiga =false;
             $scope.$parent.mnuAdmin = false;
             $scope.$parent.mnuConvocatoria = false;
-           var executesql = TareasResource.SQL({Accion:'S',SQL:'SELECT INV_CODI FROM sgi_inve WHERE INV_CODI_USUA=' + usr[0].Id});
+           var executesql = TareasResource.SQL({Accion:'S',SQL:'SELECT INV_CODI,INV_NOMB,INV_APEL FROM sgi_inve WHERE INV_CODI_USUA=' + usr[0].Id});
                 executesql.then(function(result){
                    $window.sessionStorage.setItem('investigador', JSON.stringify(result.data[0]));
             $location.path('/semillero');
