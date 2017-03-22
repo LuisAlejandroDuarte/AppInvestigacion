@@ -10,7 +10,7 @@ angular.module('listaTareasApp')
 
             $scope.eliminarfecha = new Date();
             $scope.afirmaEliminar = function() {
-              
+              moment.locale('es');
                var update = $('#myFechaEliminacion').data('datos');
 
                if (update.Tipo=="LineasInvestigacion")
@@ -26,7 +26,7 @@ angular.module('listaTareasApp')
                      var  fechaStr = year + "," + mounth + "," + day;
                      
 
-                      item.LIS_FECH_FINA = moment(new Date(fechaStr));  
+                      item.LIS_FECH_FINA = new Date(fechaStr);  
                         $('#myFechaEliminacion').modal('hide');        
 
                 }
@@ -44,7 +44,7 @@ angular.module('listaTareasApp')
                      var  fechaStr = year + "," + mounth + "," + day;
                      
 
-                      item.IS_FECH_FIN = moment(new Date(fechaStr));  
+                      item.IS_FECH_FIN = new Date(fechaStr);  
                         $('#myFechaEliminacion').modal('hide');      
 
                   
@@ -63,7 +63,7 @@ angular.module('listaTareasApp')
                      var  fechaStr = year + "," + mounth + "," + day;
                      
 
-                      item.PAS_FECH_FIN = moment(new Date(fechaStr));  
+                      item.PAS_FECH_FIN = new Date(fechaStr);  
                         $('#myFechaEliminacion').modal('hide');      
 
                   
@@ -95,7 +95,7 @@ angular.module('listaTareasApp')
                             '<input   class="form-control input-sm" ' +
                                'name="fecha" ng-model="eliminarfecha" ' +
                                'data-date-format="dd-MMMM-yyyy" ' +
-                               'date-type="iso" data-autoclose="1"  ' +
+                               'data-autoclose="1"  ' +
                                'bs-datepicker required />' +     
                      '</div>' +
                   '</div>' +
@@ -331,6 +331,11 @@ angular.module('listaTareasApp')
 
                       result.data[key].LIS_FECH_INI  = new Date(fechaStr);
 
+                      result.data[key].LIS_FECH_FINA  =(result.data[key].LIS_FECH_FINA==null)? null: 
+                            new Date(moment(result.data[key].LIS_FECH_FINA).format("YYYY") + "," + 
+                              moment(result.data[key].LIS_FECH_FINA).format("M") + "," + 
+                              moment(result.data[key].LIS_FECH_FINA).format("D"));
+
                      });
 
                     $scope.lstLineasInvestigacionFecha = result.data;
@@ -362,8 +367,15 @@ angular.module('listaTareasApp')
                          var year = moment(result.data[key].IS_FECH_INI).format("YYYY");
 
                           var  fechaStr = year + "," + mounth + "," + day;
+                           result.data[key].IS_FECH_INI  = new Date(fechaStr);
+                          // result.data[key].IS_FECH_FIN  =(result.data[key].IS_FECH_FIN==null)? null: moment(result.data[key].IS_FECH_FIN);
 
-                       result.data[key].IS_FECH_INI  = new Date(fechaStr);
+                            result.data[key].IS_FECH_FIN  =(result.data[key].IS_FECH_FIN==null)? null: 
+                            new Date(moment(result.data[key].IS_FECH_FIN).format("YYYY") + "," + 
+                              moment(result.data[key].IS_FECH_FIN).format("M") + "," + 
+                              moment(result.data[key].IS_FECH_FIN).format("D"));
+
+                      
 
                      });
 
@@ -396,8 +408,14 @@ angular.module('listaTareasApp')
                                var year = moment(result.data[key].PAS_FECH_INI).format("YYYY");
 
                                 var  fechaStr = year + "," + mounth + "," + day;
+                                 result.data[key].PAS_FECH_INI  = new Date(fechaStr);
+                              //result.data[key].PAS_FECH_FIN  =(result.data[key].PAS_FECH_FIN==null)? null: moment(result.data[key].PAS_FECH_FIN);
+                              result.data[key].PAS_FECH_FIN  =(result.data[key].PAS_FECH_FIN==null)? null: 
+                            new Date(moment(result.data[key].PAS_FECH_FIN).format("YYYY") + "," + 
+                              moment(result.data[key].PAS_FECH_FIN).format("M") + "," + 
+                              moment(result.data[key].PAS_FECH_FIN).format("D"));
 
-                             result.data[key].PAS_FECH_INI  = new Date(fechaStr);
+                            
 
                            });
 
@@ -558,11 +576,11 @@ angular.module('listaTareasApp')
                                                                  .Where(function (x) { return x.PPR_PROY_CODI.PRO_CODI ==JSON.parse(value2)[0].id_proy})   
                                                                .ToArray()[0];
 
-                                              item.LST_PRODUCTOS =JSON.parse(value2);    
+//                                              item.LST_PRODUCTOS =JSON.parse(value2);    
 
-                                              item.PPR_PROD_CODI =Enumerable.From( item.LST_PRODUCTOS)                            
-                                                                 .Where(function (x) { return x.id ==item.PPR_PROD_CODI})   
-                                                               .ToArray()[0];
+                                              // item.PPR_PROD_CODI =Enumerable.From( item.LST_PRODUCTOS)                            
+                                              //                    .Where(function (x) { return x.id ==item.PPR_PROD_CODI})   
+                                              //                  .ToArray()[0];
 
 
                                                //  value.LST_PRODUCTOS = JSON.parse(result2.data.split("ok")[0]);

@@ -4,12 +4,12 @@
 
 	"default": {
 
-		"host": "ftp.giaunad.com",
+		"host": "186.64.113.150",
 		"username": "giaunadc",  // or null for anonymous login
-		"password": "jamecru2016",
+		"password": "cruz1975med",
 		"path": "/public_html/AppInvestigacion",
 
-		"upload_on_save": false, // set *false* if you do not want to upload on save!
+		"upload_on_save": true, // set *false* if you do not want to upload on save!
 
 		"port": 21
 		 //"tls": false
