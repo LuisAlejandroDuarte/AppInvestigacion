@@ -140,6 +140,7 @@ angular.module('listaTareasApp')
   .controller('editSemillero', function($scope,$location,datosSemillero,TareasResource,$route,$window) {
 
     var formData = [];
+    $scope.documentos = [];
 
    $('#myModal').hide();
       moment.locale('es');
@@ -199,11 +200,22 @@ angular.module('listaTareasApp')
       columns: [
 
         {
-            field: 'nombre',
+            field: 'Nombre',
             title: 'Nombre',
             align: 'left',
             valign: 'middle',
             sortable: true
+        },{
+
+            field:'btnBorrar',
+            title:'',
+            align:'center',
+            valign:'middle',
+             formatter: function(value, row, index) {
+
+                return '<a class="remove ml10 btn btn-default btn-xs" title="Eliminar" ><span class="glyphicon glyphicon-trash"></span></a>';
+
+           }
         }
 
       ]
@@ -378,19 +390,19 @@ angular.module('listaTareasApp')
                       
 
                      });
-                       
+                                        
+                         $scope.lstIntegranteSemilleroFecha =result.data;
 
-
-                    $scope.lstIntegranteSemilleroFecha =result.data;
+                  }
+                 
+                      if ($scope.lstIntegranteSemilleroFecha==undefined) $scope.lstIntegranteSemilleroFecha=[];
                        $scope.lstIntegranteSemilleroFecha.splice(0,0,
                                 { Nombre:user.INV_NOMB + ' ' + user.INV_APEL,
                                   IS_FECH_INI:new Date(),
                                   IS_CODI:-10,
                                   IS_FECH_FIN:null,
                                   IS_INVE_CODI:user.INV_CODI});  
-
-
-                  }
+                 
 
                   
 
@@ -596,27 +608,7 @@ angular.module('listaTareasApp')
 
                                       });        
                                   }
-                                
-                                
-
-                              // angular.forEach($scope.listProyectosProductos, function(value, key) {
-
-                              //  $scope.PPR_EPY_CODI = Enumerable.From($scope.lstEstadoProyecto)
-                              //                             .Where(function (x) { return x.ESPROYS_CODI==value.PPR_EPY_CODI })
-                              //                             .ToArray()[0];
-
-
-                              //    $scope.PPR_EPD_CODI = Enumerable.From($scope.lstEstadoProducto)
-                              //                             .Where(function (x) { return x.ESPRODS_CODI==value.PPR_EPD_CODI })
-                              //                             .ToArray()[0];
-                              //     var yyyy = moment(value.PPR_FECH_INI).format("YYYY");
-                              //     var mes = moment(value.PPR_FECH_INI).format("MM");
-                              //     var dia = moment(value.PPR_FECH_INI).format("DD");
-
-                              //     var  fechaStr = yyyy + "," + mes + "," + dia;
-
-                                                                                   
-                              // });
+                                                              
 
 
 
@@ -658,9 +650,9 @@ angular.module('listaTareasApp')
 
                                       $('#tablegrupos').bootstrapTable('load',result.data);          
 
-                                      $scope.lstDocu = [];
+                                     
 
-                                      $('#tabledocu').bootstrapTable('load',$scope.lstDocu);                                    
+                                      $('#tabledocu').bootstrapTable('load',$scope.documentos);                                    
                                      $scope.mostrarDatosSemillero(idSemillero);                          
 
                                   });                               
@@ -698,6 +690,12 @@ angular.module('listaTareasApp')
 
 
     $scope.onClickNewProyProd = function() {
+
+            if ($scope.lstIntegranteSemilleroFecha==undefined)
+            {
+               $window.alert("Faltan agregar integrantes al Semillero");
+               return;
+            }
 
             if ($scope.lstIntegranteSemilleroFecha.length==0)
                 {
@@ -772,18 +770,37 @@ angular.module('listaTareasApp')
           Accion:'S',
            SQL:'SELECT  P.id,P.Nombre FROM sgi_prod_proy AS PP INNER JOIN sgi_prod AS P ON P.id=PP.id_prod WHERE PP.id_proy=' + item.PPR_PROY_CODI.PRO_CODI 
 
-        }      
+        } 
+        $('#myModal').show();     
 
     var  lista2 = TareasResource.SQL(datos2);
         lista2.then(function(result2){  
             
-            item.LST_PRODUCTOS = result2.data;     
+            item.LST_PRODUCTOS = result2.data;  
+
+            if (item.PPR_PROD_CODI==undefined)
+            {
+               item.PPR_PROD_CODI = result2.data[0];
+                $('#myModal').hide();
+               return;
+            }
+
             if (item.PPR_PROD_CODI!=null || item.PPR_PROD_CODI!=undefined)
             {
               if (item.PPR_PROD_CODI.id!=undefined)
+              {
               item.PPR_PROD_CODI= Enumerable.From(item.LST_PRODUCTOS)                            
                                   .Where(function (x) { return x.id ==item.PPR_PROD_CODI.id})   
                                   .ToArray()[0];
+
+               if (item.PPR_PROD_CODI==undefined) 
+               {
+                  item.PPR_PROD_CODI = result2.data[0];
+                  $('#myModal').hide();
+                  return;
+               }
+             }
+
               else
               item.PPR_PROD_CODI= Enumerable.From(item.LST_PRODUCTOS)                            
                                   .Where(function (x) { return x.id ==item.PPR_PROD_CODI})   
@@ -794,6 +811,7 @@ angular.module('listaTareasApp')
 
               item.PPR_PROD_CODI = result2.data[0];
             }
+            $('#myModal').hide();
           });
     }
 
@@ -1379,18 +1397,31 @@ angular.module('listaTareasApp')
            }
     }
 
-     var formData;
+     var Data = new FormData();
+
     $scope.uploadFileTexto = function(item)
     {
 
       //$scope.lstDocu.
-      formData.append("file",item.files[0]._file);       
+      Data.append("file",item.files[0]);       
       var data = item.files[0];
+
+      $scope.nombreArchivo = data.name;
+      $scope.$apply()
 
     }
 
     $scope.onClicKAgregarDocumento = function() {
 
+      var form = Data;
+      var datos = {
+        Nombre:$scope.nombreArchivo,
+        data:Data
+      }
+
+      $scope.documentos.splice(0,0,datos);
+      $('#tabledocu').bootstrapTable('load',$scope.documentos);    
+      $scope.nombreArchivo="";    
 
     }
 
