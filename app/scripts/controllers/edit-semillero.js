@@ -387,7 +387,7 @@ angular.module('listaTareasApp')
                                   IS_FECH_INI:new Date(),
                                   IS_CODI:-10,
                                   IS_FECH_FIN:null,
-                                  IS_INVE_CODI:-10});  
+                                  IS_INVE_CODI:user.INV_CODI});  
 
 
                   }
@@ -546,7 +546,7 @@ angular.module('listaTareasApp')
                                           var  datos2 = {
 
                                                   Accion:'S',
-                                                  SQL:'SELECT P.PRO_NOMB AS Nombre,P.PRO_CODI  FROM sgi_proy AS P INNER JOIN sgi_proy_inve AS PI ON P.PRO_CODI=PI.id_proy WHERE PI.id_inve=' + value.PPR_INVE_CODI.IS_INVE_CODI
+                                                  SQL:'SELECT P.PRO_NOMB AS Nombre,P.PRO_CODI,PI.id_inve,PI.id_proy    FROM sgi_proy AS P INNER JOIN sgi_proy_inve AS PI ON P.PRO_CODI=PI.id_proy WHERE PI.id_inve=' + value.PPR_INVE_CODI.IS_INVE_CODI
 
                                                 }       
                                          select.splice(0,0,datos2);
@@ -554,7 +554,8 @@ angular.module('listaTareasApp')
                                      });
 
 
-
+                                    if (select.length>0)
+                                    {
                                      var  lista2 =  TareasResource.SQLMulti(select);
                                           lista2.then(function(result2){  
 
@@ -567,14 +568,14 @@ angular.module('listaTareasApp')
                                              
 
                                               var item = Enumerable.From($scope.listProyectosProductos)                            
-                                                                 .Where(function (x) { return x.PPR_PROY_CODI ==JSON.parse(value2)[0].PRO_CODI})   
+                                                                 .Where(function (x) { return x.PPR_INVE_CODI.IS_INVE_CODI ==JSON.parse(value2)[0].id_inve})   
                                                                .ToArray()[0];
                                                if (item!=null)                   
                                                              {  
                                                   item.LST_PROYECTOS =JSON.parse(value2);    
 
                                                   item.PPR_PROY_CODI = Enumerable.From(item.LST_PROYECTOS)                            
-                                                                     .Where(function (x) { return x.PRO_CODI ==item.PPR_PROY_CODI})   
+                                                                     .Where(function (x) { return x.PRO_CODI ==item.PPR_PROY_CODI })   
                                                                    .ToArray()[0];
 
                                                   $scope.onChangedProyecto(item);
@@ -594,6 +595,7 @@ angular.module('listaTareasApp')
                                            
 
                                       });        
+                                  }
                                 
                                 
 
@@ -745,12 +747,13 @@ angular.module('listaTareasApp')
        var  datos2 = {
 
               Accion:'S',
-              SQL:'SELECT P.PRO_NOMB AS Nombre,P.PRO_CODI  FROM sgi_proy AS P INNER JOIN sgi_proy_inve AS PI ON P.PRO_CODI=PI.id_proy WHERE PI.id_inve=' + item.PPR_INVE_CODI.IS_INVE_CODI
+              SQL:'SELECT P.PRO_NOMB AS Nombre,P.PRO_CODI,PI.id_inve,PI.id_proy  FROM sgi_proy AS P INNER JOIN sgi_proy_inve AS PI ON P.PRO_CODI=PI.id_proy WHERE PI.id_inve=' + item.PPR_INVE_CODI.IS_INVE_CODI
 
             }      
 
       item.LST_PROYECTOS=[];    
       item.LST_PRODUCTOS=[];  
+      item.PPR_PROD_CODI=null;
       var   lista2 = TareasResource.SQL(datos2);
             lista2.then(function(result2){ 
               if (result2.data[0]!=null)
@@ -775,11 +778,16 @@ angular.module('listaTareasApp')
         lista2.then(function(result2){  
             
             item.LST_PRODUCTOS = result2.data;     
-            if (item.PPR_PROD_CODI!=null)
+            if (item.PPR_PROD_CODI!=null || item.PPR_PROD_CODI!=undefined)
             {
+              if (item.PPR_PROD_CODI.id!=undefined)
+              item.PPR_PROD_CODI= Enumerable.From(item.LST_PRODUCTOS)                            
+                                  .Where(function (x) { return x.id ==item.PPR_PROD_CODI.id})   
+                                  .ToArray()[0];
+              else
               item.PPR_PROD_CODI= Enumerable.From(item.LST_PRODUCTOS)                            
                                   .Where(function (x) { return x.id ==item.PPR_PROD_CODI})   
-                                  .ToArray()[0];
+                                  .ToArray()[0];                                  
             }
             else
             {
