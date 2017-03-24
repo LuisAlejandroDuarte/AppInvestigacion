@@ -11,7 +11,8 @@ class GestionArchivo
 	  array('CONTEXTO','sgi_conv','CON_TEXT','CON_TEXT_NOMB','CON_CODI'),
 	  array('CONRESO','sgi_conv','CON_RESO','CON_RESO_NOMB','CON_CODI'),
 	  array('PROTEXTO','sgi_prop','PRO_TEXT','PRO_TEXT_NOMB','PRO_CODI'),
-	  array('PROCARTA','sgi_prop','PRO_CART_AVAL','PRO_CART_NOMB','PRO_CODI')
+	  array('PROCARTA','sgi_prop','PRO_CART_AVAL','PRO_CART_NOMB','PRO_CODI'),
+	  array('SEMILLERO','sgi_doc_semi','docu_text','docu_nomb','id')
 	  );
 
 	 var $_file='';
@@ -43,6 +44,7 @@ class GestionArchivo
 			$nameFileArch = $dirTexto .'/id_' . $this->_id . '_' . $this->_file['name'];
 			$this->updateReg($nameFileArch);
 		}
+		echo $this->tipos[$this->_tipo][0];
 	}
 
 

@@ -5,7 +5,7 @@
       $resultadoselect ='';
    	   $conexion= mysqli_connect(DB_SERVER,DB_USER, DB_PASS,DB_NAME)
        or die("Lo sentimos pero no se pudo conectar a nuestra db");
-
+       $ids=array();
 	 for ($i=0; $i <count($d); $i++) { 
 	 		$SQL= $d[$i]['SQL'];
 
@@ -51,26 +51,40 @@
            			  //echo json_encode($message);   
 
  				break;
+
+ 				case "ADJUNTO" :
+
+ 						  $result = mysqli_query($conexion,$SQL);  
+ 						  $id = mysqli_insert_id($conexion);
+ 						  array_push($ids,$id); 		
+				break;	 						  				  	
 	 			
 	 			default:
 	 				
 	 				break;
 	 		}	 		
-
 	 }
 
-	if ($d[0]['Accion']!='S')
-	{	
-	  if ($message[0]['estado'] =="fallo")
-		 	{
-		 		echo "Falló";
-		 	}
-		 	else
-		 		echo "ok";
-	}
-	else
+	 if ($d[0]['Accion']=='ADJUNTO')
+	 {
+	 		echo json_encode($ids);
+	 }
+	 else
+	 {
 
-		echo $resultadoselect;  
+		if ($d[0]['Accion']!='S')
+		{	
+		  if ($message[0]['estado'] =="fallo")
+			 	{
+			 		echo "Falló";
+			 	}
+			 	else
+			 		echo "ok";
+		}
+		else
+
+			echo $resultadoselect;  
+	}
 
 	 // if ($d[0]['Accion']!='S'
 	 // {

@@ -204,7 +204,12 @@ angular.module('listaTareasApp')
             title: 'Nombre',
             align: 'left',
             valign: 'middle',
-            sortable: true
+            sortable: true,
+            formatter: function(value, row, index) {
+                return '<a href="http://' + value + '" target=_blank class="" title="Ver Documento">' + value + '</a>';
+               
+
+           }
         },{
 
             field:'btnBorrar',
@@ -1206,12 +1211,35 @@ angular.module('listaTareasApp')
                 
 
 
-                  insertSemilero = TareasResource.SQLMulti(insert);
+                  insertSemilero = TareasResource.SQLMulti(insert);                  
                     insertSemilero.then(function(){
-                       $('#myModal').hide();
-                       $window.alert("Semillero Guardado");
-                     // $location.path('/semillero');  
+                           $('#myModal').hide();
+                                 $window.alert("Semillero Guardado");
 
+
+
+                          // var ids =[];
+
+                          // var insertSemilero =[];
+                          //  angular.forEach($scope.documentos, function(value, key) {
+
+                          //     datos = {
+                          //       Accion:'I',
+                          //       SQL:"INSERT INTO sgi_doc_semi (id_semillero,nombre) VALUES (" + idSemillero + ",'" + value.Nombre + "')" 
+
+                          //     }
+
+                          //     insertSemilero.splice(0,0,datos);
+
+                          //  });
+
+                     
+                          //  $('#myModal').show();
+                          //  TareasResource.SQLMulti(insertSemilero).then(function(result) {    
+
+                          //    var e = result;
+                          //      // $location.path('/semillero');  
+                          //  });                       
                     });
 
               });     
@@ -1388,32 +1416,67 @@ angular.module('listaTareasApp')
                 insertSemilero = TareasResource.SQLMulti(insert);
                     insertSemilero.then(function(resulta){
 
-                      $('#myModal').hide();
-                      $window.alert("Semillero Actualizado");
-                    //  $location.path('/semillero');   
-                      });              
 
-                    });                     
+                         var ids =[];
+
+                          var insertSemilero2 =[];
+                           angular.forEach($scope.documentos, function(value, key) {
+
+                              datos = {
+                                Accion:'ADJUNTO',
+                                SQL:"INSERT INTO sgi_doc_semi (id_semillero,nombre) VALUES (" + idSemillero + ",'" + value.Nombre + "')" 
+
+                              }
+
+                              insertSemilero2.push(datos);
+
+                           });
+
+                     
+                           $('#myModal').show();
+                           TareasResource.SQLMulti(insertSemilero2).then(function(result) {    
+
+                             var e = result;
+
+
+                                   var fd = new FormData();       
+                                   angular.forEach($scope.documentos, function(value, key) {
+                                        fd.append('id',result.data[key]); 
+                                        fd.append('accion','Ingresar');  
+                                        fd.append('archFileOld','');  
+                                        fd.append('tipo','');
+                                        fd.append('SEMILLERO', value.data);                                                                            
+                                   });
+                                                                                                                                          
+                                TareasResource.enviararchivobinario(fd).then(function(result1) { 
+                                        var d = result1.data;
+                                        $('#myModal').hide();
+                                       $window.alert("Semillero Actualizado");                  
+                                      });                                           
+                           });                                                      
+                       });              
+
+               });                     
            }
     }
 
-     var Data = new FormData();
+     var Data;
 
     $scope.uploadFileTexto = function(item)
     {
 
       //$scope.lstDocu.
-      Data.append("file",item.files[0]);       
-      var data = item.files[0];
+      
+      Data = item.files[0];
 
-      $scope.nombreArchivo = data.name;
+      $scope.nombreArchivo = Data.name;
       $scope.$apply()
 
     }
 
     $scope.onClicKAgregarDocumento = function() {
 
-      var form = Data;
+    
       var datos = {
         Nombre:$scope.nombreArchivo,
         data:Data

@@ -15,21 +15,47 @@ $tipos = array
 	  array('CONTEXTO','sgi_conv','CON_TEXT','CON_TEXT_NOMB','CON_CODI'),
 	  array('CONRESO','sgi_conv','CON_RESO','CON_RESO_NOMB','CON_CODI'),
 	  array('PROTEXTO','sgi_prop','PRO_TEXT','PRO_TEXT_NOMB','PRO_CODI'),
-	  array('PROCARTA','sgi_prop','PRO_CART_AVAL','PRO_CART_NOMB','PRO_CODI')
+	  array('PROCARTA','sgi_prop','PRO_CART_AVAL','PRO_CART_NOMB','PRO_CODI'),
+	  array('SEMILLERO','sgi_doc_semi','docu_text','docu_nomb','id')
 	  );
 
 	if ($accion=='Ingresar')
 	{	 	
+		$valores = array();
 		 foreach ($_FILES as $attrName => $valuesArray) {  
+
 			$atributos = $attrName;
+			array_push($valores,$valuesArray);
+			
 		 	foreach ($tipos as $key => $value) {		 			
-		 			if ($value[0] == $attrName)	 			
-		 				$idtipo = $key;	 				 			
+		 			if ($value[0] == $attrName)	 	
+		 			{		
+		 				$idtipo = $key;	 	
+		 				echo json_encode($key);
+		 			}
+
 		 	} 		
+
 
 		 	$archivo = new GestionArchivo($_FILES[$attrName],$idtipo, $id);
 	 	    $archivo->copyFile();
 		 }
+		
+	}
+
+	$nombres='';
+	if ($accion=='Ingresar2')
+	{	 	
+		
+		 foreach ($_FILES['SEMILLERO'] as $attrName => $valuesArray) {  			
+		//	 $identi = explode("_", $attrName);					 			
+
+		 	$archivo = new GestionArchivo($_FILES['SEMILLERO'],4, $id);
+
+	 	   // $archivo->copyFile();
+		 }		
+		
+		  echo json_encode($_FILES['SEMILLERO']);
 	}
 
 	if ($accion=='Actualizar')
