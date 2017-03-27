@@ -645,7 +645,8 @@ angular.module('listaTareasApp')
                                 $scope.escuelaInvestigador = result.data[0].Escuela;
                                   datos = {
                                           Accion:'S',
-                                          SQL:'SELECT G.gru_codi,G.gru_nomb,IG.IGR_FECH_INIC As FechaInicio FROM sgi_grup AS G INNER JOIN sgi_inve_grup AS IG ON IG.IGR_GRUP_CODI = G.gru_codi WHERE IG.  IGR_INVE_IDEN =' + id
+                                          SQL:'SELECT G.gru_codi,G.gru_nomb,IG.IGR_FECH_INIC As FechaInicio FROM sgi_grup AS G INNER JOIN sgi_grup_semi AS GS ON GS.sgr_grup_codi = G.gru_codi ' +  
+                                          'WHERE GS.sgr_semi_codi =' + idSemillero
                                      }
 
                                 investigador = TareasResource.SQL(datos);
@@ -1209,14 +1210,43 @@ angular.module('listaTareasApp')
                });
 
                 
+                  var ids =[];
+
+                          var insertSemilero2 =[];
+                           angular.forEach($scope.documentos, function(value, key) {
+
+                              datos = {
+                                Accion:'ADJUNTO',
+                                SQL:"INSERT INTO sgi_doc_semi (id_semillero,nombre) VALUES (" + idSemillero + ",'" + value.Nombre + "')" 
+
+                              }
+
+                              insertSemilero2.push(datos);
+
+                           });
 
 
                   insertSemilero = TareasResource.SQLMulti(insert);                  
                     insertSemilero.then(function(){
                            $('#myModal').hide();
-                                 $window.alert("Semillero Guardado");
-
-
+                              
+                              if ($scope.documentos.length>0)
+                                  {
+                                   var fd = new FormData();       
+                                   angular.forEach($scope.documentos, function(value, key) {
+                                        fd.append('id',JSON.stringify(result.data)); 
+                                        fd.append('accion','Ingresar2');  
+                                        fd.append('archFileOld','');  
+                                        fd.append('tipo','');
+                                        fd.append('SEMILLERO[]', value.data);                                                                            
+                                   });
+                                                                                                                                          
+                                    TareasResource.enviararchivobinario(fd).then(function(result1) { 
+                                       
+                                        $('#myModal').hide();
+                                         $window.alert("Semillero Guardado");                
+                                      });             
+                                  }
 
                           // var ids =[];
 
@@ -1435,24 +1465,25 @@ angular.module('listaTareasApp')
                      
                            $('#myModal').show();
                            TareasResource.SQLMulti(insertSemilero2).then(function(result) {    
-
-                             var e = result;
+                                 if ($scope.documentos.length>0)
+                                  {
 
 
                                    var fd = new FormData();       
                                    angular.forEach($scope.documentos, function(value, key) {
-                                        fd.append('id',result.data[key]); 
+                                        fd.append('id',JSON.stringify(result.data)); 
                                         fd.append('accion','Ingresar2');  
                                         fd.append('archFileOld','');  
                                         fd.append('tipo','');
                                         fd.append('SEMILLERO[]', value.data);                                                                            
                                    });
                                                                                                                                           
-                                TareasResource.enviararchivobinario(fd).then(function(result1) { 
+                                   TareasResource.enviararchivobinario(fd).then(function(result1) { 
                                         var d = result1.data;
                                         $('#myModal').hide();
                                        $window.alert("Semillero Actualizado");                  
                                       });                                           
+                                }
                            });                                                      
                        });              
 

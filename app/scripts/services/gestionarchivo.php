@@ -50,6 +50,7 @@ class GestionArchivo
 
 	function copyFile2()
 	{
+		//echo $this->_file['name'];
 		$dirTexto = $_SERVER['DOCUMENT_ROOT'] .'/AppInvestigacion/' . $this->tipos[$this->_tipo][0];		
 		//echo json_encode($this->_file);
 	 	if (!file_exists($dirTexto)) 
