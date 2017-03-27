@@ -94,6 +94,7 @@ angular.module('listaTareasApp')
   					url: 'scripts/services/enviarbinario.php',
   					data:datos,
   					transformRequest: angular.identity,
+  					enctype:'multipart/form-data',
             		headers: {'Content-Type': undefined}
   				},
   				 function errorCallback(response) {

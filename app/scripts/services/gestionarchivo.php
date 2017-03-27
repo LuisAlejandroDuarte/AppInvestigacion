@@ -34,6 +34,7 @@ class GestionArchivo
 	function copyFile()
 	{
 		$dirTexto = $_SERVER['DOCUMENT_ROOT'] .'/AppInvestigacion/' . $this->tipos[$this->_tipo][0];		
+		//echo json_encode($this->_file);
 	 	if (!file_exists($dirTexto)) 
 			mkdir( $_SERVER['DOCUMENT_ROOT'] .'/AppInvestigacion/' . $this->tipos[$this->_tipo][0], 0777);			
 	 		
@@ -44,9 +45,25 @@ class GestionArchivo
 			$nameFileArch = $dirTexto .'/id_' . $this->_id . '_' . $this->_file['name'];
 			$this->updateReg($nameFileArch);
 		}
-		echo $this->tipos[$this->_tipo][0];
+		//echo $this->tipos[$this->_tipo][0];
 	}
 
+	function copyFile2()
+	{
+		$dirTexto = $_SERVER['DOCUMENT_ROOT'] .'/AppInvestigacion/' . $this->tipos[$this->_tipo][0];		
+		//echo json_encode($this->_file);
+	 	if (!file_exists($dirTexto)) 
+			mkdir( $_SERVER['DOCUMENT_ROOT'] .'/AppInvestigacion/' . $this->tipos[$this->_tipo][0], 0777);			
+	 		
+		if(copy($this->_file,$dirTexto .'/id_' . $this->_id . '_' . $this->_nameFileOld))
+		{
+			$dirTexto = $_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT'] .'/AppInvestigacion/' . $this->tipos[$this->_tipo][0];
+
+			$nameFileArch = $dirTexto .'/id_' . $this->_id . '_' . $this->_nameFileOld;
+			$this->updateReg2($nameFileArch);
+		}
+		//echo $this->tipos[$this->_tipo][0];
+	}
 
 	function deleteFile()
 	{
@@ -68,6 +85,19 @@ class GestionArchivo
 
         $SQL ="UPDATE " .  $this->tipos[$this->_tipo][1] . " set " . $this->tipos[$this->_tipo][2] . "='" . $file . "'," 
         . $this->tipos[$this->_tipo][3] . "='id_" . $this->_id . "_" . $this->_file['name']  . "' WHERE " . $this->tipos[$this->_tipo][4] . '=' . $this->_id;
+        
+        $result = mysqli_query($conexion,$SQL);  
+
+      
+	}
+
+	private function updateReg2($file)
+	{
+		$conexion= mysqli_connect(DB_SERVER,DB_USER, DB_PASS,DB_NAME)
+        or die("Lo sentimos pero no se pudo conectar a nuestra db");
+
+        $SQL ="UPDATE " .  $this->tipos[$this->_tipo][1] . " set " . $this->tipos[$this->_tipo][2] . "='" . $file . "'," 
+        . $this->tipos[$this->_tipo][3] . "='id_" . $this->_id . "_" . $this->_nameFileOld  . "' WHERE " . $this->tipos[$this->_tipo][4] . '=' . $this->_id;
         
         $result = mysqli_query($conexion,$SQL);  
 

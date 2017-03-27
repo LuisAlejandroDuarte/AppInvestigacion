@@ -1442,10 +1442,10 @@ angular.module('listaTareasApp')
                                    var fd = new FormData();       
                                    angular.forEach($scope.documentos, function(value, key) {
                                         fd.append('id',result.data[key]); 
-                                        fd.append('accion','Ingresar');  
+                                        fd.append('accion','Ingresar2');  
                                         fd.append('archFileOld','');  
                                         fd.append('tipo','');
-                                        fd.append('SEMILLERO', value.data);                                                                            
+                                        fd.append('SEMILLERO[]', value.data);                                                                            
                                    });
                                                                                                                                           
                                 TareasResource.enviararchivobinario(fd).then(function(result1) { 

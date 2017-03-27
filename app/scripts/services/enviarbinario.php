@@ -47,16 +47,32 @@ $tipos = array
 	if ($accion=='Ingresar2')
 	{	 	
 		
-		 foreach ($_FILES['SEMILLERO'] as $attrName => $valuesArray) {  			
-		//	 $identi = explode("_", $attrName);					 			
+		foreach($_FILES['SEMILLERO']['tmp_name'] as $key => $tmp_name ){
+		//	echo json_encode($tmp_name);
+			$file_name = $key.$_FILES['SEMILLERO']['name'][$key];
+			$archivo = new GestionArchivo($_FILES['SEMILLERO']['tmp_name'][$key],4, $id,$file_name);
+			 $archivo->copyFile2();
 
-		 	$archivo = new GestionArchivo($_FILES['SEMILLERO'],4, $id);
+		}
 
-	 	   // $archivo->copyFile();
-		 }		
+		//  foreach ($_FILES['SEMILLERO'] as $attrName => $valuesArray) {  			
+		// //	 $identi = explode("_", $attrName);					 			
+		//  	echo json_encode($attrName);
+		//  	$archivo = new GestionArchivo($_FILES['SEMILLERO'],4, $id);
+
+	 // 	   // $archivo->copyFile();
+		//  }		
 		
-		  echo json_encode($_FILES['SEMILLERO']);
+		  // echo json_encode($_FILES['SEMILLERO']);
+
+		// $count = count($_FILES['SEMILLERO']['name']);
+		// 	for ($i = 0; $i < $count; $i++) {
+		// 		echo $_FILES['SEMILLERO']['name'][$i];
+		// 		$archivo = new GestionArchivo($_FILES['SEMILLERO']['name'][$i],4, $id);
+  //   		}
 	}
+
+	
 
 	if ($accion=='Actualizar')
 	{	 
