@@ -563,8 +563,8 @@ angular.module('listaTareasApp')
                                           var  datos2 = {
 
                                                   Accion:'S',
-                                                  SQL:'SELECT P.PRO_NOMB AS Nombre,P.PRO_CODI,PI.id_inve,PI.id_proy    FROM sgi_proy AS P INNER JOIN sgi_proy_inve AS PI ON P.PRO_CODI=PI.id_proy WHERE PI.id_inve=' + value.PPR_INVE_CODI.IS_INVE_CODI
-
+                                                  SQL:'SELECT P.PRO_NOMB AS Nombre,P.PRO_CODI,PI.id_inve,PI.id_proy   FROM sgi_proy AS P INNER JOIN sgi_proy_inve AS PI ON P.PRO_CODI=PI.id_proy ' +
+                                                  '  WHERE PI.id_inve=' + value.PPR_INVE_CODI.IS_INVE_CODI 
                                                 }       
                                          select.splice(0,0,datos2);
                                                                                                             
@@ -585,7 +585,8 @@ angular.module('listaTareasApp')
                                              
 
                                               var item = Enumerable.From($scope.listProyectosProductos)                            
-                                                                 .Where(function (x) { return x.PPR_INVE_CODI.IS_INVE_CODI ==JSON.parse(value2)[0].id_inve})   
+                                                                 .Where(function (x) 
+                                                                  { return x.PPR_INVE_CODI.IS_INVE_CODI ==JSON.parse(value2)[0].id_inve && x.PPR_PROY_CODI.PRO_CODI==undefined})   
                                                                .ToArray()[0];
                                                if (item!=null)                   
                                                              {  
@@ -645,7 +646,7 @@ angular.module('listaTareasApp')
                                 $scope.escuelaInvestigador = result.data[0].Escuela;
                                   datos = {
                                           Accion:'S',
-                                          SQL:'SELECT G.gru_codi,G.gru_nomb,IG.IGR_FECH_INIC As FechaInicio FROM sgi_grup AS G INNER JOIN sgi_grup_semi AS GS ON GS.sgr_grup_codi = G.gru_codi ' +  
+                                          SQL:'SELECT G.gru_codi,G.gru_nomb,GS.sgr_fech_inic As FechaInicio,GS.sgr_fech_term AS FechaFin FROM sgi_grup AS G INNER JOIN sgi_grup_semi AS GS ON GS.sgr_grup_codi = G.gru_codi ' +  
                                           'WHERE GS.sgr_semi_codi =' + idSemillero
                                      }
 
@@ -1180,11 +1181,38 @@ angular.module('listaTareasApp')
 
                });
 
-
+                var proprod = true;
                  angular.forEach($scope.listProyectosProductos, function(value, key) {
+                
 
                   if (value!=null)
                   {
+
+
+                       if (value.PPR_INVE_CODI==null)
+                        {
+                             $window.alert("Falta seleccionar un integrante de proyectos productos");
+                             proprod=false;
+                          return;
+                        }
+
+                        if (value.PPR_PROD_CODI==null)
+                        {
+                             $window.alert("Falta seleccionar un producto de proyectos productos");
+                              proprod=false;
+                          return;
+                        }
+
+                         if (value.PPR_PROY_CODI==null)
+                        {
+                             $window.alert("Falta seleccionar un proyecto de proyectos productos");
+                              proprod=false;
+                          return;
+                        }
+
+
+
+
                   if (value.PPR_FECH_FIN==null)
                    {   
                       datos = { 
@@ -1224,7 +1252,8 @@ angular.module('listaTareasApp')
                               insertSemilero2.push(datos);
 
                            });
-
+                if (proprod==true)
+                {           
 
                   insertSemilero = TareasResource.SQLMulti(insert);                  
                     insertSemilero.then(function(){
@@ -1240,13 +1269,15 @@ angular.module('listaTareasApp')
                                         fd.append('tipo','');
                                         fd.append('SEMILLERO[]', value.data);                                                                            
                                    });
-                                                                                                                                          
+                                      $('#myModal').show();                                                                                                      
                                     TareasResource.enviararchivobinario(fd).then(function(result1) { 
                                        
                                         $('#myModal').hide();
                                          $window.alert("Semillero Guardado");                
                                       });             
                                   }
+                                  else
+                                      $window.alert("Semillero Guardado");      
 
                           // var ids =[];
 
@@ -1271,6 +1302,9 @@ angular.module('listaTareasApp')
                           //      // $location.path('/semillero');  
                           //  });                       
                     });
+                    }
+                    else
+                        $('#myModal').hide();
 
               });     
         });
@@ -1411,11 +1445,38 @@ angular.module('listaTareasApp')
                   }    
 
                insert.splice(insert.length-1,0,datos);      
-
+                var proprod = true;
                angular.forEach($scope.listProyectosProductos, function(value, key) {
+
+
 
                 if (value!=null)
                 {
+
+                     if (value.PPR_INVE_CODI==null)
+                        {
+                             $window.alert("Falta seleccionar un integrante de proyectos productos");
+                             proprod=false;
+                          return;
+                        }
+
+                        if (value.PPR_PROD_CODI==null)
+                        {
+                             $window.alert("Falta seleccionar un producto de proyectos productos");
+                              proprod=false;
+                          return;
+                        }
+
+                         if (value.PPR_PROY_CODI==null)
+                        {
+                             $window.alert("Falta seleccionar un proyecto de proyectos productos");
+                              proprod=false;
+                          return;
+                        }
+
+
+
+                
 
                   if (value.PPR_FECH_FIN==null)
                    {   
@@ -1441,7 +1502,8 @@ angular.module('listaTareasApp')
                  }
                });       
               
-
+          if (proprod==true)
+          {
 
                 insertSemilero = TareasResource.SQLMulti(insert);
                     insertSemilero.then(function(resulta){
@@ -1464,7 +1526,8 @@ angular.module('listaTareasApp')
 
                      
                            $('#myModal').show();
-                           TareasResource.SQLMulti(insertSemilero2).then(function(result) {    
+                           TareasResource.SQLMulti(insertSemilero2).then(function(result) {   
+                                 $('#myModal').hide();
                                  if ($scope.documentos.length>0)
                                   {
 
@@ -1477,15 +1540,21 @@ angular.module('listaTareasApp')
                                         fd.append('tipo','');
                                         fd.append('SEMILLERO[]', value.data);                                                                            
                                    });
-                                                                                                                                          
+                                         $('#myModal').show();                                                                                                   
                                    TareasResource.enviararchivobinario(fd).then(function(result1) { 
                                         var d = result1.data;
                                         $('#myModal').hide();
                                        $window.alert("Semillero Actualizado");                  
                                       });                                           
                                 }
+                                else
+                                   $window.alert("Semillero Actualizado");                 
                            });                                                      
-                       });              
+                       });  
+                       }   
+
+                    else
+                        $('#myModal').hide();         
 
                });                     
            }

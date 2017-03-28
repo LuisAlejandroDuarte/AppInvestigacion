@@ -299,7 +299,7 @@
 
  <div class="row">
 
-    <div class="col-md-8 col-lg-8 ">
+    <div class="col-lg-8 col-md-8 col-xs-12 col-sm-12">
 
       <div class="input-group">
         <span class="input-group-addon" id="sizing-addon2">http://</span>
@@ -309,7 +309,19 @@
       </span>
     </div>
 
-       
+    <div class="col-lg-4 col-md-4 col-xs-12 col-sm-12">
+          <div class="form-group">
+              <label>Tipo Cargo</label>
+                <select class="form-control"  ng-model="viewDatos[0].INV_PROG_ACAD_CODI"  
+
+                ng-options="opt2.PAC_CODI as opt2.PAC_NOMB for opt2 in Programa | orderBy:'PAC_NOMB'" 
+
+                ng-change="on_changedprograma(viewDatos[0].INV_PROG_ACAD_CODI)" required>
+
+          </select>           
+
+          </div>
+     </div>
 
     </div>
 

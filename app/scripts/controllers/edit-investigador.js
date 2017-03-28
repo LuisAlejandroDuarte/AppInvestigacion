@@ -1006,9 +1006,14 @@ angular.module('listaTareasApp')
 
         var semilleroinvestigacion =  TareasResource.SQL({Accion: "S",
                          SQL:"SELECT semillero.sem_nomb As NombreSemillero,semillero.sem_codi As IdSemillero," +                           
-                            "inve_semi.ins_fech_inic As FechaInicio,inve_semi.ins_fech_term As FechaTermina,'false' As Sel FROM  sgi_inve_semi as inve_semi INNER JOIN " + 
-                            "sgi_semi as semillero on semillero.sem_codi = inve_semi.ins_semi_codi " +
-                            " WHERE  inve_semi.ins_inve_iden="  + $route.current.params.idInvestigador + "" }); 
+                            " inve_semi.ins_fech_inic As FechaInicio,inve_semi.ins_fech_term As FechaTermina,'false' As Sel FROM  sgi_inve_semi as inve_semi INNER JOIN " + 
+                            " sgi_semi as semillero on semillero.sem_codi = inve_semi.ins_semi_codi " +
+                            " WHERE  inve_semi.ins_inve_iden="  + $route.current.params.idInvestigador + 
+                            " UNION  " +
+                            " SELECT semillero.sem_nomb As NombreSemillero,semillero.sem_codi As IdSemillero," + 
+                            " inve_semi.IS_FECH_INI As FechaInicio,inve_semi.IS_FECH_FIN As FechaTermina,'false' As Sel FROM sgi_inte_semi as inve_semi INNER JOIN " +
+                            " sgi_semi as semillero on semillero.sem_codi = inve_semi.IS_SEMI_CODI " +
+                            " WHERE  inve_semi.IS_INVE_CODI="  + $route.current.params.idInvestigador + ""}); 
 
           $scope.semilleroinvestigacion =[];
           semilleroinvestigacion.then(function(result) {
