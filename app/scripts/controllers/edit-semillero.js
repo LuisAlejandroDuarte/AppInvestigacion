@@ -142,7 +142,7 @@ angular.module('listaTareasApp')
     var formData = [];
     $scope.documentos = [];
 
-   $('#myModal').hide();
+   $('#myModal').show();
       moment.locale('es');
     $scope.optionsgrupos = {                                
           cache: false,
@@ -1067,10 +1067,13 @@ angular.module('listaTareasApp')
 
                  var  fechaStr = year + "," + mounth + "," + day;
 
-                $scope.semillero.strFecha = new Date(fechaStr);              
+                $scope.semillero.strFecha = new Date(fechaStr);        
+                       $('#myModal').hide();
 
             })
       }
+      else
+          $('#myModal').hide();
 
     }
 

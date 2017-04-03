@@ -1,8 +1,8 @@
 <?php
 define('DB_SERVER','localhost');
-define('DB_NAME','giaunadc_javierme_investigador');
+define('DB_NAME','AppInvestigacion');
  // define('DB_USER','root');
  // define('DB_PASS','');
-define('DB_USER','giaunadc_javierm');
-define('DB_PASS','Lu1sAlej0');
+define('DB_USER','Javiermedina');
+define('DB_PASS','cruz1975med');
 ?>

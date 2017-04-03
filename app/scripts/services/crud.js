@@ -1,4 +1,9 @@
 'use strict';
+
+var config = {
+headers: { 'Content-Type': 'application/x-www-form-urlencoded'}
+}
+
 angular.module('listaTareasApp')
   .factory('TareasResource', function($resource,$http) {
     var servicio = {
@@ -78,7 +83,7 @@ angular.module('listaTareasApp')
 
 			SQL : function(datos) {
 
-	  		  return $http.post('scripts/services/executesql.php', datos);  
+	  		  return $http.post('scripts/services/executesql.php', datos,config);  
 
 	  	},
 

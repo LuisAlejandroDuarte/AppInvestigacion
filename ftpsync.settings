@@ -4,8 +4,8 @@
 
 	"default": {
 
-		"host": "186.64.113.150",
-		"username": "giaunadc",  // or null for anonymous login
+		"host": "ftp.javiermedinacruz.co",
+		"username": "guane",  // or null for anonymous login
 		"password": "cruz1975med",
 		"path": "/public_html/AppInvestigacion",
 
