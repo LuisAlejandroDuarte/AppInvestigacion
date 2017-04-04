@@ -26,6 +26,8 @@
                         $resultArray[] = $tuple;         
                      }               
            }
+
+           mysqli_close($conexion);
            echo json_encode($resultArray);                                
                           
        }
@@ -38,6 +40,7 @@
           else
               $message[0] = array('estado'=>'fallo','msg' => mysqli_error($conexion),'sql'=>$SQL);
 
+             mysqli_close($conexion);
        	   echo json_encode($message);   
        }
    		
@@ -48,7 +51,7 @@
               $message[0] = array('estado'=>'ok','msg' =>'Actualizado','valor'=>$result);
           else
               $message[0] = array('estado'=>'fallo','msg' => mysqli_error($conexion),'sql'=>$SQL);
-
+             mysqli_close($conexion);
        	   echo json_encode($message);   
        } 	
 
@@ -59,7 +62,7 @@
               $message[0] = array('estado'=>'ok','msg' =>'Eliminado','valor'=>$result);
           else
               $message[0] = array('estado'=>'fallo','msg' => mysqli_error($conexion),'sql'=>$SQL);
-
+             mysqli_close($conexion);
            echo json_encode($message);   
        }
 
