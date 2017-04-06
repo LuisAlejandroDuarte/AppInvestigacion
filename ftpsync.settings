@@ -5,7 +5,7 @@
 	"default": {
 
 		"host": "ftp.javiermedinacruz.co",
-		"username": "guane2",  // or null for anonymous login
+		"username": "guane",  // or null for anonymous login
 		"password": "cruz1975med",
 		"path": "/public_html/AppInvestigacion",
 

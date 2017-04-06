@@ -1,6 +1,8 @@
-
+ <div ng-form="datosInvestiga" novalidate>
 <mostrariconoespera></mostrariconoespera>
  <my-modalproyectos></my-modalproyectos> 
+
+ 
 <div class="panel panel-primary  drop-shadow" style="width:100%;height:auto;margin-top:20px">
 
   <div class="panel-heading"><h>{{tiTulo}}</h></div>
@@ -86,7 +88,7 @@
       </div>
 
       </div>
-
+      
       <div class="row">
 
       <div class="col-md-2">
@@ -101,25 +103,26 @@
 
        <div class="col-md-2">
 
-       <input name="name" ng-model="viewDatos[0].INV_IDEN" type="text" class= "form-control" required />            
+       <input name="inv_iden" ng-model="viewDatos[0].INV_IDEN" type="text" class= "form-control" ng-required="required" />            
 
       </div>
 
       <div class="col-md-4">                 
 
-      <input name="name2" ng-model="viewDatos[0].INV_NOMB" type= "text" class= "form-control" required />
+      <input id="INV_NOMB" name="INV_NOMB" ng-model="viewDatos[0].INV_NOMB" type= "text" class= "form-control" ng-required="required" />
 
      </div>
 
       <div class="col-md-4">                 
 
-      <input name="name3" ng-model="viewDatos[0].INV_APEL" type= "text" class= "form-control" required />
+      <input id="INV_APEL" name="INV_APEL" ng-model="viewDatos[0].INV_APEL" type= "text" class= "form-control" ng-required="required" />
 
       
 
     </div>
 
       </div>
+   
 
    <div class="row">
 
@@ -314,11 +317,9 @@
     <div class="col-lg-4 col-md-4 col-xs-12 col-sm-12">
           <div class="form-group">
               <label>Tipo Cargo</label>
-                <select class="form-control"  ng-model="viewDatos[0].INV_PROG_ACAD_CODI"  
+                <select class="form-control"  ng-model="viewDatos[0].INV_TICA_CODI"  
 
-                ng-options="opt2.PAC_CODI as opt2.PAC_NOMB for opt2 in Programa | orderBy:'PAC_NOMB'" 
-
-                ng-change="on_changedprograma(viewDatos[0].INV_PROG_ACAD_CODI)" required>
+                ng-options="opt2.TICA_CODI as opt2.TICA_NOMB for opt2 in listTipoCargo | orderBy:'TICA_NOMB'">
 
           </select>           
 
@@ -1028,7 +1029,7 @@
 
 
 
-        <button  ng-click= "save(viewDatos[0])"     ng-show="mostrarboton"           
+        <button  ng-click= "save(viewDatos[0])"     ng-show="mostrarboton"     ng-disabled="childTail.datosInvestiga.inv_iden.$error.required"      
 
                 class="btn btn-primary btn-sm">{{buttonText}}</button>
 
@@ -1054,4 +1055,5 @@
 
    
 
+</div>
 </div>

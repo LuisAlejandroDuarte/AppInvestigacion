@@ -909,119 +909,178 @@ angular.module('listaTareasApp')
 
           $scope.Documento = result.data;
 
-        });
-
-
-
-
-
-      $scope.Centro = TareasResource.execute.query({Accion: 'S',
-                         SQL: 'SELECT CEN_CODI,CEN_NOMB FROM sgi_cent'}); 
-
-       $scope.Programa = TareasResource.execute.query({Accion: 'S',
-                         SQL: 'SELECT PAC_CODI,PAC_NOMB FROM sgi_prog_acad'}); 
-
-       $scope.academico = TareasResource.execute.query({Accion: 'S',
-                         SQL: 'SELECT PAC_CODI,PAC_NOMB FROM sgi_prog_acad'}); 
-
-        
-
-       $scope.formacion = TareasResource.execute.query({Accion: 'S',
-                         SQL: 'SELECT NIV_CODI,NIV_NOMB FROM sgi_nive_form'}); 
 
       
-       var items ={
-        Accion:"S",
-        SQL: 'SELECT G.gru_codi,G.gru_nomb FROM sgi_grup AS G INNER JOIN sgi_inve_grup AS IG ON IG.IGR_GRUP_CODI=G.gru_codi WHERE '+
-                         " IG.IGR_INVE_IDEN=" +  id_inve
-       }
-
-      var  grupo = TareasResource.SQL(items); 
-        $scope.grupo =[];
-      grupo.then(function(result2){
-        if (result2.data[0]!=null)
-          $scope.grupo = result2.data;
-      });
 
 
-       var informacionacademica =TareasResource.execute.query({Accion: "S",
-                         SQL: "SELECT SNI.NIN_NIV_CODI AS Codi,SNI.NIN_TITU_OBTE AS titulo,SNI.NIN_INST As Instituto, " +
-                         " SNI.NIN_AGNO AS Agno, Concat(SNF.NIV_NOMB,' ', SNI.NIN_TITU_OBTE, ' ',SNI.NIN_INST, ' ',SNI.NIN_AGNO) As Nombre,'false' As Sel " +
-                         " FROM sgi_nive_inve AS SNI INNER JOIN sgi_nive_form AS SNF ON SNF.NIV_CODI = SNI.NIN_NIV_CODI  where " +
-                         " SNI.NIN_INV_CODI =" + $route.current.params.idInvestigador + "" });
+       select = TareasResource.execute.query({Accion: 'S',
+                         SQL: 'SELECT TICA_CODI,TICA_NOMB FROM sgi_tipo_cargo'}); 
 
-        // var informacionacademica =TareasResource.execute.query({Accion: "S",
-        //                  SQL: "SELECT * from sgi_inve where inv_iden=0"});
 
-      var tieneDatos = false;
-      $scope.informacionacademica =[];  
-        informacionacademica.$promise.then(function(result2){
-          angular.forEach(result2, function(value, key){
-            if (value.Agno==undefined)
-            {              
-              $scope.informacionacademica =[];              
-            }
-            else
-              tieneDatos =true;
-                        
-          });
-          var idConsecutivo=0;
-          if (tieneDatos==true)
+        select.$promise.then(function(result){
 
-               angular.forEach(result2,function(item){
-                  $scope.informacionacademica.splice(0,0,{Consecutivo:idConsecutivo,Nombre:item.Nombre,Sel:false,Codi:item.Codi, titulo:item.titulo,Instituto:item.Instituto,Agno:item.Agno});                                        
-                  idConsecutivo = idConsecutivo+1;
-               });                                
+          $scope.listTipoCargo = result;
+           select = TareasResource.execute.query({Accion: 'S',
+                         SQL: 'SELECT CEN_CODI,CEN_NOMB FROM sgi_cent'}); 
+       select.$promise.then(function(result){
 
-        });
-        
+            $scope.Centro = result;
+            select = TareasResource.execute.query({Accion: 'S',
+                         SQL: 'SELECT PAC_CODI,PAC_NOMB FROM sgi_prog_acad'}); 
 
-       var grupoinvestigacion =  TareasResource.execute.query({Accion: "S",
-                         SQL:"SELECT grupo.gru_nomb As NombreGrupo,grupo.gru_codi As IdGrupo," +                           
-                            "inve_grup.igr_fech_inic As FechaInicio,inve_grup.igr_fech_term As FechaTermina,'false' As Sel FROM  sgi_inve_grup as inve_grup INNER JOIN " + 
-                            "sgi_grup as grupo on grupo.gru_codi = inve_grup.igr_grup_codi " +
-                            " WHERE  inve_grup.igr_inve_iden="  + $route.current.params.idInvestigador + "" }); 
+              select.$promise.then(function(result){
+                  $scope.Programa =result;
 
-        
-        $scope.grupoinvestigacion =[];
-        grupoinvestigacion.$promise.then(function(result2){
-          tieneDatos = false;
-          angular.forEach(result2, function(value, key){
-            if (value.NombreGrupo==undefined)
-            {              
-              $scope.grupoinvestigacion =[];              
-            }
-            else
-              tieneDatos =true;
-                        
-          });
-          if (tieneDatos==true)
-                $scope.grupoinvestigacion = result2;           
-        });
+                   select = TareasResource.execute.query({Accion: 'S',
+                         SQL: 'SELECT PAC_CODI,PAC_NOMB FROM sgi_prog_acad'}); 
 
-        $scope.grupoProyecto =[];
 
-       $scope.semillero = TareasResource.execute.query({Accion: 'S',
-                         SQL: 'SELECT sem_codi,sem_nomb FROM sgi_semi'}); 
+                   select.$promise.then(function(result){
+                      $scope.academico =result;
 
-        var semilleroinvestigacion =  TareasResource.SQL({Accion: "S",
-                         SQL:"SELECT semillero.sem_nomb As NombreSemillero,semillero.sem_codi As IdSemillero," +                           
-                            " inve_semi.ins_fech_inic As FechaInicio,inve_semi.ins_fech_term As FechaTermina,'false' As Sel FROM  sgi_inve_semi as inve_semi INNER JOIN " + 
-                            " sgi_semi as semillero on semillero.sem_codi = inve_semi.ins_semi_codi " +
-                            " WHERE  inve_semi.ins_inve_iden="  + $route.current.params.idInvestigador + 
-                            " UNION  " +
-                            " SELECT semillero.sem_nomb As NombreSemillero,semillero.sem_codi As IdSemillero," + 
-                            " inve_semi.IS_FECH_INI As FechaInicio,inve_semi.IS_FECH_FIN As FechaTermina,'false' As Sel FROM sgi_inte_semi as inve_semi INNER JOIN " +
-                            " sgi_semi as semillero on semillero.sem_codi = inve_semi.IS_SEMI_CODI " +
-                            " WHERE  inve_semi.IS_INVE_CODI="  + $route.current.params.idInvestigador + ""}); 
 
-          $scope.semilleroinvestigacion =[];
-          semilleroinvestigacion.then(function(result) {
+                       select = TareasResource.execute.query({Accion: 'S',
+                         SQL: 'SELECT NIV_CODI,NIV_NOMB FROM sgi_nive_form'});  
 
-            $scope.semilleroinvestigacion = result.data;       
 
-          });
+                   select.$promise.then(function(result){
+                      $scope.formacion  =result;
 
+
+                          var items ={
+                              Accion:"S",
+                              SQL: 'SELECT G.gru_codi,G.gru_nomb FROM sgi_grup AS G INNER JOIN sgi_inve_grup AS IG ON IG.IGR_GRUP_CODI=G.gru_codi WHERE '+
+                                               " IG.IGR_INVE_IDEN=" +  id_inve
+                             }
+
+                            var  grupo = TareasResource.SQL(items); 
+                              $scope.grupo =[];
+                            grupo.then(function(result2){
+                              if (result2.data[0]!=null)
+                                $scope.grupo = result2.data;
+                                  var informacionacademica =TareasResource.execute.query({Accion: "S",
+                                       SQL: "SELECT SNI.NIN_NIV_CODI AS Codi,SNI.NIN_TITU_OBTE AS titulo,SNI.NIN_INST As Instituto, " +
+                                       " SNI.NIN_AGNO AS Agno, Concat(SNF.NIV_NOMB,' ', SNI.NIN_TITU_OBTE, ' ',SNI.NIN_INST, ' ',SNI.NIN_AGNO) As Nombre,'false' As Sel " +
+                                       " FROM sgi_nive_inve AS SNI INNER JOIN sgi_nive_form AS SNF ON SNF.NIV_CODI = SNI.NIN_NIV_CODI  where " +
+                                       " SNI.NIN_INV_CODI =" + $route.current.params.idInvestigador + "" });
+
+                                  // var informacionacademica =TareasResource.execute.query({Accion: "S",
+                                  //                  SQL: "SELECT * from sgi_inve where inv_iden=0"});
+
+                                var tieneDatos = false;
+                                $scope.informacionacademica =[];  
+                                  informacionacademica.$promise.then(function(result2){
+                                    angular.forEach(result2, function(value, key){
+                                      if (value.Agno==undefined)
+                                      {              
+                                        $scope.informacionacademica =[];              
+                                      }
+                                      else
+                                        tieneDatos =true;
+                                                  
+                                    });
+                                    var idConsecutivo=0;
+                                    if (tieneDatos==true)
+
+                                         angular.forEach(result2,function(item){
+                                            $scope.informacionacademica.splice(0,0,{Consecutivo:idConsecutivo,Nombre:item.Nombre,Sel:false,Codi:item.Codi, titulo:item.titulo,Instituto:item.Instituto,Agno:item.Agno});                                        
+                                            idConsecutivo = idConsecutivo+1;
+                                         });  
+
+
+                                     select= TareasResource.execute.query({Accion: 'S',
+                                       SQL: 'SELECT tiv_codi,tiv_desc FROM sgi_tipo_vinc'});                                            
+
+                                               select.$promise.then(function(result){
+
+                                                    $scope.tipoinve =result;
+
+                                                        select= TareasResource.execute.query({Accion: 'S',
+                                                         SQL: 'SELECT con_codi,con_desc FROM sgi_conv'});
+                                                               select.$promise.then(function(result){
+
+                                                                    $scope.convocatoria =result;
+                                                                     select= TareasResource.execute.query({Accion: 'S',
+                                                                 SQL: 'SELECT id,Descripcion FROM sgi_tipo_prod'});  
+                                                                           select.$promise.then(function(result){
+
+                                                                               $scope.productos =result;
+                                                                                var grupoinvestigacion =  TareasResource.execute.query({Accion: "S",
+                                                                                     SQL:"SELECT grupo.gru_nomb As NombreGrupo,grupo.gru_codi As IdGrupo," +                           
+                                                                                        "inve_grup.igr_fech_inic As FechaInicio,inve_grup.igr_fech_term As FechaTermina,'false' As Sel FROM  sgi_inve_grup as inve_grup INNER JOIN " + 
+                                                                                        "sgi_grup as grupo on grupo.gru_codi = inve_grup.igr_grup_codi " +
+                                                                                        " WHERE  inve_grup.igr_inve_iden="  + $route.current.params.idInvestigador + "" }); 
+
+                                                                        
+                                                                                    $scope.grupoinvestigacion =[];
+                                                                                    grupoinvestigacion.$promise.then(function(result2){
+                                                                                      tieneDatos = false;
+                                                                                      angular.forEach(result2, function(value, key){
+                                                                                        if (value.NombreGrupo==undefined)
+                                                                                        {              
+                                                                                          $scope.grupoinvestigacion =[];              
+                                                                                        }
+                                                                                        else
+                                                                                          tieneDatos =true;
+                                                                                                    
+                                                                                      });
+                                                                                      if (tieneDatos==true)
+                                                                                            $scope.grupoinvestigacion = result2;           
+                                                                                    });
+
+                                                                                    $scope.grupoProyecto =[];
+                                                                                   $scope.semillero = TareasResource.execute.query({Accion: 'S',
+                                                                                                     SQL: 'SELECT sem_codi,sem_nomb FROM sgi_semi'}); 
+
+                                                                                    var semilleroinvestigacion =  TareasResource.SQL({Accion: "S",
+                                                                                                     SQL:"SELECT semillero.sem_nomb As NombreSemillero,semillero.sem_codi As IdSemillero," +                           
+                                                                                                        " inve_semi.ins_fech_inic As FechaInicio,inve_semi.ins_fech_term As FechaTermina,'false' As Sel FROM  sgi_inve_semi as inve_semi INNER JOIN " + 
+                                                                                                        " sgi_semi as semillero on semillero.sem_codi = inve_semi.ins_semi_codi " +
+                                                                                                        " WHERE  inve_semi.ins_inve_iden="  + $route.current.params.idInvestigador + 
+                                                                                                        " UNION  " +
+                                                                                                        " SELECT semillero.sem_nomb As NombreSemillero,semillero.sem_codi As IdSemillero," + 
+                                                                                                        " inve_semi.IS_FECH_INI As FechaInicio,inve_semi.IS_FECH_FIN As FechaTermina,'false' As Sel FROM sgi_inte_semi as inve_semi INNER JOIN " +
+                                                                                                        " sgi_semi as semillero on semillero.sem_codi = inve_semi.IS_SEMI_CODI " +
+                                                                                                        " WHERE  inve_semi.IS_INVE_CODI="  + $route.current.params.idInvestigador + ""}); 
+
+                                                                                      $scope.semilleroinvestigacion =[];
+                                                                                      semilleroinvestigacion.then(function(result) {
+
+                                                                                        $scope.semilleroinvestigacion = result.data;       
+
+                                                                                      });
+
+                                                                                            
+                                                                           });
+                                                               });
+                                               });
+                                              
+                                  });
+                                });
+                                  
+                            });
+                   });
+              });
+
+          });           
+       });
+       
+});
+
+
+
+
+
+   
+
+      
+     
+
+     
+
+      
+
+      
 
        // $scope.semilleroinvestigacion =[];
        //  semilleroinvestigacion.$promise.then(function(result2){
@@ -1040,15 +1099,7 @@ angular.module('listaTareasApp')
        //  });
 
 
-      $scope.tipoinve = TareasResource.execute.query({Accion: 'S',
-                         SQL: 'SELECT tiv_codi,tiv_desc FROM sgi_tipo_vinc'});  
-
-      $scope.convocatoria = TareasResource.execute.query({Accion: 'S',
-                         SQL: 'SELECT con_codi,con_desc FROM sgi_conv'});  
-
-      $scope.productos =TareasResource.execute.query({Accion: 'S',
-                         SQL: 'SELECT id,Descripcion FROM sgi_tipo_prod'});  
-
+    
      
 
 
@@ -1816,6 +1867,7 @@ var validaIdentificacion = TareasResource.validaExisteRegistro.query({Tabla:'sgi
                          " INV_TELE_CELU='" + investigador.INV_TELE_CELU  + "', " +                         
                          " INV_LINK_CVLA  = '" +  investigador.INV_LINK_CVLA.replace("http://","")   + "', " +
                          " INV_CENT_CODI = " + investigador.INV_CENT_CODI + ", " +
+                         " INV_TICA_CODI = " + investigador.INV_TICA_CODI + ", " +
                          " INV_PROG_ACAD_CODI =" +  investigador.INV_PROG_ACAD_CODI + " " +                                                          
                          " WHERE INV_CODI =" + investigador.INV_CODI 
 
@@ -1835,11 +1887,11 @@ var validaIdentificacion = TareasResource.validaExisteRegistro.query({Tabla:'sgi
       var viewDatos2 ={
         Accion: 'I',
         SQL: id + ";sgi_inve;INV_CODI;INSERT INTO  sgi_inve (INV_CODI,INV_IDEN,INV_TIPO_DOCU_CODI, " +
-        " INV_NOMB,INV_APEL,INV_FECH_NACI,INV_MAIL,INV_TELE_CELU,inv_foto,INV_CENT_CODI,INV_PROG_ACAD_CODI,INV_LINK_CVLA) " + 
+        " INV_NOMB,INV_APEL,INV_FECH_NACI,INV_MAIL,INV_TELE_CELU,inv_foto,INV_CENT_CODI,INV_PROG_ACAD_CODI,INV_LINK_CVLA,INV_TICA_CODI) " + 
         " VALUES (@@,'" + investigador.INV_IDEN + "'," + investigador.INV_TIPO_DOCU_CODI + ",'" + 
         investigador.INV_NOMB + "','" + investigador.INV_APEL + "','" + moment(new Date(investigador.INV_FECH_NACI)).format('YYYY-MM-DD')  + "','" + 
         investigador.INV_MAIL + "','" + investigador.INV_TELE_CELU  + "','" + investigador.inv_foto + "'," +
-        investigador.INV_CENT_CODI + "," +  investigador.INV_PROG_ACAD_CODI + ",'"+ investigador.INV_LINK_CVLA.replace("http://","") + "')"
+        investigador.INV_CENT_CODI + "," +  investigador.INV_PROG_ACAD_CODI + ",'"+ investigador.INV_LINK_CVLA.replace("http://","") + "','" + investigador.INV_TICA_CODI + "')"
       };       
 
       TareasResource.enviararchivo(viewDatos2).then(function(result) { 

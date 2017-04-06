@@ -200,13 +200,13 @@ angular.module('listaTareasApp')
       columns: [
 
         {
-            field: 'Nombre',
+            field: 'DOCU_NOMB',
             title: 'Nombre',
             align: 'left',
             valign: 'middle',
             sortable: true,
             formatter: function(value, row, index) {
-                return '<a href="http://' + value + '" target=_blank class="" title="Ver Documento">' + value + '</a>';
+                return '<a href="http://' + row.DOCU_RUTA + '" target=_blank class="" title="Ver Documento">' + row.DOCU_NOMB + '</a>';
                
 
            }
@@ -657,10 +657,20 @@ angular.module('listaTareasApp')
 
                                       $('#tablegrupos').bootstrapTable('load',result.data);          
 
-                                     
 
-                                      $('#tabledocu').bootstrapTable('load',$scope.documentos);                                    
-                                     $scope.mostrarDatosSemillero(idSemillero);                          
+                                         datos = {
+                                          Accion:'S',
+                                          SQL:'SELECT DOCU_RUTA,DOCU_NOMB FROM sgi_doc_semi WHERE DOCU_SEM_CODI=' + idSemillero
+                                          }
+
+                                            investigador = TareasResource.SQL(datos);
+                                              investigador.then(function(result){
+
+
+                                                 if (result.data[0]!=null)
+                                                $('#tabledocu').bootstrapTable('load',result.data);                                    
+                                         $scope.mostrarDatosSemillero(idSemillero);                          
+                                        });                                  
 
                                   });                               
                                 })  
@@ -674,8 +684,7 @@ angular.module('listaTareasApp')
              });
            });
          });
-       }); 
-     
+       });      
     }
 
 
@@ -1248,7 +1257,7 @@ angular.module('listaTareasApp')
 
                               datos = {
                                 Accion:'ADJUNTO',
-                                SQL:"INSERT INTO sgi_doc_semi (id_semillero,nombre) VALUES (" + idSemillero + ",'" + value.Nombre + "')" 
+                                SQL:"INSERT INTO sgi_doc_semi (docu_sem_codi,docu_nomb) VALUES (" + idSemillero + ",'" + value.Nombre + "')" 
 
                               }
 
@@ -1276,7 +1285,20 @@ angular.module('listaTareasApp')
                                     TareasResource.enviararchivobinario(fd).then(function(result1) { 
                                        
                                         $('#myModal').hide();
-                                         $window.alert("Semillero Guardado");                
+                                          var datos = {
+                                          Accion:'S',
+                                          SQL:'SELECT DOCU_RUTA,DOCU_NOMB FROM sgi_doc_semi WHERE DOCU_SEM_CODI=' + idSemillero
+                                          }
+
+                                         var   investigador = TareasResource.SQL(datos);
+                                              investigador.then(function(result){
+
+
+                                                 if (result.data[0]!=null)
+                                                $('#tabledocu').bootstrapTable('load',result.data);    
+                                                 $window.alert("Semillero Actualizado");   
+                                                 }); 
+
                                       });             
                                   }
                                   else
@@ -1519,7 +1541,7 @@ angular.module('listaTareasApp')
 
                               datos = {
                                 Accion:'ADJUNTO',
-                                SQL:"INSERT INTO sgi_doc_semi (id_semillero,nombre) VALUES (" + idSemillero + ",'" + value.Nombre + "')" 
+                                SQL:"INSERT INTO sgi_doc_semi (docu_sem_codi,docu_nomb) VALUES (" + idSemillero + ",'" + value.Nombre + "')" 
 
                               }
 
@@ -1547,7 +1569,21 @@ angular.module('listaTareasApp')
                                    TareasResource.enviararchivobinario(fd).then(function(result1) { 
                                         var d = result1.data;
                                         $('#myModal').hide();
-                                       $window.alert("Semillero Actualizado");                  
+                                      
+
+                                        var datos = {
+                                          Accion:'S',
+                                          SQL:'SELECT DOCU_RUTA,DOCU_NOMB FROM sgi_doc_semi WHERE DOCU_SEM_CODI=' + idSemillero
+                                          }
+
+                                         var   investigador = TareasResource.SQL(datos);
+                                              investigador.then(function(result){
+
+                                                if (result.data[0]!=null)
+
+                                                $('#tabledocu').bootstrapTable('load',result.data);    
+                                                 $window.alert("Semillero Actualizado");    
+                                               });
                                       });                                           
                                 }
                                 else
@@ -1581,7 +1617,7 @@ angular.module('listaTareasApp')
 
     
       var datos = {
-        Nombre:$scope.nombreArchivo,
+        DOCU_NOMB:$scope.nombreArchivo,
         data:Data
       }
 
