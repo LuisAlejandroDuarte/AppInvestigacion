@@ -49,9 +49,14 @@ $tipos = array
 		echo json_decode($id)[0];
 		foreach($_FILES['SEMILLERO']['tmp_name'] as $key => $tmp_name ){
 			
-			$file_name = $key.$_FILES['SEMILLERO']['name'][$key];
-			$archivo = new GestionArchivo($_FILES['SEMILLERO']['tmp_name'][$key],4, json_decode($id)[$key],$file_name);
-			 $archivo->copyFile2();
+		
+
+				$file_name = $key.$_FILES['SEMILLERO']['name'][$key];
+				$archivo = new GestionArchivo($_FILES['SEMILLERO']['tmp_name'][$key],4, json_decode($id)[$key],$file_name);
+				 $archivo->copyFile2();
+			
+
+
 
 		}
 

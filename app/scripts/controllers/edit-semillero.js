@@ -141,7 +141,7 @@ angular.module('listaTareasApp')
 
     var formData = [];
     $scope.documentos = [];
-
+    var jsonDocumentos;
    $('#myModal').show();
       moment.locale('es');
     $scope.optionsgrupos = {                                
@@ -196,7 +196,7 @@ angular.module('listaTareasApp')
           pagination: true,                
           pageList: [10, 25, 50, 100, 200],                
           minimumCountColumns: 2,         
-          idField:'id',                                       
+          idField:'DOCU_CODI',                                       
       columns: [
 
         {
@@ -220,8 +220,26 @@ angular.module('listaTareasApp')
 
                 return '<a class="remove ml10 btn btn-default btn-xs" title="Eliminar" ><span class="glyphicon glyphicon-trash"></span></a>';
 
-           }
-        }
+           },
+             events:  window.operateEvents = {
+                        'click .remove': function (e, value, row, index) {
+                              
+                             var elimninar = Enumerable.From($scope.documentos)
+                                      .Where(function (x) { return x.DOCU_CODI == row.DOCU_CODI})          
+                                      .ToArray()[0];
+
+                              elimninar.Accion = 'D';   
+                               jsonDocumentos = JSON.stringify($scope.documentos);                                                       
+
+
+                               $('#tabledocu').bootstrapTable('load',  Enumerable.From(JSON.parse(jsonDocumentos))
+                                      .Where(function (x) { return x.Accion != 'D'})          
+                                      .ToArray());   
+                                                                                              
+                        }
+                      
+                }
+              }
 
       ]
     }
@@ -501,7 +519,7 @@ angular.module('listaTareasApp')
                                               ' FROM sgi_proy_prod_semi   WHERE PPR_SEMI_CODI = ' + idSemillero
 
                                           }
-
+                             $scope.listProyectosProductos=[];             
                              lista = TareasResource.SQL(datos);
                              lista.then(function(result){ 
 
@@ -660,7 +678,7 @@ angular.module('listaTareasApp')
 
                                          datos = {
                                           Accion:'S',
-                                          SQL:'SELECT DOCU_RUTA,DOCU_NOMB FROM sgi_doc_semi WHERE DOCU_SEM_CODI=' + idSemillero
+                                          SQL:'SELECT DOCU_CODI,DOCU_RUTA,DOCU_NOMB, "S" AS Accion FROM sgi_doc_semi WHERE DOCU_SEM_CODI=' + idSemillero
                                           }
 
                                             investigador = TareasResource.SQL(datos);
@@ -668,7 +686,11 @@ angular.module('listaTareasApp')
 
 
                                                  if (result.data[0]!=null)
-                                                $('#tabledocu').bootstrapTable('load',result.data);                                    
+                                                 {
+                                                   $scope.documentos = result.data;
+                                                   jsonDocumentos = JSON.stringify(result.data);
+                                                  $('#tabledocu').bootstrapTable('load',JSON.parse(jsonDocumentos));                                    
+                                                }
                                          $scope.mostrarDatosSemillero(idSemillero);                          
                                         });                                  
 
@@ -1257,7 +1279,7 @@ angular.module('listaTareasApp')
 
                               datos = {
                                 Accion:'ADJUNTO',
-                                SQL:"INSERT INTO sgi_doc_semi (docu_sem_codi,docu_nomb) VALUES (" + idSemillero + ",'" + value.Nombre + "')" 
+                                SQL:"INSERT INTO sgi_doc_semi (docu_sem_codi,docu_nomb) VALUES (" + idSemillero + ",'" + value.DOCU_NOMB + "')" 
 
                               }
 
@@ -1287,7 +1309,7 @@ angular.module('listaTareasApp')
                                         $('#myModal').hide();
                                           var datos = {
                                           Accion:'S',
-                                          SQL:'SELECT DOCU_RUTA,DOCU_NOMB FROM sgi_doc_semi WHERE DOCU_SEM_CODI=' + idSemillero
+                                          SQL:'SELECT DOCU_CODI,DOCU_RUTA,DOCU_NOMB,"S" AS Accion FROM sgi_doc_semi WHERE DOCU_SEM_CODI=' + idSemillero
                                           }
 
                                          var   investigador = TareasResource.SQL(datos);
@@ -1295,14 +1317,22 @@ angular.module('listaTareasApp')
 
 
                                                  if (result.data[0]!=null)
-                                                $('#tabledocu').bootstrapTable('load',result.data);    
+                                                 {
+                                                  jsonDocumentos = JSON.stringify(result.data);
+                                                 $('#tabledocu').bootstrapTable('load',result.data);   
+                                                  $scope.documentos = result.data;                                                
+                                                }
+                                                  $scope.mostrarDatosInvestigador(user.INV_CODI); 
                                                  $window.alert("Semillero Actualizado");   
                                                  }); 
 
                                       });             
                                   }
                                   else
-                                      $window.alert("Semillero Guardado");      
+                                  {
+                                    $scope.mostrarDatosInvestigador(user.INV_CODI); 
+                                      $window.alert("Semillero Actualizado");      
+                                    }
 
                           // var ids =[];
 
@@ -1537,17 +1567,34 @@ angular.module('listaTareasApp')
                          var ids =[];
 
                           var insertSemilero2 =[];
-                           angular.forEach($scope.documentos, function(value, key) {
 
-                              datos = {
-                                Accion:'ADJUNTO',
-                                SQL:"INSERT INTO sgi_doc_semi (docu_sem_codi,docu_nomb) VALUES (" + idSemillero + ",'" + value.Nombre + "')" 
+                      if ($scope.documentos.length>0)
+                          {
+                           angular.forEach(JSON.parse(jsonDocumentos), function(value, key) {
 
+                              if (value.Accion=='I')
+                              {
+                               datos = {
+                                  Accion:'ADJUNTO',
+                                  SQL:"INSERT INTO sgi_doc_semi (docu_sem_codi,docu_nomb) VALUES (" + idSemillero + ",'" + value.DOCU_NOMB + "')" 
+
+                                }
+
+                                insertSemilero2.push(datos);
+                              }
+                            if (value.Accion=='D')
+                              {
+                               datos = {
+                                  Accion:'D',
+                                  SQL:'DELETE FROM sgi_doc_semi WHERE DOCU_CODI =' + value.DOCU_CODI 
+
+                                }
+
+                                insertSemilero2.push(datos);
                               }
 
-                              insertSemilero2.push(datos);
-
                            });
+                         }
 
                      
                            $('#myModal').show();
@@ -1559,11 +1606,15 @@ angular.module('listaTareasApp')
 
                                    var fd = new FormData();       
                                    angular.forEach($scope.documentos, function(value, key) {
-                                        fd.append('id',JSON.stringify(result.data)); 
-                                        fd.append('accion','Ingresar2');  
-                                        fd.append('archFileOld','');  
-                                        fd.append('tipo','');
-                                        fd.append('SEMILLERO[]', value.data);                                                                            
+                                        if (value.Accion=='I')
+                                        {
+                                          fd.append('id',JSON.stringify(result.data)); 
+                                          fd.append('accion','Ingresar2');  
+                                          fd.append('archFileOld','');  
+                                          fd.append('tipo','');
+                                          fd.append('SEMILLERO[]', value.data);                                                                            
+                                        }                                       
+
                                    });
                                          $('#myModal').show();                                                                                                   
                                    TareasResource.enviararchivobinario(fd).then(function(result1) { 
@@ -1573,21 +1624,29 @@ angular.module('listaTareasApp')
 
                                         var datos = {
                                           Accion:'S',
-                                          SQL:'SELECT DOCU_RUTA,DOCU_NOMB FROM sgi_doc_semi WHERE DOCU_SEM_CODI=' + idSemillero
+                                          SQL:'SELECT DOCU_CODI,DOCU_RUTA,DOCU_NOMB,"S" AS Accion FROM sgi_doc_semi WHERE DOCU_SEM_CODI=' + idSemillero
                                           }
 
                                          var   investigador = TareasResource.SQL(datos);
                                               investigador.then(function(result){
 
                                                 if (result.data[0]!=null)
-
-                                                $('#tabledocu').bootstrapTable('load',result.data);    
+                                                {
+                                                  $scope.documentos = result.data;
+                                                  jsonDocumentos = JSON.stringify(result.data);  
+                                                  $('#tabledocu').bootstrapTable('load',JSON.parse(jsonDocumentos));      
+                                                 
+                                                }
+                                                 $scope.mostrarDatosInvestigador(user.INV_CODI);
                                                  $window.alert("Semillero Actualizado");    
                                                });
                                       });                                           
                                 }
                                 else
+                                {
+                                   $scope.mostrarDatosInvestigador(user.INV_CODI);
                                    $window.alert("Semillero Actualizado");                 
+                                 }
                            });                                                      
                        });  
                        }   
@@ -1614,15 +1673,35 @@ angular.module('listaTareasApp')
     }
 
     $scope.onClicKAgregarDocumento = function() {
-
+      var json = [];
     
       var datos = {
         DOCU_NOMB:$scope.nombreArchivo,
-        data:Data
+        data:Data,
+        DOCU_CODI:0,
+        Accion:'I'
       }
 
+       var datos2 = {
+        DOCU_NOMB:$scope.nombreArchivo,       
+        DOCU_CODI:0,
+        Accion:'I'
+      }
+
+
       $scope.documentos.splice(0,0,datos);
-      $('#tabledocu').bootstrapTable('load',$scope.documentos);    
+      if (jsonDocumentos!=undefined)
+        json= JSON.parse(jsonDocumentos);       
+        
+
+       json.splice(0,0,datos2);
+       jsonDocumentos= JSON.stringify(json);
+
+     
+       $('#tabledocu').bootstrapTable('load',  Enumerable.From(JSON.parse(jsonDocumentos))
+              .Where(function (x) { return x.Accion != 'D'})          
+              .ToArray());   
+//  jsonDocumentos = JSON.stringify(json);
       $scope.nombreArchivo="";    
 
     }
