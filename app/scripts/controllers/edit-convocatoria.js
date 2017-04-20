@@ -24,15 +24,47 @@ angular.module('listaTareasApp')
     var fileReso;
     var nombreArchivoTexto;
     var nombreArchivoResolucion;
+    var id = ($route.current.params.idConvocatoria) ? parseInt($route.current.params.idConvocatoria) :0 ;
+    $scope.settingsPanel ={
+             width: '60%',
+             height: 200,
+             autoUpdate:true
+        };  
+
        $('#myModal').show();  
+
+  var user = JSON.parse($window.sessionStorage.getItem('usuario'));
+
+         if (user==null || user==undefined)
+          {
+
+            $location.path('/menu');
+            return;
+          }  
+
         var tipoConvocatoria = TareasResource.execute.query({Accion: 'S',
                              SQL: 'SELECT TCO_CODI,TCO_DESC FROM sgi_tipo_conv'}); 
         tipoConvocatoria.$promise.then(function(result){
               $scope.tipoConvocatoria = result;
 
-              datosConvocatoria.$promise.then(function(result){                 
-                    $('#myModal').hide(); 
-                var id = ($route.current.params.idConvocatoria) ? parseInt($route.current.params.idConvocatoria) :0 ;
+              datosConvocatoria.$promise.then(function(result2){                 
+
+                   var consulta = TareasResource.SQL({Accion: 'S',
+                         SQL: "SELECT CPA_CODI,CPA_NOMB FROM  sgi_paco "}); 
+          consulta.then(function(result){
+
+            $scope.listParametros = result.data;
+
+               consulta = TareasResource.SQL({Accion: 'S',
+                SQL: "SELECT P.CPA_NOMB,P.CPA_CODI,CP.PCO_VALO AS Valor   FROM  sgi_conv_para AS CP INNER JOIN sgi_paco AS P ON P.CPA_CODI=CP.PCO_PARA_CODI WHERE CP.PCO_CONV_CODI=" + id}); 
+               consulta.then(function(result){
+                  if (result.data[0]!=null)
+                    $scope.listParametroConvocatoria =result.data;
+
+            $scope.$$childTail.selParametro=$scope.listParametros[0];
+
+             $('#myModal').hide(); 
+                
                   if (id>0)
                   {
                     
@@ -42,39 +74,40 @@ angular.module('listaTareasApp')
                      var year;
                      var fechaStr;
 
-                     day = moment(result[0].CON_FECH_FINA).format("D");
-                     mounth = moment(result[0].CON_FECH_FINA).format("M");
-                     year = moment(result[0].CON_FECH_FINA).format("YYYY");
+                     day = moment(result2[0].CON_FECH_FINA).format("D");
+                     mounth = moment(result2[0].CON_FECH_FINA).format("M");
+                     year = moment(result2[0].CON_FECH_FINA).format("YYYY");
 
                       fechaStr = year + "," + mounth + "," + day;
 
-                    result[0].CON_FECH_FINA =new Date(fechaStr); //moment(result[0].CON_FECH_FINA).format("DD-MMMM-YYYY");
+                    result2[0].CON_FECH_FINA =new Date(fechaStr); //moment(result[0].CON_FECH_FINA).format("DD-MMMM-YYYY");
 
-                     day = moment(result[0].CON_FECH_INIC).format("D");
-                     mounth = moment(result[0].CON_FECH_INIC).format("M");
-                     year = moment(result[0].CON_FECH_INIC).format("YYYY");
+                     day = moment(result2[0].CON_FECH_INIC).format("D");
+                     mounth = moment(result2[0].CON_FECH_INIC).format("M");
+                     year = moment(result2[0].CON_FECH_INIC).format("YYYY");
 
                      fechaStr = year + "," + mounth + "," + day;
 
 
-                    result[0].CON_FECH_INIC = new Date(fechaStr); //moment(result[0].CON_FECH_INIC).format("DD-MMMM-YYYY");
+                    result2[0].CON_FECH_INIC = new Date(fechaStr); //moment(result[0].CON_FECH_INIC).format("DD-MMMM-YYYY");
                   
-                  $scope.viewDatos = result;
-                  $scope.viewDatos[0].CON_PUNT_TOTA = parseInt(result[0].CON_PUNT_TOTA);
+                  $scope.viewDatos = result2;
+                  $scope.viewDatos[0].CON_PUNT_TOTA = parseInt(result2[0].CON_PUNT_TOTA);
                   nombOld = $scope.viewDatos[0].CON_DESC;
 
                   $scope.nombreArchivoTexto="";
                   $scope.nombreArchivoResolucion ="";
 
-                  if (result[0].CON_TEXT_NOMB!=null) $scope.nombreArchivoTexto =result[0].CON_TEXT_NOMB;
-                  if (result[0].CON_RESO_NOMB!=null) $scope.nombreArchivoResolucion =result[0].CON_RESO_NOMB;
+                  if (result2[0].CON_TEXT_NOMB!=null) $scope.nombreArchivoTexto =result2[0].CON_TEXT_NOMB;
+                  if (result2[0].CON_RESO_NOMB!=null) $scope.nombreArchivoResolucion =result2[0].CON_RESO_NOMB;
 
-                  if (result[0].CON_TEXT!=null) $scope.nombreLinkArchivoTexto =result[0].CON_TEXT;
-                  if (result[0].CON_RESO!=null) $scope.nombreLinkArchivoResolucion =result[0].CON_RESO;
+                  if (result2[0].CON_TEXT!=null) $scope.nombreLinkArchivoTexto =result2[0].CON_TEXT;
+                  if (result2[0].CON_RESO!=null) $scope.nombreLinkArchivoResolucion =result2[0].CON_RESO;
 
 
                   nombreArchivoTexto = $scope.nombreArchivoTexto;
-                  nombreArchivoResolucion =$scope.nombreArchivoResolucion;
+                  nombreArchivoResolucion =$scope.nombreArchivoResolucion;                   
+
 
                    $scope.buttonText = 'Actualizar';
                       $scope.tiTulo ='Editando Convocatoria';
@@ -94,11 +127,62 @@ angular.module('listaTareasApp')
                       $scope.buttonText = 'Guardar';
                       $scope.tiTulo ='Creando Convocatoria';
                     }
+                 });
 
-              });
-        });
 
-  
+
+
+          });
+                   
+     });
+   });
+
+    $scope.onClicAgregarParametro = function() {
+
+      if ($scope.$$childTail.valor==undefined || $scope.$$childTail.valor=="") 
+       {
+          $window.alert("Digite un valor");
+          return;
+       }  
+
+      if ($scope.listParametroConvocatoria==undefined) $scope.listParametroConvocatoria=[];
+
+      var seleccion= Enumerable.From($scope.listParametroConvocatoria)
+                             .Where(function (x) { return x.CPA_CODI == $scope.$$childTail.selParametro.CPA_CODI })
+                             .ToArray()[0];
+
+      var suma= Enumerable.From($scope.listParametroConvocatoria)
+                             .Select(function (x) { return x.Valor })
+                             .Sum();
+      
+
+      if (seleccion!=undefined)
+      {
+        $scope.$$childTail.valor="";
+        $window.alert("Ya está en la lista");
+        return;
+      }   
+
+
+      if (parseFloat(suma) + parseFloat($scope.$$childTail.valor)> $scope.viewDatos[0].CON_PUNT_TOTA)
+      {
+        $window.alert("La suma es mayor al puntaje de la convocatoria");
+         $scope.$$childTail.valor="";
+        return;
+      }
+
+      $scope.listParametroConvocatoria.splice(0,0,{CPA_CODI:$scope.$$childTail.selParametro.CPA_CODI,CPA_NOMB:$scope.$$childTail.selParametro.CPA_NOMB,Valor:$scope.$$childTail.valor});
+      $scope.$$childTail.valor="";
+
+
+
+    }
+
+    $scope.onClicEliminarParametro = function(item) {
+
+       $scope.listParametroConvocatoria.splice(item.$index,1);
+
+    }
                
      $scope.uploadFileTexto = function (arch) { 		        
 		    if (arch.files[0].size>2000000)
@@ -209,10 +293,28 @@ angular.module('listaTareasApp')
                         if (fileText!=undefined) fd.append('CONTEXTO', fileText);                                                    
                         if (fileReso!=undefined) fd.append('CONRESO', fileReso);                                                                                
                         TareasResource.enviararchivobinario(fd).then(function(result1) { 
-                     
-                              $('#myModal').hide();     
-                              $window.alert("INGRESADO");           
-                              $location.path('/convocatoria');                       
+                                 var select =[]; 
+                                if ($scope.listParametroConvocatoria[0]!=null)
+                                {
+                                   
+                                    angular.forEach($scope.listParametroConvocatoria, function(value, key) {
+
+                                      var insert = {
+                                          Accion:"I",
+                                          SQL:"INSERT INTO sgi_conv_para (PCO_CONV_CODI,PCO_PARA_CODI,PCO_VALO) VALUES (" + idConvocatoria + "," + value.CPA_CODI + "," + value.Valor + ")"
+                                      }                                      
+
+                                       select.splice(0,0,insert);
+
+                                    });
+                               }
+                              var resultado =  TareasResource.SQLMulti(select);
+                                  resultado.then(function() {
+                                       $('#myModal').hide();     
+                                  $window.alert("INGRESADO");           
+                                  $location.path('/edit-convocatoria/'+ idConvocatoria);     
+
+                                   });                                            
                      });                                          
                 });           
               }         
@@ -232,7 +334,7 @@ angular.module('listaTareasApp')
                        $('#myModal').show();
                       TareasResource.enviararchivobinario(fd).then(function(result1) {
                             actualizandoTexto = false;
-                            $location.path('/convocatoria'); 
+                           // $location.path('/convocatoria'); 
 
 
                              var datos =  {
@@ -249,17 +351,35 @@ angular.module('listaTareasApp')
                           
                            TareasResource.enviararchivo(datos).then(function(result) { 
                                $('#myModal').hide();                    
-                               $window.alert("ACTUALIZADO");  
 
-                               if (!actualizandoTexto && !actualizandoReso)
-                                  $location.path('/convocatoria');
+                                 var consulta = TareasResource.SQL({Accion: 'D',
+                                 SQL: "DELETE  FROM  sgi_conv_para WHERE PCO_CONV_CODI=" + id}); 
+                                 consulta.then(function(result){
+                                    var select =[];
+                                     if ($scope.listParametroConvocatoria!=undefined)
+                                     {
+                                        angular.forEach($scope.listParametroConvocatoria, function(value, key) {
+
+                                          var insert = {
+                                              Accion:"I",
+                                              SQL:"INSERT INTO sgi_conv_para (PCO_CONV_CODI,PCO_PARA_CODI,PCO_VALO) VALUES (" + id + "," + value.CPA_CODI + "," + value.Valor + ")"
+                                          }                                      
+
+                                           select.splice(0,0,insert);
+
+                                        });
+                                     }
+                                      var resultado =  TareasResource.SQLMulti(select);
+                                          resultado.then(function() {
+                                             $window.alert("ACTUALIZADO");  
+                                          })
 
 
+                                 });
                              
                             });                            
 
                        });
-
             }  
           }
 

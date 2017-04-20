@@ -6,33 +6,46 @@
         controller: [ "$scope","$window",'$http','TareasResource', function($scope,$window,$http,TareasResource) {
             $scope.afirmaEliminar = function() {
                       var Codigo = $('#myModal').data('id').toString();                       
-                                   
-                     var result= TareasResource.validaExisteRegistro.query({Tabla:"sgi_prop_conv_atri",Campo:"PCAT_CONV_CODI",Valor:Codigo});
+                     
+                       var result= TareasResource.validaExisteRegistro.query({Tabla:"sgi_conv_para",Campo:"PCO_CONV_CODI",Valor:Codigo});
                        result.$promise.then(function(result2){
 
                          if (result2[0].existe=="false")
-                         {
+                           {
+                               result= TareasResource.validaExisteRegistro.query({Tabla:"sgi_prop_conv_atri",Campo:"PCAT_CONV_CODI",Valor:Codigo});
+                             result.$promise.then(function(result2){
 
-                           $http.post("scripts/services/api.php?url=executeSQL/D/DELETE FROM sgi_conv" +
-                                " WHERE CON_CODI = " + Codigo, $scope.formData)
-                                .success(function(data) {  
-                                $('#tableconvocatoria').bootstrapTable('remove', {
-                                    field: 'CON_CODI',
-                                    values: Codigo
-                                });         
-                                    $('#tableconvocatoria').bootstrapTable('refresh');   
-                                    $('#myModal').modal('hide');                       
-                                })
-                           .error(function(data) {
-                            $('#myModal').modal('hide');
-                            alert(data['msg']);                        
-                            });  
-                         }
-                         else
-                         {
-                             alert("No se puede eliminar existe el registro en la tabla propuesta Convocatoria Atributo");  
-                         }
-                       });
+                               if (result2[0].existe=="false")
+                               {
+
+                                 $http.post("scripts/services/api.php?url=executeSQL/D/DELETE FROM sgi_conv" +
+                                      " WHERE CON_CODI = " + Codigo, $scope.formData)
+                                      .success(function(data) {  
+                                      $('#tableconvocatoria').bootstrapTable('remove', {
+                                          field: 'CON_CODI',
+                                          values: Codigo
+                                      });         
+                                          $('#tableconvocatoria').bootstrapTable('refresh');   
+                                          $('#myModal').modal('hide');                       
+                                      })
+                                 .error(function(data) {
+                                  $('#myModal').modal('hide');
+                                  alert(data['msg']);                        
+                                  });  
+                               }
+                               else
+                               {
+                                   alert("No se puede eliminar existe el registro en la tabla propuesta Convocatoria Atributo");  
+                               }
+                             });
+                           }
+                            else
+                           {
+                               alert("No se puede eliminar existen parámetros asociados a la  convocatoria");  
+                           }
+                         }); 
+
+                    
                 };               
             }],
 
@@ -94,7 +107,7 @@
     if (user==null || user==undefined)
     {
 
-      $location.path('/inicio');
+      $location.path('/menu');
       return;
     }   
     else

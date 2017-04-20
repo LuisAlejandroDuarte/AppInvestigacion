@@ -1832,7 +1832,35 @@ $scope.save = function(investigador){
         return;
       }
 
+       if (investigador.INV_FECH_NACI==undefined || investigador.INV_FECH_NACI=="Invalid date")
+      {
+        $window.alert('Seleccione fecha de nacimiento');
+        $('#myModal').hide();  
+        return;
+      }
 
+         if (investigador.INV_TELE_CELU==undefined || investigador.INV_TELE_CELU=="")
+        {
+          $window.alert('Digite teléfono');
+          $('#myModal').hide();  
+          return;
+        }
+
+        if (investigador.INV_MAIL==undefined || investigador.INV_MAIL=="")
+        {
+          $window.alert('Digite Email');
+          $('#myModal').hide();  
+          return;
+        }
+
+        if (investigador.INV_LINK_CVLA==undefined || investigador.INV_LINK_CVLA=="")
+        {
+          $window.alert('Digite link del cvla');
+          $('#myModal').hide();  
+          return;
+        }
+
+        
 
 
 var validaIdentificacion = TareasResource.validaExisteRegistro.query({Tabla:'sgi_inve',Campo:'inv_iden',Valor:investigador.INV_IDEN});
