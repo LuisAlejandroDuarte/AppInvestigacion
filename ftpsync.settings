@@ -3,7 +3,6 @@
 	// Remove "//" to uncomment settings directive
 
 	"default": {
-
 		"host": "ftp.javiermedinacruz.co",
 		"username": "guane",  // or null for anonymous login
 		"password": "cruz1975med",

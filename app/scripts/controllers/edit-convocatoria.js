@@ -151,9 +151,8 @@ angular.module('listaTareasApp')
                              .Where(function (x) { return x.CPA_CODI == $scope.$$childTail.selParametro.CPA_CODI })
                              .ToArray()[0];
 
-      var suma= Enumerable.From($scope.listParametroConvocatoria)
-                             .Select(function (x) { return x.Valor })
-                             .Sum();
+      var suma= Enumerable.From($scope.listParametroConvocatoria)                             
+                             .Sum(function (x) { return parseFloat(x.Valor) });
       
 
       if (seleccion!=undefined)
@@ -164,7 +163,7 @@ angular.module('listaTareasApp')
       }   
 
 
-      if (parseFloat(suma) + parseFloat($scope.$$childTail.valor)> $scope.viewDatos[0].CON_PUNT_TOTA)
+      if (parseFloat(suma) + parseFloat($scope.$$childTail.valor)> parseFloat($scope.viewDatos[0].CON_PUNT_TOTA))
       {
         $window.alert("La suma es mayor al puntaje de la convocatoria");
          $scope.$$childTail.valor="";
