@@ -22,6 +22,17 @@ angular.module('listaTareasApp')
       var fileCartaAval;
       var nombreDocumentoProyecto;
       var nombreArchivoCarta
+
+         var user = JSON.parse($window.sessionStorage.getItem('usuario'));
+
+        if (user==null || user==undefined)
+        {
+
+          $location.path('/menu');
+          return;
+        }   
+
+
          $('#myModal').show();  
 
         var convocatoria = TareasResource.execute.query({Accion: 'S',
@@ -106,20 +117,25 @@ angular.module('listaTareasApp')
          TareasResource.enviararchivo(datos).then(function(result) { 
 
               var idPropuesta = result.data.split('@')[1];
-        
-              var fd = new FormData();                        
-               fd.append('id',idPropuesta); 
-               fd.append('accion','Ingresar');  
-               fd.append('archFileOld','');  
-               fd.append('tipo','');
-              if (fileDocumentoProyecto!=undefined) fd.append('PROTEXTO', fileDocumentoProyecto);                                                    
-              if (fileCartaAval!=undefined) fd.append('PROCARTA', fileCartaAval);                                                                                
-              TareasResource.enviararchivobinario(fd).then(function(result1) { 
-           
-                    $('#myModal').hide();     
-                    $window.alert("INGRESADO");           
-                    $location.path('/propuesta');                       
-              });            
+            
+              var consulta = TareasResource.SQL({Accion: 'I',
+                         SQL: "INSERT INTO  sgi_prop_inve (PIN_INVE_CODI,PIN_PROP_CODI) " + 
+                         " VALUES (" + user.Id + "," + idPropuesta + ")"}); 
+                      consulta.then(function(result){
+                            var fd = new FormData();                        
+                     fd.append('id',idPropuesta); 
+                     fd.append('accion','Ingresar');  
+                     fd.append('archFileOld','');  
+                     fd.append('tipo','');
+                    if (fileDocumentoProyecto!=undefined) fd.append('PROTEXTO', fileDocumentoProyecto);                                                    
+                    if (fileCartaAval!=undefined) fd.append('PROCARTA', fileCartaAval);                                                                                
+                    TareasResource.enviararchivobinario(fd).then(function(result1) { 
+                 
+                          $('#myModal').hide();     
+                          $window.alert("INGRESADO");           
+                          $location.path('/propuesta');                       
+                    });            
+                });              
           });           
         }         
       else

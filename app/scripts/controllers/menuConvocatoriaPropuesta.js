@@ -47,11 +47,12 @@
 	}
 
 
-	$scope.onClicAtributo = function() {
+	$scope.onClicListaPropuestas = function() {
 
-	$window.location.href = "#/atributo/";	
-
+		$window.sessionStorage.setItem('tipoUsuario',4);	
+		 $location.path('/inicio');
 	}
+
 
 
  }]);

@@ -76,11 +76,21 @@
 
 
 
- .controller('ControladorPropuesta', ['$scope','$window', function($scope,$window) {
+ .controller('ControladorPropuesta', ['$scope','$window','$location','TareasResource', function($scope,$window,$location,TareasResource) {
+
+      var user = JSON.parse($window.sessionStorage.getItem('usuario'));
+
+    if (user==null || user==undefined)
+    {
+
+      $location.path('/menu');
+      return;
+    }   
+    else
+    {
+
          $scope.options = {           
-            method: 'post',
-            url: 'scripts/services/api.php?url=executeSQL/S/SELECT P.PRO_CODI,P.PRO_NOMB,C.CON_DESC,P.PRO_TEXT,P.PRO_TEXT_NOMB,P.PRO_CART_AVAL,P.PRO_CART_NOMB  ' + 
-                    ' FROM sgi_prop AS P INNER JOIN sgi_conv AS C ON C.CON_CODI=P.PRO_CONV_CODI ',
+            method: 'post',          
           
  				cache: false,
                 height: 500,
@@ -98,8 +108,7 @@
                 field: 'PRO_NOMB',
                 title: 'Propuesta',
                 align: 'left',
-                valign: 'middle',
-                width: 100,
+                valign: 'middle',              
                 sortable: true
             }, {
                 field: 'CON_DESC',
@@ -172,12 +181,27 @@
 
 
             }]
+             
+
         };
+         var datos = {
+
+            Accion:"S",
+            SQL:"SELECT P.PRO_CODI,P.PRO_NOMB,C.CON_DESC,P.PRO_TEXT,P.PRO_TEXT_NOMB,P.PRO_CART_AVAL,P.PRO_CART_NOMB  " + 
+                    " FROM sgi_prop AS P INNER JOIN sgi_conv AS C  ON C.CON_CODI=P.PRO_CONV_CODI INNER JOIN sgi_prop_inve AS PI ON PI.PIN_PROP_CODI=P.PRO_CODI WHERE PI.PIN_INVE_CODI=" + user.Id
+
+        }
+
+        var convocatoria = TareasResource.SQL(datos);
+            convocatoria.then(function(result){
+                $('#tablepropuesta').bootstrapTable('load',result.data);        
+            })    
+    }
 
         $scope.onClicSalir = function()
         {
            
-            $window.location.href = "#/mnuPropuesta/";
+            $window.location.href = "#/menuConvocatoriaPropuesta/";
         }
 
     }])

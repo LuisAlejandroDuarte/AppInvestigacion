@@ -155,7 +155,7 @@ angular.module('listaTareasApp')
            var executesql = TareasResource.SQL({Accion:'S',SQL:'SELECT INV_CODI,INV_NOMB,INV_APEL FROM sgi_inve WHERE INV_CODI_USUA=' + usr[0].Id});
                 executesql.then(function(result){
                    $window.sessionStorage.setItem('investigador', JSON.stringify(result.data[0]));
-            $location.path('/mnuPropuesta');
+            $location.path('/propuesta');
             return;
           });
          }
