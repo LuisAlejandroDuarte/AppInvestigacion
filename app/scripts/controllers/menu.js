@@ -63,8 +63,8 @@
 
 	$scope.onClicConvocatoria = function()
 	{
-		$window.sessionStorage.setItem('tipoUsuario',3);
-		$location.path('/inicio');
+		//$window.sessionStorage.setItem('tipoUsuario',3);
+		$location.path('/menuConvocatoriaPropuesta');
 	}
 
 

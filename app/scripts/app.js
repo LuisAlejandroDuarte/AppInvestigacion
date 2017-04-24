@@ -123,6 +123,12 @@ angular.module("listaTareasApp", ['ngRoute','ngAnimate','ngLocale', 'ngResource'
 
        })
 
+         .when('/menuConvocatoriaPropuesta', {
+         templateUrl: 'views/menuConvocatoriaPropuesta.html',
+        controller: 'menuConvocatoriaPropuestaCtrl'
+
+       })
+
       .when('/inicio', {
         templateUrl: 'views/inicio.html',
         controller: 'InicioCtrl'
