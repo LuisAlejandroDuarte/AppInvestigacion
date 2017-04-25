@@ -32,46 +32,59 @@ angular.module('listaTareasApp')
           return;
         }   
 
-
+        moment.locale('es');
          $('#myModal').show();  
 
-        var convocatoria = TareasResource.execute.query({Accion: 'S',
+
+           var tipoConvocatoria = TareasResource.SQL({Accion: 'S',
+                             SQL: 'SELECT TCO_CODI,TCO_DESC FROM sgi_tipo_conv'}); 
+        tipoConvocatoria.then(function(result2){
+              $scope.$$childTail.tipoConvocatoria = result2.data;
+
+
+                      var convocatoria = TareasResource.execute.query({Accion: 'S',
                              SQL: 'SELECT CON_CODI,CON_DESC FROM sgi_conv'}); 
-        convocatoria.$promise.then(function(result){
-              $scope.convocatoria = result;
-
-              datosPropuesta.$promise.then(function(result){
-                  $scope.viewDatos = result;                 
-
-                  $scope.nombreDocumentoProyecto="";
-                  $scope.nombreArchivoCarta ="";
-
-                  if (result[0].PRO_TEXT_NOMB!=null) $scope.nombreDocumentoProyecto =result[0].PRO_TEXT_NOMB;
-                  if (result[0].PRO_CART_NOMB!=null) $scope.nombreArchivoCarta =result[0].PRO_CART_NOMB;
-
-                  if (result[0].PRO_TEXT!=null) $scope.nombreLinkDocumentoProyecto =result[0].PRO_TEXT;
-                  if (result[0].PRO_CART_AVAL!=null) $scope.nombreLinkCartaAval =result[0].PRO_CART_AVAL;
+                convocatoria.$promise.then(function(result){
+                      $scope.convocatoria = result;
 
 
-                  nombreDocumentoProyecto = $scope.nombreDocumentoProyecto;
-                  nombreArchivoCarta =$scope.nombreArchivoCarta;
+                      datosPropuesta.$promise.then(function(result){
+                          $scope.viewDatos = result;                 
+
+                          $scope.nombreDocumentoProyecto="";
+                          $scope.nombreArchivoCarta ="";
+
+                          if (result[0].PRO_TEXT_NOMB!=null) $scope.nombreDocumentoProyecto =result[0].PRO_TEXT_NOMB;
+                          if (result[0].PRO_CART_NOMB!=null) $scope.nombreArchivoCarta =result[0].PRO_CART_NOMB;
+
+                          if (result[0].PRO_TEXT!=null) $scope.nombreLinkDocumentoProyecto =result[0].PRO_TEXT;
+                          if (result[0].PRO_CART_AVAL!=null) $scope.nombreLinkCartaAval =result[0].PRO_CART_AVAL;
 
 
-                  var id = ($route.current.params.idPropuesta) ? parseInt($route.current.params.idPropuesta) :0 ;
-          
-                  if(id > 0)          
-                    {
-                      $scope.buttonText = 'Actualizar';
-                      $scope.tiTulo ='Editando propuesta';
-                    }
-                    else
-                    {
-                      $scope.buttonText = 'Guardar';
-                      $scope.tiTulo ='Creando propuesta';
-                    }
-                     $('#myModal').hide();  
-              });
-        });
+                          nombreDocumentoProyecto = $scope.nombreDocumentoProyecto;
+                          nombreArchivoCarta =$scope.nombreArchivoCarta;
+
+
+                          var id = ($route.current.params.idPropuesta) ? parseInt($route.current.params.idPropuesta) :0 ;
+                  
+                          if(id > 0)          
+                            {
+                              $scope.buttonText = 'Actualizar';
+                              $scope.tiTulo ='Editando propuesta';
+                            }
+                            else
+                            {
+                              $scope.buttonText = 'Guardar';
+                              $scope.tiTulo ='Creando propuesta';
+                            }
+                             $('#myModal').hide();  
+                      });
+                });
+
+
+            });
+
+
      $scope.uploadFileTexto = function (arch) {
  		    
 		    if (arch.files[0].size>2000000)
@@ -99,7 +112,51 @@ angular.module('listaTareasApp')
         $scope.$apply();
     }
 
-     
+     $scope.onChangedConvocatoria = function() {
+
+      var dato =$scope.$$childTail.selConvocatoria;
+
+      var datos = {
+        Accion:"S",
+        SQL:"SELECT conv.CON_CODI, tipoConv.TCO_DESC, " + 
+                         " conv.CON_NUME,conv.CON_DESC,conv.CON_TEXT,conv.CON_TEXT_NOMB,conv.CON_RESO,conv.CON_RESO_NOMB, " + 
+                         " conv.CON_FECH_INIC,conv.CON_FECH_FINA,conv.CON_TIPO_CONV_CODI,conv.CON_PUNT_TOTA  " +
+                         " FROM sgi_conv as conv join sgi_tipo_conv as tipoConv on " + 
+                         " tipoConv.TCO_CODI = conv.CON_TIPO_CONV_CODI where " + 
+                         " conv.CON_CODI =" + dato.CON_CODI
+      }
+
+      var convocatoria = TareasResource.SQL(datos);
+          convocatoria.then(function(result) {
+
+            var d = result.data[0];
+
+            $scope.$$childTail.numero = d.CON_NUME;
+            $scope.$$childTail.descripcion =d.CON_DESC;
+            $scope.$$childTail.puntaje =d.CON_PUNT_TOTA;
+            $scope.$$childTail.fechaInicio =moment(d.CON_FECH_INIC).format("DD MMMM YYYY");
+            $scope.$$childTail.fechaFinal =moment(d.CON_FECH_FINA).format("DD MMMM YYYY");
+            $scope.$$childTail.nombreLinkArchivoResolucion =d.CON_RESO;
+            $scope.$$childTail.nombreArchivoResolucion =d.CON_RESO_NOMB;
+
+            $scope.$$childTail.nombreLinkArchivoTexto =d.CON_TEXT;
+            $scope.$$childTail.nombreArchivoTexto =d.CON_TEXT_NOMB;
+            
+
+
+            $scope.$$childTail.selTipoConvocatoria =Enumerable.From($scope.$$childTail.tipoConvocatoria)
+                             .Where(function (x) { return x.TCO_CODI ==  d.CON_TIPO_CONV_CODI })
+                             .ToArray()[0].TCO_DESC;
+
+           
+            
+            
+            
+             // CON_TIPO_CONV_CODI
+
+          });
+
+     }
 
     $scope.save = function(reg){
 
