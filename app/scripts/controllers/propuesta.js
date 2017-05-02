@@ -3,27 +3,61 @@
 .directive('myModalpropuesta', function() {
        return {
         restrict : 'AE',    
-        controller: [ "$scope","$window",'$http', function($scope,$window,$http) {
+        controller: [ "$scope","$window",'$http','TareasResource', function($scope,$window,$http,TareasResource) {
             $scope.afirmaEliminar = function() {
-                      var Codigo = $('#myModal').data('id').toString();  
-                    $http.post("scripts/services/api.php?url=executeSQL/D/DELETE FROM sgi_prop" +
-                                " WHERE PRO_CODI = " + Codigo, $scope.formData)
-                        .success(function(data) {  
+                      var Codigo = $('#myModal').data('id').toString(); 
 
-                        $('#tablepropuesta').bootstrapTable('remove', {
-                                field: 'PRO_CODI',
-                                values: Codigo
-                        });            
-                        $('#myModal').modal('hide');
-                       
-                    })
-                        .error(function(data) {
-                            $('#myModal').modal('hide');
-                            alert(data['msg']);                        
+                      var datos = 
+                      {
+                        Accion:'S',
+                        SQL:'SELECT * FROM sgi_prop_inve WHERE PIN_PROP_CODI=' + Codigo + ' AND PIN_TVIN_CODI!=1'
+                      }
+
+
+                      var eliminar = TareasResource.SQL(datos);
+                        eliminar.then(function(result) {
+
+                            if (result.data[0]!=null)
+                            {
+                                $window.alert("Existen investigadores relacionados en la propuesta");
+                                return;
+                            }
+
+                             datos = 
+                                  {
+                                    Accion:'D',
+                                    SQL:'DELETE FROM sgi_prop_inve WHERE PIN_PROP_CODI=' + Codigo + ' AND PIN_TVIN_CODI=1'
+                                  }
+
+                               var eliminar = TareasResource.SQL(datos);
+                                eliminar.then(function(result) {   
+                                     $http.post("scripts/services/api.php?url=executeSQL/D/DELETE FROM sgi_prop" +
+                                " WHERE PRO_CODI = " + Codigo, $scope.formData)
+                                .success(function(data) {  
+
+
+
+
+                                $('#tablepropuesta').bootstrapTable('remove', {
+                                        field: 'PRO_CODI',
+                                        values: Codigo
+                                });            
+                                $('#myModal').modal('hide');
+                               
+                                 })
+                                .error(function(data) {
+                                    $('#myModal').modal('hide');
+                                    alert(data['msg']);       
+
+                                });                              
+
+                        });
+
+                                   
             });  
-                };
-               
-            }],
+         };
+         
+       }],
 
         template : '<div class="modal fade" id="myModal"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">' + 
                     '<div class="modal-dialog">' +
@@ -184,11 +218,13 @@
              
 
         };
+           var inve = JSON.parse($window.sessionStorage.getItem('investigador'));
          var datos = {
 
             Accion:"S",
             SQL:"SELECT P.PRO_CODI,P.PRO_NOMB,C.CON_DESC,P.PRO_TEXT,P.PRO_TEXT_NOMB,P.PRO_CART_AVAL,P.PRO_CART_NOMB  " + 
-                    " FROM sgi_prop AS P INNER JOIN sgi_conv AS C  ON C.CON_CODI=P.PRO_CONV_CODI INNER JOIN sgi_prop_inve AS PI ON PI.PIN_PROP_CODI=P.PRO_CODI WHERE PI.PIN_INVE_CODI=" + user.Id
+                    " FROM sgi_prop AS P INNER JOIN sgi_conv AS C  ON C.CON_CODI=P.PRO_CONV_CODI INNER JOIN sgi_prop_inve AS PI ON PI.PIN_PROP_CODI=P.PRO_CODI " + 
+                    " WHERE PI.PIN_INVE_CODI=" + inve.INV_CODI + " AND PI.PIN_TVIN_CODI=1" 
 
         }
 

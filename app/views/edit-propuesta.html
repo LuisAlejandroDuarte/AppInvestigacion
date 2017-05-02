@@ -2,7 +2,7 @@
 <mostrariconoesperapropuesta></mostrariconoesperapropuesta>
 <div class="margenTop">
 <div class="view">
-<div class="panel panel-primary drop-shadow" style="width:65%;height:auto;  margin-left:17%; margin-top:10%">
+<div class="panel panel-primary drop-shadow" style="width:65%;height:auto;  margin-left:17%; margin-top:5%">
   <div class="panel-heading"><h>{{tiTulo}}</h></div>
    <tabset active="active">
       <tab  index="0" select="mostrarboton2()">
@@ -116,38 +116,39 @@
   <div class="panel-body">
     <div class="container-fluid">
       <div class="row">           
-        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+        <div class="col-lg-9 col-md-9 col-xs-12 col-sm-12">
           <div class="form-group">
             <label>TÍTULO PROPUESTA INVESTIGACIÓN</label> 
-              <input name="name" ng-model="viewDatos[0].PRO_NOMB" type= "text" class= "form-control input-sm" placeholder="Número" autofocus required/>  
+              <input name="name" ng-model="viewDatos[0].PRO_NOMB" type= "text" class= "form-control input-sm" placeholder="Título" autofocus required/>  
           </div>
         </div>
-         <!--  <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">
+       
+          <div class="col-lg-3 col-md-3 col-xs-12 col-sm-12">
           <div class="form-group">
             <label>Convocatoria</label> 
              <select class="form-control input-sm"  ng-model="viewDatos[0].PRO_CONV_CODI" 
               ng-options="opt.CON_CODI as opt.CON_DESC for opt in convocatoria" required>
           </select>  
           </div>
-        </div> -->
+        </div>
       </div>
       <div class="row">
         <div class="col-lg-4 col-md-4 col-xs-12 col-sm-12">
           <div class="form-group">
             <label>INVESTIGADOR</label> 
-              <select name="nameSelInvestigador" ng-model="selInvestigador" class= "form-control input-sm" ng-options="item as item.Nombre for item in listInvestigadores"></select>  
+              <select name="nameSelInvestigador" ng-model="selInvestigador" class= "form-control input-sm" ng-change="onChangeInvestigador(selInvestigador)" ng-options="item as item.Nombre for item in listInvestigadores"></select>  
           </div>
         </div>
           <div class="col-lg-4 col-md-4 col-xs-12 col-sm-12">
             <div class="form-group">
               <label>ROL</label> 
-              <select name="nameSelRol" ng-model="selRol" class= "form-control input-sm" ng-options="item as item.Nombre for item in listRoles"></select>  
+              <select name="nameSelRol" ng-model="selRol" class= "form-control input-sm" ng-options="item as item.TIV_DESC for item in listRoles"></select>  
             </div>
         </div>
          <div class="col-lg-4 col-md-2 col-xs-12 col-sm-12">
             <div class="form-group">
               <label>GRUPO INVESTIGACIÓN</label> 
-              <select name="nameSelGrupo" ng-model="selGrupo" class= "form-control input-sm" ng-options="item as item.Nombre for item in listGrupoInvestigacion"></select>  
+              <select name="nameSelGrupo" ng-model="selGrupo" class= "form-control input-sm" ng-options="item as item.gru_nomb for item in listGrupoInvestigacion"></select>  
             </div>
         </div>         
       </div>
@@ -161,15 +162,42 @@
          <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">
           <div class="form-group">
             <label>PROGRAMA</label> 
-              <input class="form-control input-sm" ng-model="escuela" readonly />
+              <input class="form-control input-sm" ng-model="programa" readonly />
           </div>
         </div>                 
       </div>
       <div class="row" style="margin-bottom:20px">
           <div class="col-lg-2 col-md-2 col-xs-12 col-sm-12">
-            <button class="btn btn-success input-sm"><i class="glyphicon glyphicon-plus"></i>Agregar</button>
+            <button class="btn btn-success input-sm" ng-click="onClicInvestigador()"><i class="glyphicon glyphicon-plus"></i></button>
         </div>
       </div>
+
+      <div class="row">
+          <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+            <div style="height:200px;overflow-y:auto">
+              <ul class="list-group" ng-repeat="item in listInvestigadorPropuesta">
+                <li class="list-group-item">
+                  <div class="row">
+                    <div class="col-lg-4 col-md-4 col-xs-12 col-sm-12">
+                        {{item.nombreInvestigador}}
+                    </div>  
+                    <div class="col-lg-3 col-md-3 col-xs-12 col-sm-12">
+                        {{item.Rol}}
+                    </div>  
+                    <div class="col-lg-4 col-md-4 col-xs-12 col-sm-12">
+                        {{item.Grupo}}
+                    </div>  
+                     <div class="col-lg-1 col-md-1 col-xs-12 col-sm-12">
+                        <button class="btn btn-danger input-sm" ng-click="onClicEliminarInvestigador(this)" ng-show="item.idRol!=1"><i class="glyphicon glyphicon-trash" title="Eliminar"></i> </button>
+                    </div>  
+                   </div>                   
+                </li>
+              </ul>
+            </div>
+          </div>  
+      </div>
+
+
      <!--  <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
           <div class="form-group">
@@ -185,7 +213,7 @@
         </div>
       </div>     -->
           <div class="row">
-      <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">   
+      <div class="col-lg-5 col-md-5 col-xs-12 col-sm-12">   
          <div class="form-group">
             <label>Documento del Proyecto</label>    
                 <span class="fileinput-button glyphicon glyphicon-file"  ng-class="{disabled:    disabled}" style="margin-left:20px"><input title="Cargar documento" type="file" name="files" onchange="angular.element(this).scope().uploadFileTexto(this) " accept="application/pdf, application/msword"> 
@@ -198,7 +226,7 @@
                </div>                              
          </div>
       </div>
-      <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">   
+      <div class="col-lg-5 col-md-5 col-xs-12 col-sm-12">   
          <div class="form-group">
              <label>Subir Carta Aval</label>
                <span class="fileinput-button glyphicon glyphicon-file"  ng-class="{disabled:    disabled}" style="margin-left:20px"><input title="Cargar documento" type="file"  name="files" onchange="angular.element(this).scope().uploadFileCarta(this) " accept="application/pdf,application/msword"> 
@@ -210,7 +238,13 @@
                  </div>
               </div>                          
          </div>
-      </div>            
+      </div>   
+       <div class="col-lg-2 col-md-2 col-xs-12 col-sm-12">
+          <div class="form-group">
+            <label>FECHA HORA</label> 
+              <input name="name" ng-model="viewDatos[0].PRO_FECH_REGI" type= "text" class= "form-control input-sm" readonly/>  
+          </div>
+        </div>         
     </div>
   </div> 
 </div>

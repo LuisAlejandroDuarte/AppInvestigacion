@@ -22,7 +22,7 @@ angular.module('listaTareasApp')
       var fileCartaAval;
       var nombreDocumentoProyecto;
       var nombreArchivoCarta
-
+        moment.locale('es');
          var user = JSON.parse($window.sessionStorage.getItem('usuario'));
 
         if (user==null || user==undefined)
@@ -39,6 +39,8 @@ angular.module('listaTareasApp')
            var tipoConvocatoria = TareasResource.SQL({Accion: 'S',
                              SQL: 'SELECT TCO_CODI,TCO_DESC FROM sgi_tipo_conv'}); 
         tipoConvocatoria.then(function(result2){
+
+
               $scope.$$childTail.tipoConvocatoria = result2.data;
 
 
@@ -49,7 +51,9 @@ angular.module('listaTareasApp')
 
 
                       datosPropuesta.$promise.then(function(result){
-                          $scope.viewDatos = result;                 
+                          $scope.viewDatos = result;  
+                          if (result[0].PRO_FECH_REGI!=null)
+                            $scope.viewDatos[0].PRO_FECH_REGI =moment(result[0].PRO_FECH_REGI).format("DD MMMM YYYY hh:mm A");  
 
                           $scope.nombreDocumentoProyecto="";
                           $scope.nombreArchivoCarta ="";
@@ -78,11 +82,155 @@ angular.module('listaTareasApp')
                               $scope.tiTulo ='Creando propuesta';
                             }
                              $('#myModal').hide();  
+                              var user = JSON.parse($window.sessionStorage.getItem('usuario'));
+                               var inve = JSON.parse($window.sessionStorage.getItem('investigador'));
+                           var select = TareasResource.SQL({Accion: 'S',
+                             SQL: "SELECT concat(INV_NOMB,' ',INV_APEL) AS Nombre,INV_CODI FROM sgi_inve WHERE INV_CODI!=" + inve.INV_CODI  }); 
+
+                              select.then(function(investigador){
+
+
+                                  $scope.listInvestigadores = investigador.data;
+
+                                  select = TareasResource.SQL({Accion: 'S',
+                                   SQL: "SELECT TIV_CODI,TIV_DESC FROM sgi_tipo_vinc WHERE TIV_CODI!=1"}); 
+
+                                    select.then(function(vinculacion){
+
+                                      $scope.listRoles=vinculacion.data;
+
+                                       if (id>0)
+                                       {
+                                         select = TareasResource.SQL({Accion: 'S',
+                                         SQL: "SELECT I.INV_CODI AS idInvestigador, concat(I.INV_NOMB,' ',I.INV_APEL) AS nombreInvestigador, " +
+                                              " TV.TIV_CODI AS idRol,TV.TIV_DESC AS Rol,G.gru_codi AS idGrupo,G.gru_nomb As Grupo,I.INV_PROG_ACAD_CODI AS idPrograma,PA.PAC_ESCU_CODI AS idEscuela " +
+                                             " FROM sgi_prop_inve AS PI INNER JOIN sgi_inve AS I ON PI.PIN_INVE_CODI=I.INV_CODI  INNER JOIN sgi_tipo_vinc As TV ON TV.TIV_CODI = PI.PIN_TVIN_CODI" +
+                                             " LEFT JOIN sgi_grup As G ON G.gru_codi=PI.PIN_TGRU_CODI INNER JOIN sgi_prog_acad AS PA ON PA.PAC_CODI=I.INV_PROG_ACAD_CODI WHERE PI.PIN_PROP_CODI =" + id }); 
+
+                                          select.then(function(investigador){
+
+                                            if (investigador.data[0]!=null)
+                                                $scope.listInvestigadorPropuesta=investigador.data;
+
+
+
+                                          }); 
+                                       }
+                                      
+                                    });
+
+                              });    
+
                       });
                 });
 
 
             });
+
+  
+      $scope.onChangeInvestigador = function(investigador) {
+
+           $('#myModal').show();  
+          var datos = {
+            Accion:'S',
+            SQL:'SELECT P.PAC_NOMB AS Programa,P.PAC_CODI, E.ESC_NOMB AS Escuela,E.ESC_CODI FROM sgi_inve AS I INNER JOIN sgi_prog_acad AS P ON P.PAC_CODI = I.INV_PROG_ACAD_CODI INNER JOIN sgi_escu AS E ON E.ESC_CODI = P.PAC_ESCU_CODI WHERE I.INV_CODI=' + investigador.INV_CODI
+
+          }
+
+              var select = TareasResource.SQL(datos);
+              select.then(function(result) {
+
+                 $scope.escuela = "";
+                 $scope.programa ="";
+                 $scope.idEscuela="";
+                 $scope.idPrograma="";
+
+                if (result.data[0]!=null)
+                {
+                  $scope.escuela = result.data[0].Escuela;
+                  $scope.idEscuela = result.data[0].ESC_CODI;                  
+                  $scope.programa =result.data[0].Programa;
+                  $scope.idPrograma = result.data[0].PAC_CODI;
+                }
+
+
+                  var select = TareasResource.SQL({Accion: 'S',
+                  SQL: "SELECT G.gru_codi,G.gru_nomb FROM sgi_inve_grup AS IG INNER JOIN sgi_grup AS G ON G.gru_codi=IG.igr_grup_codi WHERE IG.igr_inve_iden=" + investigador.INV_CODI  }); 
+
+                   select.then(function(grupo){
+
+                      $scope.listGrupoInvestigacion=[];
+                      if (grupo.data[0]!=null)
+                        $scope.listGrupoInvestigacion = grupo.data;
+
+                     $('#myModal').hide();  
+                 });
+
+              });
+
+      }
+
+
+      $scope.onClicEliminarInvestigador = function(item) {
+        
+        $scope.listInvestigadorPropuesta.splice(item.$index,1);
+            
+
+      }
+
+    $scope.onClicInvestigador = function() {
+        
+      if ($scope.$$childTail.selInvestigador==undefined)
+      {
+        $window.alert("Debe seleccionar un investigador");
+        return;
+      }
+
+      if ($scope.idEscuela=="")
+      {
+        $window.alert("Falta la escuela del Investigador");
+        return;
+      }
+
+       if ($scope.idPrograma=="")
+      {
+        $window.alert("Falta el programa del Investigador");
+        return;
+      }
+
+       if ($scope.$$childTail.selRol==undefined)
+      {
+        $window.alert("Debe seleccionar un Rol");
+        return;
+      }
+
+      if ($scope.$$childTail.selGrupo==undefined)
+      {
+        $window.alert("Debe seleccionar un grupo");
+        return;
+      }
+
+      var objectInve = Enumerable.From($scope.listInvestigadorPropuesta)
+                             .Where(function (x) { return x.idInvestigador ==  $scope.$$childTail.selInvestigador.INV_CODI })
+                             .ToArray()[0];
+
+      if (objectInve!=null)
+      {
+         $window.alert("El investigador ya esta incluido");
+          return;
+      }
+
+
+        if ($scope.listInvestigadorPropuesta ==undefined)
+            $scope.listInvestigadorPropuesta =[];
+
+         $scope.listInvestigadorPropuesta.splice(0,0,{nombreInvestigador:$scope.$$childTail.selInvestigador.Nombre,
+                                                      idInvestigador:$scope.$$childTail.selInvestigador.INV_CODI,
+                                                      idRol:$scope.$$childTail.selRol.TIV_CODI,Rol:$scope.$$childTail.selRol.TIV_DESC,
+                                                      idGrupo:$scope.$$childTail.selGrupo.gru_codi,Grupo:$scope.$$childTail.selGrupo.gru_nomb,
+                                                      idEscuela:$scope.idEscuela,idPrograma:$scope.idPrograma});
+
+    }
 
 
      $scope.uploadFileTexto = function (arch) {
@@ -165,19 +313,50 @@ angular.module('listaTareasApp')
        if (id==0)
        {
         
+        var fecha = new Date();
+
         var datos =  {
             Accion: 'ADJUNTO',
-            SQL: "INSERT INTO  sgi_prop (PRO_NOMB,PRO_LINK_GLAC,PRO_LINK_CVLA,PRO_CONV_CODI)" +
+            SQL: "INSERT INTO  sgi_prop (PRO_NOMB,PRO_LINK_GLAC,PRO_LINK_CVLA,PRO_CONV_CODI,PRO_FECH_REGI)" +
             " VALUES ('" + reg.PRO_NOMB + "','" + reg.PRO_LINK_GLAC  + "'," +
-            " '" + reg.PRO_LINK_CVLA + "'," + reg.PRO_CONV_CODI + ")"
+            " '" + reg.PRO_LINK_CVLA + "'," + reg.PRO_CONV_CODI + ",'" + moment(new Date()).format("YYYY-MM-DD HH:mm") + "')"
         };
          TareasResource.enviararchivo(datos).then(function(result) { 
 
               var idPropuesta = result.data.split('@')[1];
-            
-              var consulta = TareasResource.SQL({Accion: 'I',
-                         SQL: "INSERT INTO  sgi_prop_inve (PIN_INVE_CODI,PIN_PROP_CODI) " + 
-                         " VALUES (" + user.Id + "," + idPropuesta + ")"}); 
+               
+              var insert = [];
+
+              if ($scope.listInvestigadorPropuesta!=undefined)
+              {
+
+              angular.forEach($scope.listInvestigadorPropuesta, function(value, key){
+
+                insert.splice(0,0,{Accion:'I',SQL:'INSERT INTO  sgi_prop_inve (PIN_INVE_CODI,PIN_PROP_CODI,PIN_TVIN_CODI,PIN_TGRU_CODI,PIN_TESC_CODI,PIN_TPRO_CODI)' +
+                 ' VALUES ('+  value.idInvestigador + ',' + idPropuesta + ','+ value.idRol + ',' + value.idGrupo +','+ value.idEscuela + ','+ value.idPrograma +')'})
+
+
+               });
+
+                   var user = JSON.parse($window.sessionStorage.getItem('usuario'));
+                     var inve = JSON.parse($window.sessionStorage.getItem('investigador'));
+                 insert.splice(0,0,{Accion:'I',SQL:'INSERT INTO  sgi_prop_inve (PIN_INVE_CODI,PIN_PROP_CODI,PIN_TVIN_CODI)' +
+                 ' VALUES ('+  inve.INV_CODI + ',' + idPropuesta + ',1)'})
+
+             }
+             else
+             {
+
+                var user = JSON.parse($window.sessionStorage.getItem('usuario'));
+                 var inve = JSON.parse($window.sessionStorage.getItem('investigador'));
+                 insert.splice(0,0,{Accion:'I',SQL:'INSERT INTO  sgi_prop_inve (PIN_INVE_CODI,PIN_PROP_CODI,PIN_TVIN_CODI)' +
+                 ' VALUES ('+  inve.INV_CODI + ',' + idPropuesta + ',1)'})
+             }
+
+
+
+
+              var consulta = TareasResource.SQLMulti(insert); 
                       consulta.then(function(result){
                             var fd = new FormData();                        
                      fd.append('id',idPropuesta); 
@@ -187,10 +366,10 @@ angular.module('listaTareasApp')
                     if (fileDocumentoProyecto!=undefined) fd.append('PROTEXTO', fileDocumentoProyecto);                                                    
                     if (fileCartaAval!=undefined) fd.append('PROCARTA', fileCartaAval);                                                                                
                     TareasResource.enviararchivobinario(fd).then(function(result1) { 
-                 
+                      
                           $('#myModal').hide();     
                           $window.alert("INGRESADO");           
-                          $location.path('/propuesta');                       
+                           $location.path('/edit-propuesta/' + idPropuesta);           
                     });            
                 });              
           });           
@@ -218,9 +397,34 @@ angular.module('listaTareasApp')
                 " WHERE PRO_CODI=" + id
             };
              TareasResource.enviararchivo(datos).then(function(result) { 
-                $window.alert(result.data);
-                 $('#myModal').hide();  
-                 $location.path('/propuesta'); 
+
+                 var insert = [];
+
+
+              if ($scope.listInvestigadorPropuesta!=undefined)
+              {
+
+              angular.forEach($scope.listInvestigadorPropuesta, function(value, key){
+
+                if (value.idRol!=1)
+                  insert.splice(0,0,{Accion:'I',SQL:'INSERT INTO  sgi_prop_inve (PIN_INVE_CODI,PIN_PROP_CODI,PIN_TVIN_CODI,PIN_TGRU_CODI,PIN_TESC_CODI,PIN_TPRO_CODI)' +
+                  ' VALUES ('+  value.idInvestigador + ',' + id + ','+ value.idRol + ',' + value.idGrupo +','+ value.idEscuela + ','+ value.idPrograma +')'})
+
+               });
+             }
+
+              var inve = JSON.parse($window.sessionStorage.getItem('investigador'));
+              insert.splice(0,0,{Accion:'D',SQL:'DELETE FROM sgi_prop_inve WHERE PIN_PROP_CODI=' + id + ' AND PIN_TVIN_CODI!=1'})
+
+
+              var consulta = TareasResource.SQLMulti(insert); 
+                      consulta.then(function(result){
+
+                         $window.alert("Actualizado");
+                         $('#myModal').hide();  
+                          $location.path('/edit-propuesta/' + id); 
+                      });
+               
               });    
            });       
         }

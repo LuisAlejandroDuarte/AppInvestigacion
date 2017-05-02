@@ -382,10 +382,11 @@ angular.module("listaTareasApp", ['ngRoute','ngAnimate','ngLocale', 'ngResource'
         controller: 'editPropuesta',
          resolve: {
           datosPropuesta: function($route,TareasResource){
+          
             var propuestaID = parseInt($route.current.params.idPropuesta); 
 
              return    TareasResource.execute.query({Accion: 'S',
-                         SQL: "SELECT P.PRO_LINK_CVLA, P.PRO_LINK_GLAC, P.PRO_CODI,P.PRO_NOMB,C.CON_DESC,P.PRO_TEXT,P.PRO_TEXT_NOMB,P.PRO_CART_AVAL,P.PRO_CART_NOMB,P.PRO_CONV_CODI   " + 
+                         SQL: "SELECT P.PRO_LINK_CVLA,P.PRO_FECH_REGI, P.PRO_LINK_GLAC, P.PRO_CODI,P.PRO_NOMB,C.CON_DESC,P.PRO_TEXT,P.PRO_TEXT_NOMB,P.PRO_CART_AVAL,P.PRO_CART_NOMB,P.PRO_CONV_CODI   " + 
                         " FROM sgi_prop AS P INNER JOIN sgi_conv AS C ON C.CON_CODI=P.PRO_CONV_CODI  WHERE " + 
                         " P.PRO_CODI=" + propuestaID });
 
