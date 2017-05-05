@@ -223,8 +223,8 @@
 
             Accion:"S",
             SQL:"SELECT P.PRO_CODI,P.PRO_NOMB,C.CON_DESC,P.PRO_TEXT,P.PRO_TEXT_NOMB,P.PRO_CART_AVAL,P.PRO_CART_NOMB  " + 
-                    " FROM sgi_prop AS P INNER JOIN sgi_conv AS C  ON C.CON_CODI=P.PRO_CONV_CODI INNER JOIN sgi_prop_inve AS PI ON PI.PIN_PROP_CODI=P.PRO_CODI " + 
-                    " WHERE PI.PIN_INVE_CODI=" + inve.INV_CODI + " AND PI.PIN_TVIN_CODI=1" 
+                    " FROM sgi_prop AS P INNER JOIN sgi_conv AS C  ON C.CON_CODI=P.PRO_CONV_CODI  " + 
+                    " WHERE P.PRO_INVE_CODI=" + inve.INV_CODI 
 
         }
 

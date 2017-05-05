@@ -83,9 +83,9 @@ angular.module('listaTareasApp')
                             }
                              $('#myModal').hide();  
                               var user = JSON.parse($window.sessionStorage.getItem('usuario'));
-                               var inve = JSON.parse($window.sessionStorage.getItem('investigador'));
+                             
                            var select = TareasResource.SQL({Accion: 'S',
-                             SQL: "SELECT concat(INV_NOMB,' ',INV_APEL) AS Nombre,INV_CODI FROM sgi_inve WHERE INV_CODI!=" + inve.INV_CODI  }); 
+                             SQL: "SELECT concat(INV_NOMB,' ',INV_APEL) AS Nombre,INV_CODI FROM sgi_inve "  }); 
 
                               select.then(function(investigador){
 
@@ -93,7 +93,7 @@ angular.module('listaTareasApp')
                                   $scope.listInvestigadores = investigador.data;
 
                                   select = TareasResource.SQL({Accion: 'S',
-                                   SQL: "SELECT TIV_CODI,TIV_DESC FROM sgi_tipo_vinc WHERE TIV_CODI!=1"}); 
+                                   SQL: "SELECT TIV_CODI,TIV_DESC FROM sgi_tipo_vinc"}); 
 
                                     select.then(function(vinculacion){
 
@@ -103,9 +103,12 @@ angular.module('listaTareasApp')
                                        {
                                          select = TareasResource.SQL({Accion: 'S',
                                          SQL: "SELECT I.INV_CODI AS idInvestigador, concat(I.INV_NOMB,' ',I.INV_APEL) AS nombreInvestigador, " +
-                                              " TV.TIV_CODI AS idRol,TV.TIV_DESC AS Rol,G.gru_codi AS idGrupo,G.gru_nomb As Grupo,I.INV_PROG_ACAD_CODI AS idPrograma,PA.PAC_ESCU_CODI AS idEscuela " +
-                                             " FROM sgi_prop_inve AS PI INNER JOIN sgi_inve AS I ON PI.PIN_INVE_CODI=I.INV_CODI  INNER JOIN sgi_tipo_vinc As TV ON TV.TIV_CODI = PI.PIN_TVIN_CODI" +
-                                             " LEFT JOIN sgi_grup As G ON G.gru_codi=PI.PIN_TGRU_CODI INNER JOIN sgi_prog_acad AS PA ON PA.PAC_CODI=I.INV_PROG_ACAD_CODI WHERE PI.PIN_PROP_CODI =" + id }); 
+                                              " TV.TIV_CODI AS idRol,TV.TIV_DESC AS Rol,G.gru_codi AS idGrupo,G.gru_nomb As Grupo,I.INV_PROG_ACAD_CODI AS idPrograma,PA.PAC_ESCU_CODI AS idEscuela, " +
+                                              " PA.PAC_NOMB AS programa,E.ESC_NOMB AS escuela " +
+                                             " FROM sgi_prop_inve AS PI INNER JOIN sgi_inve AS I ON PI.PIN_INVE_CODI=I.INV_CODI  INNER JOIN sgi_tipo_vinc As TV ON TV.TIV_CODI = PI.PIN_TVIN_CODI " +
+                                             " LEFT JOIN sgi_grup As G ON G.gru_codi=PI.PIN_TGRU_CODI INNER JOIN sgi_prog_acad AS PA ON PA.PAC_CODI=I.INV_PROG_ACAD_CODI" +
+                                             " INNER JOIN sgi_escu AS E ON " +
+                                             " E.ESC_CODI=PA.PAC_ESCU_CODI WHERE PI.PIN_PROP_CODI =" + id }); 
 
                                           select.then(function(investigador){
 
@@ -228,8 +231,12 @@ angular.module('listaTareasApp')
                                                       idInvestigador:$scope.$$childTail.selInvestigador.INV_CODI,
                                                       idRol:$scope.$$childTail.selRol.TIV_CODI,Rol:$scope.$$childTail.selRol.TIV_DESC,
                                                       idGrupo:$scope.$$childTail.selGrupo.gru_codi,Grupo:$scope.$$childTail.selGrupo.gru_nomb,
-                                                      idEscuela:$scope.idEscuela,idPrograma:$scope.idPrograma});
-
+                                                      idEscuela:$scope.idEscuela,idPrograma:$scope.idPrograma,
+                                                      escuela:$scope.escuela,programa:$scope.programa});
+        $scope.escuela = "";
+        $scope.idEscuela = "";                  
+        $scope.programa ="";
+        $scope.idPrograma = "";
     }
 
 
@@ -314,11 +321,11 @@ angular.module('listaTareasApp')
        {
         
         var fecha = new Date();
-
+          var inve = JSON.parse($window.sessionStorage.getItem('investigador'));
         var datos =  {
             Accion: 'ADJUNTO',
-            SQL: "INSERT INTO  sgi_prop (PRO_NOMB,PRO_LINK_GLAC,PRO_LINK_CVLA,PRO_CONV_CODI,PRO_FECH_REGI)" +
-            " VALUES ('" + reg.PRO_NOMB + "','" + reg.PRO_LINK_GLAC  + "'," +
+            SQL: "INSERT INTO  sgi_prop (PRO_INVE_CODI,PRO_NOMB,PRO_LINK_GLAC,PRO_LINK_CVLA,PRO_CONV_CODI,PRO_FECH_REGI)" +
+            " VALUES (" + inve.INV_CODI + ",'" + reg.PRO_NOMB + "','" + reg.PRO_LINK_GLAC  + "'," +
             " '" + reg.PRO_LINK_CVLA + "'," + reg.PRO_CONV_CODI + ",'" + moment(new Date()).format("YYYY-MM-DD HH:mm") + "')"
         };
          TareasResource.enviararchivo(datos).then(function(result) { 

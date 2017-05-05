@@ -178,17 +178,23 @@
               <ul class="list-group" ng-repeat="item in listInvestigadorPropuesta">
                 <li class="list-group-item">
                   <div class="row">
-                    <div class="col-lg-4 col-md-4 col-xs-12 col-sm-12">
+                    <div class="col-lg-2 col-md-2 col-xs-12 col-sm-12">
                         {{item.nombreInvestigador}}
                     </div>  
-                    <div class="col-lg-3 col-md-3 col-xs-12 col-sm-12">
+                    <div class="col-lg-2 col-md-2 col-xs-12 col-sm-12">
                         {{item.Rol}}
                     </div>  
-                    <div class="col-lg-4 col-md-4 col-xs-12 col-sm-12">
+                    <div class="col-lg-2 col-md-2 col-xs-12 col-sm-12">
                         {{item.Grupo}}
                     </div>  
+                    <div class="col-lg-2 col-md-2 col-xs-12 col-sm-12">
+                        {{item.escuela}}
+                    </div>  
+                    <div class="col-lg-3 col-md-3 col-xs-12 col-sm-12">
+                        {{item.programa}}
+                    </div>  
                      <div class="col-lg-1 col-md-1 col-xs-12 col-sm-12">
-                        <button class="btn btn-danger input-sm" ng-click="onClicEliminarInvestigador(this)" ng-show="item.idRol!=1"><i class="glyphicon glyphicon-trash" title="Eliminar"></i> </button>
+                        <button class="btn btn-danger input-sm" ng-click="onClicEliminarInvestigador(this)"><i class="glyphicon glyphicon-trash" title="Eliminar"></i> </button>
                     </div>  
                    </div>                   
                 </li>
