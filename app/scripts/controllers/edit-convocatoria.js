@@ -61,81 +61,95 @@ angular.module('listaTareasApp')
                   if (result.data[0]!=null)
                     $scope.listParametroConvocatoria =result.data;
 
-            $scope.$$childTail.selParametro=$scope.listParametros[0];
+                   $scope.$$childTail.selParametro=$scope.listParametros[0];
 
-             $('#myModal').hide(); 
+                   var propuestas = TareasResource.SQL({Accion:'S',SQL:'SELECT PRO_CODI,PRO_NOMB AS Nombre FROM sgi_prop'});
+                      propuestas.then(function(prop) {
+
+
+                        $scope.listPropuestas=prop.data;
+
+                     $('#myModal').hide(); 
                 
-                  if (id>0)
-                  {
-                    
-                     moment.locale('es');
-                     var day;
-                     var mounth;
-                     var year;
-                     var fechaStr;
-
-                     day = moment(result2[0].CON_FECH_FINA).format("D");
-                     mounth = moment(result2[0].CON_FECH_FINA).format("M");
-                     year = moment(result2[0].CON_FECH_FINA).format("YYYY");
-
-                      fechaStr = year + "," + mounth + "," + day;
-
-                    result2[0].CON_FECH_FINA =new Date(fechaStr); //moment(result[0].CON_FECH_FINA).format("DD-MMMM-YYYY");
-
-                     day = moment(result2[0].CON_FECH_INIC).format("D");
-                     mounth = moment(result2[0].CON_FECH_INIC).format("M");
-                     year = moment(result2[0].CON_FECH_INIC).format("YYYY");
-
-                     fechaStr = year + "," + mounth + "," + day;
-
-
-                    result2[0].CON_FECH_INIC = new Date(fechaStr); //moment(result[0].CON_FECH_INIC).format("DD-MMMM-YYYY");
-                  
-                  $scope.viewDatos = result2;
-                  $scope.viewDatos[0].CON_PUNT_TOTA = parseInt(result2[0].CON_PUNT_TOTA);
-                  nombOld = $scope.viewDatos[0].CON_DESC;
-
-                  $scope.nombreArchivoTexto="";
-                  $scope.nombreArchivoResolucion ="";
-
-                  if (result2[0].CON_TEXT_NOMB!=null) $scope.nombreArchivoTexto =result2[0].CON_TEXT_NOMB;
-                  if (result2[0].CON_RESO_NOMB!=null) $scope.nombreArchivoResolucion =result2[0].CON_RESO_NOMB;
-
-                  if (result2[0].CON_TEXT!=null) $scope.nombreLinkArchivoTexto =result2[0].CON_TEXT;
-                  if (result2[0].CON_RESO!=null) $scope.nombreLinkArchivoResolucion =result2[0].CON_RESO;
-
-
-                  nombreArchivoTexto = $scope.nombreArchivoTexto;
-                  nombreArchivoResolucion =$scope.nombreArchivoResolucion;                   
-
-
-                   $scope.buttonText = 'Actualizar';
-                      $scope.tiTulo ='Editando Convocatoria';
-                 }                                   
-                    else
-                    {
-                      if ($scope.viewDatos==undefined)                        
+                      if (id>0)
                       {
-                       $scope.viewDatos=[]; 
-                        $scope.viewDatos.splice(0,0,{});
+                        
+                         moment.locale('es');
+                         var day;
+                         var mounth;
+                         var year;
+                         var fechaStr;
 
-                       //$scope.viewDatos[0]=[];                           
-                      }
+                         day = moment(result2[0].CON_FECH_FINA).format("D");
+                         mounth = moment(result2[0].CON_FECH_FINA).format("M");
+                         year = moment(result2[0].CON_FECH_FINA).format("YYYY");
 
-                        $scope.viewDatos[0].CON_FECH_FINA = moment(new Date()).format("DD-MMMM-YYYY");
-                        $scope.viewDatos[0].CON_FECH_INIC = moment(new Date()).format("DD-MMMM-YYYY");
-                      $scope.buttonText = 'Guardar';
-                      $scope.tiTulo ='Creando Convocatoria';
-                    }
+                          fechaStr = year + "," + mounth + "," + day;
+
+                        result2[0].CON_FECH_FINA =new Date(fechaStr); //moment(result[0].CON_FECH_FINA).format("DD-MMMM-YYYY");
+
+                         day = moment(result2[0].CON_FECH_INIC).format("D");
+                         mounth = moment(result2[0].CON_FECH_INIC).format("M");
+                         year = moment(result2[0].CON_FECH_INIC).format("YYYY");
+
+                         fechaStr = year + "," + mounth + "," + day;
+
+
+                        result2[0].CON_FECH_INIC = new Date(fechaStr); //moment(result[0].CON_FECH_INIC).format("DD-MMMM-YYYY");
+                      
+                      $scope.viewDatos = result2;
+                      $scope.viewDatos[0].CON_PUNT_TOTA = parseInt(result2[0].CON_PUNT_TOTA);
+                      nombOld = $scope.viewDatos[0].CON_DESC;
+
+                      $scope.nombreArchivoTexto="";
+                      $scope.nombreArchivoResolucion ="";
+
+                      if (result2[0].CON_TEXT_NOMB!=null) $scope.nombreArchivoTexto =result2[0].CON_TEXT_NOMB;
+                      if (result2[0].CON_RESO_NOMB!=null) $scope.nombreArchivoResolucion =result2[0].CON_RESO_NOMB;
+
+                      if (result2[0].CON_TEXT!=null) $scope.nombreLinkArchivoTexto =result2[0].CON_TEXT;
+                      if (result2[0].CON_RESO!=null) $scope.nombreLinkArchivoResolucion =result2[0].CON_RESO;
+
+
+                      nombreArchivoTexto = $scope.nombreArchivoTexto;
+                      nombreArchivoResolucion =$scope.nombreArchivoResolucion;                   
+
+
+                       $scope.buttonText = 'Actualizar';
+                          $scope.tiTulo ='Editando Convocatoria';
+                     }                                   
+                        else
+                        {
+                          if ($scope.viewDatos==undefined)                        
+                          {
+                           $scope.viewDatos=[]; 
+                            $scope.viewDatos.splice(0,0,{});
+
+                           //$scope.viewDatos[0]=[];                           
+                          }
+
+                            $scope.viewDatos[0].CON_FECH_FINA = moment(new Date()).format("DD-MMMM-YYYY");
+                            $scope.viewDatos[0].CON_FECH_INIC = moment(new Date()).format("DD-MMMM-YYYY");
+                          $scope.buttonText = 'Guardar';
+                          $scope.tiTulo ='Creando Convocatoria';
+                        }
+
+                          });
+
+
                  });
-
-
-
 
           });
                    
      });
    });
+
+
+  $scope.onChangePropuesta = function() {
+
+    
+    
+  }
 
     $scope.onClicAgregarParametro = function() {
 
