@@ -83,15 +83,18 @@ angular.module('listaTareasApp')
                                consulta.then(function(result){
                                   $scope.listEvaluadores=[];
                                   if (result.data[0]!=null)
+                                  {
                                        $scope.listEvaluadores=result.data;
 
 
                                          $scope.$$childTail.selPropuesta = Enumerable.From($scope.listPropuestas)
                                          .Where(function (x) { return x.PRO_CODI == result.data[0].PCJU_PCAT_CODI })
                                          .ToArray()[0];
-                                          $scope.onChangePropuesta();
 
+                                         if ($scope.$$childTail.selPropuesta!=null)
+                                            $scope.onChangePropuesta();
 
+                                   }         
                                      $('#myModal').hide(); 
                       
                                     if (id>0)
@@ -354,16 +357,20 @@ angular.module('listaTareasApp')
                TareasResource.enviararchivo(datos).then(function(result) {                   
                            var idConvocatoria = result.data.split('@')[1];
                            var select =[]; 
-                            angular.forEach($scope.listEvaluadores, function(value, key) {
 
-                          var insert = {
-                              Accion:"I",
-                              SQL:"INSERT INTO sgi_prop_conv_juez (PCJU_PCAT_CODI,PCJU_CON_CODI,PCJU_INV_CODI) VALUES (" + $scope.$$childTail.selPropuesta.PRO_CODI + "," +  idConvocatoria + "," + value.INV_CODI + ")"
-                          }                                      
+                           if ($scope.$$childTail.selPropuesta.PRO_CODI!=undefined)
+                           {
+                                angular.forEach($scope.listEvaluadores, function(value, key) {
 
-                           select.splice(0,0,insert);
+                              var insert = {
+                                  Accion:"I",
+                                  SQL:"INSERT INTO sgi_prop_conv_juez (PCJU_PCAT_CODI,PCJU_CON_CODI,PCJU_INV_CODI) VALUES (" + $scope.$$childTail.selPropuesta.PRO_CODI + "," +  idConvocatoria + "," + value.INV_CODI + ")"
+                              }                                      
 
-                        });
+                               select.splice(0,0,insert);
+
+                             });
+                          }
 
                             var resultado =  TareasResource.SQLMulti(select);
                                   resultado.then(function(r) {
@@ -440,6 +447,8 @@ angular.module('listaTareasApp')
                                             
 
                                  var select =[]; 
+                                if ($scope.$$childTail.selPropuesta.PRO_CODI!=undefined)
+                                {
                                   angular.forEach($scope.listEvaluadores, function(value, key) {
 
                                     var insert = {
@@ -451,7 +460,7 @@ angular.module('listaTareasApp')
 
                                   });
 
-
+                               
                                     var insert = {
                                         Accion:"D",
                                         SQL:"DELETE FROM sgi_prop_conv_juez WHERE PCJU_CON_CODI = "+ id
@@ -459,7 +468,7 @@ angular.module('listaTareasApp')
 
                                      select.splice(0,0,insert);
 
-
+                                   }   
                                   var resultado =  TareasResource.SQLMulti(select);
                                         resultado.then(function(r) {
                                        var consulta = TareasResource.SQL({Accion: 'D',
