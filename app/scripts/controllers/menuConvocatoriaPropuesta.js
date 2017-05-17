@@ -53,6 +53,12 @@
 		 $location.path('/inicio');
 	}
 
+	$scope.onClicEvaluacionPropuesta = function() {
+
+		$window.sessionStorage.setItem('tipoUsuario',6);	
+		 $location.path('/inicio');
+
+	}
 
 
  }]);

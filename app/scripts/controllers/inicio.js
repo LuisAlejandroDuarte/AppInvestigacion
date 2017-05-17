@@ -64,9 +64,14 @@ angular.module('listaTareasApp')
           $scope.Titulo ="PROPUESTAS";
         }
 
-          if($window.sessionStorage.getItem('tipoUsuario')==5)
+        if($window.sessionStorage.getItem('tipoUsuario')==5)
         {
           $scope.Titulo ="SEMILLERO";
+        }
+
+         if($window.sessionStorage.getItem('tipoUsuario')==6)
+        {
+          $scope.Titulo ="EVALUACIÓN PROPUESTAS";
         }
 
       if ( $window.sessionStorage.getItem('usuario') == "")
@@ -169,7 +174,7 @@ angular.module('listaTareasApp')
        
 
 
-           if  ($window.sessionStorage.getItem('tipoUsuario')==5 && usr[0].Id_tipo ==1)
+         if  ($window.sessionStorage.getItem('tipoUsuario')==5 && usr[0].Id_tipo ==1)
          {
           $scope.$parent.mnuInvestiga =false;
             $scope.$parent.mnuAdmin = false;

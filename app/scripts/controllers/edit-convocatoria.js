@@ -63,14 +63,16 @@ angular.module('listaTareasApp')
 
                    $scope.$$childTail.selParametro=$scope.listParametros[0];
 
-                   var propuestas = TareasResource.SQL({Accion:'S',SQL:'SELECT PRO_CODI,PRO_NOMB AS Nombre FROM sgi_prop'});
+                   var propuestas = TareasResource.SQL({Accion:'S',SQL:'SELECT PRO_CODI,PRO_NOMB AS Nombre FROM sgi_prop WHERE PRO_CODI NOT IN (SELECT PCJU_PCAT_CODI FROM sgi_prop_conv_juez)'});
                       propuestas.then(function(prop) {
 
 
                         $scope.listPropuestas=prop.data;
 
 
-                      var evaluadores = TareasResource.SQL({Accion:'S',SQL:"SELECT concat(INV_NOMB,' ',INV_APEL) AS Nombre,INV_CODI FROM sgi_inve "});  
+                      var evaluadores = TareasResource.SQL({Accion:'S',SQL:"SELECT concat(I.INV_NOMB,' ',I.INV_APEL) AS Nombre,I.INV_CODI,C.TICA_NOMB As Cargo,C.TICA_CODI,PA.PAC_NOMB As Programa, " +
+                        " PA.PAC_CODI,E.ESC_NOMB AS Escuela,E.ESC_CODI FROM sgi_inve As I INNER JOIN sgi_tipo_cargo AS C ON  " + 
+                        " C.TICA_CODI=I.INV_TICA_CODI INNER JOIN sgi_prog_acad AS PA ON PA.PAC_CODI = I.INV_PROG_ACAD_CODI INNER JOIN sgi_escu As E ON E.ESC_CODI=PA.PAC_ESCU_CODI"});  
 
                         evaluadores.then(function(result){
 
@@ -79,7 +81,10 @@ angular.module('listaTareasApp')
 
 
                                consulta = TareasResource.SQL({Accion: 'S',
-                                SQL: "SELECT I.INV_CODI,concat(I.INV_NOMB,' ',I.INV_APEL) As Nombre,PCJ.PCJU_PCAT_CODI FROM  sgi_prop_conv_juez PCJ INNER JOIN sgi_inve AS I ON I.INV_CODI=PCJ.PCJU_INV_CODI WHERE PCJ.PCJU_CON_CODI =" + id}); 
+                                SQL: "SELECT I.INV_CODI,concat(I.INV_NOMB,' ',I.INV_APEL) As Nombre,PCJ.PCJU_PCAT_CODI,C.TICA_NOMB As Cargo,C.TICA_CODI,PA.PAC_NOMB As Programa, " +
+                               "  PA.PAC_CODI,E.ESC_NOMB AS Escuela,E.ESC_CODI  FROM  sgi_prop_conv_juez PCJ INNER JOIN sgi_inve AS I ON I.INV_CODI=PCJ.PCJU_INV_CODI " +
+                               "  INNER JOIN sgi_tipo_cargo AS C ON  C.TICA_CODI=I.INV_TICA_CODI INNER JOIN sgi_prog_acad AS PA ON PA.PAC_CODI = I.INV_PROG_ACAD_CODI INNER JOIN " +
+                               "  sgi_escu As E ON E.ESC_CODI=PA.PAC_ESCU_CODI WHERE PCJ.PCJU_CON_CODI =" + id}); 
                                consulta.then(function(result){
                                   $scope.listEvaluadores=[];
                                   if (result.data[0]!=null)
@@ -180,8 +185,8 @@ angular.module('listaTareasApp')
     
     var datos = {
         Accion:"S",
-        SQL:"SELECT concat(I.INV_NOMB,' ',I.INV_APEL) AS Investigador,TV.TIV_DESC AS Rol FROM sgi_prop_inve AS PI INNER JOIN sgi_inve AS I  ON  I.INV_CODI = PI.PIN_INVE_CODI INNER JOIN sgi_prog_acad AS PA ON PA.PAC_CODI =PI.PIN_TPRO_CODI INNER JOIN sgi_escu AS E ON " +
-            " E.ESC_CODI = PI.PIN_TESC_CODI INNER JOIN sgi_tipo_vinc As TV ON TV.TIV_CODI=PI.PIN_TVIN_CODI WHERE PI.PIN_PROP_CODI =" + $scope.$$childTail.selPropuesta.PRO_CODI
+        SQL:"SELECT concat(I.INV_NOMB,' ',I.INV_APEL) AS Investigador,TV.TIV_DESC AS Rol,PA.PAC_NOMB As Programa,E.ESC_NOMB As Escuela FROM sgi_prop_inve AS PI INNER JOIN sgi_inve AS I  ON  I.INV_CODI = PI.PIN_INVE_CODI INNER JOIN sgi_prog_acad AS PA ON PA.PAC_CODI =PI.PIN_TPRO_CODI INNER JOIN sgi_escu AS E ON " +
+            " E.ESC_CODI = PI.PIN_TESC_CODI INNER JOIN sgi_tipo_vinc As TV ON TV.TIV_CODI=PI.PIN_TVIN_CODI INNER JOIN sgi_prog_acad AS P ON P.PAC_CODI=PI.PIN_TPRO_CODI  WHERE PI.PIN_PROP_CODI =" + $scope.$$childTail.selPropuesta.PRO_CODI
     }
 
       var lista = TareasResource.SQL(datos);
@@ -200,7 +205,7 @@ angular.module('listaTareasApp')
         $scope.listEvaluadores=[];
        }
 
-       $scope.listEvaluadores.push({Nombre:$scope.$$childTail.selEvaluador.Nombre,INV_CODI:$scope.$$childTail.selEvaluador.INV_CODI});
+       $scope.listEvaluadores.push({Nombre:$scope.$$childTail.selEvaluador.Nombre,INV_CODI:$scope.$$childTail.selEvaluador.INV_CODI,Cargo:$scope.$$childTail.selEvaluador.Cargo,Programa:$scope.$$childTail.selEvaluador.Programa,Escuela:$scope.$$childTail.selEvaluador.Escuela});
 
   }
 
