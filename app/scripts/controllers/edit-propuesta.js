@@ -418,7 +418,7 @@ $scope.mostrarDatos = function(datosPropuesta) {
 
               angular.forEach($scope.listInvestigadorPropuesta, function(value, key){
 
-                if (value.idRol!=1)
+               
                   insert.splice(0,0,{Accion:'I',SQL:'INSERT INTO  sgi_prop_inve (PIN_INVE_CODI,PIN_PROP_CODI,PIN_TVIN_CODI,PIN_TGRU_CODI,PIN_TESC_CODI,PIN_TPRO_CODI)' +
                   ' VALUES ('+  value.idInvestigador + ',' + id + ','+ value.idRol + ',' + value.idGrupo +','+ value.idEscuela + ','+ value.idPrograma +')'})
 

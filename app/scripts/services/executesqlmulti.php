@@ -21,8 +21,9 @@
                         		$resultArray[] = $tuple;         
                      	}  
                      $resultadoselect =$resultadoselect . ';' . json_encode($resultArray);
-            		    
+            		  mysqli_close($conexion);   
             		 $message[0]['estado']='ok';
+
 	 			break;
 	 			case "I" :
 	 			
@@ -30,7 +31,8 @@
        	   			  if ($result)      
               			$message[0] = array('estado'=>'ok','msg' =>'Insertado','valor'=>$result);
           			  else          			  
-              			$message[0] = array('estado'=>'fallo','msg' => mysqli_error($conexion),'sql'=>$SQL);              		              		  
+              			$message[0] = array('estado'=>'fallo','msg' => mysqli_error($conexion),'sql'=>$SQL);        
+              			      		              		  
        	   			//  echo json_encode($message);  
 	 			break;
 
@@ -56,6 +58,7 @@
 
  						  $result = mysqli_query($conexion,$SQL);  
  						  $id = mysqli_insert_id($conexion);
+ 						   mysqli_close($conexion);
  						  array_push($ids,$id); 		
 				break;	 						  				  	
 	 			

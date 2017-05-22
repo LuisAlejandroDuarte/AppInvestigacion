@@ -63,15 +63,11 @@ angular.module('listaTareasApp')
 
                    $scope.$$childTail.selParametro=$scope.listParametros[0];
 
-                   var propuestas = TareasResource.SQL({Accion:'S',SQL:'SELECT PRO_CODI,PRO_NOMB AS Nombre FROM sgi_prop WHERE PRO_CODI NOT IN (SELECT PCJU_PCAT_CODI FROM sgi_prop_conv_juez)'});
-                      propuestas.then(function(prop) {
+                 
 
-
-                        $scope.listPropuestas=prop.data;
-
-
+                    $scope.listEvaluadorInvestigador =[];
                       var evaluadores = TareasResource.SQL({Accion:'S',SQL:"SELECT concat(I.INV_NOMB,' ',I.INV_APEL) AS Nombre,I.INV_CODI,C.TICA_NOMB As Cargo,C.TICA_CODI,PA.PAC_NOMB As Programa, " +
-                        " PA.PAC_CODI,E.ESC_NOMB AS Escuela,E.ESC_CODI FROM sgi_inve As I INNER JOIN sgi_tipo_cargo AS C ON  " + 
+                        " PA.PAC_CODI,E.ESC_NOMB AS Escuela,E.ESC_CODI FROM sgi_inve As I LEFT JOIN sgi_tipo_cargo AS C ON  " + 
                         " C.TICA_CODI=I.INV_TICA_CODI INNER JOIN sgi_prog_acad AS PA ON PA.PAC_CODI = I.INV_PROG_ACAD_CODI INNER JOIN sgi_escu As E ON E.ESC_CODI=PA.PAC_ESCU_CODI"});  
 
                         evaluadores.then(function(result){
@@ -80,10 +76,12 @@ angular.module('listaTareasApp')
                             $scope.listEvaluadorInvestigador = result.data;
 
 
+
+
                                consulta = TareasResource.SQL({Accion: 'S',
                                 SQL: "SELECT I.INV_CODI,concat(I.INV_NOMB,' ',I.INV_APEL) As Nombre,PCJ.PCJU_PCAT_CODI,C.TICA_NOMB As Cargo,C.TICA_CODI,PA.PAC_NOMB As Programa, " +
                                "  PA.PAC_CODI,E.ESC_NOMB AS Escuela,E.ESC_CODI  FROM  sgi_prop_conv_juez PCJ INNER JOIN sgi_inve AS I ON I.INV_CODI=PCJ.PCJU_INV_CODI " +
-                               "  INNER JOIN sgi_tipo_cargo AS C ON  C.TICA_CODI=I.INV_TICA_CODI INNER JOIN sgi_prog_acad AS PA ON PA.PAC_CODI = I.INV_PROG_ACAD_CODI INNER JOIN " +
+                               "  LEFT JOIN sgi_tipo_cargo AS C ON  C.TICA_CODI=I.INV_TICA_CODI INNER JOIN sgi_prog_acad AS PA ON PA.PAC_CODI = I.INV_PROG_ACAD_CODI INNER JOIN " +
                                "  sgi_escu As E ON E.ESC_CODI=PA.PAC_ESCU_CODI WHERE PCJ.PCJU_CON_CODI =" + id}); 
                                consulta.then(function(result){
                                   $scope.listEvaluadores=[];
@@ -91,20 +89,34 @@ angular.module('listaTareasApp')
                                   {
                                        $scope.listEvaluadores=result.data;
 
+                                         var propuestas = TareasResource.SQL({Accion:'S',SQL:'SELECT PRO_CODI,PRO_NOMB AS Nombre FROM sgi_prop WHERE  PRO_CONV_CODI  =' + id  });
+                                        propuestas.then(function(re) {
 
-                                         $scope.$$childTail.selPropuesta = Enumerable.From($scope.listPropuestas)
+                                        $scope.listPropuestas=re.data;
+
+                                             $scope.$$childTail.selPropuesta = Enumerable.From($scope.listPropuestas)
                                          .Where(function (x) { return x.PRO_CODI == result.data[0].PCJU_PCAT_CODI })
                                          .ToArray()[0];
 
                                          if ($scope.$$childTail.selPropuesta!=null)
                                             $scope.onChangePropuesta();
 
-                                   }         
-                                     $('#myModal').hide(); 
+                                      });
+
+
+                                      
+
+                                   }                                             
                       
                                     if (id>0)
                                     {
                                       
+                                        var propuestas = TareasResource.SQL({Accion:'S',SQL:'SELECT PRO_CODI,PRO_NOMB AS Nombre FROM sgi_prop WHERE  PRO_CONV_CODI  =' + id  });
+                                        propuestas.then(function(re) {
+
+
+                                        $scope.listPropuestas=re.data;
+
                                        moment.locale('es');
                                        var day;
                                        var mounth;
@@ -145,9 +157,40 @@ angular.module('listaTareasApp')
                                     nombreArchivoTexto = $scope.nombreArchivoTexto;
                                     nombreArchivoResolucion =$scope.nombreArchivoResolucion;                   
 
+                                      if ($scope.listEvaluadorInvestigador.length>0)
+                                      {
+                                          angular.forEach($scope.listEvaluadorInvestigador,function(value,key) {
+
+                                                var grupo = TareasResource.SQL({Accion:'S',SQL:'SELECT G.gru_codi,G.gru_nomb AS Nombre FROM sgi_grup AS G INNER JOIN sgi_inve_grup AS IG ON IG.IGR_GRUP_CODI=G.gru_codi WHERE IG.IGR_INVE_IDEN=' + value.INV_CODI });
+                                                    grupo.then(function(r){
+                                                        if (r.data[0]!=null)
+                                                          value.listGrupo =r.data;
+
+                                                    });
+
+                                          });
+                                      }
+
+                                       if ($scope.listEvaluadores.length>0)
+                                      {
+                                          angular.forEach($scope.listEvaluadores,function(value,key) {
+
+                                                var grupo = TareasResource.SQL({Accion:'S',SQL:'SELECT G.gru_codi,G.gru_nomb AS Nombre FROM sgi_grup AS G INNER JOIN sgi_inve_grup AS IG ON IG.IGR_GRUP_CODI=G.gru_codi WHERE IG.IGR_INVE_IDEN=' + value.INV_CODI });
+                                                    grupo.then(function(r){
+                                                        if (r.data[0]!=null)
+                                                          value.listGrupo =r.data;
+
+                                                    });
+
+                                          });
+                                      }
+
+
 
                                      $scope.buttonText = 'Actualizar';
                                         $scope.tiTulo ='Editando Convocatoria';
+                                         $('#myModal').hide(); 
+                                     });
                                    }                                   
                                       else
                                       {
@@ -159,14 +202,30 @@ angular.module('listaTareasApp')
                                          //$scope.viewDatos[0]=[];                           
                                         }
 
-                                          $scope.viewDatos[0].CON_FECH_FINA = moment(new Date()).format("DD-MMMM-YYYY");
-                                          $scope.viewDatos[0].CON_FECH_INIC = moment(new Date()).format("DD-MMMM-YYYY");
+                                        $scope.viewDatos[0].CON_FECH_FINA = moment(new Date()).format("DD-MMMM-YYYY");
+                                        $scope.viewDatos[0].CON_FECH_INIC = moment(new Date()).format("DD-MMMM-YYYY");                                        
                                         $scope.buttonText = 'Guardar';
                                         $scope.tiTulo ='Creando Convocatoria';
+
+                                         if ($scope.listEvaluadorInvestigador.length>0)
+                                          {
+                                              angular.forEach($scope.listEvaluadorInvestigador,function(value,key) {
+
+                                                    var grupo = TareasResource.SQL({Accion:'S',SQL:'SELECT G.gru_codi,G.gru_nomb AS Nombre FROM sgi_grup AS G INNER JOIN sgi_inve_grup AS IG ON IG.IGR_GRUP_CODI=G.gru_codi WHERE IG.IGR_INVE_IDEN=' + value.INV_CODI });
+                                                        grupo.then(function(r){
+                                                            if (r.data[0]!=null)
+                                                              value.listGrupo =r.data;
+
+                                                        });
+
+                                              });
+                                          }
+
+                                         $('#myModal').hide(); 
                                       }   
 
 
-                                });
+                              
 
                         });
                     
@@ -199,13 +258,31 @@ angular.module('listaTareasApp')
   }
 
   $scope.onClickAgregarEvaluador = function() {
-
+      var grupo=[];
       if ($scope.listEvaluadores==undefined)
        {
         $scope.listEvaluadores=[];
        }
 
-       $scope.listEvaluadores.push({Nombre:$scope.$$childTail.selEvaluador.Nombre,INV_CODI:$scope.$$childTail.selEvaluador.INV_CODI,Cargo:$scope.$$childTail.selEvaluador.Cargo,Programa:$scope.$$childTail.selEvaluador.Programa,Escuela:$scope.$$childTail.selEvaluador.Escuela});
+       // var grupo = TareasResource.SQL({Accion:'S',SQL:'SELECT G.gru_codi,G.gru_nomb AS Nombre FROM sgi_grup AS G INNER JOIN sgi_inve_grup AS IG ON IG.IGR_GRUP_CODI=G.gru_codi WHERE IG.IGR_INVE_IDEN=' + $scope.$$childTail.selEvaluador.INV_CODI });
+       //  $('#myModal').show();  
+       // grupo.then(function(result) {
+       //    
+       //    if (result.data[0]!=null)
+       //    {
+       //        grupo=result.data;
+       //    }
+
+        grupo=  Enumerable.From($scope.listEvaluadorInvestigador)
+                                         .Where(function (x) { return x.INV_CODI == $scope.$$childTail.selEvaluador.INV_CODI })
+                                         .ToArray()[0];
+
+          $scope.listEvaluadores.push({Nombre:$scope.$$childTail.selEvaluador.Nombre,INV_CODI:$scope.$$childTail.selEvaluador.INV_CODI,Cargo:$scope.$$childTail.selEvaluador.Cargo,Programa:$scope.$$childTail.selEvaluador.Programa,Escuela:$scope.$$childTail.selEvaluador.Escuela,listGrupo:grupo.listGrupo});
+           //$('#myModal').hide();  
+     //  });
+
+
+       
 
   }
 
@@ -362,23 +439,7 @@ angular.module('listaTareasApp')
                TareasResource.enviararchivo(datos).then(function(result) {                   
                            var idConvocatoria = result.data.split('@')[1];
                            var select =[]; 
-
-                           if ($scope.$$childTail.selPropuesta.PRO_CODI!=undefined)
-                           {
-                                angular.forEach($scope.listEvaluadores, function(value, key) {
-
-                              var insert = {
-                                  Accion:"I",
-                                  SQL:"INSERT INTO sgi_prop_conv_juez (PCJU_PCAT_CODI,PCJU_CON_CODI,PCJU_INV_CODI) VALUES (" + $scope.$$childTail.selPropuesta.PRO_CODI + "," +  idConvocatoria + "," + value.INV_CODI + ")"
-                              }                                      
-
-                               select.splice(0,0,insert);
-
-                             });
-                          }
-
-                            var resultado =  TareasResource.SQLMulti(select);
-                                  resultado.then(function(r) {
+                         
 
                                var fd = new FormData();                        
                                fd.append('id',idConvocatoria); 
@@ -389,20 +450,23 @@ angular.module('listaTareasApp')
                               if (fileReso!=undefined) fd.append('CONRESO', fileReso);                                                                                
                               TareasResource.enviararchivobinario(fd).then(function(result1) { 
                                        var select =[]; 
-                                      if ($scope.listParametroConvocatoria[0]!=null)
-                                      {
-                                         
-                                          angular.forEach($scope.listParametroConvocatoria, function(value, key) {
+                                       if ($scope.listParametroConvocatoria!=undefined)
+                                       {
+                                          if ($scope.listParametroConvocatoria[0]!=null)
+                                          {
+                                             
+                                              angular.forEach($scope.listParametroConvocatoria, function(value, key) {
 
-                                            var insert = {
-                                                Accion:"I",
-                                                SQL:"INSERT INTO sgi_conv_para (PCO_CONV_CODI,PCO_PARA_CODI,PCO_VALO) VALUES (" + idConvocatoria + "," + value.CPA_CODI + "," + value.Valor + ")"
-                                            }                                      
+                                                var insert = {
+                                                    Accion:"I",
+                                                    SQL:"INSERT INTO sgi_conv_para (PCO_CONV_CODI,PCO_PARA_CODI,PCO_VALO) VALUES (" + idConvocatoria + "," + value.CPA_CODI + "," + value.Valor + ")"
+                                                }                                      
 
-                                             select.splice(0,0,insert);
+                                                 select.splice(0,0,insert);
 
-                                          });
-                                     }
+                                              });
+                                         }
+                                      }
                                     var resultado =  TareasResource.SQLMulti(select);
                                         resultado.then(function() {
 
@@ -413,7 +477,7 @@ angular.module('listaTareasApp')
                                          });                                            
                                    }); 
 
-                      });
+                    
                                          
                 });           
               }         
@@ -452,6 +516,9 @@ angular.module('listaTareasApp')
                                             
 
                                  var select =[]; 
+
+                                 if ($scope.$$childTail.selPropuesta!=undefined)
+                                {
                                 if ($scope.$$childTail.selPropuesta.PRO_CODI!=undefined)
                                 {
                                   angular.forEach($scope.listEvaluadores, function(value, key) {
@@ -474,6 +541,7 @@ angular.module('listaTareasApp')
                                      select.splice(0,0,insert);
 
                                    }   
+                                 }
                                   var resultado =  TareasResource.SQLMulti(select);
                                         resultado.then(function(r) {
                                        var consulta = TareasResource.SQL({Accion: 'D',

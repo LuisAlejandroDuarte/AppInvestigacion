@@ -8,104 +8,103 @@ angular.module('listaTareasApp')
     if (user==null || user==undefined)
     {
 
-      $location.path('/inicio');
+      $location.path('/menu');
       return;
     }   
-    else
 
-         $scope.$parent.mnuConvocatoria = true;                          
-		 
-     	
-	 $scope.save = function(usuario){
 
-	 
+            moment.locale('es');
+         $scope.options = {                           
+ 				cache: false,
+                height: 300,
+                striped: true,
+                pagination: true,                
+                pageList: [10, 25, 50, 100, 200],
+                search: true,
+                showColumns: true,
+                showRefresh: true,
+                minimumCountColumns: 2,
+                clickToSelect: true,
+                idField:'CON_CODI',
+                toolbar: '#custom-toolbarevaluacion',
+            columns: [{
+                field: 'Propuesta',
+                title: 'PROPUESTAS ASIGNADAS',
+                align: 'left',
+                widht:  50,
+                valign: 'middle',
+                width: 300,
+                sortable: true
+            }, {
+                field: 'Convocatoria',
+                title: 'CONVOCATORIA',
+                align: 'left',
+                valign: 'middle',
+                sortable: true
+            }, {
+                field: 'PRO_TEXT',
+                title: 'DESCARGAR PROPUESTA',
+                align: 'left',
+                valign: 'middle',
+                align: 'center',
+                sortable: true,
+                formatter:function(value,row,index) {                                            
 
-	 		
-	 				var	datos ={
-	 						Accion:'S',
-	 						SQL:"SELECT COUNT(*) As Cuantos FROM sgi_user WHERE USE_IDEN='" + usuario.USE_IDEN + "'"
-	 					}
+                       return '<a href="'+ row.PRO_TEXT + '" target=_blank class="ver ml10 btn btn-default btn-xs" title="Ver Documento"><span class="glyphicon glyphicon-eye-open"></span></a>' ;  
 
-					var executesql = TareasResource.SQL(datos);	
-						executesql.then(function(result){
+               }
+            }, {
+                field: 'CON_FECH_FINA',
+                title: 'CARGA EVALUACIÓN PROPUESTA',
+                align: 'left',               
+                align: 'center',
+                sortable: true,
+                formatter:function(value,row,index) {     
 
-						if (result.data[0].Cuantos>0)
-						{
-							$window.alert("La identificacion ya existe");
-							return;
-						}
-						else
-						{
-							datos ={
-	 							Accion:'S',
-	 							SQL:"SELECT COUNT(*) As Cuantos FROM sgi_user WHERE USE_USUA='" + usuario.USE_USUA + "'"
-	 						}
+                      return '<a href="" target=_blank class="ver ml10 btn btn-default btn-xs" title="Ver Documento"><span class="glyphicon glyphicon-eye-open"></span></a>' ;  
 
-							executesql = TareasResource.SQL(datos);	
-								executesql.then(function(result){
+               }
+            },{
+                field: 'CON_TEXT',
+                title: 'EVALUACIÓN TOTAL ASIGNADA',
+                align: 'left',
+                valign: 'middle'                            
+            },{
+                field: 'Edit',
+                title: '',
+                align: 'left',
+                valign: 'middle',
+                 formatter:function(value,row,index) {     
 
-									if (result.data[0].Cuantos>0)
-									{
-										$window.alert("El usuario ya existe");
-										return;
-									}
-									else
-									{
-										datos = {
-	 										Accion:"I",
-	 										SQL:"INSERT INTO sgi_user (USE_IDEN,USE_NOMB,USE_APEL,USE_EMAI,USE_TELE,USE_USUA,USE_CLAV,USE_COD_TIPO) " +
-	 										" VALUES ('" +  usuario.USE_IDEN + "','" +  usuario.USE_NOMB +"','" +  usuario.USE_APEL +"'," + 
-	 										"'" +  usuario.USE_EMAI +"','" +  usuario.USE_TELE +"','" +  usuario.USE_USUA + "','" +  md5(usuario.USE_USUA) + "',2)"
-	 										}
+                      return '<a class="edit ml10 btn btn-default btn-xs" title="Editar"><span class="glyphicon glyphicon-pencil"></span></a> ' ;  
 
-	 									executesql = TareasResource.SQL(datos);
-	 										executesql.then(function(result){
+               },
+                events:  window.operateEvents = {                       
 
-	 											usuario.USE_IDEN ="";
-	 											usuario.USE_NOMB="";
-	 											usuario.USE_APEL="";
-	 											usuario.USE_EMAI="";
-	 											usuario.USE_TELE="";
-	 											usuario.USE_USUA="";
-	 											$window.alert("Evaluador Creado");
- 				
-	 								});
-								}
+                        'click .edit': function (e, value, row, index) {
+                                 $window.location.href ="#/edit-evaluar/" + row.CON_CODI + "";                           
+                        }
 
-							});
-						}
+                }
+            }]
+        };  
 
-					});
 
-	 		
-		}	
-	 
+	    var datos = TareasResource.SQL({Accion:'S',SQL:'SELECT P.PRO_CODI,P.PRO_TEXT, P.PRO_NOMB AS Propuesta,C.CON_CODI, C.CON_DESC AS Convocatoria FROM sgi_prop AS P INNER JOIN sgi_conv AS C ON C.CON_CODI=P.PRO_CONV_CODI ' +  
+                ' INNER JOIN sgi_prop_conv_juez AS PCJ ON  (PCJ.PCJU_PCAT_CODI = P.PRO_CODI )'});
 
-	 $scope.onClickPassword = function(user)
-	 {
+	    	datos.then(function(result) {
 
-	 	
+	    		$('#tableevaluacionpropuesta').bootstrapTable('load',result.data);
 
-	 	if (user=="")
-	 	{
-	 		$window.alert("Debe digitar un usuario");
-	 		return;
-	 	}
 
-	 	var datos = {
-	 			Accion:"U",
-	 			SQL:"UPDATE sgi_user set " +	 				
-	 				" USE_CLAV = '" + md5(user) + "'"  +
-	 				" WHERE USE_CODI = " + id	 					
-	 		}
+	    	})
 
-	 		var usuario = TareasResource.SQL(datos);
-	 			usuario.then(function(rersult){
 
-	 				$window.alert('la clave se cambio por el nombre de Usuario');
-	 				
+       $scope.onClicSalir = function() {
 
-	 			});
-	 }
+       		 $location.path('/menu');
 
+       }
+    
  });

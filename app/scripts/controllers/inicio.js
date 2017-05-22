@@ -187,6 +187,30 @@ angular.module('listaTareasApp')
           });
          }
 
+
+          if  ($window.sessionStorage.getItem('tipoUsuario')==6 && usr[0].Id_tipo ==1)
+         {
+          $scope.$parent.mnuInvestiga =false;
+            $scope.$parent.mnuAdmin = false;
+            $scope.$parent.mnuConvocatoria = false;
+           var executesql = TareasResource.SQL({Accion:'S',SQL:'SELECT I.INV_CODI,I.INV_NOMB,I.INV_APEL FROM sgi_inve AS I INNER JOIN sgi_prop_conv_juez AS J ON J.PCJU_INV_CODI=I.INV_CODI  WHERE I.INV_CODI_USUA=' + usr[0].Id});
+                executesql.then(function(result){
+                  if (result.data[0]!=null)
+                  {
+                    $window.sessionStorage.setItem('investigador', JSON.stringify(result.data[0]));
+                    $location.path('/evaluador');
+                    return;
+                  }
+                  else
+                  {
+                    $window.alert("No está asignado como evaluador");
+                    return;
+                  }
+            
+          });
+         }
+
+
       // $window.alert("El usuario no concuerda con el tipo de usuario seleccionado"); 
 
       // $window.sessionStorage.setItem('tipoUsuario',null);
