@@ -244,8 +244,8 @@ angular.module('listaTareasApp')
     
     var datos = {
         Accion:"S",
-        SQL:"SELECT concat(I.INV_NOMB,' ',I.INV_APEL) AS Investigador,TV.TIV_DESC AS Rol,PA.PAC_NOMB As Programa,E.ESC_NOMB As Escuela FROM sgi_prop_inve AS PI INNER JOIN sgi_inve AS I  ON  I.INV_CODI = PI.PIN_INVE_CODI INNER JOIN sgi_prog_acad AS PA ON PA.PAC_CODI =PI.PIN_TPRO_CODI INNER JOIN sgi_escu AS E ON " +
-            " E.ESC_CODI = PI.PIN_TESC_CODI INNER JOIN sgi_tipo_vinc As TV ON TV.TIV_CODI=PI.PIN_TVIN_CODI INNER JOIN sgi_prog_acad AS P ON P.PAC_CODI=PI.PIN_TPRO_CODI  WHERE PI.PIN_PROP_CODI =" + $scope.$$childTail.selPropuesta.PRO_CODI
+        SQL:"SELECT concat(I.INV_NOMB,' ',I.INV_APEL) AS Investigador,TV.TIV_DESC AS Rol,PA.PAC_NOMB As Programa,E.ESC_NOMB As Escuela,G.gru_nomb AS Grupo FROM sgi_prop_inve AS PI INNER JOIN sgi_inve AS I  ON  I.INV_CODI = PI.PIN_INVE_CODI INNER JOIN sgi_prog_acad AS PA ON PA.PAC_CODI =PI.PIN_TPRO_CODI INNER JOIN sgi_escu AS E ON " +
+            " E.ESC_CODI = PI.PIN_TESC_CODI INNER JOIN sgi_tipo_vinc As TV ON TV.TIV_CODI=PI.PIN_TVIN_CODI INNER JOIN sgi_prog_acad AS P ON P.PAC_CODI=PI.PIN_TPRO_CODI INNER JOIN sgi_grup AS G ON PI.PIN_TGRU_CODI=G.gru_codi WHERE PI.PIN_PROP_CODI =" + $scope.$$childTail.selPropuesta.PRO_CODI
     }
 
       var lista = TareasResource.SQL(datos);

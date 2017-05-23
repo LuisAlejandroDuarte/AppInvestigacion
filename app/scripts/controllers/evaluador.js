@@ -106,5 +106,13 @@ angular.module('listaTareasApp')
        		 $location.path('/menu');
 
        }
+
+       $scope.onClicKFormatos = function() {
+
+        $window.open("https://sig.unad.edu.co/documentacion/listados-maestros/listado-maestro-formatos");
+
+       }
+
+      
     
  });
