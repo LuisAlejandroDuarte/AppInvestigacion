@@ -66,7 +66,7 @@ angular.module("listaTareasApp", ['ngRoute','ngAnimate','ngLocale', 'ngResource'
             });
 
              element.bind('focusout', function (event) {
-                event.currentTarget.value="111111";
+             
             });
         }
 
@@ -439,6 +439,10 @@ angular.module("listaTareasApp", ['ngRoute','ngAnimate','ngLocale', 'ngResource'
         controller: 'EvaluadorCtrl'
       })
 
+       .when('/edit-evaluador/:idEvaluador', {
+        templateUrl: 'views/edit-evaluador.html',
+        controller: 'editrEvaluadorCtrl'
+      })
 
 
       .when('/propuestaConvocatoriaAtributoJuez', {

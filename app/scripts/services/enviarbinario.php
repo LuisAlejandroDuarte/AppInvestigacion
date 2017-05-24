@@ -16,7 +16,8 @@ $tipos = array
 	  array('CONRESO','sgi_conv','CON_RESO','CON_RESO_NOMB','CON_CODI'),
 	  array('PROTEXTO','sgi_prop','PRO_TEXT','PRO_TEXT_NOMB','PRO_CODI'),
 	  array('PROCARTA','sgi_prop','PRO_CART_AVAL','PRO_CART_NOMB','PRO_CODI'),
-	  array('SEMILLERO','sgi_doc_semi','DOCU_RUTA','DOCU_NOMB','DOCU_CODI')
+	  array('SEMILLERO','sgi_doc_semi','DOCU_RUTA','DOCU_NOMB','DOCU_CODI'),
+	  array('PROPUESTA','sgi_prop_conv_juez','PCJU_EVAL_PROP_LINK','PCJU_EVAL_PROP_NOMB','PCJU_CODI')
 	  );
 
 	if ($accion=='Ingresar')

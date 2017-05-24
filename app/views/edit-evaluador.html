@@ -1,0 +1,64 @@
+<div class="margenTop">
+
+
+
+<div class="panel panel-primary  drop-shadow" style="width:50%;height:250px;  margin-left:27%; margin-top:10%">
+
+  <div class="panel-heading"><h>{{tiTulo}}</h></div>
+
+  <form method="post" name="myFormGranArea"  novalidate>
+
+  <div class="panel-body">
+
+    <div class="row">
+
+     <div class="col-lg-6 col-md-6 col-xs-6 col-sm-6">
+     	<div class="form-group">
+     		<label>PROPUESTA</label>
+     		<textarea class="form-control input-sm" ng-model="propuesta"  readonly></textarea>               	
+     	</div>
+        
+      </div>  
+      <div class="col-lg-6 col-md-6 col-xs-6 col-sm-6">
+
+      <div class="form-group">
+     		<label>CONVOCATORIA</label>
+     		<textarea class="form-control input-sm" ng-model="convocatoria"  readonly></textarea>               	
+     	</div>
+      </div>  
+    </div>  
+
+      <div class="row">
+
+     <div class="col-lg-6 col-md-6 col-xs-6 col-sm-6">
+      <div class="form-group">
+        <label>EVALUACIÓN TOTAL ASIGNADA</label>
+        <input class="form-control input-sm" style="width:50%" ng-model="totalEvaluacion" numero-valido />                
+      </div>
+        
+      </div>  
+      <div class="col-lg-6 col-md-6 col-xs-6 col-sm-6">
+
+      <div class="form-group">
+        <label>CARGAR EVALUACIÓN PROPUESTA</label>
+          <span class="fileinput-button glyphicon glyphicon-file"  ng-class="{disabled:    disabled}" style="margin-left:20px"><input title="Cargar documento" type="file" name="files" onchange="angular.element(this).scope().uploadFile(this) " accept="application/pdf, application/msword"> 
+                </span>     
+               <span title="Eliminar documento" ng-click="EliminarDocumentoProyecto()" class="glyphicon glyphicon-remove" style="cursor: pointer;"></span>
+               <div class="row">
+                  <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">
+                  <a href="http://{{nombreLinkDocumento}}" target="_blank"><span class="label label-danger" style="white-space:normal">{{nombreDocumento}}</span></a>   
+                  </div>
+               </div>              
+      </div>
+      </div>  
+    </div>  
+    <div class="row">
+            <div class="col-lg-offset-10 col-md-offset-10-12 col-xs-offset-12 col-smoffset-12">
+              <button type="button" class="btn btn-primary btn-sm" ng-click="onClickGuardar()">Guardar</button>
+              <button type="button" class="btn btn-primary btn-sm" ng-click="onClickCancelar()">Salir</button>
+            </div>
+          </div>
+  </div>
+</form>  
+</div>
+</div>

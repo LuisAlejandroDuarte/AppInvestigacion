@@ -4,6 +4,7 @@ angular.module('listaTareasApp')
   .controller('EvaluadorCtrl', function($scope,$location,TareasResource,$route,$window) {
     	
       var user = JSON.parse($window.sessionStorage.getItem('usuario'));
+      var investigador = JSON.parse($window.sessionStorage.getItem('investigador'));
 
     if (user==null || user==undefined)
     {
@@ -25,9 +26,13 @@ angular.module('listaTareasApp')
                 showRefresh: true,
                 minimumCountColumns: 2,
                 clickToSelect: true,
-                idField:'CON_CODI',
+                idField:'PCJU_CODI',
                 toolbar: '#custom-toolbarevaluacion',
             columns: [{
+                field: 'PCJU_CODI',
+                title: '',                
+                visible:false                                                            
+            },{
                 field: 'Propuesta',
                 title: 'PROPUESTAS ASIGNADAS',
                 align: 'left',
@@ -50,7 +55,7 @@ angular.module('listaTareasApp')
                 sortable: true,
                 formatter:function(value,row,index) {                                            
 
-                       return '<a href="'+ row.PRO_TEXT + '" target=_blank class="ver ml10 btn btn-default btn-xs" title="Ver Documento"><span class="glyphicon glyphicon-eye-open"></span></a>' ;  
+                       return '<a href="http://'+ row.PRO_TEXT + '" target=_blank class="ver ml10 btn btn-default btn-xs" title="Ver Documento"><span class="glyphicon glyphicon-eye-open"></span></a>' ;  
 
                }
             }, {
@@ -58,14 +63,20 @@ angular.module('listaTareasApp')
                 title: 'CARGA EVALUACIÓN PROPUESTA',
                 align: 'left',               
                 align: 'center',
+                valign: 'middle',
                 sortable: true,
                 formatter:function(value,row,index) {     
 
-                      return '<a href="" target=_blank class="ver ml10 btn btn-default btn-xs" title="Ver Documento"><span class="glyphicon glyphicon-eye-open"></span></a>' ;  
+                      if (row.PCJU_EVAL_PROP_LINK!=null)
+
+                      return '<a href="http://'+ row.PCJU_EVAL_PROP_LINK + '" target=_blank class="btn btn-default btn-xs" title="Ver Documento"><span class="glyphicon glyphicon-eye-open"></span></a>' ;  
+                      else
+
+                        return "";
 
                }
             },{
-                field: 'CON_TEXT',
+                field: 'PCJU_EEVA_CODI',
                 title: 'EVALUACIÓN TOTAL ASIGNADA',
                 align: 'left',
                 valign: 'middle'                            
@@ -81,8 +92,15 @@ angular.module('listaTareasApp')
                },
                 events:  window.operateEvents = {                       
 
-                        'click .edit': function (e, value, row, index) {
-                                 $window.location.href ="#/edit-evaluar/" + row.CON_CODI + "";                           
+                        'click .edit': function (e, value, row, index) {                                
+                                 $window.sessionStorage.setItem('Propuesta',row.Propuesta); 
+                                 $window.sessionStorage.setItem('Convocatoria',row.Convocatoria); 
+                                 $window.sessionStorage.setItem('link',row.PCJU_EVAL_PROP_LINK); 
+                                 $window.sessionStorage.setItem('nombre',row.PCJU_EVAL_PROP_NOMB); 
+                                 $window.sessionStorage.setItem('total',row.PCJU_EEVA_CODI); 
+                                  $window.location.href ="#/edit-evaluador/" + row.PCJU_CODI + "";   
+
+
                         }
 
                 }
@@ -90,8 +108,8 @@ angular.module('listaTareasApp')
         };  
 
 
-	    var datos = TareasResource.SQL({Accion:'S',SQL:'SELECT P.PRO_CODI,P.PRO_TEXT, P.PRO_NOMB AS Propuesta,C.CON_CODI, C.CON_DESC AS Convocatoria FROM sgi_prop AS P INNER JOIN sgi_conv AS C ON C.CON_CODI=P.PRO_CONV_CODI ' +  
-                ' INNER JOIN sgi_prop_conv_juez AS PCJ ON  (PCJ.PCJU_PCAT_CODI = P.PRO_CODI )'});
+	    var datos = TareasResource.SQL({Accion:'S',SQL:'SELECT PCJ.PCJU_CODI,PCJ.PCJU_EVAL_PROP_LINK,PCJ.PCJU_EVAL_PROP_NOMB,PCJ.PCJU_EEVA_CODI, P.PRO_CODI,P.PRO_TEXT, P.PRO_NOMB AS Propuesta,C.CON_CODI, C.CON_DESC AS Convocatoria FROM sgi_prop AS P  ' +  
+                ' INNER JOIN sgi_prop_conv_juez AS PCJ ON PCJ.PCJU_PCAT_CODI = P.PRO_CODI INNER JOIN sgi_conv AS C ON PCJ.PCJU_CON_CODI = C.CON_CODI WHERE PCJ.PCJU_INV_CODI=' + investigador.INV_CODI});
 
 	    	datos.then(function(result) {
 
@@ -114,5 +132,10 @@ angular.module('listaTareasApp')
        }
 
       
+      $scope.onOpenDocumento = function(link){
+
+        $window.open(link);
+
+      }
     
  });
