@@ -40,7 +40,7 @@ angular.module('listaTareasApp')
 
             $location.path('/menu');
             return;
-          }  
+          }     
 
         var tipoConvocatoria = TareasResource.execute.query({Accion: 'S',
                              SQL: 'SELECT TCO_CODI,TCO_DESC FROM sgi_tipo_conv'}); 
@@ -210,8 +210,9 @@ angular.module('listaTareasApp')
                    
      });
    });
+  
 
-
+  
   $scope.onChangePropuesta = function() {
 
      var id = ($route.current.params.idConvocatoria) ? parseInt($route.current.params.idConvocatoria) :0 ;
@@ -647,6 +648,37 @@ angular.module('listaTareasApp')
 
        }
 
+       $scope.onChangePropuesta2 = function() {
+
+          var datos = {
+
+              Accion:'S',
+              SQL:"SELECT PCJ.PCJU_CODI, C.CON_DESC,P.PRO_NOMB,P.PRO_TEXT,PCJ.PCJU_EVAL_PROP_LINK,concat(I.INV_NOMB,' ',I.INV_APEL) AS Evaluador,PCJ.PCJU_EEVA_CODI  FROM sgi_prop_conv_juez AS PCJ INNER JOIN sgi_conv AS C ON C.CON_CODI=PCJ.PCJU_CON_CODI INNER JOIN sgi_prop AS P ON P.PRO_CODI=PCJ.PCJU_PCAT_CODI " + 
+                 " INNER JOIN sgi_inve AS I ON I.INV_CODI = PCJ.PCJU_INV_CODI   WHERE PCJ.PCJU_PCAT_CODI = " + $scope.$$childTail.selPropuesta2.PRO_CODI 
+
+          }
+
+          $scope.nombreConvocatoria = "";
+          $scope.propuestaLink = "";
+          $scope.nombrePropuesta = "";
+          $scope.listPropuesta =[];
+          $scope.total=0;
+          var convocatoria = TareasResource.SQL(datos);
+              convocatoria.then(function(result) {
+
+                  $scope.nombreConvocatoria = result.data[0].CON_DESC;
+                  $scope.propuestaLink = result.data[0].PRO_TEXT;
+                  $scope.nombrePropuesta = result.data[0].PRO_NOMB;
+
+                   $scope.listPropuesta=result.data;
+
+                 var suma=Enumerable.From(result.data)
+                            .Sum(function (x) { return parseFloat(x.PCJU_EEVA_CODI) });
+                  $scope.total = suma/result.data.length;                        
+
+              });
+
+      }
 
 });
 
