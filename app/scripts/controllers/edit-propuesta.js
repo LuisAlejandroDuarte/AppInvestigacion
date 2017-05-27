@@ -35,8 +35,14 @@ angular.module('listaTareasApp')
         moment.locale('es');
          $('#myModal').show();  
 
+        
+      $scope.viewDatos  =datosPropuesta;
+         
+    
+$scope.mostrarDatos = function(datosPropuesta) {
 
-           var tipoConvocatoria = TareasResource.SQL({Accion: 'S',
+    $('#myModal').show();  
+  var tipoConvocatoria = TareasResource.SQL({Accion: 'S',
                              SQL: 'SELECT TCO_CODI,TCO_DESC FROM sgi_tipo_conv'}); 
         tipoConvocatoria.then(function(result2){
 
@@ -49,26 +55,36 @@ angular.module('listaTareasApp')
                 convocatoria.$promise.then(function(result){
                       $scope.convocatoria = result;
 
+                       var id = ($route.current.params.idPropuesta) ? parseInt($route.current.params.idPropuesta) :0 ;
+                   datosPropuesta=  TareasResource.SQL({Accion: 'S',
+                         SQL: "SELECT P.PRO_LINK_CVLA,P.PRO_FECH_REGI, P.PRO_LINK_GLAC, P.PRO_CODI,P.PRO_NOMB,C.CON_DESC,P.PRO_TEXT,P.PRO_TEXT_NOMB,P.PRO_CART_AVAL,P.PRO_CART_NOMB,P.PRO_CONV_CODI   " + 
+                        " FROM sgi_prop AS P INNER JOIN sgi_conv AS C ON C.CON_CODI=P.PRO_CONV_CODI  WHERE " + 
+                        " P.PRO_CODI=" + id });
 
-                      datosPropuesta.$promise.then(function(result){
-                          $scope.viewDatos = result;  
-                          if (result[0].PRO_FECH_REGI!=null)
-                            $scope.viewDatos[0].PRO_FECH_REGI =moment(result[0].PRO_FECH_REGI).format("DD MMMM YYYY hh:mm A");  
+                      
+
+
+                      datosPropuesta.then(function(result){
+                          if (result.data[0]!=null)
+                          {
+                          $scope.viewDatos = result.data;  
+                          if (result.data[0].PRO_FECH_REGI!=null)
+                            $scope.viewDatos[0].PRO_FECH_REGI =moment(result.data[0].PRO_FECH_REGI).format("DD MMMM YYYY hh:mm A");  
 
                           $scope.nombreDocumentoProyecto="";
                           $scope.nombreArchivoCarta ="";
 
-                          if (result[0].PRO_TEXT_NOMB!=null) $scope.nombreDocumentoProyecto =result[0].PRO_TEXT_NOMB;
-                          if (result[0].PRO_CART_NOMB!=null) $scope.nombreArchivoCarta =result[0].PRO_CART_NOMB;
+                          if (result.data[0].PRO_TEXT_NOMB!=null) $scope.nombreDocumentoProyecto =result.data[0].PRO_TEXT_NOMB;
+                          if (result.data[0].PRO_CART_NOMB!=null) $scope.nombreArchivoCarta =result.data[0].PRO_CART_NOMB;
 
-                          if (result[0].PRO_TEXT!=null) $scope.nombreLinkDocumentoProyecto =result[0].PRO_TEXT;
-                          if (result[0].PRO_CART_AVAL!=null) $scope.nombreLinkCartaAval =result[0].PRO_CART_AVAL;
+                          if (result.data[0].PRO_TEXT!=null) $scope.nombreLinkDocumentoProyecto =result.data[0].PRO_TEXT;
+                          if (result.data[0].PRO_CART_AVAL!=null) $scope.nombreLinkCartaAval =result.data[0].PRO_CART_AVAL;
 
 
                           nombreDocumentoProyecto = $scope.nombreDocumentoProyecto;
                           nombreArchivoCarta =$scope.nombreArchivoCarta;
 
-
+                        }
                           var id = ($route.current.params.idPropuesta) ? parseInt($route.current.params.idPropuesta) :0 ;
                   
                           if(id > 0)          
@@ -81,7 +97,7 @@ angular.module('listaTareasApp')
                               $scope.buttonText = 'Guardar';
                               $scope.tiTulo ='Creando propuesta';
                             }
-                             $('#myModal').hide();  
+                            
                               var user = JSON.parse($window.sessionStorage.getItem('usuario'));
                              
                            var select = TareasResource.SQL({Accion: 'S',
@@ -89,7 +105,7 @@ angular.module('listaTareasApp')
 
                               select.then(function(investigador){
 
-
+                                   $('#myModal').hide();  
                                   $scope.listInvestigadores = investigador.data;
 
                                   select = TareasResource.SQL({Accion: 'S',
@@ -115,7 +131,7 @@ angular.module('listaTareasApp')
                                             if (investigador.data[0]!=null)
                                                 $scope.listInvestigadorPropuesta=investigador.data;
 
-
+                                               $('#myModal').hide();  
 
                                           }); 
                                        }
@@ -128,9 +144,12 @@ angular.module('listaTareasApp')
                 });
 
 
-            });
+        });
 
-  
+}
+  $scope.mostrarDatos(datosPropuesta);
+
+
       $scope.onChangeInvestigador = function(investigador) {
 
            $('#myModal').show();  
@@ -343,24 +362,8 @@ angular.module('listaTareasApp')
                  ' VALUES ('+  value.idInvestigador + ',' + idPropuesta + ','+ value.idRol + ',' + value.idGrupo +','+ value.idEscuela + ','+ value.idPrograma +')'})
 
 
-               });
-
-                   var user = JSON.parse($window.sessionStorage.getItem('usuario'));
-                     var inve = JSON.parse($window.sessionStorage.getItem('investigador'));
-                 insert.splice(0,0,{Accion:'I',SQL:'INSERT INTO  sgi_prop_inve (PIN_INVE_CODI,PIN_PROP_CODI,PIN_TVIN_CODI)' +
-                 ' VALUES ('+  inve.INV_CODI + ',' + idPropuesta + ',1)'})
-
+              });
              }
-             else
-             {
-
-                var user = JSON.parse($window.sessionStorage.getItem('usuario'));
-                 var inve = JSON.parse($window.sessionStorage.getItem('investigador'));
-                 insert.splice(0,0,{Accion:'I',SQL:'INSERT INTO  sgi_prop_inve (PIN_INVE_CODI,PIN_PROP_CODI,PIN_TVIN_CODI)' +
-                 ' VALUES ('+  inve.INV_CODI + ',' + idPropuesta + ',1)'})
-             }
-
-
 
 
               var consulta = TareasResource.SQLMulti(insert); 
@@ -375,7 +378,8 @@ angular.module('listaTareasApp')
                     TareasResource.enviararchivobinario(fd).then(function(result1) { 
                       
                           $('#myModal').hide();     
-                          $window.alert("INGRESADO");           
+                          $window.alert("INGRESADO");       
+
                            $location.path('/edit-propuesta/' + idPropuesta);           
                     });            
                 });              
@@ -400,7 +404,8 @@ angular.module('listaTareasApp')
                 " PRO_NOMB ='" + reg.PRO_NOMB + "'," +                
                 " PRO_LINK_GLAC = '" + reg.PRO_LINK_GLAC  + "', " + 
                 " PRO_LINK_CVLA = '" + reg.PRO_LINK_CVLA + "', " +                
-                " PRO_CONV_CODI = " + reg.PRO_CONV_CODI + " " +            
+                " PRO_CONV_CODI = " + reg.PRO_CONV_CODI + ", " +     
+                " PRO_FECH_REGI = '" + moment(new Date()).format("YYYY-MM-DD HH:mm") + "'" +
                 " WHERE PRO_CODI=" + id
             };
              TareasResource.enviararchivo(datos).then(function(result) { 
@@ -413,7 +418,7 @@ angular.module('listaTareasApp')
 
               angular.forEach($scope.listInvestigadorPropuesta, function(value, key){
 
-                if (value.idRol!=1)
+               
                   insert.splice(0,0,{Accion:'I',SQL:'INSERT INTO  sgi_prop_inve (PIN_INVE_CODI,PIN_PROP_CODI,PIN_TVIN_CODI,PIN_TGRU_CODI,PIN_TESC_CODI,PIN_TPRO_CODI)' +
                   ' VALUES ('+  value.idInvestigador + ',' + id + ','+ value.idRol + ',' + value.idGrupo +','+ value.idEscuela + ','+ value.idPrograma +')'})
 
@@ -421,7 +426,7 @@ angular.module('listaTareasApp')
              }
 
               var inve = JSON.parse($window.sessionStorage.getItem('investigador'));
-              insert.splice(0,0,{Accion:'D',SQL:'DELETE FROM sgi_prop_inve WHERE PIN_PROP_CODI=' + id + ' AND PIN_TVIN_CODI!=1'})
+              insert.splice(0,0,{Accion:'D',SQL:'DELETE FROM sgi_prop_inve WHERE PIN_PROP_CODI=' + id })
 
 
               var consulta = TareasResource.SQLMulti(insert); 
@@ -430,6 +435,7 @@ angular.module('listaTareasApp')
                          $window.alert("Actualizado");
                          $('#myModal').hide();  
                           $location.path('/edit-propuesta/' + id); 
+                           $scope.mostrarDatos(datosPropuesta);    
                       });
                
               });    

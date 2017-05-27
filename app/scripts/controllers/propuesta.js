@@ -10,7 +10,7 @@
                       var datos = 
                       {
                         Accion:'S',
-                        SQL:'SELECT * FROM sgi_prop_inve WHERE PIN_PROP_CODI=' + Codigo + ' AND PIN_TVIN_CODI!=1'
+                        SQL:'SELECT * FROM sgi_prop_inve WHERE PIN_PROP_CODI=' + Codigo 
                       }
 
 
@@ -20,17 +20,36 @@
                             if (result.data[0]!=null)
                             {
                                 $window.alert("Existen investigadores relacionados en la propuesta");
+                                 $('#myModal').modal('hide');
                                 return;
                             }
 
                              datos = 
                                   {
                                     Accion:'D',
-                                    SQL:'DELETE FROM sgi_prop_inve WHERE PIN_PROP_CODI=' + Codigo + ' AND PIN_TVIN_CODI=1'
+                                    SQL:'DELETE FROM sgi_prop_inve WHERE PIN_PROP_CODI=' + Codigo 
                                   }
 
                                var eliminar = TareasResource.SQL(datos);
                                 eliminar.then(function(result) {   
+
+                                    var datos = 
+                                    {
+                                          Accion:'S',
+                                          SQL:'SELECT * FROM sgi_prop_atrib WHERE PATR_PROP_CODI=' + Codigo 
+                                    }
+
+                                       var eliminar = TareasResource.SQL(datos);
+                                  eliminar.then(function(result) {
+
+                                      if (result.data[0]!=null)
+                                      {
+                                          $window.alert("Existen atributos relacionados en la propuesta");
+                                           $('#myModal').modal('hide');
+                                          return;
+                                      }
+
+
                                      $http.post("scripts/services/api.php?url=executeSQL/D/DELETE FROM sgi_prop" +
                                 " WHERE PRO_CODI = " + Codigo, $scope.formData)
                                 .success(function(data) {  
@@ -51,8 +70,8 @@
 
                                 });                              
 
-                        });
-
+                          });
+                  });
                                    
             });  
          };
