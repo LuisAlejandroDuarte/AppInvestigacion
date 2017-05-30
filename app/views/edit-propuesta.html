@@ -274,14 +274,14 @@
      <tab  index="3" select="onClicSelect(this,3)">
 
         <tab-heading>
-            <i class="glyphicon glyphicon-list-alt"></i>Evaluación propuesta
+            <i class="glyphicon glyphicon-list-alt"></i> Evaluación Propuesta
         </tab-heading>
-        <div class="container">
+        <div class="container-fluid">
         <div class="row" style="margin-top:10px">
           <div class="col-lg-4 col-md-4 col-xs-4 col-sm-4">
             <div class="form-group">
               <label>PROPUESTAS</label>
-              <select class="form-control input-sm" ng-model="selPropuesta" ng-options="item as item.Nombre for item in listPropuestas" ng-change="onChangePropuesta()">
+              <select class="form-control input-sm" ng-model="selPropuesta" ng-options="item as item.Nombre for item in listPropuestas" ng-change="onChangePropuesta(selPropuesta)">
             </select>
             </div>   
           </div>
@@ -307,12 +307,7 @@
 
                 <li class="list-group-item">
                     <div class="row">
-
-                      <div class="col-lg-4 col-md-4 col-xs-4 col-sm-4">
-
-                          <label>{{item.Evaluador}}</label>
-
-                      </div>
+                    
                       <div class="col-lg-4 col-md-4 col-xs-4 col-sm-4">
                            <a href="http://{{item.PCJU_EVAL_PROP_LINK}}"  target="_blank"><span class="label label-primary" style="white-space:normal">Descargar Evaluación</span></a>
                       </div>
@@ -333,6 +328,18 @@
                     {{total}}
                </div>
          </div>
+           <div class="row"> 
+             <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">   
+              <div class="form-group">      
+                       <button  ng-click= "volver()"               
+                      class="btn btn-primary input-sm">Salir</button>
+             </div>
+              </div>
+             
+       <div class="col-lg-1 col-md-1 col-xs-3 col-sm-3">   
+           
+                </div>
+       </div>
         </div>
       </tab>
   </tabset>

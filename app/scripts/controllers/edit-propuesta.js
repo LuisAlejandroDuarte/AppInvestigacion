@@ -131,8 +131,24 @@ $scope.mostrarDatos = function(datosPropuesta) {
                                             if (investigador.data[0]!=null)
                                                 $scope.listInvestigadorPropuesta=investigador.data;
 
-                                               $('#myModal').hide();  
+                                             var inv = JSON.parse($window.sessionStorage.getItem('investigador'));
+                                            var datos = {
 
+                                              Accion:'S',
+                                              SQL:'SELECT distinct C.CON_CODI,C.CON_DESC,P.PRO_TEXT, P.PRO_CODI,P.PRO_NOMB As Nombre FROM sgi_prop AS P INNER JOIN sgi_prop_inve AS PI ON PI.PIN_PROP_CODI=P.PRO_CODI INNER JOIN sgi_conv AS C ON ' +
+                                              ' C.CON_CODI=P.PRO_CONV_CODI WHERE P.PRO_INVE_CODI=' + inv.INV_CODI
+
+                                            }    
+
+                                                select = TareasResource.SQL(datos);
+                                                  select.then(function(result) {
+                                                      if (result.data[0]!=null)                                                      
+                                                        $scope.listPropuestas =result.data;
+                                                        $('#myModal').hide();  
+                                                      
+
+                                                });  
+                                            
                                           }); 
                                        }
                                       
@@ -484,6 +500,37 @@ $scope.mostrarDatos = function(datosPropuesta) {
 
        $scope.volver = function(){
           $location.path('/propuesta'); 
+       };
+
+       $scope.onChangePropuesta = function(item) {
+         var inv = JSON.parse($window.sessionStorage.getItem('investigador'));
+        $scope.nombreConvocatoria = item.CON_DESC;
+         $scope.propuestaLink=item.PRO_TEXT;
+
+          var datos = {
+              Accion:'S',
+              SQL:'SELECT PCJ.PCJU_EVAL_PROP_LINK,PCJ.PCJU_EEVA_CODI FROM sgi_prop_inve AS PI ' + 
+              ' INNER JOIN sgi_prop_conv_juez AS PCJ ON PCJ.PCJU_PCAT_CODI=PI.PIN_PROP_CODI ' + 
+              ' WHERE PCJ.PCJU_PCAT_CODI=' + item.PRO_CODI
+
+          }
+
+          $scope.total=0;
+          $scope.listPropuesta=[];
+          var select= TareasResource.SQL(datos);
+              select.then(function(r) {
+                if (r.data[0]!=null)
+                {
+                $scope.listPropuesta = r.data;
+
+
+                    var suma= Enumerable.From($scope.listPropuesta)                             
+                             .Sum(function (x) { return parseFloat(x.PCJU_EEVA_CODI) });
+
+                    $scope.total = suma/$scope.listPropuesta.length;         
+              }
+              });
+
        };
 
 });
