@@ -1,72 +1,72 @@
-<hr>
-<div class="margenTop">
-
-<div class="view">
-   
-
-
-<div class="panel panel-primary  drop-shadow" style="width:30%;height:180px;  margin-left:30%; margin-top:15%">
-  <div class="panel-heading"><h>{{tiTulo}}</h></div>
-  <form method="post" name="myForm"  novalidate>
-  <div class="panel-body">
-    <div class="row">
-    
-     <div class="col-md-8">
-        <label>Número Convocatoria</label>               
-      </div>  
-
-  </div>  
-  <div class="row">
-    
-       
-         <div class="col-md-11">                 
-      <input name="txtNumber" ng-model="viewDatos[0].TCO_DESC" type= "text" id="txtNumber" class= "form-control" placeholder="Número" autofocus required/>
-     
-      
-    </div>
-  </div>      
-  </div>
-</form>
-   <div class="row">
- <div class="col-md-offset-5"> 
-
-        <button  ng-click= "save(viewDatos[0])"  ng-disabled="myForm.$invalid"              
-                class="btn btn-primary">{{buttonText}}</button>
-              
-                
-
-  <button  ng-click= "volver()"               
-                class="btn btn-primary">Cancelar</button>
-</div>                
-      
-</div>
-</div>
-</div>
-</div>
-
-<script>
-   $(document).ready(function(){ 
-$("#txtNumber").keydown(function(event) {
-   if(event.shiftKey)
-   {
-        event.preventDefault();
-   }
- 
-   if (event.keyCode == 46 || event.keyCode == 8)    {
-   }
-   else {
-        if (event.keyCode < 95) {
-          if (event.keyCode < 48 || event.keyCode > 57) {
-                event.preventDefault();
-          }
-        } 
-        else {
-              if (event.keyCode < 96 || event.keyCode > 105) {
-                  event.preventDefault();
-              }
-        }
-      }
-   });
-});
-</script>
- 
+<hr>
+<div class="margenTop">
+
+<div class="view">
+   
+
+
+<div class="panel panel-primary  drop-shadow" style="width:30%;height:180px;  margin-left:30%; margin-top:15%">
+  <div class="panel-heading"><h>{{tiTulo}}</h></div>
+  <form method="post" name="myForm"  novalidate>
+  <div class="panel-body">
+    <div class="row">
+    
+     <div class="col-md-8">
+        <label>Número Convocatoria</label>               
+      </div>  
+
+  </div>  
+  <div class="row">
+    
+       
+         <div class="col-md-11">                 
+      <input name="txtNumber" ng-model="viewDatos[0].TCO_DESC" type= "text" id="txtNumber" class= "form-control" placeholder="Número" autofocus required/>
+     
+      
+    </div>
+  </div>      
+  </div>
+</form>
+   <div class="row">
+ <div class="col-md-offset-5"> 
+
+        <button  ng-click= "save(viewDatos[0])"  ng-disabled="myForm.$invalid"              
+                class="btn btn-primary">{{buttonText}}</button>
+              
+                
+
+  <button  ng-click= "volver()"               
+                class="btn btn-primary">Cancelar</button>
+</div>                
+      
+</div>
+</div>
+</div>
+</div>
+
+<script>
+   $(document).ready(function(){ 
+$("#txtNumber").keydown(function(event) {
+   if(event.shiftKey)
+   {
+        event.preventDefault();
+   }
+ 
+   if (event.keyCode == 46 || event.keyCode == 8)    {
+   }
+   else {
+        if (event.keyCode < 95) {
+          if (event.keyCode < 48 || event.keyCode > 57) {
+                event.preventDefault();
+          }
+        } 
+        else {
+              if (event.keyCode < 96 || event.keyCode > 105) {
+                  event.preventDefault();
+              }
+        }
+      }
+   });
+});
+</script>
+ 

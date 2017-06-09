@@ -1,1059 +1,1059 @@
- <div ng-form="datosInvestiga" novalidate>
-<mostrariconoespera></mostrariconoespera>
- <my-modalproyectos></my-modalproyectos> 
-
- 
-<div class="panel panel-primary  drop-shadow" style="width:100%;height:auto;margin-top:20px">
-
-  <div class="panel-heading"><h>{{tiTulo}}</h></div>
-
- 
-
-  <div class="panel-body">
-
- <tabset active="active">
-
- <tab  index="0" select="mostrarboton2()">
-
-      <tab-heading>
-
-        <i class="glyphicon glyphicon-user"></i> Datos Personales 
-
-      </tab-heading>  
-
-           
-
-      <div style="width:20%;height:90px;float:left;margin-top:20px">
-
-       <table  width="200px" border="0" cellspacing="0"  style="height:150px;border-color:#66FF99;" cellpadding="4"> 
-
-       <tr >
-
-          <td style="vertical-align:middle; margin-left:10px">
-
-<span class="fileinput-button glyphicon glyphicon-camera" ng-class="{disabled: disabled}" style="margin-left:20px"><input type="file" name="files" onchange="angular.element(this).scope().uploadFile(this)" accept="image/jpeg">                                 
-
-  </span>
-
-          </td>
-
-
-
-       </tr>
-
-       <tr>
-
-        <td style="vertical-align:middle; text-align:center"><img style="height:150px;width:150px"ng-src="data:image/jpg;base64,{{viewDatos[0].inv_foto}}" id="photo-id"/></td>
-
-       
-
-      </tr>
-
-      </table> 
-
-   
-
-      </div>
-
-
-
-     <div style="width:80%;height:100px;float:right;margin-top:20px">
-
-     <div class="row">
-
-
-
-      <div class="col-md-2">
-
-        <label>* Tipo Documento</label>
-
-      </div>
-
-       <div class="col-md-2">
-
-        <label>* Identificaci&oacute;n</label>               
-
-      </div>
-
-       <div class="col-md-4">
-
-        <label>* Nombres</label>               
-
-      </div>
-
-       <div class="col-md-4">
-
-        <label>* Apellidos</label>               
-
-      </div>
-
-      </div>
-      
-      <div class="row">
-
-      <div class="col-md-2">
-
-        <select class="form-control"  ng-model="viewDatos[0].INV_TIPO_DOCU_CODI" 
-
-          ng-options="opt.TID_CODI as opt.TID_NOMB for opt in Documento" required>
-
-          </select>         
-
-      </div>
-
-       <div class="col-md-2">
-
-       <input name="inv_iden" ng-model="viewDatos[0].INV_IDEN" type="text" class= "form-control" ng-required="required" />            
-
-      </div>
-
-      <div class="col-md-4">                 
-
-      <input id="INV_NOMB" name="INV_NOMB" ng-model="viewDatos[0].INV_NOMB" type= "text" class= "form-control" ng-required="required" />
-
-     </div>
-
-      <div class="col-md-4">                 
-
-      <input id="INV_APEL" name="INV_APEL" ng-model="viewDatos[0].INV_APEL" type= "text" class= "form-control" ng-required="required" />
-
-      
-
-    </div>
-
-      </div>
-   
-
-   <div class="row">
-
-    
-
-     <div class="col-md-4" style="margin-top:15px">
-
-        <label>* Fecha Nacimiento</label>               
-
-      </div>  
-
-     <div class="col-md-4" style="margin-top:15px">
-
-        <label>* Tel&#233;fono</label>               
-
-      </div> 
-
-      <div class="col-md-4" style="margin-top:15px">
-
-        <label>* E-mail (example@unad.edu.co)</label> 
-
-
-
-      </div>  
-
-  </div>  
-
-  <div class="row">
-
-    
-
-       
-
-         <div class="col-md-4"> 
-
-                     
-
-    
-
-
-
-  <div class="form-group" ng-class="{'has-error': datepickerForm.date.$invalid}">
-
-   <input type="text" class="form-control" ng-model="viewDatos[0].INV_FECH_NACI" data-date-format="dd-MMMM-yyyy" date-type="iso"   data-max-date="today" data-autoclose="1" name="date2" bs-datepicker required>
-
-  
-
-  </div>
-
-
-
-     </div>
-
-      <div class="col-md-4">                 
-
-      <input name="name4" ng-model="viewDatos[0].INV_TELE_CELU" type="text" 
-
-      class= "form-control" required>
-
-
-
-     </div>
-
-      <div class="col-md-4">                 
-
-      <input name="name5" ng-model="viewDatos[0].INV_MAIL" type= "email" class= "form-control" placeholder="Email" required >
-
-       
-
-    </div> 
-
-    </div> 
-
-
-
-
-
-      </div>
-
-    
-
-
-
-
-
- <div class="row">
-
-    
-
-     <div class="col-md-3" style="margin-top:70px">
-
-        <label>* Centro</label>               
-
-      </div>  
-
-       <div class="col-md-3" style="margin-top:64px; margin-left:-60px">
-
-        <label>Zona</label>   
-
-
-
-      </div>  
-
-     <div class="col-md-3" style="margin-top:64px; margin-left:20px">
-
-        <label>* Programa</label>               
-
-      </div>  
-
-       <div class="col-md-3" style="margin-top:64px; margin-left:20px">
-
-        <label>Escuela</label>               
-
-      </div>  
-
-  </div>  
-
-  <div class="row">
-
-    
-
-     <div class="col-md-3" style="width:20%">
-
-         <select class="form-control"  ng-model="viewDatos[0].INV_CENT_CODI" 
-
-          ng-options="opt.CEN_CODI as opt.CEN_NOMB for opt in Centro | orderBy:'CEN_NOMB'" 
-
-          ng-change="onchangedcentro(viewDatos[0].INV_CENT_CODI)" required>
-
-          </select>           
-
-      </div> 
-
-         
-
-    <div class="col-md-3">
-
-     <label style="font-weight:100 ">{{Zona[0].ZON_NOMB || viewDatos[0].ZON_NOMB}}</label>          
-
-   <!--  <button type="button" class="btn btn-default" ng-click="">...</button> -->
-
-    </div>
-
-      <div class="col-md-3" style="margin-left:15px;width:27%">
-
-         <select class="form-control"  ng-model="viewDatos[0].INV_PROG_ACAD_CODI"  
-
-          ng-options="opt2.PAC_CODI as opt2.PAC_NOMB for opt2 in Programa | orderBy:'PAC_NOMB'" 
-
-          ng-change="on_changedprograma(viewDatos[0].INV_PROG_ACAD_CODI)" required>
-
-          </select>           
-
-      </div> 
-
-       <div class="col-md-3">
-
-     <label style="font-weight:100 ">{{Programa2[0].ESC_NOMB || viewDatos[0].ESC_NOMB}}</label>           
-
-   <!--  <button type="button" class="btn btn-default" ng-click="">...</button> -->
-
-    </div>
-
-    
-
-  </div>  
-
-  <div class="row" style="margin-top:10px">
-
-    <div class="col-md-12 col-lg-12 ">
-
-    
-
-    </div>
-
-  </div>
-
- <div class="row">
-
-    <div class="col-lg-8 col-md-8 col-xs-12 col-sm-12">
-      <div class="form-group">
-       <label>* Link CVLAC</label>
-        <div class="input-group">
-          <span class="input-group-addon" id="sizing-addon2">http://</span>
-         <input name="linkcvlac" ng-model="viewDatos[0].INV_LINK_CVLA" type= "text" class= "form-control" placeholder="Link CVLAC" required>
-        <span class="input-group-btn">
-          <button class="btn btn-default" title="IR" ng-click="onClicCVLAC(viewDatos[0].INV_LINK_CVLA)" type="button"><i class="glyphicon glyphicon-globe"></i></button>
-        </span>
-      </div>
-    </div>
- </div>
-    <div class="col-lg-4 col-md-4 col-xs-12 col-sm-12">
-          <div class="form-group">
-              <label>Tipo Cargo</label>
-                <select class="form-control"  ng-model="viewDatos[0].INV_TICA_CODI"  
-
-                ng-options="opt2.TICA_CODI as opt2.TICA_NOMB for opt2 in listTipoCargo | orderBy:'TICA_NOMB'">
-
-          </select>           
-
-          </div>
-     </div>
-
-   
-
-  </div>
-
-  <div class="row">
-
-    <div class="col-md-12 col-lg-12">
-
-      <label>Los campos con (*) son obligatorios</label>
-
-    </div>
-
-  </div>
-
-    </tab>
-
-   
-
-  
-
-    <tab index="1" select="mostrarboton2()">
-
-      <tab-heading>
-
-        <i class="glyphicon glyphicon-book"></i> Informaci&oacute;n Acad&#233;mica
-
-      </tab-heading>
-
-
-
-    <div class="row">
-
-      <div class="col-md-3" style="margin-top: 20px">
-
-        <label>Nivel de Formaci&oacute;n</label>               
-
-      </div>
-
-       <div class="col-md-3" style="margin-top: 20px">
-
-        <label>T&iacute;tulo Obtenido</label>               
-
-      </div>
-
-       <div class="col-md-3" style="margin-top: 20px">
-
-        <label>Instituci&oacute;n</label>               
-
-      </div>
-
-       <div class="col-md-3" style="margin-top: 20px">
-
-        <label>Año de Grado</label>               
-
-      </div>
-
-      </div>
-
-
-
-
-
-      <div class="row">
-
-       
-
-        <div class="col-md-3" >
-
-         <select class="form-control" ng-model="myformacion" ng-options="opt3 as opt3.NIV_NOMB for opt3 in formacion" >
-
-          </select>           
-
-      
-
-      </div>  
-
-
-
-        <div class="col-md-3" >
-
-         <input id="tituloformacion"  class= "form-control" placeholder="T&iacute;tulo" ng-model="tituloformacion" type="text">              
-
-      </div>  
-
-
-
-  <div class="col-md-3" >
-
-         <input  id="institucion" class= "form-control" placeholder="Instituci&oacute;n" ng-model="institucion">              
-
-      </div> 
-
-        <div class="col-md-3" >
-
-         <input  id="Agno" class= "form-control" placeholder="Año" type="number" ng-model="Agno">              
-
-      </div> 
-
-         
-
-     </div>
-
-    <div class="row">
-
-     <button ng-click="agregarformacion(myformacion,tituloformacion,institucion,Agno,myformacion)" class="btn btn-default btn-sm"  style="margin-left: 20px; margin-top: 10px;background-color: rgb(239, 209, 230);font-size: 12px;font-weight: bold;color:#482CAE">Agregar</button>    
-
-    </div>
-
-  
-
-       <div class="row">
-
-        
-
-        <div class="col-md-12" style="margin-top: 20px">
-
- <div class="container">
-  <jqx-panel jqx-settings="settingsPanel">    
-   
-      <ul class="list-group">
-        <li  class="list-group-item" ng-repeat="facademica in informacionacademica" >
-          <div class="row">
-            <div class="col-lg-11 col-md-11 col-xs-11 col-sm-11">
-              <span >{{facademica.Nombre}}</span>    
-            </div>
-              <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
-           <button  title="Eliminar" ng-click="delformacion(this)" class="glyphicon glyphicon-trash"></button>  
-          </div>  
-          </div>                          
-        </li>
-      </ul>          
-  </jqx-panel>
-  </div>  
-
-      </div>
-
-
-
-</div>
-
-
-
-     </tab>
-
-      <tab index="2" select="nomostrarboton()" >
-
-      <tab-heading>
-
-        <i class="glyphicon glyphicon-eye-open"></i> Informaci&oacute;n Investigativa
-
-      </tab-heading>
-
-
-
- 
-
-    <div class="row">
-
-        
-
-        <div class="col-md-12" style="margin-top: 20px">
-
-      <table style="width:100%">
-
-        <thead>
-
-         <tr>
-
-           
-
-            <th style="width:100px">Grupos</th>
-          
-
-            <th style="width:100px">Fecha Inicio</th>
-
-            <th style="width:100px">Fecha Termina</th>
-
-         </tr>
-
-        </thead>
-
-        <tr ng-repeat="ginvestigacion in grupoinvestigacion | orderBy :'FechaInicio'">
-
-         
-
-          <td>
-
-             <span >{{ginvestigacion.NombreGrupo}}</span>
-
-          </td>
-         
-           <td>
-
-             <span>{{ginvestigacion.FechaInicio | date:'d MMMM y'}}</span>
-
-          </td>
-
-           <td>
-
-             <span>{{ginvestigacion.FechaTermina | date:'d MMMM y'}}</span>
-
-          </td>
-
-        </tr>
-
-
-
-      </table>
-
-
-
-      </div>
-
-
-
-</div>
-
- 
-
-
-
-          <div class="row">
-
-        
-
-        <div class="col-md-12" style="margin-top: 20px">
-
-      <table style="width:100%">
-
-        <thead>
-
-         <tr>
-
-           
-
-            <th style="width:100px">Semilleros</th>
-          
-            <th style="width:100px">Fecha Inicio</th>
-
-            <th style="width:100px">Fecha Termina</th>
-
-         </tr>
-
-        </thead>
-
-        <tr ng-repeat="sinvestigacion in semilleroinvestigacion | orderBy :'FechaInicio'">
-
-         
-
-          <td>
-
-             <span >{{sinvestigacion.NombreSemillero}}</span>
-
-          </td>
-        
-
-           <td>
-
-             <span>{{sinvestigacion.FechaInicio | date:'d MMMM y'}}</span>
-
-          </td>
-
-           <td>
-
-             <span>{{sinvestigacion.FechaTermina | date:'d MMMM y'}}</span>
-
-          </td>
-
-        </tr>
-
-
-
-      </table>
-
-
-
-      </div>
-
-
-
-</div>
-
-    
-
-
-
-
-
-
-
-     </tab>
-
-    <tab index="3" select="mostrarboton3()">
-
-
-
-      <tab-heading>
-
-        <i class="glyphicon glyphicon-th-large"></i> Productos de Investigaci&oacute;n
-
-      </tab-heading>
-
-       <div class="row">
-
-        <div class="col-md-12 col-lg-12">
-
-         <div ng-hide="hideTable">
-
-        
-           <div class="container-fluid">
-         <div class="row" style="margin-top:10px">
-           <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
-              <div id="toolbarinvestigadoredit">
-
-        
-              <a ng-click="btnNovoClick()" target="_self" class="btn btn-default btn-primary btn-sm"><span class="glyphicon glyphicon-plus"></span> Nuevo</a>
-         
-
-         </div>
-
-         <table id="tableinvestigadoredit"  init-tablainvestigadoredit="options" >
-
-         </table> 
-           </div>
-         </div>  
-         
-         </div>
-        
-
-         </div>
-
-         <div ng-hide="hideProyecto">
-        <div ng-form="myFormProductos" novalidate>
-
-         <div class="row" style="margin-top:10px">
-
-            <div class="col-md-4 col-lg-4">
-
-               <div class="row">
-
-                 <div class="col-md-12 col-lg-12">
-
-                   <label>Nombre del Proyecto</label>
-
-                 </div>                 
-
-               </div>
-
-               <div class="row">
-
-                 <div class="col-md-12 col-lg-12">
-
-                    <textarea type="text" id="strNombreProyecto"  class="form-control" ng-model="strNombreProyecto" style="width:90%;height:75px;" required></textarea>              
-
-                 </div>
-
-               </div>
-
-               <div class="row">
-
-                 <div class="col-md-12 col-lg-12">                   
-
-                   <label>Financiaci&oacute;n</label>                 
-
-                 </div>                
-
-               </div>
-
-               <div class="row">
-
-                 <div class="col-md-12 col-lg-12">                    
-
-                    <input  id="strFinanciacion" style="width:90%" class="form-control" name="idstrFinanciacion" ng-model="strFinanciacion" onkeyup="format(this)" onchange="format(this)" required />                 
-
-                 </div>
-
-               </div>   
-
-            </div>
-
-            <div class="col-md-8 col-lg-8">
-
-                <div class="row">
-
-                    <div class="col-md-4">
-
-                      <label>Fecha Inicio</label>         
-
-                    </div> 
-
-                    <div class="col-md-4" >
-
-                          <label>Fecha Culminaci&oacute;n</label>         
-
-                    </div> 
-
-                    <div class="col-md-4" >
-
-                        <label>Grupo</label>         
-
-                    </div> 
-
-                </div>
-
-                   <div class="row">
-
-                    <div class="col-md-4">
-
-                       <div class="form-group" ng-class="{'has-error': datepickerForm.date.$invalid}">
-
-                         <input id="fechaInicioProyecto" type="text" class="form-control" ng-model="fechaInicioProy" data-date-format="dd-MMMM-yyyy" date-type="iso" data-max-date="{{fechaHoy}}"  data-autoclose="1" name="date1" bs-datepicker required>              
-
-                        </div>       
-
-                   </div> 
-
-                   <div class="col-md-4">
-
-                      <div class="form-group" ng-class="{'has-error': datepickerForm.date.$invalid}">
-
-                        <input id="fechaTerminaProyecto" type="text" class="form-control" ng-model="fechaTerminaProy" data-date-format="dd-MMMM-yyyy" date-type="iso" data-min-date="{{fechaInicioProy}}"   data-autoclose="1" name="date2" bs-datepicker>
-
-                      </div>            
-
-                   </div> 
-
-
-
-                   <div  class="col-md-4">
-
-                        <select class="form-control"  ng-model="proy.selGrupoProducto"  ng-change="onChangedGrupProducto(proy.selGrupoProducto,0)"  name="grupo"
-
-                            ng-options="opt.IdGrupo as opt.NombreGrupo for opt in grupoinvestigacion " required>
-
-                        </select> 
-
-                    </div>
-
-                  </div>
-
-                  <div class="row">
-
-                      <div class="col-md-4" >
-
-                          <label>Tipo Investigador</label>         
-
-                      </div> 
-
-                        <div class="col-md-4">
-
-                          <label>Entidad/Convocatoria</label>         
-
-                      </div> 
-
-                       <div class="col-md-4">
-
-                          <label>L&iacute;nea Investigaci&oacute;n</label>         
-
-                      </div> 
-
-                  </div>
-
-                  <div class="row">
-
-                      <div class="col-md-4" >
-
-                           <select class="form-control"  ng-model="proy.selTipoInvestigador"  name="idTipoInvestigacion"
-
-                              ng-options="opt.tiv_codi as opt.tiv_desc for opt in tipoinve" required>
-
-                        </select>        
-
-                      </div> 
-
-                        <div class="col-md-4" >
-
-                           <select class="form-control"  ng-model="proy.selEntidad" name="idEntidad" required 
-
-                              ng-options="convoca.con_codi as convoca.con_desc for convoca in convocatoria" > 
-
-                            </select>      
-
-                      </div> 
-
-                       <div class="col-md-4" >
-
-                         <select class="form-control"  ng-model="proy.selLineaInvestigador" name="lineaInvestigacion" required 
-
-                              ng-options="optline.lin_codi as optline.lin_desc for optline in grupolineaproducto" > 
-
-                            </select>          
-
-                      </div> 
-
-                  </div>
-
-            </div>
-
-         </div>
-
-         <div class="row" style="margin-top:10px">
-
-            <div class="col-md-3" >
-
-              <label>Tipo Producto</label>
-
-            </div>
-
-            <div class="col-md-3" >
-
-              <label>T&iacute;tulo</label>
-
-            </div>
-
-               <div class="col-md-3" >
-
-              <label>ISBN/ISSN/REG SOPORLOG/OTRO</label>
-
-            </div>
-
-            <div class="col-md-3" >
-
-              <label>Fecha</label>
-
-            </div>
-
-         </div>
-
-          <div class="row" style="margin-top:10px">
-
-           <div class="col-md-3">
-
-               <select id="selProducto" class="form-control"  ng-model="selProducto" name="Producto"  ng-change="onChangedProducto(selProducto.id)"
-
-                  ng-options="optline as optline.Descripcion for optline in productos" > 
-
-                </select>                  
-
-           </div> 
-
-           <div class="col-md-3" >            
-
-               <input id="strNombreProducto" style="width:100%" class="form-control" ng-model="strNombreProducto"/>          
-
-          </div>            
-
-            <div class="col-md-3" >            
-
-               <input id="strTituloProducto"  style="width:100%" class="form-control" ng-model="strTituloProducto"/>          
-
-            </div>
-
-            <div class="col-md-3" >               
-
-                <div class="form-group" ng-class="{'has-error': datepickerForm.date.$invalid}">
-
-                    <input id="strFecha" type="text" class="form-control" ng-model="strFecha" data-date-format="dd-MMMM-yyyy" date-type="iso"  data-autoclose="1" name="fechaLibro" bs-datepicker>
-
-              </div>     
-
-           </div>   
-
-          </div>
-
-          <div class="row">
-
-          <div class="col-md-10 col-lg-10" style="margin-top:25px"> 
-
-
-
-              <button  ng-click= "agregarProducto()"               
-
-                      class="btn btn-default btn-sm">Agregar</button>
-
-                    
-
-                 
-
-
-
-             <button  ng-click= "eliminarProducto()"               
-
-                      class="btn btn-default btn-sm" >Eliminar</button>
-
-        
-
-        </div>
-
-        </div>
-
-
-
-
-
-      <div class="row">
-
-        
-
-        <div class="col-md-12" style="margin-top: 20px">
-
-      <table style="width:100%">
-
-        <thead>
-
-         <tr>
-
-            <th style="width:10px"></th>            
-
-            <th style="width:100px">Tipo Producto</th>
-
-            <th style="width:100px">T&iacute;tulo</th>
-
-            <th style="width:100px">ISBN/ISSN/REG SOPORLOG/OTRO</th>
-
-            <th style="width:100px">Fecha</th>            
-
-         </tr>
-
-        </thead>
-
-        <tr ng-repeat="sproyectoProducto in proyectoProducto">
-
-          <td>
-
-            <input type="checkbox" ng-model="sproyectoProducto.Sel">
-
-          </td>
-
-          <td>
-
-             <span >{{sproyectoProducto.NombreTipoProducto}}</span>
-
-          </td>           
-
-           <td>
-
-             <span >{{sproyectoProducto.NombreProducto}}</span>
-
-          </td>           
-
-           <td>
-
-             <span >{{sproyectoProducto.TituloProducto}}</span>
-
-          </td>
-
-          <td>
-
-             <span >{{sproyectoProducto.Fecha}}</span>
-
-          </td>
-
-        </tr>
-
-
-
-      </table>
-
-
-
-      </div>
-
-        <div class="row">
-
-    <div class="col-md-10 col-lg-10" style="margin-top:25px;margin-left:20px">                                 
-
-  <button  ng-click= "volverLista()"               
-
-                class="btn btn-success btn-sm" >Cancelar</button>
-<button  ng-click= "save(viewDatos[0])"  ng-disabled="myFormProductos.$invalid" class="btn btn-primary btn-sm">Guardar</button>
-  
-
-</div>
-
-</div>    
-
-      </div>  
-
- </div>
-         </div> 
-
-        </div>
-
-     
-
-</div>
-
-     
-
-
-
-     </tab>    
-
-
-
-  </tabset>  
-
-   <div class="row">
-
-    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12" style="margin-top:25px"> 
-
-
-
-        <button  ng-click= "save(viewDatos[0])"     ng-show="mostrarboton"     ng-disabled="childTail.datosInvestiga.inv_iden.$error.required"      
-
-                class="btn btn-primary btn-sm">{{buttonText}}</button>
-
-              
-
-           
-
-
-
-  <button  ng-click= "volver()"           
-
-                class="btn btn-danger btn-sm" ><i class="glyphicon glyphicon-log-out" > Salir</i></button>
-
-  
-
-</div>
-
-</div>    
-
-  </div>
-
-
-
-   
-
-</div>
+ <div ng-form="datosInvestiga" novalidate>
+<mostrariconoespera></mostrariconoespera>
+ <my-modalproyectos></my-modalproyectos> 
+
+ 
+<div class="panel panel-primary  drop-shadow" style="width:100%;height:auto;margin-top:20px">
+
+  <div class="panel-heading"><h>{{tiTulo}}</h></div>
+
+ 
+
+  <div class="panel-body">
+
+ <tabset active="active">
+
+ <tab  index="0" select="mostrarboton2()">
+
+      <tab-heading>
+
+        <i class="glyphicon glyphicon-user"></i> Datos Personales 
+
+      </tab-heading>  
+
+           
+
+      <div style="width:20%;height:90px;float:left;margin-top:20px">
+
+       <table  width="200px" border="0" cellspacing="0"  style="height:150px;border-color:#66FF99;" cellpadding="4"> 
+
+       <tr >
+
+          <td style="vertical-align:middle; margin-left:10px">
+
+<span class="fileinput-button glyphicon glyphicon-camera" ng-class="{disabled: disabled}" style="margin-left:20px"><input type="file" name="files" onchange="angular.element(this).scope().uploadFile(this)" accept="image/jpeg">                                 
+
+  </span>
+
+          </td>
+
+
+
+       </tr>
+
+       <tr>
+
+        <td style="vertical-align:middle; text-align:center"><img style="height:150px;width:150px"ng-src="data:image/jpg;base64,{{viewDatos[0].inv_foto}}" id="photo-id"/></td>
+
+       
+
+      </tr>
+
+      </table> 
+
+   
+
+      </div>
+
+
+
+     <div style="width:80%;height:100px;float:right;margin-top:20px">
+
+     <div class="row">
+
+
+
+      <div class="col-md-2">
+
+        <label>* Tipo Documento</label>
+
+      </div>
+
+       <div class="col-md-2">
+
+        <label>* Identificaci&oacute;n</label>               
+
+      </div>
+
+       <div class="col-md-4">
+
+        <label>* Nombres</label>               
+
+      </div>
+
+       <div class="col-md-4">
+
+        <label>* Apellidos</label>               
+
+      </div>
+
+      </div>
+      
+      <div class="row">
+
+      <div class="col-md-2">
+
+        <select class="form-control"  ng-model="viewDatos[0].INV_TIPO_DOCU_CODI" 
+
+          ng-options="opt.TID_CODI as opt.TID_NOMB for opt in Documento" required>
+
+          </select>         
+
+      </div>
+
+       <div class="col-md-2">
+
+       <input name="inv_iden" ng-model="viewDatos[0].INV_IDEN" type="text" class= "form-control" ng-required="required" />            
+
+      </div>
+
+      <div class="col-md-4">                 
+
+      <input id="INV_NOMB" name="INV_NOMB" ng-model="viewDatos[0].INV_NOMB" type= "text" class= "form-control" ng-required="required" />
+
+     </div>
+
+      <div class="col-md-4">                 
+
+      <input id="INV_APEL" name="INV_APEL" ng-model="viewDatos[0].INV_APEL" type= "text" class= "form-control" ng-required="required" />
+
+      
+
+    </div>
+
+      </div>
+   
+
+   <div class="row">
+
+    
+
+     <div class="col-md-4" style="margin-top:15px">
+
+        <label>* Fecha Nacimiento</label>               
+
+      </div>  
+
+     <div class="col-md-4" style="margin-top:15px">
+
+        <label>* Tel&#233;fono</label>               
+
+      </div> 
+
+      <div class="col-md-4" style="margin-top:15px">
+
+        <label>* E-mail (example@unad.edu.co)</label> 
+
+
+
+      </div>  
+
+  </div>  
+
+  <div class="row">
+
+    
+
+       
+
+         <div class="col-md-4"> 
+
+                     
+
+    
+
+
+
+  <div class="form-group" ng-class="{'has-error': datepickerForm.date.$invalid}">
+
+   <input type="text" class="form-control" ng-model="viewDatos[0].INV_FECH_NACI" data-date-format="dd-MMMM-yyyy" date-type="iso"   data-max-date="today" data-autoclose="1" name="date2" bs-datepicker required>
+
+  
+
+  </div>
+
+
+
+     </div>
+
+      <div class="col-md-4">                 
+
+      <input name="name4" ng-model="viewDatos[0].INV_TELE_CELU" type="text" 
+
+      class= "form-control" required>
+
+
+
+     </div>
+
+      <div class="col-md-4">                 
+
+      <input name="name5" ng-model="viewDatos[0].INV_MAIL" type= "email" class= "form-control" placeholder="Email" required >
+
+       
+
+    </div> 
+
+    </div> 
+
+
+
+
+
+      </div>
+
+    
+
+
+
+
+
+ <div class="row">
+
+    
+
+     <div class="col-md-3" style="margin-top:70px">
+
+        <label>* Centro</label>               
+
+      </div>  
+
+       <div class="col-md-3" style="margin-top:64px; margin-left:-60px">
+
+        <label>Zona</label>   
+
+
+
+      </div>  
+
+     <div class="col-md-3" style="margin-top:64px; margin-left:20px">
+
+        <label>* Programa</label>               
+
+      </div>  
+
+       <div class="col-md-3" style="margin-top:64px; margin-left:20px">
+
+        <label>Escuela</label>               
+
+      </div>  
+
+  </div>  
+
+  <div class="row">
+
+    
+
+     <div class="col-md-3" style="width:20%">
+
+         <select class="form-control"  ng-model="viewDatos[0].INV_CENT_CODI" 
+
+          ng-options="opt.CEN_CODI as opt.CEN_NOMB for opt in Centro | orderBy:'CEN_NOMB'" 
+
+          ng-change="onchangedcentro(viewDatos[0].INV_CENT_CODI)" required>
+
+          </select>           
+
+      </div> 
+
+         
+
+    <div class="col-md-3">
+
+     <label style="font-weight:100 ">{{Zona[0].ZON_NOMB || viewDatos[0].ZON_NOMB}}</label>          
+
+   <!--  <button type="button" class="btn btn-default" ng-click="">...</button> -->
+
+    </div>
+
+      <div class="col-md-3" style="margin-left:15px;width:27%">
+
+         <select class="form-control"  ng-model="viewDatos[0].INV_PROG_ACAD_CODI"  
+
+          ng-options="opt2.PAC_CODI as opt2.PAC_NOMB for opt2 in Programa | orderBy:'PAC_NOMB'" 
+
+          ng-change="on_changedprograma(viewDatos[0].INV_PROG_ACAD_CODI)" required>
+
+          </select>           
+
+      </div> 
+
+       <div class="col-md-3">
+
+     <label style="font-weight:100 ">{{Programa2[0].ESC_NOMB || viewDatos[0].ESC_NOMB}}</label>           
+
+   <!--  <button type="button" class="btn btn-default" ng-click="">...</button> -->
+
+    </div>
+
+    
+
+  </div>  
+
+  <div class="row" style="margin-top:10px">
+
+    <div class="col-md-12 col-lg-12 ">
+
+    
+
+    </div>
+
+  </div>
+
+ <div class="row">
+
+    <div class="col-lg-8 col-md-8 col-xs-12 col-sm-12">
+      <div class="form-group">
+       <label>* Link CVLAC</label>
+        <div class="input-group">
+          <span class="input-group-addon" id="sizing-addon2">http://</span>
+         <input name="linkcvlac" ng-model="viewDatos[0].INV_LINK_CVLA" type= "text" class= "form-control" placeholder="Link CVLAC" required>
+        <span class="input-group-btn">
+          <button class="btn btn-default" title="IR" ng-click="onClicCVLAC(viewDatos[0].INV_LINK_CVLA)" type="button"><i class="glyphicon glyphicon-globe"></i></button>
+        </span>
+      </div>
+    </div>
+ </div>
+    <div class="col-lg-4 col-md-4 col-xs-12 col-sm-12">
+          <div class="form-group">
+              <label>* Tipo Cargo</label>
+                <select class="form-control"  ng-model="viewDatos[0].INV_TICA_CODI"  
+
+                ng-options="opt2.TICA_CODI as opt2.TICA_NOMB for opt2 in listTipoCargo | orderBy:'TICA_NOMB'">
+
+          </select>           
+
+          </div>
+     </div>
+
+   
+
+  </div>
+
+  <div class="row">
+
+    <div class="col-md-12 col-lg-12">
+
+      <label>Los campos con (*) son obligatorios</label>
+
+    </div>
+
+  </div>
+
+    </tab>
+
+   
+
+  
+
+    <tab index="1" select="mostrarboton2()">
+
+      <tab-heading>
+
+        <i class="glyphicon glyphicon-book"></i> Informaci&oacute;n Acad&#233;mica
+
+      </tab-heading>
+
+
+
+    <div class="row">
+
+      <div class="col-md-3" style="margin-top: 20px">
+
+        <label>Nivel de Formaci&oacute;n</label>               
+
+      </div>
+
+       <div class="col-md-3" style="margin-top: 20px">
+
+        <label>T&iacute;tulo Obtenido</label>               
+
+      </div>
+
+       <div class="col-md-3" style="margin-top: 20px">
+
+        <label>Instituci&oacute;n</label>               
+
+      </div>
+
+       <div class="col-md-3" style="margin-top: 20px">
+
+        <label>Año de Grado</label>               
+
+      </div>
+
+      </div>
+
+
+
+
+
+      <div class="row">
+
+       
+
+        <div class="col-md-3" >
+
+         <select class="form-control" ng-model="myformacion" ng-options="opt3 as opt3.NIV_NOMB for opt3 in formacion" >
+
+          </select>           
+
+      
+
+      </div>  
+
+
+
+        <div class="col-md-3" >
+
+         <input id="tituloformacion"  class= "form-control" placeholder="T&iacute;tulo" ng-model="tituloformacion" type="text">              
+
+      </div>  
+
+
+
+  <div class="col-md-3" >
+
+         <input  id="institucion" class= "form-control" placeholder="Instituci&oacute;n" ng-model="institucion">              
+
+      </div> 
+
+        <div class="col-md-3" >
+
+         <input  id="Agno" class= "form-control" placeholder="Año" type="number" ng-model="Agno">              
+
+      </div> 
+
+         
+
+     </div>
+
+    <div class="row">
+
+     <button ng-click="agregarformacion(myformacion,tituloformacion,institucion,Agno,myformacion)" class="btn btn-default btn-sm"  style="margin-left: 20px; margin-top: 10px;background-color: rgb(239, 209, 230);font-size: 12px;font-weight: bold;color:#482CAE">Agregar</button>    
+
+    </div>
+
+  
+
+       <div class="row">
+
+        
+
+        <div class="col-md-12" style="margin-top: 20px">
+
+ <div class="container">
+  <jqx-panel jqx-settings="settingsPanel">    
+   
+      <ul class="list-group">
+        <li  class="list-group-item" ng-repeat="facademica in informacionacademica" >
+          <div class="row">
+            <div class="col-lg-11 col-md-11 col-xs-11 col-sm-11">
+              <span >{{facademica.Nombre}}</span>    
+            </div>
+              <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
+           <button  title="Eliminar" ng-click="delformacion(this)" class="glyphicon glyphicon-trash"></button>  
+          </div>  
+          </div>                          
+        </li>
+      </ul>          
+  </jqx-panel>
+  </div>  
+
+      </div>
+
+
+
+</div>
+
+
+
+     </tab>
+
+      <tab index="2" select="nomostrarboton()" >
+
+      <tab-heading>
+
+        <i class="glyphicon glyphicon-eye-open"></i> Informaci&oacute;n Investigativa
+
+      </tab-heading>
+
+
+
+ 
+
+    <div class="row">
+
+        
+
+        <div class="col-md-12" style="margin-top: 20px">
+
+      <table style="width:100%">
+
+        <thead>
+
+         <tr>
+
+           
+
+            <th style="width:100px">Grupos</th>
+          
+
+            <th style="width:100px">Fecha Inicio</th>
+
+            <th style="width:100px">Fecha Termina</th>
+
+         </tr>
+
+        </thead>
+
+        <tr ng-repeat="ginvestigacion in grupoinvestigacion | orderBy :'FechaInicio'">
+
+         
+
+          <td>
+
+             <span >{{ginvestigacion.NombreGrupo}}</span>
+
+          </td>
+         
+           <td>
+
+             <span>{{ginvestigacion.FechaInicio | date:'d MMMM y'}}</span>
+
+          </td>
+
+           <td>
+
+             <span>{{ginvestigacion.FechaTermina | date:'d MMMM y'}}</span>
+
+          </td>
+
+        </tr>
+
+
+
+      </table>
+
+
+
+      </div>
+
+
+
+</div>
+
+ 
+
+
+
+          <div class="row">
+
+        
+
+        <div class="col-md-12" style="margin-top: 20px">
+
+      <table style="width:100%">
+
+        <thead>
+
+         <tr>
+
+           
+
+            <th style="width:100px">Semilleros</th>
+          
+            <th style="width:100px">Fecha Inicio</th>
+
+            <th style="width:100px">Fecha Termina</th>
+
+         </tr>
+
+        </thead>
+
+        <tr ng-repeat="sinvestigacion in semilleroinvestigacion | orderBy :'FechaInicio'">
+
+         
+
+          <td>
+
+             <span >{{sinvestigacion.NombreSemillero}}</span>
+
+          </td>
+        
+
+           <td>
+
+             <span>{{sinvestigacion.FechaInicio | date:'d MMMM y'}}</span>
+
+          </td>
+
+           <td>
+
+             <span>{{sinvestigacion.FechaTermina | date:'d MMMM y'}}</span>
+
+          </td>
+
+        </tr>
+
+
+
+      </table>
+
+
+
+      </div>
+
+
+
+</div>
+
+    
+
+
+
+
+
+
+
+     </tab>
+
+    <tab index="3" select="mostrarboton3()">
+
+
+
+      <tab-heading>
+
+        <i class="glyphicon glyphicon-th-large"></i> Productos de Investigaci&oacute;n
+
+      </tab-heading>
+
+       <div class="row">
+
+        <div class="col-md-12 col-lg-12">
+
+         <div ng-hide="hideTable">
+
+        
+           <div class="container-fluid">
+         <div class="row" style="margin-top:10px">
+           <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+              <div id="toolbarinvestigadoredit">
+
+        
+              <a ng-click="btnNovoClick()" target="_self" class="btn btn-default btn-primary btn-sm"><span class="glyphicon glyphicon-plus"></span> Nuevo</a>
+         
+
+         </div>
+
+         <table id="tableinvestigadoredit"  init-tablainvestigadoredit="options" >
+
+         </table> 
+           </div>
+         </div>  
+         
+         </div>
+        
+
+         </div>
+
+         <div ng-hide="hideProyecto">
+        <div ng-form="myFormProductos" novalidate>
+
+         <div class="row" style="margin-top:10px">
+
+            <div class="col-md-4 col-lg-4">
+
+               <div class="row">
+
+                 <div class="col-md-12 col-lg-12">
+
+                   <label>Nombre del Proyecto</label>
+
+                 </div>                 
+
+               </div>
+
+               <div class="row">
+
+                 <div class="col-md-12 col-lg-12">
+
+                    <textarea type="text" id="strNombreProyecto"  class="form-control" ng-model="strNombreProyecto" style="width:90%;height:75px;" required></textarea>              
+
+                 </div>
+
+               </div>
+
+               <div class="row">
+
+                 <div class="col-md-12 col-lg-12">                   
+
+                   <label>Financiaci&oacute;n</label>                 
+
+                 </div>                
+
+               </div>
+
+               <div class="row">
+
+                 <div class="col-md-12 col-lg-12">                    
+
+                    <input  id="strFinanciacion" style="width:90%" class="form-control" name="idstrFinanciacion" ng-model="strFinanciacion" onkeyup="format(this)" onchange="format(this)" required />                 
+
+                 </div>
+
+               </div>   
+
+            </div>
+
+            <div class="col-md-8 col-lg-8">
+
+                <div class="row">
+
+                    <div class="col-md-4">
+
+                      <label>Fecha Inicio</label>         
+
+                    </div> 
+
+                    <div class="col-md-4" >
+
+                          <label>Fecha Culminaci&oacute;n</label>         
+
+                    </div> 
+
+                    <div class="col-md-4" >
+
+                        <label>Grupo</label>         
+
+                    </div> 
+
+                </div>
+
+                   <div class="row">
+
+                    <div class="col-md-4">
+
+                       <div class="form-group" ng-class="{'has-error': datepickerForm.date.$invalid}">
+
+                         <input id="fechaInicioProyecto" type="text" class="form-control" ng-model="fechaInicioProy" data-date-format="dd-MMMM-yyyy" date-type="iso" data-max-date="{{fechaHoy}}"  data-autoclose="1" name="date1" bs-datepicker required>              
+
+                        </div>       
+
+                   </div> 
+
+                   <div class="col-md-4">
+
+                      <div class="form-group" ng-class="{'has-error': datepickerForm.date.$invalid}">
+
+                        <input id="fechaTerminaProyecto" type="text" class="form-control" ng-model="fechaTerminaProy" data-date-format="dd-MMMM-yyyy" date-type="iso" data-min-date="{{fechaInicioProy}}"   data-autoclose="1" name="date2" bs-datepicker>
+
+                      </div>            
+
+                   </div> 
+
+
+
+                   <div  class="col-md-4">
+
+                        <select class="form-control"  ng-model="proy.selGrupoProducto"  ng-change="onChangedGrupProducto(proy.selGrupoProducto,0)"  name="grupo"
+
+                            ng-options="opt.IdGrupo as opt.NombreGrupo for opt in grupoinvestigacion " required>
+
+                        </select> 
+
+                    </div>
+
+                  </div>
+
+                  <div class="row">
+
+                      <div class="col-md-4" >
+
+                          <label>Tipo Investigador</label>         
+
+                      </div> 
+
+                        <div class="col-md-4">
+
+                          <label>Entidad/Convocatoria</label>         
+
+                      </div> 
+
+                       <div class="col-md-4">
+
+                          <label>L&iacute;nea Investigaci&oacute;n</label>         
+
+                      </div> 
+
+                  </div>
+
+                  <div class="row">
+
+                      <div class="col-md-4" >
+
+                           <select class="form-control"  ng-model="proy.selTipoInvestigador"  name="idTipoInvestigacion"
+
+                              ng-options="opt.tiv_codi as opt.tiv_desc for opt in tipoinve" required>
+
+                        </select>        
+
+                      </div> 
+
+                        <div class="col-md-4" >
+
+                           <select class="form-control"  ng-model="proy.selEntidad" name="idEntidad" required 
+
+                              ng-options="convoca.con_codi as convoca.con_desc for convoca in convocatoria" > 
+
+                            </select>      
+
+                      </div> 
+
+                       <div class="col-md-4" >
+
+                         <select class="form-control"  ng-model="proy.selLineaInvestigador" name="lineaInvestigacion" required 
+
+                              ng-options="optline.lin_codi as optline.lin_desc for optline in grupolineaproducto" > 
+
+                            </select>          
+
+                      </div> 
+
+                  </div>
+
+            </div>
+
+         </div>
+
+         <div class="row" style="margin-top:10px">
+
+            <div class="col-md-3" >
+
+              <label>Tipo Producto</label>
+
+            </div>
+
+            <div class="col-md-3" >
+
+              <label>T&iacute;tulo</label>
+
+            </div>
+
+               <div class="col-md-3" >
+
+              <label>ISBN/ISSN/REG SOPORLOG/OTRO</label>
+
+            </div>
+
+            <div class="col-md-3" >
+
+              <label>Fecha</label>
+
+            </div>
+
+         </div>
+
+          <div class="row" style="margin-top:10px">
+
+           <div class="col-md-3">
+
+               <select id="selProducto" class="form-control"  ng-model="selProducto" name="Producto"  ng-change="onChangedProducto(selProducto.id)"
+
+                  ng-options="optline as optline.Descripcion for optline in productos" > 
+
+                </select>                  
+
+           </div> 
+
+           <div class="col-md-3" >            
+
+               <input id="strNombreProducto" style="width:100%" class="form-control" ng-model="strNombreProducto"/>          
+
+          </div>            
+
+            <div class="col-md-3" >            
+
+               <input id="strTituloProducto"  style="width:100%" class="form-control" ng-model="strTituloProducto"/>          
+
+            </div>
+
+            <div class="col-md-3" >               
+
+                <div class="form-group" ng-class="{'has-error': datepickerForm.date.$invalid}">
+
+                    <input id="strFecha" type="text" class="form-control" ng-model="strFecha" data-date-format="dd-MMMM-yyyy" date-type="iso"  data-autoclose="1" name="fechaLibro" bs-datepicker>
+
+              </div>     
+
+           </div>   
+
+          </div>
+
+          <div class="row">
+
+          <div class="col-md-10 col-lg-10" style="margin-top:25px"> 
+
+
+
+              <button  ng-click= "agregarProducto()"               
+
+                      class="btn btn-default btn-sm">Agregar</button>
+
+                    
+
+                 
+
+
+
+             <button  ng-click= "eliminarProducto()"               
+
+                      class="btn btn-default btn-sm" >Eliminar</button>
+
+        
+
+        </div>
+
+        </div>
+
+
+
+
+
+      <div class="row">
+
+        
+
+        <div class="col-md-12" style="margin-top: 20px">
+
+      <table style="width:100%">
+
+        <thead>
+
+         <tr>
+
+            <th style="width:10px"></th>            
+
+            <th style="width:100px">Tipo Producto</th>
+
+            <th style="width:100px">T&iacute;tulo</th>
+
+            <th style="width:100px">ISBN/ISSN/REG SOPORLOG/OTRO</th>
+
+            <th style="width:100px">Fecha</th>            
+
+         </tr>
+
+        </thead>
+
+        <tr ng-repeat="sproyectoProducto in proyectoProducto">
+
+          <td>
+
+            <input type="checkbox" ng-model="sproyectoProducto.Sel">
+
+          </td>
+
+          <td>
+
+             <span >{{sproyectoProducto.NombreTipoProducto}}</span>
+
+          </td>           
+
+           <td>
+
+             <span >{{sproyectoProducto.NombreProducto}}</span>
+
+          </td>           
+
+           <td>
+
+             <span >{{sproyectoProducto.TituloProducto}}</span>
+
+          </td>
+
+          <td>
+
+             <span >{{sproyectoProducto.Fecha}}</span>
+
+          </td>
+
+        </tr>
+
+
+
+      </table>
+
+
+
+      </div>
+
+        <div class="row">
+
+    <div class="col-md-10 col-lg-10" style="margin-top:25px;margin-left:20px">                                 
+
+  <button  ng-click= "volverLista()"               
+
+                class="btn btn-success btn-sm" >Cancelar</button>
+<button  ng-click= "save(viewDatos[0])"  ng-disabled="myFormProductos.$invalid" class="btn btn-primary btn-sm">Guardar</button>
+  
+
+</div>
+
+</div>    
+
+      </div>  
+
+ </div>
+         </div> 
+
+        </div>
+
+     
+
+</div>
+
+     
+
+
+
+     </tab>    
+
+
+
+  </tabset>  
+
+   <div class="row">
+
+    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12" style="margin-top:25px"> 
+
+
+
+        <button  ng-click= "save(viewDatos[0])"     ng-show="mostrarboton"     ng-disabled="childTail.datosInvestiga.inv_iden.$error.required"      
+
+                class="btn btn-primary btn-sm">{{buttonText}}</button>
+
+              
+
+           
+
+
+
+  <button  ng-click= "volver()"           
+
+                class="btn btn-danger btn-sm" ><i class="glyphicon glyphicon-log-out" > Salir</i></button>
+
+  
+
+</div>
+
+</div>    
+
+  </div>
+
+
+
+   
+
+</div>
 </div>

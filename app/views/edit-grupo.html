@@ -145,7 +145,7 @@
 		  <div class="col-lg-7 col-md-7 col-xs-7 col-sm-7">       
         <div class="form-group">
             <label>Nombre del Grupo</label>
-            <input class="form-control" ng-model="datos2[0].Grupo" name="nombreGrupo" ng-required="true"/>    
+            <input class="form-control input-sm" ng-model="datos2[0].Grupo" name="nombreGrupo" ng-required="true"/>    
         </div>			
 		</div>	
 
@@ -153,7 +153,7 @@
 
           <div class="form-group"  ng-class="{'has-error': datepickerForm.date.$invalid}">
               <label>Fecha de Creación</label>
-              <input id="FechaCreaGrupo" type="text" class="form-control" ng-model="datos2[0].Fecha" data-date-format="dd-MMMM-yyyy" date-type="iso"   data-max-date="today" data-autoclose="1" name="dateCreacionGrupo" bs-datepicker ng-required="true"/>    
+              <input id="FechaCreaGrupo" type="text" class="form-control input-sm" ng-model="datos2[0].Fecha" data-date-format="dd-MMMM-yyyy" date-type="iso"   data-max-date="today" data-autoclose="1" name="dateCreacionGrupo" bs-datepicker ng-required="true"/>    
         </div>    		
 		</div>	
 	</div>
@@ -165,14 +165,14 @@
     <div class="col-lg-6 col-md-6 col-xs-6 col-sm-6">         
         <div class="form-group">
             <label>Código Colciencias</label>
-             <input class="form-control" ng-model="datos2[0].gru_colc_codi" />
+             <input class="form-control input-sm" ng-model="datos2[0].gru_colc_codi" />
         </div>      
     </div>  
 
      <div class="col-lg-6 col-md-6 col-xs-6 col-sm-6">        
 
       <label>Categoría Colciencias</label>
-       <input class="form-control" ng-model="datos2[0].gru_cate_colc" />
+       <input class="form-control input-sm" ng-model="datos2[0].gru_cate_colc" />
 
     </div>  
 
@@ -184,20 +184,35 @@
     <div class="col-lg-6 col-md-6 col-xs-6 col-sm-6">        
 
       <label>Área</label>
-       <select class="form-control" ng-model="datos2[0].selArea" ng-options="value1.ARE_CODI as value1.ARE_NOMB  for value1 in listArea | orderBy : 'ARE_NOMB'" ng-required="true"  ></select>
+       <select class="form-control input-sm" ng-model="datos2[0].selArea" ng-options="value1.ARE_CODI as value1.ARE_NOMB  for value1 in listArea | orderBy : 'ARE_NOMB'" ng-required="true"  ></select>
 
     </div>  
 
      <div class="col-lg-6 col-md-6 col-xs-6 col-sm-6">             
 
       <label>Centro</label>
-       <select class="form-control" ng-model="datos2[0].selCentro" ng-options="value2.CEN_CODI as value2.CEN_NOMB  for value2 in listCentro | orderBy : 'CEN_NOMB'"  ng-required="true" ></select>
+       <select class="form-control input-sm" ng-model="datos2[0].selCentro" ng-options="value2.CEN_CODI as value2.CEN_NOMB  for value2 in listCentro | orderBy : 'CEN_NOMB'"  ng-required="true" ></select>
 
     </div>  
 
   </div>
  
+<div class="row" style="margin-top:10px">
 
+    <div class="col-lg-6 col-md-6 col-xs-6 col-sm-6" ng-init="datos2[0].gru_aval_inst='0'">        
+
+      <label>Avalado por la UNAD</label>
+       <label class="radio-inline">
+       <input type="radio" ng-model="datos2[0].gru_aval_inst" value='1' ng-disabled="true">SI
+     </label>
+     <label class="radio-inline">
+      <input type="radio" ng-model="datos2[0].gru_aval_inst" value='0' ng-disabled="true">NO
+     </label>
+
+    </div>  
+   
+
+  </div>
 
 
 

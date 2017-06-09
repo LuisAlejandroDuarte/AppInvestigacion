@@ -117,13 +117,14 @@ var idInve="";
               Fecha:"",
               Investigador:"",
               selArea:"",
-              selCentro:""
+              selCentro:"",
+              gru_aval_inst:"0"  
             }]          
         }
       
 
               var dat = TareasResource.execute.query({Accion: 'S',
-                         SQL: "SELECT IG.igr_codi,G.gru_nomb AS Grupo,G.gru_codi, G.gru_colc_codi,G.gru_cate_colc, I.inv_codi," + 
+                         SQL: "SELECT IG.igr_codi,G.gru_nomb AS Grupo,G.gru_codi, G.gru_colc_codi,G.gru_cate_colc, I.inv_codi,G.gru_aval_inst," + 
             " G.gru_fech_ini AS Fecha,CONCAT(I.inv_nomb,'',I.inv_apel) As Investigador,G.gru_area_codi As selArea,G.gru_cent_codi As selCentro" + 
             " FROM sgi_inve_grup AS IG  INNER JOIN sgi_grup AS G ON G.gru_codi = IG.igr_grup_codi " + 
             " INNER JOIN sgi_inve As I ON I.inv_codi = IG.igr_inve_iden WHERE G.gru_codi =" + IdGrupo + "" });   
@@ -1329,9 +1330,9 @@ $scope.OnClicEliminarSemilleroGrupo = function(semillero)
           var d =  $scope.datos;
          var Query= TareasResource.execute.query({Accion: 'I',
                          SQL: "1;INSERT INTO sgi_grup " + 
-                         " (gru_nomb,gru_fech_ini,gru_area_codi,gru_cent_codi,gru_colc_codi,gru_cate_colc) " +
+                         " (gru_nomb,gru_fech_ini,gru_area_codi,gru_cent_codi,gru_colc_codi,gru_cate_colc,gru_aval_inst) " +
                          " VALUES ('" + $scope.datos2[0].Grupo + "','" + fecha + "'," + $scope.datos2[0].selArea + "," + 
-                          + $scope.datos2[0].selCentro + ",'" + codigoColciencias + "','" + caterizacionColciencias + "')"});
+                          + $scope.datos2[0].selCentro + ",'" + codigoColciencias + "','" + caterizacionColciencias + "'," + $scope.datos2[0].gru_aval_inst + ")"});
 
           Query.$promise.then(function(result){
 
@@ -1365,7 +1366,7 @@ $scope.OnClicEliminarSemilleroGrupo = function(semillero)
        var Query= TareasResource.execute.query({Accion: 'M',
                          SQL: "UPDATE sgi_grup " + 
                          " set gru_nomb='" + $scope.datos2[0].Grupo + "',gru_fech_ini='" + fecha + "' ,gru_area_codi=" + $scope.datos2[0].selArea + ", " + 
-                         " gru_cent_codi=" + $scope.datos2[0].selCentro + ",gru_colc_codi='" + codigoColciencias + "'," + 
+                         " gru_cent_codi=" + $scope.datos2[0].selCentro + ",gru_colc_codi='" + codigoColciencias + "',gru_aval_inst=" + $scope.datos2[0].gru_aval_inst + "," + 
                          " gru_cate_colc='"+ caterizacionColciencias + "' WHERE gru_codi =" + id + " "});
            Query.$promise.then(function(result){
 

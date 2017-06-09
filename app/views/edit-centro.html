@@ -1,66 +1,66 @@
-<hr>
-<div class="margenTop">
-<div class="view">
-<div class="panel panel-primary  drop-shadow" style="width:40%;height:250px;  margin-left:27%; margin-top:10%">
-  <div class="panel-heading"><h>{{tiTulo}}</h></div>
-  <form method="post" name="myFormGranArea"  novalidate>
-  <div class="panel-body">
-    <div class="row">
-    
-     <div class="col-md-1">
-        <label>NOMBRE</label>               
-      </div>  
-
-  </div>  
-  <div class="row">
-    
-       
-         <div class="col-md-12">                 
-      <input name="name" ng-model="viewDatos[0].CEN_NOMB" type= "text" class= "form-control" placeholder="Centro" autofocus required/>
-     
-      
-    </div>
-
-  </div>  
-    <div class="row margentop15">
-   <div class="col-md-3">
-        <label>ZONA</label>               
-      </div>  
-     </div>    
-      <div class="row">
-         <div class="col-md-12">                 
-          <!-- <select class="form-control" ng-model="select_granarea" ng-value="viewDatos.ARE_CODI" ng-options="area.GAR_NOMB for area in datosArea">
-              
-          </select> -->
-
- <select class="form-control"  ng-model="viewDatos[0].CEN_ZONA_CODI" 
-          ng-options="opt.ZON_CODI as opt.ZON_NOMB for opt in datosZona" required>
-            
-</select>
-
-      </div>
-
-    </div>
-  </div>
-</form>
-  <div class="row">
- <div class="col-md-offset-7"> 
-
-        <button  ng-click= "save(viewDatos[0])"  ng-disabled="myFormGranArea.$invalid"              
-                class="btn btn-primary">{{buttonText}}</button>
-              
-                
-
-  <button  ng-click= "volver()"               
-                class="btn btn-primary">Cancelar</button>
-</div>                
-     
-</div>
-</div>
- 
-
-</div>
-
-</div>
-
-
+<hr>
+<div class="margenTop">
+<div class="view">
+<div class="panel panel-primary  drop-shadow" style="width:40%;height:250px;  margin-left:27%; margin-top:10%">
+  <div class="panel-heading"><h>{{tiTulo}}</h></div>
+  <form method="post" name="myFormGranArea"  novalidate>
+  <div class="panel-body">
+    <div class="row">
+    
+     <div class="col-md-1">
+        <label>NOMBRE</label>               
+      </div>  
+
+  </div>  
+  <div class="row">
+    
+       
+         <div class="col-md-12">                 
+      <input name="name" ng-model="viewDatos[0].CEN_NOMB" type= "text" class= "form-control" placeholder="Centro" autofocus required/>
+     
+      
+    </div>
+
+  </div>  
+    <div class="row margentop15">
+   <div class="col-md-3">
+        <label>ZONA</label>               
+      </div>  
+     </div>    
+      <div class="row">
+         <div class="col-md-12">                 
+          <!-- <select class="form-control" ng-model="select_granarea" ng-value="viewDatos.ARE_CODI" ng-options="area.GAR_NOMB for area in datosArea">
+              
+          </select> -->
+
+ <select class="form-control"  ng-model="viewDatos[0].CEN_ZONA_CODI" 
+          ng-options="opt.ZON_CODI as opt.ZON_NOMB for opt in datosZona" required>
+            
+</select>
+
+      </div>
+
+    </div>
+  </div>
+</form>
+  <div class="row">
+ <div class="col-md-offset-7"> 
+
+        <button  ng-click= "save(viewDatos[0])"  ng-disabled="myFormGranArea.$invalid"              
+                class="btn btn-primary">{{buttonText}}</button>
+              
+                
+
+  <button  ng-click= "volver()"               
+                class="btn btn-primary">Cancelar</button>
+</div>                
+     
+</div>
+</div>
+ 
+
+</div>
+
+</div>
+
+

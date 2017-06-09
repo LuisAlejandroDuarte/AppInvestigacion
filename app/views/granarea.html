@@ -1,203 +1,203 @@
-
-<hr>
-
-<div class="margenTop">
-
-  <nav class= "navbar navbar-default" role= "navigation" >
- <div class= "navbar-header" >      
-<a class="btn btn-lg btn-success" href="#/edit-granarea/0"><i class="glyphicon glyphicon-plus"></i>&nbsp;Nuevo</a>
- </div>
- </nav>
- </div>
-
-
-   <table id="tableGrupo">
-     
-   </table> 
-    <div id="pager"></div> 
-
- 
-
-
-
-
-
-<!-- start: Delete Coupon Modal -->
-
-
-<div class="modal fade" id="myModal"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                 <h3 class="modal-title" id="myModalLabel">Advertencia!</h3>
-            </div>
-            <div class="modal-body">
-                 <h4> Desea Borrar el actual registro?</h4>
-                  <div><label id="nombreGranArea"></label>
-            </div>
-            <!--/modal-body-collapse -->
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" id="btnYes" href="#">Si</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal"  >No</button>
-            </div>
-            <!--/modal-footer-collapse -->
-        </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-</div>
-<!-- /.modal -->
-</div>
-
- <script>
- 
-//   $(function () {
-//     $("#tableGrupo").jqGrid({
-//         url: "scripts/services/api.php?url=executeSQL/S/SELECT GAR_CODI,GAR_NOMB FROM SGI_GRAN_AREA ORDER BY GAR_CODI ASC",
-//         datatype: "json",
-//         mtype: "post",
-//         colNames: ["Código", "Nombre"],
-//         colModel: [
-//             { name: "GAR_CODI",index:"GAR_CODI", width: 55 },
-//             { name: "GAR_NOMB", width: 950,edittype:'text' }            
-//         ],
-//         pager: "#pager",
-//         rowNum: 10,
-//         rowList: [10, 20, 30],
-//         sortname: "GAR_CODI",
-//         pagerpos : "right",
-//         sortorder: "desc",
-        
-//         gridview: true,
-//         autoencode: true,
-//         caption: "GRAN ÁREA"
-
-//     }); 
-
-//     $("#tableGrupo").jqGrid('navGrid','#pager',{edit:true,add:true,del:true}); 
-//     $("#tableGrupo").jqGrid('editGridRow', "GAR_CODI", "top" );
-// });
-
-
-
-
-    function operateFormatter(value, row, index) {
-        return [
-            
-            '<a class="edit ml10" href="#/edit-granarea/'+ row.GAR_CODI + '" title="Editar">',
-                '<i class="glyphicon glyphicon-edit"></i>',
-            '</a> &nbsp' ,
-            '<a class="remove ml10" href="javascript:void(0)" title="Eliminar">',
-                '<i class="glyphicon glyphicon-remove"></i>',
-            '</a>'
-        ].join('');
-    }
-
-    window.operateEvents = {
-        
-        // 'click .edit': function (e, value, row, index) {
-        //     alert('You click edit icon, row: ' + JSON.stringify(row));
-        //     console.log(value, row, index);
-        // },
-         'click .remove': function (e, value, row, index) {
-          $('#nombreGranArea').text(row.GAR_NOMB);
-        $('#myModal').data('id', row.GAR_CODI).modal('show');
-       
-
-    }
-       };
-
- $(document).on("click", "#btnYes", function() {
-     alert('hola');
-     return false;
-  });
-      // $('#btnYes').on('click', function(){
-      //        var Codigo = $('#myModal').data('id');
-      //         alert('hola');
-      //         return false;
-      //         });
-
-
-$(document).ready(function(){
-
- 
-             $('#tableGrupo').bootstrapTable({
-                method: 'post',
-                url: "scripts/services/api.php?url=executeSQL/S/SELECT GAR_CODI,GAR_NOMB FROM SGI_GRAN_AREA ORDER BY GAR_CODI ASC",
-                cache: false,
-                height: 400,
-                striped: true,
-                pagination: true,
-                pageSize: 50,
-                pagelist: [10, 25, 50, 100, 200],
-                search: true,
-                showColumns: true,
-                showRefresh: true,
-                minimumCountColumns: 1,
-                
-                columns: [
-                  
-                {
-                    field: 'GAR_CODI',
-                    title: 'Código',
-                    align: 'left',
-                    valign: 'bottom',
-                    sortable: true,
-                
-                    visible: false
-                }, {
-                    field: 'GAR_NOMB',
-                    title: 'Gran Área',
-                    align: 'left',
-                    valign: 'middle',
-                    sortable: true,
-                 
-                },{                   
-                    title: '',
-                    align: 'center',
-                    valign: 'middle',
-                    switchable:false,
-                    formatter: operateFormatter,
-                    events: operateEvents
-                }]
-            }); 
-
-  
-      // $('[data-id='+id+']').parents('tr').remove();
-        
- //sending to php the row to be deleted from the db
- // $.ajax({
- //  url: 'scripts/services/api.php?url=executeSQL/D/DELETE FROM SGI_GRAN_AREA WHERE GAR_CODI = ' + Codigo,
- //  data: {
- //      id : Codigo
- //  },
- //  type: 'POST',
- //  dataType : 'json',
-  
- //  success: function(datos){
- //       // alert(JSON.stringify(datos)['msg']);
- // //removing entire row
-      
- //        $('#tableGrupo').bootstrapTable('remove', {
- //                    field: 'GAR_CODI',
- //                    values: Codigo
- //                });
- //       $('#myModal').modal('hide');
- //     },
- //      error: function () {
- //             // error handler
- //             //var d = JSON.stringify(datos);
-           
- //            alert('hola');
- //         }       
- // });
-// return false;
-// });
-   
-});
-
-
- 
-
+
+<hr>
+
+<div class="margenTop">
+
+  <nav class= "navbar navbar-default" role= "navigation" >
+ <div class= "navbar-header" >      
+<a class="btn btn-lg btn-success" href="#/edit-granarea/0"><i class="glyphicon glyphicon-plus"></i>&nbsp;Nuevo</a>
+ </div>
+ </nav>
+ </div>
+
+
+   <table id="tableGrupo">
+     
+   </table> 
+    <div id="pager"></div> 
+
+ 
+
+
+
+
+
+<!-- start: Delete Coupon Modal -->
+
+
+<div class="modal fade" id="myModal"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                 <h3 class="modal-title" id="myModalLabel">Advertencia!</h3>
+            </div>
+            <div class="modal-body">
+                 <h4> Desea Borrar el actual registro?</h4>
+                  <div><label id="nombreGranArea"></label>
+            </div>
+            <!--/modal-body-collapse -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" id="btnYes" href="#">Si</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal"  >No</button>
+            </div>
+            <!--/modal-footer-collapse -->
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+</div>
+
+ <script>
+ 
+//   $(function () {
+//     $("#tableGrupo").jqGrid({
+//         url: "scripts/services/api.php?url=executeSQL/S/SELECT GAR_CODI,GAR_NOMB FROM SGI_GRAN_AREA ORDER BY GAR_CODI ASC",
+//         datatype: "json",
+//         mtype: "post",
+//         colNames: ["Código", "Nombre"],
+//         colModel: [
+//             { name: "GAR_CODI",index:"GAR_CODI", width: 55 },
+//             { name: "GAR_NOMB", width: 950,edittype:'text' }            
+//         ],
+//         pager: "#pager",
+//         rowNum: 10,
+//         rowList: [10, 20, 30],
+//         sortname: "GAR_CODI",
+//         pagerpos : "right",
+//         sortorder: "desc",
+        
+//         gridview: true,
+//         autoencode: true,
+//         caption: "GRAN ÁREA"
+
+//     }); 
+
+//     $("#tableGrupo").jqGrid('navGrid','#pager',{edit:true,add:true,del:true}); 
+//     $("#tableGrupo").jqGrid('editGridRow', "GAR_CODI", "top" );
+// });
+
+
+
+
+    function operateFormatter(value, row, index) {
+        return [
+            
+            '<a class="edit ml10" href="#/edit-granarea/'+ row.GAR_CODI + '" title="Editar">',
+                '<i class="glyphicon glyphicon-edit"></i>',
+            '</a> &nbsp' ,
+            '<a class="remove ml10" href="javascript:void(0)" title="Eliminar">',
+                '<i class="glyphicon glyphicon-remove"></i>',
+            '</a>'
+        ].join('');
+    }
+
+    window.operateEvents = {
+        
+        // 'click .edit': function (e, value, row, index) {
+        //     alert('You click edit icon, row: ' + JSON.stringify(row));
+        //     console.log(value, row, index);
+        // },
+         'click .remove': function (e, value, row, index) {
+          $('#nombreGranArea').text(row.GAR_NOMB);
+        $('#myModal').data('id', row.GAR_CODI).modal('show');
+       
+
+    }
+       };
+
+ $(document).on("click", "#btnYes", function() {
+     alert('hola');
+     return false;
+  });
+      // $('#btnYes').on('click', function(){
+      //        var Codigo = $('#myModal').data('id');
+      //         alert('hola');
+      //         return false;
+      //         });
+
+
+$(document).ready(function(){
+
+ 
+             $('#tableGrupo').bootstrapTable({
+                method: 'post',
+                url: "scripts/services/api.php?url=executeSQL/S/SELECT GAR_CODI,GAR_NOMB FROM SGI_GRAN_AREA ORDER BY GAR_CODI ASC",
+                cache: false,
+                height: 400,
+                striped: true,
+                pagination: true,
+                pageSize: 50,
+                pagelist: [10, 25, 50, 100, 200],
+                search: true,
+                showColumns: true,
+                showRefresh: true,
+                minimumCountColumns: 1,
+                
+                columns: [
+                  
+                {
+                    field: 'GAR_CODI',
+                    title: 'Código',
+                    align: 'left',
+                    valign: 'bottom',
+                    sortable: true,
+                
+                    visible: false
+                }, {
+                    field: 'GAR_NOMB',
+                    title: 'Gran Área',
+                    align: 'left',
+                    valign: 'middle',
+                    sortable: true,
+                 
+                },{                   
+                    title: '',
+                    align: 'center',
+                    valign: 'middle',
+                    switchable:false,
+                    formatter: operateFormatter,
+                    events: operateEvents
+                }]
+            }); 
+
+  
+      // $('[data-id='+id+']').parents('tr').remove();
+        
+ //sending to php the row to be deleted from the db
+ // $.ajax({
+ //  url: 'scripts/services/api.php?url=executeSQL/D/DELETE FROM SGI_GRAN_AREA WHERE GAR_CODI = ' + Codigo,
+ //  data: {
+ //      id : Codigo
+ //  },
+ //  type: 'POST',
+ //  dataType : 'json',
+  
+ //  success: function(datos){
+ //       // alert(JSON.stringify(datos)['msg']);
+ // //removing entire row
+      
+ //        $('#tableGrupo').bootstrapTable('remove', {
+ //                    field: 'GAR_CODI',
+ //                    values: Codigo
+ //                });
+ //       $('#myModal').modal('hide');
+ //     },
+ //      error: function () {
+ //             // error handler
+ //             //var d = JSON.stringify(datos);
+           
+ //            alert('hola');
+ //         }       
+ // });
+// return false;
+// });
+   
+});
+
+
+ 
+
 </script>

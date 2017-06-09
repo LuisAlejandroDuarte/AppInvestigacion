@@ -1,27 +1,27 @@
-<html ng-app="Directiva">
-<head>
-<meta charset="utf-8">
-<title>MVC AngularJS</title>
-</head>
-<body>
- 
-<div ng-controller="directivaController">
- 
-<!-- con esto cargamos la directiva dir-template -->
-<dir-template></dir-template>
- 
-<!-- con esto cargamos la directiva templateUrl -->
-<template-url></template-url>
- 
-<!-- cargamos nuestra directiva dinámica y le pasamos variables y funciones -->
-<dynamicsr nombre="{{usuario}}" edad="edad" show="infoUser(usuario,edad)" link="{{ msgLink }}"></dynamicsr>
- 
-<chispas></chispas>
-<reloj></reloj>
-
-</div>
- <script src="bower_components/angular/angular.js"></script>
-  <script src="bower_components/jquery/jquery.js"></script>
-<script src="scripts/controllers/prueba.js"></script>
-</body>
+<html ng-app="Directiva">
+<head>
+<meta charset="utf-8">
+<title>MVC AngularJS</title>
+</head>
+<body>
+ 
+<div ng-controller="directivaController">
+ 
+<!-- con esto cargamos la directiva dir-template -->
+<dir-template></dir-template>
+ 
+<!-- con esto cargamos la directiva templateUrl -->
+<template-url></template-url>
+ 
+<!-- cargamos nuestra directiva dinámica y le pasamos variables y funciones -->
+<dynamicsr nombre="{{usuario}}" edad="edad" show="infoUser(usuario,edad)" link="{{ msgLink }}"></dynamicsr>
+ 
+<chispas></chispas>
+<reloj></reloj>
+
+</div>
+ <script src="bower_components/angular/angular.js"></script>
+  <script src="bower_components/jquery/jquery.js"></script>
+<script src="scripts/controllers/prueba.js"></script>
+</body>
 </html>

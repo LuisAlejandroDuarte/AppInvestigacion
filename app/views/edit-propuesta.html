@@ -1,351 +1,358 @@
-<hr>
-<mostrariconoesperapropuesta></mostrariconoesperapropuesta>
-<div class="margenTop">
-<div class="view">
-<div class="panel panel-primary drop-shadow" style="width:80%;height:auto;  margin-left:14%; margin-top:5%">
-  <div class="panel-heading"><h>{{tiTulo}}</h></div>
-   <tabset active="active">
-      <tab  index="0" select="mostrarboton2()">
-
-        <tab-heading>    
-        <i class="glyphicon glyphicon-info-sign"></i> Información General Convocatoria 
-
-        </tab-heading>
-         <div class="container-fluid">
-        <div class="row" style="margin-top:10px;margin-bottom:10px" ng-init="selConvocatoria=convocatoria[0]">
-          <div class="col-lg-3 col-md-3 col-xs-12 col-sm-12">
-             <label>Convocatoria</label> 
-             <select class="form-control input-sm"  ng-model="selConvocatoria" ng-change="onChangedConvocatoria()"
-              ng-options="opt as opt.CON_DESC for opt in convocatoria" required>
-          </select>  
-          </div>
-        </div>
-
-                 
-    <div class="row">
-      <div class="col-lg-3 col-md-3 col-xs-12 col-sm-12">
-        <div class="form-group">
-          <label>NÚMERO</label> 
-            <input name="name" ng-model="numero" type= "text" maxlength="6" class= "form-control" placeholder="Número"  readonly/>  
-        </div>
-      </div>
-      <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">
-        <div class="form-group">
-          <label>DESCRIPCIÓN</label> 
-           <input name="name" ng-model="descripcion" type= "text" class= "form-control" placeholder="Descripción" readonly/>   
-        </div>
-      </div>
-      <div class="col-lg-3 col-md-3 col-xs-12 col-sm-12">
-        <div class="form-group">
-          <label>PUNTAJE</label> 
-            <input name="name" ng-model="puntaje"  class= "form-control" placeholder="Puntaje" readonly/>        
-        </div>
-      </div>
-    </div>
-    <div class="row">
-       <div class="col-lg-4 col-md-4 col-xs-12 col-sm-12">
-        <div class="form-group">
-           <label>Fecha Inicio</label>
-            <div class="form-group" ng-class="{'has-error': datepickerForm.date.$invalid}">
-               <input type="text" class="form-control" ng-model="fechaInicio"  readonly>
-  
-            </div>
-        </div>
-       </div>
-        <div class="col-lg-4 col-md-4 col-xs-12 col-sm-12">
-           <div class="form-group">
-               <label>Fecha Final</label>                       
-                <div class="form-group" ng-class="{'has-error': datepickerForm.date.$invalid}">
-                    <input type="text"  class="form-control" ng-model="fechaFinal" readonly>
-                </div>           
-          </div>
-       </div>
-        <div class="col-lg-4 col-md-4 col-xs-12 col-sm-12">
-          <div class="form-group">
-              <label>Tipo Convocatoria</label>  
-               <input type="text" class="form-control" ng-model="selTipoConvocatoria"  readonly>  
-          </div>
-        </div>
-    </div>
-    <div class="row">
-      <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">   
-         <div class="form-group">
-            <label>TEXTO</label>                   
-               <div class="row">
-                  <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">
-                  <a href="http://{{nombreLinkArchivoTexto}}" target="_blank"><span class="label label-danger" style="white-space:normal">{{nombreArchivoTexto}}</span></a>   
-                  </div>
-               </div>                              
-         </div>
-      </div>
-      <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">   
-         <div class="form-group">
-             <label>Resolución</label>              
-              <div class="row">
-                 <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">
-                    <a href="http://{{nombreLinkArchivoResolucion}}" target="_blank"><span class="label label-danger" style="white-space:normal">{{nombreArchivoResolucion}}</span></a>
-                 </div>
-              </div>                          
-         </div>
-      </div>            
-    </div>
-  
-   
-      </div>
-       <div class="row container-fluid"> 
-       <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">   
-        <div class="form-group">      
-                 <button  ng-click= "volver()"               
-                class="btn btn-primary input-sm">Salir</button>
-       </div>
-        </div>
-             
-       <div class="col-lg-1 col-md-1 col-xs-3 col-sm-3">   
-           
-                </div>
-       </div>
-               
-      </tab>  
-    <tab  index="1" select="mostrarboton2()">
-
-        <tab-heading>
-
-          <i class="glyphicon glyphicon-info-sign"></i> Creando Popuesta  
-           </tab-heading>  
-            <form method="post" name="myForm"  novalidate>
-  <div class="panel-body">
-    <div class="container-fluid">
-      <div class="row">           
-        <div class="col-lg-9 col-md-9 col-xs-12 col-sm-12">
-          <div class="form-group">
-            <label>TÍTULO PROPUESTA INVESTIGACIÓN</label> 
-              <input name="name" ng-model="viewDatos[0].PRO_NOMB" type= "text" class= "form-control input-sm" placeholder="Título" autofocus required/>  
-          </div>
-        </div>
-       
-          <div class="col-lg-3 col-md-3 col-xs-12 col-sm-12">
-          <div class="form-group">
-            <label>Convocatoria</label> 
-             <select class="form-control input-sm"  ng-model="viewDatos[0].PRO_CONV_CODI" 
-              ng-options="opt.CON_CODI as opt.CON_DESC for opt in convocatoria" required>
-          </select>  
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-lg-4 col-md-4 col-xs-12 col-sm-12">
-          <div class="form-group">
-            <label>INVESTIGADOR</label> 
-              <select name="nameSelInvestigador" ng-model="selInvestigador" class= "form-control input-sm" ng-change="onChangeInvestigador(selInvestigador)" ng-options="item as item.Nombre for item in listInvestigadores"></select>  
-          </div>
-        </div>
-          <div class="col-lg-4 col-md-4 col-xs-12 col-sm-12">
-            <div class="form-group">
-              <label>ROL</label> 
-              <select name="nameSelRol" ng-model="selRol" class= "form-control input-sm" ng-options="item as item.TIV_DESC for item in listRoles"></select>  
-            </div>
-        </div>
-         <div class="col-lg-4 col-md-2 col-xs-12 col-sm-12">
-            <div class="form-group">
-              <label>GRUPO INVESTIGACIÓN</label> 
-              <select name="nameSelGrupo" ng-model="selGrupo" class= "form-control input-sm" ng-options="item as item.gru_nomb for item in listGrupoInvestigacion"></select>  
-            </div>
-        </div>         
-      </div>
-      <div class="row">
-        <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">
-          <div class="form-group">
-            <label>ESCUELA</label> 
-              <input class="form-control input-sm" ng-model="escuela" readonly />
-          </div>
-        </div>
-         <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">
-          <div class="form-group">
-            <label>PROGRAMA</label> 
-              <input class="form-control input-sm" ng-model="programa" readonly />
-          </div>
-        </div>                 
-      </div>
-      <div class="row" style="margin-bottom:20px">
-          <div class="col-lg-2 col-md-2 col-xs-12 col-sm-12">
-            <button class="btn btn-success input-sm" ng-click="onClicInvestigador()"><i class="glyphicon glyphicon-plus"></i></button>
-        </div>
-      </div>
-
-      <div class="row">
-          <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
-            <div style="height:200px;overflow-y:auto">
-              <ul class="list-group" ng-repeat="item in listInvestigadorPropuesta">
-                <li class="list-group-item">
-                  <div class="row">
-                    <div class="col-lg-2 col-md-2 col-xs-12 col-sm-12">
-                        {{item.nombreInvestigador}}
-                    </div>  
-                    <div class="col-lg-2 col-md-2 col-xs-12 col-sm-12">
-                        {{item.Rol}}
-                    </div>  
-                    <div class="col-lg-2 col-md-2 col-xs-12 col-sm-12">
-                        {{item.Grupo}}
-                    </div>  
-                    <div class="col-lg-2 col-md-2 col-xs-12 col-sm-12">
-                        {{item.escuela}}
-                    </div>  
-                    <div class="col-lg-3 col-md-3 col-xs-12 col-sm-12">
-                        {{item.programa}}
-                    </div>  
-                     <div class="col-lg-1 col-md-1 col-xs-12 col-sm-12">
-                        <button class="btn btn-danger input-sm" ng-click="onClicEliminarInvestigador(this)"><i class="glyphicon glyphicon-trash" title="Eliminar"></i> </button>
-                    </div>  
-                   </div>                   
-                </li>
-              </ul>
-            </div>
-          </div>  
-      </div>
-
-
-     <!--  <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-          <div class="form-group">
-             <label>LINK GLAC</label>  
-               <input name="name" ng-model="viewDatos[0].PRO_LINK_GLAC" type= "text" class= "form-control input-sm" placeholder="Link GLAC" autofocus required/>    
-          </div>          
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-          <div class="form-group">
-            <label>LINK CVLA</label>      
-              <input name="name" ng-model="viewDatos[0].PRO_LINK_CVLA" type= "text" class= "form-control input-sm" placeholder="Link CVLA" autofocus required/>       
-          </div>          
-        </div>
-      </div>     -->
-          <div class="row">
-      <div class="col-lg-5 col-md-5 col-xs-12 col-sm-12">   
-         <div class="form-group">
-            <label>Documento del Proyecto</label>    
-                <span class="fileinput-button glyphicon glyphicon-file"  ng-class="{disabled:    disabled}" style="margin-left:20px"><input title="Cargar documento" type="file" name="files" onchange="angular.element(this).scope().uploadFileTexto(this) " accept="application/pdf, application/msword"> 
-                </span>     
-               <span title="Eliminar documento" ng-click="EliminarDocumentoProyecto()" class="glyphicon glyphicon-remove" style="cursor: pointer;"></span>
-               <div class="row">
-                  <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">
-                  <a href="http://{{nombreLinkDocumentoProyecto}}" target="_blank"><span class="label label-danger" style="white-space:normal">{{nombreDocumentoProyecto}}</span></a>   
-                  </div>
-               </div>                              
-         </div>
-      </div>
-      <div class="col-lg-5 col-md-5 col-xs-12 col-sm-12">   
-         <div class="form-group">
-             <label>Subir Carta Aval</label>
-               <span class="fileinput-button glyphicon glyphicon-file"  ng-class="{disabled:    disabled}" style="margin-left:20px"><input title="Cargar documento" type="file"  name="files" onchange="angular.element(this).scope().uploadFileCarta(this) " accept="application/pdf,application/msword"> 
-              </span>                
-              <span title="Eliminar documento" ng-click="EliminarCartaAval()" class="glyphicon glyphicon-remove" style="cursor: pointer;"></span>
-              <div class="row">
-                 <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">
-                    <a href="http://{{nombreLinkCartaAval}}" target="_blank"><span class="label label-danger" style="white-space:normal">{{nombreArchivoCarta}}</span></a>
-                 </div>
-              </div>                          
-         </div>
-      </div>   
-       <div class="col-lg-2 col-md-2 col-xs-12 col-sm-12">
-          <div class="form-group">
-            <label>FECHA HORA</label> 
-              <input name="name" ng-model="viewDatos[0].PRO_FECH_REGI" type= "text" class= "form-control input-sm" readonly/>  
-          </div>
-        </div>         
-    </div>
-  </div> 
-</div>
-</form>
-           <div class="row container-fluid"> 
-       <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">   
-        <div class="form-group">
-          <button  ng-click= "save(viewDatos[0])"  ng-disabled="myForm.$invalid"              
-                class="btn btn-primary input-sm">{{buttonText}}</button>
-                 <button  ng-click= "volver()"               
-                class="btn btn-primary input-sm">Salir</button>
-       </div>
-        </div>
-             
-       <div class="col-lg-1 col-md-1 col-xs-3 col-sm-3">   
-           
-                </div>
-       </div>
-    </tab>
-
-     <tab  index="3" select="onClicSelect(this,3)">
-
-        <tab-heading>
-            <i class="glyphicon glyphicon-list-alt"></i>Evaluación propuesta
-        </tab-heading>
-        <div class="container">
-        <div class="row" style="margin-top:10px">
-          <div class="col-lg-4 col-md-4 col-xs-4 col-sm-4">
-            <div class="form-group">
-              <label>PROPUESTAS</label>
-              <select class="form-control input-sm" ng-model="selPropuesta" ng-options="item as item.Nombre for item in listPropuestas" ng-change="onChangePropuesta()">
-            </select>
-            </div>   
-          </div>
-           <div class="col-lg-4 col-md-4 col-xs-4 col-sm-4">
-                <div class="form-group">
-                  <label>CONVOCATORIA</label>
-                  <input class="form-control input-sm"  ng-model="nombreConvocatoria" readonly/>
-                </div>
-           </div>
-            <div class="col-lg-4 col-md-4 col-xs-4 col-sm-4">
-              <div class="form-inline">
-                 <div class="form-group">                         
-                  <a href="http://{{propuestaLink}}"  target="_blank"><span class="label label-primary" style="white-space:normal">Descargar Propuesta</span></a>
-                </div>
-              </div>
-           </div>
-        </div>
-
-        <div class="row" style="margin-top:10px">
-            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
-            <div style="overflow-y: auto;;overflow-x:hidden;height:200px">  
-            <ul class="list-group" ng-repeat="item in listPropuesta">
-
-                <li class="list-group-item">
-                    <div class="row">
-
-                      <div class="col-lg-4 col-md-4 col-xs-4 col-sm-4">
-
-                          <label>{{item.Evaluador}}</label>
-
-                      </div>
-                      <div class="col-lg-4 col-md-4 col-xs-4 col-sm-4">
-                           <a href="http://{{item.PCJU_EVAL_PROP_LINK}}"  target="_blank"><span class="label label-primary" style="white-space:normal">Descargar Evaluación</span></a>
-                      </div>
-                      <div class="col-lg-4 col-md-4 col-xs-4 col-sm-4">
-                        {{item.PCJU_EEVA_CODI}}
-                      </div>
-                  </div>
-
-               </li>
-                
-            </ul>
-            </div>
-          </div>
-        </div>
-         <div class="row" style="margin-top:10px">
-               <div class="col-lg-4 col-md-4 col-xs-4 col-sm-4">
-                    <label>Evaluación Total Asignada:</label>
-                    {{total}}
-               </div>
-         </div>
-        </div>
-      </tab>
-  </tabset>
-
-
-      
-</div>
-</div>
-</div>
-
-</div>
-
-
-
-
- 
+<hr>
+<mostrariconoesperapropuesta></mostrariconoesperapropuesta>
+<div class="margenTop">
+<div class="view">
+<div class="panel panel-primary drop-shadow" style="width:80%;height:auto;  margin-left:14%; margin-top:5%">
+  <div class="panel-heading"><h>{{tiTulo}}</h></div>
+   <tabset active="active">
+      <tab  index="0" select="mostrarboton2()">
+
+        <tab-heading>    
+        <i class="glyphicon glyphicon-info-sign"></i> Información General Convocatoria 
+
+        </tab-heading>
+         <div class="container-fluid">
+        <div class="row" style="margin-top:10px;margin-bottom:10px" ng-init="selConvocatoria=convocatoria[0]">
+          <div class="col-lg-3 col-md-3 col-xs-12 col-sm-12">
+             <label>Convocatoria</label> 
+             <select class="form-control input-sm"  ng-model="selConvocatoria" ng-change="onChangedConvocatoria()"
+              ng-options="opt as opt.CON_DESC for opt in convocatoria" required>
+          </select>  
+          </div>
+        </div>
+
+                 
+    <div class="row">
+      <div class="col-lg-3 col-md-3 col-xs-12 col-sm-12">
+        <div class="form-group">
+          <label>NÚMERO</label> 
+            <input name="name" ng-model="numero" type= "text" maxlength="6" class= "form-control" placeholder="Número"  readonly/>  
+        </div>
+      </div>
+      <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">
+        <div class="form-group">
+          <label>DESCRIPCIÓN</label> 
+           <input name="name" ng-model="descripcion" type= "text" class= "form-control" placeholder="Descripción" readonly/>   
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-3 col-xs-12 col-sm-12">
+        <div class="form-group">
+          <label>PUNTAJE</label> 
+            <input name="name" ng-model="puntaje"  class= "form-control" placeholder="Puntaje" readonly/>        
+        </div>
+      </div>
+    </div>
+    <div class="row">
+       <div class="col-lg-4 col-md-4 col-xs-12 col-sm-12">
+        <div class="form-group">
+           <label>Fecha Inicio</label>
+            <div class="form-group" ng-class="{'has-error': datepickerForm.date.$invalid}">
+               <input type="text" class="form-control" ng-model="fechaInicio"  readonly>
+  
+            </div>
+        </div>
+       </div>
+        <div class="col-lg-4 col-md-4 col-xs-12 col-sm-12">
+           <div class="form-group">
+               <label>Fecha Final</label>                       
+                <div class="form-group" ng-class="{'has-error': datepickerForm.date.$invalid}">
+                    <input type="text"  class="form-control" ng-model="fechaFinal" readonly>
+                </div>           
+          </div>
+       </div>
+        <div class="col-lg-4 col-md-4 col-xs-12 col-sm-12">
+          <div class="form-group">
+              <label>Tipo Convocatoria</label>  
+               <input type="text" class="form-control" ng-model="selTipoConvocatoria"  readonly>  
+          </div>
+        </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">   
+         <div class="form-group">
+            <label>TEXTO</label>                   
+               <div class="row">
+                  <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">
+                  <a href="http://{{nombreLinkArchivoTexto}}" target="_blank"><span class="label label-danger" style="white-space:normal">{{nombreArchivoTexto}}</span></a>   
+                  </div>
+               </div>                              
+         </div>
+      </div>
+      <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">   
+         <div class="form-group">
+             <label>Resolución</label>              
+              <div class="row">
+                 <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">
+                    <a href="http://{{nombreLinkArchivoResolucion}}" target="_blank"><span class="label label-danger" style="white-space:normal">{{nombreArchivoResolucion}}</span></a>
+                 </div>
+              </div>                          
+         </div>
+      </div>            
+    </div>
+  
+   
+      </div>
+       <div class="row container-fluid"> 
+       <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">   
+        <div class="form-group">      
+                 <button  ng-click= "volver()"               
+                class="btn btn-primary input-sm">Salir</button>
+       </div>
+        </div>
+             
+       <div class="col-lg-1 col-md-1 col-xs-3 col-sm-3">   
+           
+                </div>
+       </div>
+               
+      </tab>  
+    <tab  index="1" select="mostrarboton2()">
+
+        <tab-heading>
+
+          <i class="glyphicon glyphicon-info-sign"></i> Creando Popuesta  
+           </tab-heading>  
+            <form method="post" name="myForm"  novalidate>
+  <div class="panel-body">
+    <div class="container-fluid">
+      <div class="row">           
+        <div class="col-lg-9 col-md-9 col-xs-12 col-sm-12">
+          <div class="form-group">
+            <label>TÍTULO PROPUESTA INVESTIGACIÓN</label> 
+              <input name="name" ng-model="viewDatos[0].PRO_NOMB" type= "text" class= "form-control input-sm" placeholder="Título" autofocus required/>  
+          </div>
+        </div>
+       
+          <div class="col-lg-3 col-md-3 col-xs-12 col-sm-12">
+          <div class="form-group">
+            <label>Convocatoria</label> 
+             <select class="form-control input-sm"  ng-model="viewDatos[0].PRO_CONV_CODI" 
+              ng-options="opt.CON_CODI as opt.CON_DESC for opt in convocatoria" required>
+          </select>  
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-4 col-md-4 col-xs-12 col-sm-12">
+          <div class="form-group">
+            <label>INVESTIGADOR</label> 
+              <select name="nameSelInvestigador" ng-model="selInvestigador" class= "form-control input-sm" ng-change="onChangeInvestigador(selInvestigador)" ng-options="item as item.Nombre for item in listInvestigadores"></select>  
+          </div>
+        </div>
+          <div class="col-lg-4 col-md-4 col-xs-12 col-sm-12">
+            <div class="form-group">
+              <label>ROL</label> 
+              <select name="nameSelRol" ng-model="selRol" class= "form-control input-sm" ng-options="item as item.TIV_DESC for item in listRoles"></select>  
+            </div>
+        </div>
+         <div class="col-lg-4 col-md-2 col-xs-12 col-sm-12">
+            <div class="form-group">
+              <label>GRUPO INVESTIGACIÓN</label> 
+              <select name="nameSelGrupo" ng-model="selGrupo" class= "form-control input-sm" ng-options="item as item.gru_nomb for item in listGrupoInvestigacion"></select>  
+            </div>
+        </div>         
+      </div>
+      <div class="row">
+        <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">
+          <div class="form-group">
+            <label>ESCUELA</label> 
+              <input class="form-control input-sm" ng-model="escuela" readonly />
+          </div>
+        </div>
+         <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">
+          <div class="form-group">
+            <label>PROGRAMA</label> 
+              <input class="form-control input-sm" ng-model="programa" readonly />
+          </div>
+        </div>                 
+      </div>
+      <div class="row" style="margin-bottom:20px">
+          <div class="col-lg-2 col-md-2 col-xs-12 col-sm-12">
+            <button class="btn btn-success input-sm" ng-click="onClicInvestigador()"><i class="glyphicon glyphicon-plus"></i></button>
+        </div>
+      </div>
+
+      <div class="row">
+          <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+            <div style="height:200px;overflow-y:auto">
+              <ul class="list-group" ng-repeat="item in listInvestigadorPropuesta">
+                <li class="list-group-item">
+                  <div class="row">
+                    <div class="col-lg-2 col-md-2 col-xs-12 col-sm-12">
+                        {{item.nombreInvestigador}}
+                    </div>  
+                    <div class="col-lg-2 col-md-2 col-xs-12 col-sm-12">
+                        {{item.Rol}}
+                    </div>  
+                    <div class="col-lg-2 col-md-2 col-xs-12 col-sm-12">
+                        {{item.Grupo}}
+                    </div>  
+                    <div class="col-lg-2 col-md-2 col-xs-12 col-sm-12">
+                        {{item.escuela}}
+                    </div>  
+                    <div class="col-lg-3 col-md-3 col-xs-12 col-sm-12">
+                        {{item.programa}}
+                    </div>  
+                     <div class="col-lg-1 col-md-1 col-xs-12 col-sm-12">
+                        <button class="btn btn-danger input-sm" ng-click="onClicEliminarInvestigador(this)"><i class="glyphicon glyphicon-trash" title="Eliminar"></i> </button>
+                    </div>  
+                   </div>                   
+                </li>
+              </ul>
+            </div>
+          </div>  
+      </div>
+
+
+     <!--  <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+          <div class="form-group">
+             <label>LINK GLAC</label>  
+               <input name="name" ng-model="viewDatos[0].PRO_LINK_GLAC" type= "text" class= "form-control input-sm" placeholder="Link GLAC" autofocus required/>    
+          </div>          
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+          <div class="form-group">
+            <label>LINK CVLA</label>      
+              <input name="name" ng-model="viewDatos[0].PRO_LINK_CVLA" type= "text" class= "form-control input-sm" placeholder="Link CVLA" autofocus required/>       
+          </div>          
+        </div>
+      </div>     -->
+          <div class="row">
+      <div class="col-lg-5 col-md-5 col-xs-12 col-sm-12">   
+         <div class="form-group">
+            <label>Documento del Proyecto</label>    
+                <span class="fileinput-button glyphicon glyphicon-file"  ng-class="{disabled:    disabled}" style="margin-left:20px"><input title="Cargar documento" type="file" name="files" onchange="angular.element(this).scope().uploadFileTexto(this) " accept="application/pdf, application/msword"> 
+                </span>     
+               <span title="Eliminar documento" ng-click="EliminarDocumentoProyecto()" class="glyphicon glyphicon-remove" style="cursor: pointer;"></span>
+               <div class="row">
+                  <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">
+                  <a href="http://{{nombreLinkDocumentoProyecto}}" target="_blank"><span class="label label-danger" style="white-space:normal">{{nombreDocumentoProyecto}}</span></a>   
+                  </div>
+               </div>                              
+         </div>
+      </div>
+      <div class="col-lg-5 col-md-5 col-xs-12 col-sm-12">   
+         <div class="form-group">
+             <label>Subir Carta Aval</label>
+               <span class="fileinput-button glyphicon glyphicon-file"  ng-class="{disabled:    disabled}" style="margin-left:20px"><input title="Cargar documento" type="file"  name="files" onchange="angular.element(this).scope().uploadFileCarta(this) " accept="application/pdf,application/msword"> 
+              </span>                
+              <span title="Eliminar documento" ng-click="EliminarCartaAval()" class="glyphicon glyphicon-remove" style="cursor: pointer;"></span>
+              <div class="row">
+                 <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">
+                    <a href="http://{{nombreLinkCartaAval}}" target="_blank"><span class="label label-danger" style="white-space:normal">{{nombreArchivoCarta}}</span></a>
+                 </div>
+              </div>                          
+         </div>
+      </div>   
+       <div class="col-lg-2 col-md-2 col-xs-12 col-sm-12">
+          <div class="form-group">
+            <label>FECHA HORA</label> 
+              <input name="name" ng-model="viewDatos[0].PRO_FECH_REGI" type= "text" class= "form-control input-sm" readonly/>  
+          </div>
+        </div>         
+    </div>
+  </div> 
+</div>
+</form>
+           <div class="row container-fluid"> 
+       <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">   
+        <div class="form-group">
+          <button  ng-click= "save(viewDatos[0])"  ng-disabled="myForm.$invalid"              
+                class="btn btn-primary input-sm">{{buttonText}}</button>
+                 <button  ng-click= "volver()"               
+                class="btn btn-primary input-sm">Salir</button>
+       </div>
+        </div>
+             
+       <div class="col-lg-1 col-md-1 col-xs-3 col-sm-3">   
+           
+                </div>
+       </div>
+    </tab>
+
+     <tab  index="3" select="onClicSelect(this,3)">
+
+        <tab-heading>
+            <i class="glyphicon glyphicon-list-alt"></i> Evaluación Propuesta
+        </tab-heading>
+        <div class="container-fluid">
+        <div class="row" style="margin-top:10px">
+          <div class="col-lg-4 col-md-4 col-xs-4 col-sm-4">
+            <div class="form-group">
+              <label>PROPUESTAS</label>
+              <select class="form-control input-sm" ng-model="selPropuesta" ng-options="item as item.Nombre for item in listPropuestas" ng-change="onChangePropuesta(selPropuesta)">
+            </select>
+            </div>   
+          </div>
+           <div class="col-lg-4 col-md-4 col-xs-4 col-sm-4">
+                <div class="form-group">
+                  <label>CONVOCATORIA</label>
+                  <input class="form-control input-sm"  ng-model="nombreConvocatoria" readonly/>
+                </div>
+           </div>
+            <div class="col-lg-4 col-md-4 col-xs-4 col-sm-4">
+              <div class="form-inline">
+                 <div class="form-group">                         
+                  <a href="http://{{propuestaLink}}"  target="_blank"><span class="label label-primary" style="white-space:normal">Descargar Propuesta</span></a>
+                </div>
+              </div>
+           </div>
+        </div>
+
+        <div class="row" style="margin-top:10px">
+            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+            <div style="overflow-y: auto;;overflow-x:hidden;height:200px">  
+            <ul class="list-group" ng-repeat="item in listPropuesta">
+
+                <li class="list-group-item">
+                    <div class="row">
+                    
+                      <div class="col-lg-4 col-md-4 col-xs-4 col-sm-4">
+                           <a href="http://{{item.PCJU_EVAL_PROP_LINK}}"  target="_blank"><span class="label label-primary" style="white-space:normal">Descargar Evaluación</span></a>
+                      </div>
+                      <div class="col-lg-4 col-md-4 col-xs-4 col-sm-4">
+                        {{item.PCJU_EEVA_CODI}}
+                      </div>
+                  </div>
+
+               </li>
+                
+            </ul>
+            </div>
+          </div>
+        </div>
+         <div class="row" style="margin-top:10px">
+               <div class="col-lg-4 col-md-4 col-xs-4 col-sm-4">
+                    <label>Evaluación Total Asignada:</label>
+                    {{total}}
+               </div>
+         </div>
+           <div class="row"> 
+             <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">   
+              <div class="form-group">      
+                       <button  ng-click= "volver()"               
+                      class="btn btn-primary input-sm">Salir</button>
+             </div>
+              </div>
+             
+       <div class="col-lg-1 col-md-1 col-xs-3 col-sm-3">   
+           
+                </div>
+       </div>
+        </div>
+      </tab>
+  </tabset>
+
+
+      
+</div>
+</div>
+</div>
+
+</div>
+
+
+
+
+ 
