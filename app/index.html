@@ -1,401 +1,802 @@
-<!doctype html>
-
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
-
-
-
-<head>
-
-  <meta charset="utf-8">
-
-  <title></title>
-
-  <meta name="description" content="">
-
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-
-  <!-- build:css styles/vendor.css -->
-
-  <!-- bower:css -->
-
-  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min2.css" />
-
-  <link rel="stylesheet" href="bower_components/bootstrapvalidator/dist/css/bootstrapValidator.min.css"/>
-
-  <link rel="stylesheet" href="bower_components/bootstraptable/dist/bootstrap-table.min.css"/>
-
-
-
-  <!--Para Grilla -->
-
-   <link rel="stylesheet" href="bower_components/jquery/JqGrid/css/ui.jqgrid.css"/>
-
-   <link rel="stylesheet" href="bower_components/jquery/JqGrid/src/css/ui.multiselect.css"/>
-
-   
-
-    <script src="bower_components/jquery/jquery.js"></script>
-
-  <!-- Termina Grilla-->
-
-
-
-  <!-- <link rel="stylesheet" href="bower_components/angular-motion/angular-motion.css"/> -->
-
-<!--   <link rel="stylesheet" href="bower_components/bootstrap-additions/bootstrap-additions.css"/> -->
-
-   <!-- <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-combined.min.css">  -->
-
-  <!-- endbower -->
-
-  <!-- endbuild -->
-
-  <!-- build:css({.tmp,app}) styles/main.css -->
-<link href="https://fonts.googleapis.com/css?family=Oswald:700" rel="stylesheet">
-  <link rel="stylesheet" href="styles/main.css">
-
-  <link rel="stylesheet" href="styles/animaciones.css">
-
-  <link rel="stylesheet" href="styles/jqx.base.css">
-
-  <link rel="stylesheet" href="styles/jqx.bootstrap.css">
-
-  <link rel="stylesheet" href="styles/jqx.energyblue.css">
-
-  <link rel="stylesheet" href="styles/jqx.orange.css">
-
-  <link rel="stylesheet" href="styles/jqx.metro.css">
-
-  
-
-  
-
-  <!-- endbuild -->
-
-</head>
-
-<body ng-app="listaTareasApp">
-
-
-
-
-
-
-
-<!--[if lt IE 7]>
-
-<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-
-<![endif]-->
-
-
-
-<!-- Add your site or application content here -->
-
-<div ng-controller="ApCtrl">
-
- 
-
-
-
-<!-- <nav id="navbar-example" class="navbar navbar-default navbar-fixed-top" role="navigation">
-
-      <div class="container-fluid">                    
-      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav">      
-        <li class="dropdown" ng-show="mnuAdmin"> 
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Administrar <span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li><a href="#/area">Area</a></li>
-            <li><a href="#/atributo">Atributo</a></li>
-            <li><a href="#/centro">Centro</a></li>            
-            <li><a href="#/zona">Zona</a></li>            
-            <li><a href="#/sgiTipoConv">Tipo Convocatoria</a></li>            
-            <li><a href="#/convocatoria">Convocatoria</a></li>            
-            <li><a href="#/escalaEvaluacion">Escala Evaluacion</a></li>
-            <li><a href="#">Parametro Evaluacion</a></li>
-            <li><a href="#">Propuesta atributo</a></li>
-            <li><a href="#">Propuesta atributo convocatoria</a></li>
-            <li><a href="#/propuesta">Propuesta</a></li>
-          </ul>
-        </li>
-         <li class="dropdown" ng-show="mnuInvestiga"> 
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Opciones <span class="caret"></span></a>
-          <ul class="dropdown-menu">            
-            <li><a href="#/edit-investigador/{{idInve}}">Investigador</a></li>            
-            <li><a href="#/cambioclave">Cambio Clave</a></li>            
-
-          </ul>
-        </li>
-         <li class="dropdown" ng-show="mnuConvocatoria"> 
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Convocatorias <span class="caret"></span></a>
-          <ul class="dropdown-menu">            
-            <li><a href="#/convocatoria">Crear Convocatorias</a></li>    
-            <li><a href="#/atributo">Crear Atributos</a></li>    
-            <li><a href="#/propuesta">Crear Propuestas</a></li>   
-            <li><a href="#/parametroEvaluacion">Parámetro Evaluación</a></li>                        
-            <li><a href="#/escalaEvaluacion">Escala Evaluación</a></li> 
-            <li><a href="#/evaluador">Crear Evaluador</a></li> 
-            <li><a href="#/propuesta-atributo-convocatoria">Propuesta Atributo Convocatoria</a></li>
-            <li><a href="#/propuestaConvocatoriaAtributoJuez">Propuesta Convocatoria Juez</a></li>                                    
-          </ul>
-        </li>
-      </ul>     
-      <ul class="nav navbar-nav navbar-right">
-        <button class="btn btn-danger btnSalir" ng-click="salir()">Salir</button>
-      </ul>
-    </div>
-        <div class="collapse navbar-collapse bs-example-js-navbar-collapse">
-
-        </div>
-
-      
-
-</nav>  -->
-
-
-
-
-
-  
-<div class="container-fluid">
-    <div ng-view=""></div>
-</div>
- 
-
-</div>
-
-
-
-<!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
-
-<script>
-
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-
-    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-
-      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-
-
-  ga('create', 'UA-XXXXX-X');
-
-  ga('send', 'pageview');
-
-</script>
-
-
-
-<!--[if lt IE 9]>
-
-<script src="bower_components/es5-shim/es5-shim.js"></script>
-
-<script src="bower_components/json3/lib/json3.min.js"></script>
-
-<![endif]-->
-
-
-
-<!-- build:js scripts/vendor.js -->
-
-<!-- bower:js -->
-
-
-
-
-
-<!-- Para la grilla -->
-
-<script src="bower_components/jquery/JqGrid/js/i18n/grid.locale-es.js"></script>
-
-<script src="bower_components/jquery/JqGrid/js/jquery.jqGrid.min.js"></script>
-
-<!-- Termina para grilla -->
-
-
-
-<script src="bower_components/angular/angular.js"></script>
-
-<script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
-
-<script src="bower_components/bootstrap/dist/js/ui-bootstrap-tpls-0.11.2.js"></script>
-
-<!-- <script src="bower_components/bootstrap/dist/js/ui-bootstrap-0.11.2.js"></script> -->
-
-<script src="bower_components/bootstrapvalidator/dist/js/bootstrapValidator.js"></script>
-
-<script src="bower_components/bootstrapvalidator/dist/js/language/es_ES.js"></script>
-
-<script src="bower_components/bootstraptable/src/bootstrap-table.js"></script>
-
-<script src="bower_components/bootstraptable/dist/locale/bootstrap-table-es-CR.min.js"></script>
-
-<script src="bower_components/angular-resource/angular-resource.js"></script>
-
-<!-- <script src="bower_components/angular-strap/angular-strap.js"></script>
-
-<script src="bower_components/angular-strap/angular-strap.tpl.js"></script> -->
-
-<script src="bower_components/angular-cookies/angular-cookies.js"></script>
-
-<script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
-
-<script src="bower_components/angular-route/angular-route.js"></script>
-
-<script src="bower_components/angular-animate/angular-animate.js"></script>
-
-
-
-<script src="bower_components/angular-strap/angular-strap.min.js"></script>
-
-<script src="bower_components/angular-strap/angular-strap.tpl.min.js"></script>
-
-<script src="bower_components/angular-base64/angular-base64.js"></script>
-
-<script src="bower_components/jquery/md5.pack.js"></script>
-
-<script src="bower_components/jquery/jqxcore.js"></script>
-
-<script src="bower_components/jquery/jqxwindow.js"></script>
-
-<script src="bower_components/jquery/globalize.js"></script>
-
-<script src="bower_components/jquery/globalize.culture.es-CO.js"></script>
-
-<script src="bower_components/jquery/jqxcalendar.js"></script>
-
-<script src="bower_components/jquery/jqxpanel.js"></script>
-
-<script src="bower_components/jquery/jqxbuttons.js"></script>
-
-<script src="bower_components/jquery/jqxscrollbar.js"></script>
-<script src="bower_components/moment/moment.min.js"></script>
-<script src="bower_components/moment/moment-locale.js"></script>
-
-
-
-
-
-
-<script src="bower_components/jquery/jqxdatetimeinput.js"></script>
-
-<script src="bower_components/jquery/jqxangular.js"></script>
-
-<script src="bower_components/jquery/linq.min.js"></script>
-
-
-
-
-
-
-
-<!-- endbower -->
-
-<!-- endbuild -->
-
-
-
-<!-- build:js({.tmp,app}) scripts/scripts.js -->
-
-<script src="scripts/app.js"></script>
-
-<script src="scripts/controllers/nav.js"></script>
-
-<script src="scripts/controllers/main.js"></script>
-
-<script src="scripts/controllers/inicio.js"></script>
-
-<script src="scripts/controllers/tareas.js"></script>
-
-<script src="scripts/controllers/empleados.js"></script>
-
-<script src="scripts/controllers/granarea.js"></script>
-
-<script src="scripts/controllers/zona.js"></script>
-
-<script src="scripts/controllers/edit-granarea.js"></script>
-
-<script src="scripts/controllers/edit-area.js"></script>
-
-<script src="scripts/controllers/edit-grupo.js"></script>
-
-<script src="scripts/controllers/edit-zona.js"></script>
-
-<script src="scripts/controllers/centro.js"></script>
-
-<script src="scripts/controllers/edit-centro.js"></script>
-
-<script src="scripts/controllers/area.js"></script>
-
-<script src="scripts/controllers/sgiTipoConv.js"></script>
-
-<script src="scripts/controllers/edit-sgiTipoConv.js"></script>
-
-<script src="scripts/controllers/sgiConv.js"></script>
-
-<script src="scripts/controllers/edit-sgiConv.js"></script>
-
-<script src="scripts/controllers/investigador.js"></script>
-
-<script src="scripts/controllers/grupo.js"></script>
-
-<script src="scripts/controllers/edit-grupo.js"></script>
-
-<script src="scripts/controllers/convocatoria.js"></script>
-
-<script src="scripts/controllers/edit-convocatoria.js"></script>
-
-<script src="scripts/controllers/edit-investigador.js"></script>
-
-<script src="scripts/controllers/atributo.js"></script>
-
-<script src="scripts/controllers/propuesta.js"></script>
-
-<script src="scripts/controllers/edit-propuesta.js"></script>
-
-<script src="scripts/controllers/edit-atributo.js"></script>
-
-<script src="scripts/controllers/evaluador.js"></script>
-
-<script src="scripts/controllers/propuesta-atributo.js"></script>
-
-<script src="scripts/controllers/propuesta-atributo-convocatoria.js"></script>
-
-<script src="scripts/controllers/propuesta-convocatoria-atributo-juez.js"></script>
-
-<script src="scripts/controllers/parametroEvaluacion.js"></script>
-<script src="scripts/controllers/cambioclave.js"></script>
-
-<script src="scripts/controllers/edit-parametroEvaluacion.js"></script>
-
-<script src="scripts/controllers/escalaEvaluacion.js"></script>
-<script src="scripts/controllers/usuario.js"></script>
-<script src="scripts/controllers/semillero.js"></script>
-<script src="scripts/controllers/edit-semillero.js"></script>
-<script src="scripts/controllers/edit-usuario.js"></script>
-<script src="scripts/controllers/edit-evaluador.js"></script>
-<script src="scripts/controllers/menu.js"></script>
-<script src="scripts/controllers/mnuPropuesta.js"></script>
-<script src="scripts/controllers/menuConvocatoriaPropuesta.js"></script>
-
-<script src="scripts/services/crud.js"></script>
-
-<script src="scripts/js/javascript.js"></script>
-
-<!-- endbuild -->
-
-</body>
-
-</html>
-
+<!doctype html>
+
+
+
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+
+
+
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+
+
+
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+
+
+
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+
+
+
+
+
+
+
+<head>
+
+
+
+  <meta charset="utf-8">
+
+
+
+  <title></title>
+
+
+
+  <meta name="description" content="">
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+
+  <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+
+
+
+  <!-- build:css styles/vendor.css -->
+
+
+
+  <!-- bower:css -->
+
+
+
+  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min2.css" />
+
+
+
+  <link rel="stylesheet" href="bower_components/bootstrapvalidator/dist/css/bootstrapValidator.min.css"/>
+
+
+
+  <link rel="stylesheet" href="bower_components/bootstraptable/dist/bootstrap-table.min.css"/>
+
+
+
+
+
+
+
+  <!--Para Grilla -->
+
+
+
+   <link rel="stylesheet" href="bower_components/jquery/JqGrid/css/ui.jqgrid.css"/>
+
+
+
+   <link rel="stylesheet" href="bower_components/jquery/JqGrid/src/css/ui.multiselect.css"/>
+
+
+
+   
+
+
+
+    <script src="bower_components/jquery/jquery.js"></script>
+
+
+
+  <!-- Termina Grilla-->
+
+
+
+
+
+
+
+  <!-- <link rel="stylesheet" href="bower_components/angular-motion/angular-motion.css"/> -->
+
+
+
+<!--   <link rel="stylesheet" href="bower_components/bootstrap-additions/bootstrap-additions.css"/> -->
+
+
+
+   <!-- <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-combined.min.css">  -->
+
+
+
+  <!-- endbower -->
+
+
+
+  <!-- endbuild -->
+
+
+
+  <!-- build:css({.tmp,app}) styles/main.css -->
+
+<link href="https://fonts.googleapis.com/css?family=Oswald:700" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles/main.css">
+
+
+
+  <link rel="stylesheet" href="styles/animaciones.css">
+
+
+
+  <link rel="stylesheet" href="styles/jqx.base.css">
+
+
+
+  <link rel="stylesheet" href="styles/jqx.bootstrap.css">
+
+
+
+  <link rel="stylesheet" href="styles/jqx.energyblue.css">
+
+
+
+  <link rel="stylesheet" href="styles/jqx.orange.css">
+
+
+
+  <link rel="stylesheet" href="styles/jqx.metro.css">
+
+
+
+  
+
+
+
+  
+
+
+
+  <!-- endbuild -->
+
+
+
+</head>
+
+
+
+<body ng-app="listaTareasApp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--[if lt IE 7]>
+
+
+
+<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+
+
+
+<![endif]-->
+
+
+
+
+
+
+
+<!-- Add your site or application content here -->
+
+
+
+<div ng-controller="ApCtrl">
+
+
+
+ 
+
+
+
+
+
+
+
+<!-- <nav id="navbar-example" class="navbar navbar-default navbar-fixed-top" role="navigation">
+
+
+
+      <div class="container-fluid">                    
+
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+      <ul class="nav navbar-nav">      
+
+        <li class="dropdown" ng-show="mnuAdmin"> 
+
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Administrar <span class="caret"></span></a>
+
+          <ul class="dropdown-menu">
+
+            <li><a href="#/area">Area</a></li>
+
+            <li><a href="#/atributo">Atributo</a></li>
+
+            <li><a href="#/centro">Centro</a></li>            
+
+            <li><a href="#/zona">Zona</a></li>            
+
+            <li><a href="#/sgiTipoConv">Tipo Convocatoria</a></li>            
+
+            <li><a href="#/convocatoria">Convocatoria</a></li>            
+
+            <li><a href="#/escalaEvaluacion">Escala Evaluacion</a></li>
+
+            <li><a href="#">Parametro Evaluacion</a></li>
+
+            <li><a href="#">Propuesta atributo</a></li>
+
+            <li><a href="#">Propuesta atributo convocatoria</a></li>
+
+            <li><a href="#/propuesta">Propuesta</a></li>
+
+          </ul>
+
+        </li>
+
+         <li class="dropdown" ng-show="mnuInvestiga"> 
+
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Opciones <span class="caret"></span></a>
+
+          <ul class="dropdown-menu">            
+
+            <li><a href="#/edit-investigador/{{idInve}}">Investigador</a></li>            
+
+            <li><a href="#/cambioclave">Cambio Clave</a></li>            
+
+
+
+          </ul>
+
+        </li>
+
+         <li class="dropdown" ng-show="mnuConvocatoria"> 
+
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Convocatorias <span class="caret"></span></a>
+
+          <ul class="dropdown-menu">            
+
+            <li><a href="#/convocatoria">Crear Convocatorias</a></li>    
+
+            <li><a href="#/atributo">Crear Atributos</a></li>    
+
+            <li><a href="#/propuesta">Crear Propuestas</a></li>   
+
+            <li><a href="#/parametroEvaluacion">Parámetro Evaluación</a></li>                        
+
+            <li><a href="#/escalaEvaluacion">Escala Evaluación</a></li> 
+
+            <li><a href="#/evaluador">Crear Evaluador</a></li> 
+
+            <li><a href="#/propuesta-atributo-convocatoria">Propuesta Atributo Convocatoria</a></li>
+
+            <li><a href="#/propuestaConvocatoriaAtributoJuez">Propuesta Convocatoria Juez</a></li>                                    
+
+          </ul>
+
+        </li>
+
+      </ul>     
+
+      <ul class="nav navbar-nav navbar-right">
+
+        <button class="btn btn-danger btnSalir" ng-click="salir()">Salir</button>
+
+      </ul>
+
+    </div>
+
+        <div class="collapse navbar-collapse bs-example-js-navbar-collapse">
+
+
+
+        </div>
+
+
+
+      
+
+
+
+</nav>  -->
+
+
+
+
+
+
+
+
+
+
+
+  
+
+<div class="container-fluid">
+
+    <div ng-view=""></div>
+
+</div>
+
+ 
+
+
+
+</div>
+
+
+
+
+
+
+
+<!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
+
+
+
+<script>
+
+
+
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+
+
+
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+
+
+
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+
+
+
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+
+
+
+
+
+
+  ga('create', 'UA-XXXXX-X');
+
+
+
+  ga('send', 'pageview');
+
+
+
+</script>
+
+
+
+
+
+
+
+<!--[if lt IE 9]>
+
+
+
+<script src="bower_components/es5-shim/es5-shim.js"></script>
+
+
+
+<script src="bower_components/json3/lib/json3.min.js"></script>
+
+
+
+<![endif]-->
+
+
+
+
+
+
+
+<!-- build:js scripts/vendor.js -->
+
+
+
+<!-- bower:js -->
+
+
+
+
+
+
+
+
+
+
+
+<!-- Para la grilla -->
+
+
+
+<script src="bower_components/jquery/JqGrid/js/i18n/grid.locale-es.js"></script>
+
+
+
+<script src="bower_components/jquery/JqGrid/js/jquery.jqGrid.min.js"></script>
+
+
+
+<!-- Termina para grilla -->
+
+
+
+
+
+
+
+<script src="bower_components/angular/angular.js"></script>
+
+
+
+<script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+
+
+
+<script src="bower_components/bootstrap/dist/js/ui-bootstrap-tpls-0.11.2.js"></script>
+
+
+
+<!-- <script src="bower_components/bootstrap/dist/js/ui-bootstrap-0.11.2.js"></script> -->
+
+
+
+<script src="bower_components/bootstrapvalidator/dist/js/bootstrapValidator.js"></script>
+
+
+
+<script src="bower_components/bootstrapvalidator/dist/js/language/es_ES.js"></script>
+
+
+
+<script src="bower_components/bootstraptable/src/bootstrap-table.js"></script>
+
+
+
+<script src="bower_components/bootstraptable/dist/locale/bootstrap-table-es-CR.min.js"></script>
+
+
+
+<script src="bower_components/angular-resource/angular-resource.js"></script>
+
+
+
+<!-- <script src="bower_components/angular-strap/angular-strap.js"></script>
+
+
+
+<script src="bower_components/angular-strap/angular-strap.tpl.js"></script> -->
+
+
+
+<script src="bower_components/angular-cookies/angular-cookies.js"></script>
+
+
+
+<script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+
+
+
+<script src="bower_components/angular-route/angular-route.js"></script>
+
+
+
+<script src="bower_components/angular-animate/angular-animate.js"></script>
+
+
+
+
+
+
+
+<script src="bower_components/angular-strap/angular-strap.min.js"></script>
+
+
+
+<script src="bower_components/angular-strap/angular-strap.tpl.min.js"></script>
+
+
+
+<script src="bower_components/angular-base64/angular-base64.js"></script>
+
+
+
+<script src="bower_components/jquery/md5.pack.js"></script>
+
+
+
+<script src="bower_components/jquery/jqxcore.js"></script>
+
+
+
+<script src="bower_components/jquery/jqxwindow.js"></script>
+
+
+
+<script src="bower_components/jquery/globalize.js"></script>
+
+
+
+<script src="bower_components/jquery/globalize.culture.es-CO.js"></script>
+
+
+
+<script src="bower_components/jquery/jqxcalendar.js"></script>
+
+
+
+<script src="bower_components/jquery/jqxpanel.js"></script>
+
+
+
+<script src="bower_components/jquery/jqxbuttons.js"></script>
+
+
+
+<script src="bower_components/jquery/jqxscrollbar.js"></script>
+
+<script src="bower_components/moment/moment.min.js"></script>
+
+<script src="bower_components/moment/moment-locale.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="bower_components/jquery/jqxdatetimeinput.js"></script>
+
+
+
+<script src="bower_components/jquery/jqxangular.js"></script>
+
+
+
+<script src="bower_components/jquery/linq.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- endbower -->
+
+
+
+<!-- endbuild -->
+
+
+
+
+
+
+
+<!-- build:js({.tmp,app}) scripts/scripts.js -->
+
+
+
+<script src="scripts/app.js"></script>
+
+
+
+<script src="scripts/controllers/nav.js"></script>
+
+
+
+<script src="scripts/controllers/main.js"></script>
+
+
+
+<script src="scripts/controllers/inicio.js"></script>
+
+
+
+<script src="scripts/controllers/tareas.js"></script>
+
+
+
+<script src="scripts/controllers/empleados.js"></script>
+
+
+
+<script src="scripts/controllers/granarea.js"></script>
+
+
+
+<script src="scripts/controllers/zona.js"></script>
+
+
+
+<script src="scripts/controllers/edit-granarea.js"></script>
+
+
+
+<script src="scripts/controllers/edit-area.js"></script>
+
+
+
+<script src="scripts/controllers/edit-grupo.js"></script>
+
+
+
+<script src="scripts/controllers/edit-zona.js"></script>
+
+
+
+<script src="scripts/controllers/centro.js"></script>
+
+
+
+<script src="scripts/controllers/edit-centro.js"></script>
+
+
+
+<script src="scripts/controllers/area.js"></script>
+
+
+
+<script src="scripts/controllers/sgiTipoConv.js"></script>
+
+
+
+<script src="scripts/controllers/edit-sgiTipoConv.js"></script>
+
+
+
+<script src="scripts/controllers/sgiConv.js"></script>
+
+
+
+<script src="scripts/controllers/edit-sgiConv.js"></script>
+
+
+
+<script src="scripts/controllers/investigador.js"></script>
+
+
+
+<script src="scripts/controllers/grupo.js"></script>
+
+
+
+<script src="scripts/controllers/edit-grupo.js"></script>
+
+
+
+<script src="scripts/controllers/convocatoria.js"></script>
+
+
+
+<script src="scripts/controllers/edit-convocatoria.js"></script>
+
+
+
+<script src="scripts/controllers/edit-investigador.js"></script>
+
+
+
+<script src="scripts/controllers/atributo.js"></script>
+
+
+
+<script src="scripts/controllers/propuesta.js"></script>
+
+
+
+<script src="scripts/controllers/edit-propuesta.js"></script>
+
+
+
+<script src="scripts/controllers/edit-atributo.js"></script>
+
+
+
+<script src="scripts/controllers/evaluador.js"></script>
+
+
+
+<script src="scripts/controllers/propuesta-atributo.js"></script>
+
+
+
+<script src="scripts/controllers/propuesta-atributo-convocatoria.js"></script>
+
+
+
+<script src="scripts/controllers/propuesta-convocatoria-atributo-juez.js"></script>
+
+
+
+<script src="scripts/controllers/parametroEvaluacion.js"></script>
+
+<script src="scripts/controllers/cambioclave.js"></script>
+
+
+
+<script src="scripts/controllers/edit-parametroEvaluacion.js"></script>
+
+
+
+<script src="scripts/controllers/escalaEvaluacion.js"></script>
+
+<script src="scripts/controllers/usuario.js"></script>
+
+<script src="scripts/controllers/semillero.js"></script>
+
+<script src="scripts/controllers/edit-semillero.js"></script>
+
+<script src="scripts/controllers/edit-usuario.js"></script>
+
+<script src="scripts/controllers/edit-evaluador.js"></script>
+
+<script src="scripts/controllers/menu.js"></script>
+
+<script src="scripts/controllers/mnuPropuesta.js"></script>
+
+<script src="scripts/controllers/menuConvocatoriaPropuesta.js"></script>
+
+<script src="scripts/controllers/menuAdministracionGeneral.js"></script>
+
+<script src="scripts/services/crud.js"></script>
+
+
+
+<script src="scripts/js/javascript.js"></script>
+
+
+
+<!-- endbuild -->
+
+
+
+</body>
+
+
+
+</html>
+
+
+

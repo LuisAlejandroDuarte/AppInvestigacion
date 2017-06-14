@@ -509,11 +509,7 @@ $scope.mostrarDatos = function(datosPropuesta) {
 
           var datos = {
               Accion:'S',
-<<<<<<< HEAD
-              SQL:'SELECT distinct PCJ.PCJU_EVAL_PROP_LINK,PCJ.PCJU_EEVA_CODI,PCJ.PCJU_INV_CODI FROM sgi_prop_inve AS PI ' + 
-=======
-              SQL:'SELECT PCJ.PCJU_EVAL_PROP_LINK,PCJ.PCJU_EEVA_CODI FROM sgi_prop_inve AS PI ' + 
->>>>>>> 4df58f15f8481e47f628aa3c4c1ec939338d11e5
+              SQL:'SELECT distinct PCJ.PCJU_EVAL_PROP_LINK,PCJ.PCJU_EEVA_CODI,PCJ.PCJU_INV_CODI FROM sgi_prop_inve AS PI ' +               
               ' INNER JOIN sgi_prop_conv_juez AS PCJ ON PCJ.PCJU_PCAT_CODI=PI.PIN_PROP_CODI ' + 
               ' WHERE PCJ.PCJU_PCAT_CODI=' + item.PRO_CODI
 
