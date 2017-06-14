@@ -19,11 +19,15 @@
       }
 
 
+  $scope.onClicAvalGrupoSemillero = function() {
 
+  	$window.location.href = "#/avalgruposemillero/";
+
+  }
 
 	$scope.onClicSalir = function()
 	{		 
-            $window.location.href = "#/menu/";
+        $window.location.href = "#/menu/";
 	}
 
 	$scope.onClicUsuario = function() {

@@ -958,7 +958,13 @@ angular.module("listaTareasApp", ['ngRoute','ngAnimate','ngLocale', 'ngResource'
 
       })
 
+         .when('/avalgruposemillero', {
 
+        templateUrl: 'views/avalgruposemillero.html',
+
+        controller: 'avalgruposemillero'
+
+      })
 
       .otherwise({
 
