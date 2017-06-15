@@ -2,17 +2,31 @@
 
 <div class="panel panel-primary drop-shadow" style="width:65%;height:auto;  margin-left:17%; margin-top:5%">
   <div class="panel-heading"><h>AVAL</h></div>
-   <tabset active="active">
-    <tab  index="0">
-        <tab-heading>
-          <i class="glyphicon glyphicon-info-sign"></i> GRUPOS 
-        </tab-heading>  
+  <div id="toolbargrupo">
+    <h2>GRUPOS</h2>
+  </div>
+  <div id="toolbarsemillero">
+    <h2>SEMILLEROS</h2>
+  </div>
 
-    </tab>
-    <tab  index="1">
-        <tab-heading>
-          <i class="glyphicon glyphicon-info-sign"></i> SEMILLEROS 
-        </tab-heading>  
-    </tab>
-</tabset>
+  <div class="row" style="margin:10px">
+    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+      <table id="tablegrupo" init-tablagrupo="optionsGrupo"></table>
+    </div>
+  </div>    
+
+   <div class="row" style="margin:10px">
+    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+      <table id="tablesemillero" init-tablasemillero="optionsSemillero"></table>
+    </div>
+  </div>   
+
+  <div class="row" style="margin:10px">
+    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+      <button class="btn btn-primary btn-sm" ng-click="onButtonAceptar()">Aceptar</button>
+       <button class="btn btn-primary btn-sm" ng-click="onClicSalir()">Salir</button>
+    </div>
+  </div>   
+
+
 </div>
