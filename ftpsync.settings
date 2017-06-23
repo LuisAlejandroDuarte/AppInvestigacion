@@ -6,7 +6,7 @@
 
 		"host": "ftp.javiermedinacruz.co",
 		"username": "guane",  // or null for anonymous login
-		"password": "cruz1975med",
+		"password": "Kemw196733#",
 		"path": "/public_html/AppInvestigacion",
 
 		"upload_on_save": true, // set *false* if you do not want to upload on save!

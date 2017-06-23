@@ -6,6 +6,8 @@ angular.module('listaTareasApp')
 //var user = $cookieStore.get('usuario');
  var user = JSON.parse($window.sessionStorage.getItem('investigador'));
 
+
+
     if (user==null || user==undefined)
     {
 
@@ -125,13 +127,13 @@ var idInve="";
 
               var dat = TareasResource.execute.query({Accion: 'S',
                          SQL: "SELECT IG.igr_codi,G.gru_nomb AS Grupo,G.gru_codi, G.gru_colc_codi,G.gru_cate_colc, I.inv_codi,G.gru_aval_inst," + 
-            " G.gru_fech_ini AS Fecha,CONCAT(I.inv_nomb,'',I.inv_apel) As Investigador,G.gru_area_codi As selArea,G.gru_cent_codi As selCentro" + 
+            " G.gru_fech_ini AS Fecha,CONCAT(I.inv_nomb,'',I.inv_apel) As Investigador,G.gru_area_codi As selArea,G.gru_cent_codi As selCentro " + 
             " FROM sgi_inve_grup AS IG  INNER JOIN sgi_grup AS G ON G.gru_codi = IG.igr_grup_codi " + 
             " INNER JOIN sgi_inve As I ON I.inv_codi = IG.igr_inve_iden WHERE G.gru_codi =" + IdGrupo + "" });   
 
             dat.$promise.then(function(investigador){
               $scope.datos2= investigador;
-
+              $scope.datos2[0].gru_aval_inst =0;
               $scope.datos2[0].Fecha= new Date(moment(investigador[0].Fecha));
 
                var id_inve=0;
@@ -1228,12 +1230,17 @@ $scope.OnClicEliminarSemilleroGrupo = function(semillero)
                                                                                   });                                                                                    
 
                                                                                });                                                                                                  
-                                                                        }
+                                                                        }                                                                        
 
                                                                  });
                                                              });  
                                                            }     
                                                          }
+                                                         else
+                                                                        {
+                                                                           $('#myModal').hide();  
+                                                                           $window.alert('Guardado');
+                                                                        }
 
                                                       });   
 
@@ -1339,7 +1346,10 @@ $scope.OnClicEliminarSemilleroGrupo = function(semillero)
             Query = TareasResource.execute.query({Accion:'S',SQL:'SELECT Max(gru_codi) AS Maximo FROM sgi_grup'});
             Query.$promise.then(function(result){
 
-            id = result[0].Maximo;
+              if (result[0].Maximo==null)
+                 id=1;
+               else
+                 id = result[0].Maximo;
             IdGrupo=id;
            
                // Query = TareasResource.execute.query({Accion:'S',SQL:'SELECT igr_inve_iden  FROM sgi_inve_grup' + 
