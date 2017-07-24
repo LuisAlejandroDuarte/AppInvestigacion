@@ -35,6 +35,11 @@
 		$location.path('/usuario');
 	}
 	
+	$scope.onClicGestionBaseDatos = function() {
+
+		$location.path('/gestionBaseDatos');
+
+	}
 
 
  }]);
