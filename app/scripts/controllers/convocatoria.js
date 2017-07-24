@@ -124,6 +124,7 @@
                 search: true,
                 showColumns: true,
                 showRefresh: true,
+                showExport:true,
                 minimumCountColumns: 2,
                 clickToSelect: true,
                 idField:'CON_CODI',

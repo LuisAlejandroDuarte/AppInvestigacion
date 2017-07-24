@@ -655,6 +655,13 @@ angular.module("listaTareasApp", ['ngRoute','ngAnimate','ngLocale', 'ngResource'
       })
 
 
+      .when('/gestionBaseDatos', {
+
+        templateUrl: 'views/gestionbasedatos.html',
+
+        controller: 'ControladorGestionBaseDatos'
+
+      })
 
      .when('/edit-convocatoria/:idConvocatoria', {
 

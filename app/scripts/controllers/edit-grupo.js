@@ -133,7 +133,7 @@ var idInve="";
 
             dat.$promise.then(function(investigador){
               $scope.datos2= investigador;
-              $scope.datos2[0].gru_aval_inst =0;
+              $scope.datos2[0].gru_aval_inst =investigador[0].gru_aval_inst;
               $scope.datos2[0].Fecha= new Date(moment(investigador[0].Fecha));
 
                var id_inve=0;
