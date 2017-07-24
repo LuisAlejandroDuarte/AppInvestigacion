@@ -37,7 +37,14 @@
 	
 	$scope.onClicGestionBaseDatos = function() {
 
-		$location.path('/gestionBaseDatos');
+		$window.location.href = "#/gestionBaseDatos/";
+		
+
+	}
+
+	$scope.onClicMenuReporte = function() {
+
+		$window.location.href = "#/menuReporte/";		
 
 	}
 

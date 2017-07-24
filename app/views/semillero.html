@@ -1,18 +1,35 @@
-<div class="margenTop">
-
-<div ng-controller="ListControllersemillero as list">
-      
- <my-modal-delete></my-modal-delete> 
-
-  <div ng-controller="SemilleroCtrl as ctrl">
-    <div id="custom-toolbarsemillero">
-     <div class="form-inline" role="form">    
-     	 <a ng-click="onClicSalir()" target="_self" class="btn btn-default btn-danger btn-sm"><span class="glyphicon glyphicon-log-out"></span> Salir</a>
-        <a ng-click="list.btnNovoClick()" target="_self" class="btn btn-default btn-primary btn-sm"><span class="glyphicon glyphicon-plus"></span> Nuevo</a>
-     </div>
-    </div>
-   <table id="tablesemillero" init-tablasemillero="options" >
-   </table>
-  </div>
- </div>
+<div class="margenTop">
+
+
+
+<div ng-controller="ListControllersemillero as list">
+
+      
+
+ <my-modal-delete></my-modal-delete> 
+
+
+
+  <div ng-controller="SemilleroCtrl as ctrl">
+
+    <div id="custom-toolbarsemillero">
+
+     <div class="form-inline" role="form">    
+
+     	 <a ng-click="onClicSalir()" target="_self" class="btn btn-default btn-danger btn-sm"><span class="glyphicon glyphicon-log-out"></span> Salir</a>
+
+        <a ng-click="list.btnNovoClick()"  ng-show="btnNuevo" target="_self" class="btn btn-default btn-primary btn-sm"><span class="glyphicon glyphicon-plus"></span> Nuevo</a>
+
+     </div>
+
+    </div>
+
+   <table id="tablesemillero" init-tablasemillero="options" >
+
+   </table>
+
+  </div>
+
+ </div>
+
 </div>

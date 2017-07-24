@@ -318,43 +318,44 @@
 
 
 
- .controller('ControladorGrupo', ['$scope','$window','$cookieStore','$location', function($scope,$window,$cookieStore,$location) {
+ .controller('ControladorGrupo', ['$scope','$window','$cookieStore','$location','TareasResource', function($scope,$window,$cookieStore,$location,TareasResource) {
 
 
 
     var user = JSON.parse($window.sessionStorage.getItem('investigador'));
 
     moment.locale('es');
-
+      var admin = JSON.parse($window.sessionStorage.getItem('usuario'));
+    $scope.btnNuevo=true;
     if (user==null || user==undefined)
 
     {
 
+     
+       if (admin.Usuario!="admin")
+       {
 
-
-      $location.path('/menu');
-
-      return;
-
+        $location.path('/menu');
+         return;
       }
+      else
+      {
+        $scope.btnNuevo=false;
+      }
+     
+   }
 
-   
+  if (admin.Usuario=="admin")
+  {
+     $scope.btnNuevo=false;
+  }
 
 
 
          $scope.options = {           
 
             method: 'post',
-
-            url: 'scripts/services/api.php?url=executeSQL/S/SELECT IG.igr_grup_codi,G.gru_nomb AS Grupo,G.gru_codi,G.gru_aval_inst,' + 
-
-            ' G.gru_fech_ini AS Fecha,CONCAT(I.inv_nomb," ",I.inv_apel) As Investigador ' + 
-
-            ' FROM sgi_inve_grup AS IG  INNER JOIN sgi_grup AS G ON G.gru_codi = IG.igr_grup_codi ' + 
-
-            ' INNER JOIN sgi_inve As I ON I.inv_codi = IG.igr_inve_iden WHERE IG.igr_tipo_vinc_codi=1 AND IG.igr_inve_iden=' + user.INV_CODI,
-
-          
+                  
 
                 cache: false,
 
@@ -456,11 +457,20 @@
 
                 formatter: function(value, row, index) {
 
+                     var admin =JSON.parse($window.sessionStorage.getItem('usuario'));
 
+                      if (admin.Usuario!="admin")
+                      {
 
-                       return '<a class="edit ml10 btn btn-default btn-xs" title="Editar"><span class="glyphicon glyphicon-pencil"></span></a>&nbsp; ' +
+                        return '<a class="edit ml10 btn btn-default btn-xs" title="Editar"><span class="glyphicon glyphicon-pencil"></span></a>&nbsp; ' +
 
-                    '<a class="remove ml10 btn btn-default btn-xs" title="Eliminar" ><span class="glyphicon glyphicon-trash"></span></a>';
+                        '<a class="remove ml10 btn btn-default btn-xs" title="Eliminar" ><span class="glyphicon glyphicon-trash"></span></a>';
+                      }
+                      else
+
+                      {
+                         return '<img src="images/pdf.png" alt="pdf" class="pdf" style="width:30px;height:30px;cursor:pointer">';
+                      }
 
 
 
@@ -482,35 +492,76 @@
 
                                  $window.location.href ="#/edit-grupo/" + row.gru_codi + "";                           
 
+                        },
+
+
+                        'click .pdf': function (e, value, row, index) {
+
+                                 
+
                         }
 
-
-
                 }
-
-
-
-
-
 
 
             }]
 
         };
 
+        var admin =JSON.parse($window.sessionStorage.getItem('usuario'));
 
+        if (admin.Usuario!="admin")
+        {
+            var datos = {
+            Accion:"S",
+            SQL:"SELECT IG.igr_grup_codi,G.gru_nomb AS Grupo,G.gru_codi,G.gru_aval_inst," + 
+            " G.gru_fech_ini AS Fecha,CONCAT(I.inv_nomb,' ' ,I.inv_apel) As Investigador " + 
+            " FROM sgi_inve_grup AS IG  INNER JOIN sgi_grup AS G ON G.gru_codi = IG.igr_grup_codi " + 
+            " INNER JOIN sgi_inve As I ON I.inv_codi = IG.igr_inve_iden WHERE IG.igr_tipo_vinc_codi=1 AND IG.igr_inve_iden=" + user.INV_CODI
+           }
+        }
+        else
 
+        {
+           var datos = {
+            Accion:"S",
+            SQL:"SELECT IG.igr_grup_codi,G.gru_nomb AS Grupo,G.gru_codi,G.gru_aval_inst," + 
+            " G.gru_fech_ini AS Fecha,CONCAT(I.inv_nomb,' ' ,I.inv_apel) As Investigador " + 
+            " FROM sgi_inve_grup AS IG  INNER JOIN sgi_grup AS G ON G.gru_codi = IG.igr_grup_codi " + 
+            " INNER JOIN sgi_inve As I ON I.inv_codi = IG.igr_inve_iden "
+           }
+        }
 
+      
 
-     $scope.onClicSalir = function()
+        var grupo =TareasResource.SQL(datos);
+        grupo.then(function(result){
+          $('#tablegrupo').bootstrapTable('load',result.data);
+        });
+        
 
+    $scope.onClicSalir = function()
     {
 
-        $window.sessionStorage.setItem('tipoUsuario',null);
+          var admin =JSON.parse($window.sessionStorage.getItem('usuario'));
+
+        if (admin.Usuario!="admin")
+        {
+           $window.sessionStorage.setItem('tipoUsuario',null);
 
         $window.sessionStorage.setItem('usuario',null);
 
         $window.location.href = "#/menu/";
+        }
+        else
+
+        {
+           $window.sessionStorage.setItem('tipoUsuario',null);      
+
+           $window.location.href = "#/menuReporte/";
+        }
+
+       
 
     }
 

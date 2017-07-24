@@ -1,17 +1,1 @@
-
-<div class="margenTop">
-
-<div ng-controller="ListControllerArea as list">
-      
- <my-modalarea></my-modalarea> 
-  <div ng-controller="ControladorArea as ctrl">
-    <div id="custom-toolbararea">
-     <div class="form-inline" role="form">    
-        <a ng-click="list.btnNovoClick()" target="_self" class="btn btn-default btn-primary btn-sm"><span class="glyphicon glyphicon-plus"></span> Nuevo</a>
-     </div>
-    </div>
-   <table id="tablearea" init-tablaarea="options" >
-   </table>
-  </div>
- </div>
-</div>
+<div class="margenTop"><div ng-controller="ListControllerArea as list">       <my-modalarea></my-modalarea>   <div ng-controller="ControladorArea as ctrl">    <div id="custom-toolbararea">     <div class="form-inline" role="form">            <a ng-click="list.btnNovoClick()" target="_self" class="btn btn-default btn-primary btn-sm"><span class="glyphicon glyphicon-plus"></span> Nuevo</a>         <a class="btn btn-danger btn-sm" ng-click="onClicSalir()" style="cursor:pointer" ><i class="glyphicon glyphicon-log-out"></i>&nbsp;Salir</a>     </div>    </div>   <table id="tablearea" init-tablaarea="options" >   </table>  </div> </div></div>

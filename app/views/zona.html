@@ -1,154 +1,1 @@
-
-<hr>
-
-<div class="margenTop">
-
-  <nav class= "navbar navbar-default" role= "navigation" >
- <div class= "navbar-header" >      
-<a class="btn btn-lg btn-success" href="#/edit-zona/0"><i class="glyphicon glyphicon-plus"></i>&nbsp;Nueva Zona</a>
- </div>
- </nav>
- </div>
-
-  
- 
-  <div class="panel-body">
-
-  <table id="tableZona">
-   
-  </table>
-
- 
-  </div>
-
-<div class="modal fade" id="myModal"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                 <h3 class="modal-title" id="myModalLabel">Advertencia!</h3>
-            </div>
-            <div class="modal-body">
-                 <h4> Desea Borrar el actual registro?</h4>
-                  <div><label id="nombreZona"></label>
-            </div>
-            <!--/modal-body-collapse -->
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" id="btnYes" href="#">Si</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal"  >No</button>
-            </div>
-            <!--/modal-footer-collapse -->
-        </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-</div>
-<!-- /.modal -->
-</div>
-
-
- <script>
-    function operateFormatter(value, row, index) {
-        return [
-            
-            '<a class="edit ml10" href="#/edit-zona/'+ row.ZON_CODI + '" title="Editar">',
-                '<i class="glyphicon glyphicon-edit"></i>',
-            '</a> &nbsp' ,
-            '<a class="remove ml10" href="javascript:void(0)" title="Eliminar">',
-                '<i class="glyphicon glyphicon-remove"></i>',
-            '</a>'
-        ].join('');
-    }
-
-    window.operateEvents = {
-        
-        'click .remove': function (e, value, row, index) {
-          $('#nombreZona').text(row.ZON_NOMB);
-        $('#myModal').data('id', row.ZON_CODI).modal('show');
-        }
-       }
-
-    $(function () {        
-
-            $('#tableZona').bootstrapTable({
-                method: 'post',
-                url: 'scripts/services/api.php?url=executeSQL/S/SELECT ZON_CODI,ZON_NOMB,ZON_SIGL  from SGI_ZONA order by ZON_NOMB ASC',
-                
-                cache: false,
-                height: 300,
-                striped: true,
-                pagination: true,
-                pageList: [10, 25, 50, 100, 200],
-                search: true,
-                showColumns: true,
-                showRefresh: true,
-                minimumCountColumns: 2,
-                
-                columns: [{
-                    field: 'ZON_CODI',
-                    title: 'Código',                   
-                    visible:false,
-                    clickToSelect: false
-                }, {
-                    field: 'ZON_NOMB',
-                    title: 'Nombre',
-                    align: 'left',
-                    valign: 'bottom',
-                    sortable: true,
-                    clickToSelect: true
-                },{
-                    field: 'ZON_SIGL',
-                    title: 'Sigla',
-                    align: 'left',
-                    valign: 'bottom',
-                    sortable: true,
-                    clickToSelect: true
-                },{                   
-                    title: '',
-                    align: 'center',
-                    valign: 'middle',
-                    switchable:false,
-                    clickToSelect: true,
-                    formatter: operateFormatter,
-                    events: operateEvents
-                }]
-            });
-
-         $('#tableZona').bootstrapTable('refresh', {
-                    url: 'scripts/services/api.php?url=executeSQL/S/SELECT ZON_CODI,ZON_NOMB,ZON_SIGL  from SGI_ZONA order by ZON_NOMB ASC'
-                });
-   
-    });
-
-  $('#btnYes').click(function() {
-      var Codigo = $('#myModal').data('id');
-      // $('[data-id='+id+']').parents('tr').remove();
-        
- //sending to php the row to be deleted from the db
- $.ajax({
-  url: 'scripts/services/api.php?url=executeSQL/D/DELETE FROM SGI_ZONA WHERE ZON_CODI = '+ Codigo,
-  data: {
-      id : Codigo
-  },
-  type: 'GET',
-  dataType : 'jsonp',
-  
-  success: function(datos){
-       // alert(JSON.stringify(datos)['msg']);
- //removing entire row
-      
-        $('#tableZona').bootstrapTable('remove', {
-                    field: 'ZON_CODI',
-                    values: Codigo
-                });
-       $('#myModal').modal('hide');
-     },
-      error: function (data, textStatus, jqXHR) {
-             // error handler
-            alert(JSON.stringify(data));
-         }       
- });
-return false;
-}); 
-
-</script>
+<div class="margenTop">  <div id="toolbarzona">          <a class="btn btn-primary btn-sm" href="#/edit-zona/0"><i class="glyphicon glyphicon-plus"></i>&nbsp;Nueva Zona</a>       <a class="btn btn-danger btn-sm" ng-click="onClicSalir()" style="cursor:pointer" ><i class="glyphicon glyphicon-log-out"></i>&nbsp;Salir</a> </div> <table id="tableZona" init-tablazona="options">  </table>  </div>

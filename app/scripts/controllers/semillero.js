@@ -276,27 +276,32 @@
 
 	 var user = JSON.parse($window.sessionStorage.getItem('investigador'));
 
-
+    $scope.btnNuevo=true;
 
        moment.locale('es');
 
-
+        var admin = JSON.parse($window.sessionStorage.getItem('usuario'));
 
 	if (user==null || user==undefined)
 
     {
 
+       if (admin.Usuario!="admin")
+       {
 
-
-      $location.path('/menu');
-
-      return;
+        $location.path('/menu');
+         return;
+      }
+      else
+      {
+        $scope.btnNuevo=false;
+      }    
 
     }
 
     else
 
-    {
+    {     
 
     	$scope.$parent.mnuInvestiga =false;
 
@@ -307,7 +312,10 @@
     }
 
 
-
+if (admin.Usuario=="admin")
+  {
+     $scope.btnNuevo=false;
+  }
 
 
 	     $scope.options = {                      
@@ -408,12 +416,21 @@
 
                 formatter: function(value, row, index) {
 
+                      var admin =JSON.parse($window.sessionStorage.getItem('usuario'));
 
+                      if (admin.Usuario!="admin")
+                      {
 
-                       return '<a class="edit ml10 btn btn-default btn-xs" title="Editar"><span class="glyphicon glyphicon-pencil"></span></a>&nbsp; ' +
+                        return '<a class="edit ml10 btn btn-default btn-xs" title="Editar"><span class="glyphicon glyphicon-pencil"></span></a>&nbsp; ' +
 
-                    '<a class="remove ml10 btn btn-default btn-xs" title="Eliminar" ><span class="glyphicon glyphicon-trash"></span></a>';
+                        '<a class="remove ml10 btn btn-default btn-xs" title="Eliminar" ><span class="glyphicon glyphicon-trash"></span></a>';
+                      }
 
+                       else
+
+                      {
+                         return '<img src="images/pdf.png" alt="pdf" class="pdf" style="width:30px;height:30px;cursor:pointer">';
+                      }
 
 
                 },
@@ -433,6 +450,11 @@
                         'click .edit': function (e, value, row, index) {
 
                                  $window.location.href ="#/edit-semillero/" + row.sem_codi + "";                           
+
+                        },
+                          'click .pdf': function (e, value, row, index) {
+
+                                 
 
                         }
 
@@ -456,7 +478,10 @@
 
 
 
+          var admin =JSON.parse($window.sessionStorage.getItem('usuario'));
 
+        if (admin.Usuario!="admin")
+        {
 
         var datos = {
 
@@ -473,6 +498,23 @@
 
 
         }
+      }
+      else
+      {
+          var datos = {
+
+
+
+          Accion:'S',
+
+          SQL:'SELECT semi.sem_codi,semi.sem_nomb, semi.SEM_FECH_CREA,semi.SEM_AVAL_UNAD,inve.inv_nomb + " "  + inv_apel As Investigador ' + 
+
+            ' FROM sgi_semi as semi inner join sgi_inve_semi as inve_semi on inve_semi.INS_SEMI_CODI= semi.SEM_CODI' +
+
+        ' inner join sgi_inve as inve on inve.INV_CODI=inve_semi.INS_INVE_IDEN'
+
+      }
+    }
 
 
 
@@ -492,17 +534,28 @@
 
         
 
-          $scope.onClicSalir = function()
+    $scope.onClicSalir = function()
 
         {
 
-            $window.sessionStorage.setItem('tipoUsuario',null);
+              var admin =JSON.parse($window.sessionStorage.getItem('usuario'));
 
-            $window.sessionStorage.setItem('usuario',null);
+        if (admin.Usuario!="admin")
+        {
+           $window.sessionStorage.setItem('tipoUsuario',null);
 
-            $window.location.href = "#/menu/";
+           $window.sessionStorage.setItem('usuario',null);
 
-        }    
+           $window.location.href = "#/menu/";
+        }
+        else
+        {
+           $window.sessionStorage.setItem('tipoUsuario',null);         
+
+           $window.location.href = "#/menuReporte/";
+        }
+
+      }    
 
 
 

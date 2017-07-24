@@ -4,17 +4,57 @@
 
 angular.module('listaTareasApp')
 
-  .controller('editCentro', function($scope,$location,datosCentro,TareasResource,$route) {
+  .controller('editCentro', function($scope,$location,TareasResource,$route) {
 
     	 
 
-     	$scope.viewDatos= datosCentro;
+        $scope.datosZona= TareasResource.SQL({Accion: 'S',
+
+                         SQL: 'SELECT ZON_CODI,ZON_NOMB FROM sgi_zona'}); 
+
+
+         $scope.datosZona.then(function(result){
+
+
+            $scope.datosZona = result.data;
+             var centroID = parseInt($route.current.params.idCentro);
+
+               var dat = TareasResource.SQL({Accion: 'S',
+
+                         SQL: "SELECT centro.CEN_CODI, centro.CEN_NOMB,zona.ZON_NOMB," + 
+
+                         " centro.CEN_ZONA_CODI " +
+
+                         " from sgi_cent as centro  join sgi_zona as zona on " +
+
+                         " zona.ZON_CODI = centro.CEN_ZONA_CODI where  centro.CEN_CODI =" +  centroID 
+
+                         });                           
+                dat.then(function(result){
+
+                  $scope.viewDatos= result.data;   
+                });
+
+                 
+      });
+      
+
+
+   
+
+     	
+
+
+
 
     //   $scope.codi= $scope.viewDatos2.ARECODI;// datosArea.ARE_CODI;
 
-         $scope.datosZona= TareasResource.execute.query({Accion: 'S',
+     
 
-                         SQL: 'SELECT ZON_CODI,ZON_NOMB FROM SGI_ZONA'}); 
+
+
+
+
 
     // //    $scope.selected_granarea.GAR_CODI = $scope.viewDatos.GAR_CODI;
 

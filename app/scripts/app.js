@@ -196,27 +196,7 @@ angular.module("listaTareasApp", ['ngRoute','ngAnimate','ngLocale', 'ngResource'
 
         templateUrl: 'views/edit-zona.html',
 
-        controller: 'editZona',
-
-         resolve: {
-
-          datosZona: function($route,TareasResource){
-
-            var zonaID = parseInt($route.current.params.idZona);
-
-            var dat = TareasResource.execute.query({Accion: 'S',
-
-                         SQL: "SELECT ZON_CODI,ZON_NOMB,ZON_SIGL FROM " + 
-
-                         " SGI_ZONA WHERE ZON_CODI =" +  zonaID });                           
-
-            return dat;
-
-          // return TareasResource.getIdGranArea.query({IdGranArea: granareaID});
-
-          }
-
-        }
+        controller: 'editZona'
 
       })
 
@@ -444,33 +424,7 @@ angular.module("listaTareasApp", ['ngRoute','ngAnimate','ngLocale', 'ngResource'
 
         templateUrl: 'views/edit-centro.html',
 
-        controller: 'editCentro',
-
-         resolve: {
-
-          datosCentro: function($route,TareasResource){
-
-            var centroID = parseInt($route.current.params.idCentro);
-
-            var dat = TareasResource.execute.query({Accion: 'S',
-
-                         SQL: "SELECT centro.CEN_CODI, centro.CEN_NOMB,zona.ZON_NOMB," + 
-
-                         " centro.CEN_ZONA_CODI " +
-
-                         " from SGI_CENT as centro  join SGI_ZONA as zona on " +
-
-                         " zona.ZON_CODI = centro.CEN_ZONA_CODI where  centro.CEN_CODI =" +  centroID 
-
-                         });                           
-
-            return dat;
-
-          // return TareasResource.getIdGranArea.query({IdGranArea: granareaID});
-
-          }
-
-        }
+        controller: 'editCentro'
 
       })
 
@@ -651,6 +605,14 @@ angular.module("listaTareasApp", ['ngRoute','ngAnimate','ngLocale', 'ngResource'
         templateUrl: 'views/convocatoria.html',
 
         controller: 'ControladorConvocatoria'
+
+      })
+
+      .when('/menuReporte', {
+
+        templateUrl: 'views/menuReporte.html',
+
+        controller: 'controladorMenuReporte'
 
       })
 
