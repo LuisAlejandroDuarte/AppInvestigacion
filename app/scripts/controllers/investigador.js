@@ -352,17 +352,15 @@
 
 
 
- .controller('ControladorInvestigador', ['$scope','$window', function($scope,$window) {
+ .controller('ControladorInvestigador', ['$scope','$window','TareasResource', function($scope,$window,TareasResource) {
+
+        moment.locale('es');
 
          $scope.options = {           
-
-            method: 'post',
-
-            url: 'scripts/services/api.php?url=executeSQL/S/SELECT inv_codi,inv_iden,inv_nomb,inv_apel FROM sgi_inve',            
-
+           
           
 
- 			    cache: false,
+       			    cache: false,
 
                 height: 300,
 
@@ -458,10 +456,33 @@
 
                         'click .pdf': function (e, value, row, index) {
 
-                                                      
 
+                              var select={
+                                Accion:"S",
+                                SQL:"SELECT NI.nin_titu_obte,NI.nin_inst,NI.nin_agno,NF.niv_nomb FROM sgi_nive_inve AS NI INNER JOIN sgi_nive_form AS NF ON  " +
+                                  " NF.niv_codi=NI.nin_niv_codi WHERE NI.nin_inv_codi=" + row.inv_codi
+                                };
+
+                                var nivelformacion = TareasResource.SQL(select);
+                                  nivelformacion.then(function(result){
+
+                                      row.inv_fech_naci = moment(row.inv_fech_naci).format("DD MMMM YYYY");
+
+                                      var investigador = {
+                                          datos: row,
+                                          formacion:result.data
+                                      };
+                                  
+                                      var datos = TareasResource.PDF(JSON.stringify(investigador));
+                                        datos.then(function(result){
+                                             var file = new Blob([result.data], { type: 'application/pdf;charset=utf-8' });
+                                              saveAs(file, row.inv_nomb + 'investigador.pdf');
+                                         
+                                        // $window.open('investigador.pdf','_blank','');
+                                        });               
+
+                                  });                                        
                         },                      
-
 
                 }
 
@@ -470,7 +491,20 @@
         };
 
 
+        var parametros = {
+          Accion:"S",
+          SQL:'SELECT i.inv_codi,i.inv_iden,i.inv_nomb,i.inv_apel,i.inv_fech_naci,p.pac_nomb FROM sgi_inve as i ' + 
+            ' inner join sgi_prog_acad as p on p.pac_codi=i.inv_prog_acad_codi'
+        }
 
+        var select = TareasResource.SQL(parametros);
+
+          select.then(function(result){
+
+            $('#tableinvestigador').bootstrapTable('load',result.data);
+
+
+          });
     }])
 
 
