@@ -1,9 +1,101 @@
 'use strict';
-
-
-
-
 angular.module('listaTareasApp')
+
+
+
+.directive('myModalzona', function() {
+
+       return {
+
+        restrict : 'AE',    
+
+        controller: [ "$scope","$window",'$http', function($scope,$window,$http) {
+
+            $scope.afirmaEliminar = function() {
+
+                      var Codigo = $('#myModal').data('id').toString();  
+
+                    $http.post("scripts/services/api.php?url=executeSQL/D/DELETE FROM sgi_zona" +
+
+                                " WHERE ZON_CODI = " + Codigo, $scope.formData)
+
+                        .success(function(data) {  
+
+
+
+                        $('#tableZona').bootstrapTable('remove', {
+
+                                field: 'ZON_CODI',
+
+                                values: Codigo
+
+                        });            
+
+                        $('#myModal').modal('hide');
+
+                       
+
+                    })
+
+                        .error(function(data) {
+
+                            $('#myModal').modal('hide');
+
+                            alert(data['msg']);                        
+
+            });  
+
+                };
+
+               
+
+            }],
+
+
+
+        template : '<div class="modal fade" id="myModal"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">' + 
+
+                    '<div class="modal-dialog">' +
+
+        '<div class="modal-content">' +
+
+            '<div class="modal-header">' +
+
+                '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>' +
+
+                 '<h3 class="modal-title" id="myModalLabel">Advertencia!</h3> ' +
+
+            '</div>' +
+
+            '<div class="modal-body"> ' +
+
+                 '<h4> Desea Borrar la zona? </h4> ' +
+
+                  '<div><label id="nombreZona"></label>' +
+
+            '</div>' +
+
+            '<div class="modal-footer">' +
+
+                '<button ng-click= "afirmaEliminar();" class="btn btn-danger"  id="btnYes" >Si</button>' +
+
+                '<button type="button" class="btn btn-default" data-dismiss="modal"  >No</button>' +
+
+            '</div>' +        
+
+        '</div>' +        
+
+    '</div>' +    
+
+'</div>' +
+
+'</div>',
+
+  
+
+    }
+
+})
 
 .directive('initTablazona', ['$compile', function($compile) {
 

@@ -154,7 +154,7 @@
      $scope.onClicSalir = function()
         {
             
-            $window.location.href = "#/mnuPropuesta/";
+            $window.location.href = "#/gestionBaseDatos/";
         }
 
 
