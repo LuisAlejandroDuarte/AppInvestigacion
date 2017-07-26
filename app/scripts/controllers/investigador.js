@@ -456,7 +456,7 @@
 
                         'click .pdf': function (e, value, row, index) {
 
-
+                               row.inv_fech_naci = moment(row.inv_fech_naci).format("DD MMMM YYYY");        
                               var select={
                                 Accion:"S",
                                 SQL:"SELECT NI.nin_titu_obte,NI.nin_inst,NI.nin_agno,NF.niv_nomb FROM sgi_nive_inve AS NI INNER JOIN sgi_nive_form AS NF ON  " +
@@ -464,26 +464,81 @@
                                 };
 
                                 var nivelformacion = TareasResource.SQL(select);
-                                  nivelformacion.then(function(result){
+                                  nivelformacion.then(function(academica){
 
-                                      row.inv_fech_naci = moment(row.inv_fech_naci).format("DD MMMM YYYY");
+                                      select={
+                                        Accion:"S",
+                                        SQL:"SELECT G.gru_nomb,IG.igr_fech_inic,IG.igr_fech_term FROM sgi_grup AS G INNER JOIN sgi_inve_grup AS IG  ON  " +
+                                          " IG.igr_grup_codi=G.gru_codi WHERE IG.igr_inve_iden=" + row.inv_codi
+                                        };
 
-                                      var investigador = {
-                                          datos: row,
-                                          formacion:result.data
-                                      };
-                                  
-                                      var datos = TareasResource.PDF(JSON.stringify(investigador));
-                                        datos.then(function(result){
-                                             var file = new Blob([result.data], { type: 'application/pdf;charset=utf-8' });
-                                              saveAs(file, row.inv_nomb + 'investigador.pdf');
-                                         
-                                        // $window.open('investigador.pdf','_blank','');
-                                        });               
 
+                                       var grupo = TareasResource.SQL(select);  
+
+                                          grupo.then(function(grupos){
+                                            
+                                            if (grupos.data[0]!=null)                            
+                                            angular.forEach(grupos.data,function(fila,value){
+                                                  if (fila.igr_fech_inic==null) 
+                                                    fila.igr_fech_inic="";
+                                                  else                                                    
+                                                    fila.igr_fech_inic = moment(fila.igr_fech_inic).format("DD MMMM YYYY");        
+
+                                                  if (fila.igr_fech_term==null) 
+                                                     fila.igr_fech_term ="";
+                                                  else
+                                                    fila.igr_fech_term = moment(fila.igr_fech_term).format("DD MMMM YYYY");        
+                                            });
+
+
+
+                                             select={
+                                              Accion:"S",
+                                              SQL:"SELECT distinct P.pro_nomb,P.pro_fina FROM sgi_prod_proy AS PP INNER JOIN sgi_proy AS P  ON  " +
+                                                " P.pro_codi=PP.Id_proy WHERE PP.id_inve=" + row.inv_codi
+                                              };
+
+
+                                               var proyecto = TareasResource.SQL(select);  
+
+                                                proyecto.then(function(pro){
+
+
+
+                                                     select={
+                                                      Accion:"S",
+                                                      SQL:"SELECT P.Nombre FROM sgi_prod_proy AS PP INNER JOIN sgi_prod AS P  ON  " +
+                                                        " P.id=PP.Id_prod WHERE PP.id_inve=" + row.inv_codi
+                                                      };
+
+                                                        var producto = TareasResource.SQL(select);  
+
+                                                         producto.then(function(produ){
+                                                              var investigador = {
+                                                                    datos: row,
+                                                                    formacion:academica.data,
+                                                                    grupo:grupos.data,
+                                                                    proyecto:pro.data,
+                                                                    producto:produ.data
+                                                                };
+                                                            
+                                                                var datos = TareasResource.PDF(JSON.stringify(investigador));
+                                                                  datos.then(function(result){
+                                                                       var file = new Blob([result.data], { type: 'application/pdf;charset=utf-8' });
+                                                                        saveAs(file, row.inv_nomb + 'investigador.pdf');
+                                                                   
+                                                                  // $window.open('investigador.pdf','_blank','');
+                                                                  });             
+
+
+                                                         });
+
+                                                });
+                                                                                    
+                                       });
+                                   
                                   });                                        
                         },                      
-
                 }
 
             }]
