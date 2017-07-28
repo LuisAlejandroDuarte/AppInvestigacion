@@ -210,7 +210,8 @@ angular.module('listaTareasApp')
 						url: 'scripts/services/pdfConvocatoria.php',
 			            data: datos,
 	        		    transformRequest: angular.identity,
-	            		headers: { 'Content-Type': 'application/json' }
+	            		headers: { 'Content-Type': 'application/json' },
+	            		responseType: 'arraybuffer'  				
 
   				},
 

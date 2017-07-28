@@ -254,19 +254,36 @@
                                  {
                                   Accion:"S",
                                   SQL:"SELECT C.con_nume,C.CON_DESC,TC.TCO_DESC FROM sgi_conv As C INNER JOIN " + 
-                                 "sgi_tipo_conv AS TC ON C.con_tipo_conv_codi=TC.TCO_CODI"
+                                 "sgi_tipo_conv AS TC ON C.con_tipo_conv_codi=TC.TCO_CODI WHERE C.CON_CODI=" + row.CON_CODI
                                  });
                              datosconvocatoria.then(function(result){
 
-                                var convocatoria = {
-                                    datos:result.data
-                                }
+                                 var propuestas = TareasResource.SQL(
+                                 {
+                                  Accion:"S",
+                                  SQL:"SELECT p.PRO_CODI, p.pro_nomb,c.con_desc FROM sgi_prop_conv_juez as pcj inner join " +
+                                  " sgi_prop as p on p.PRO_CODI = pcj.PCJU_PCAT_CODI inner join sgi_conv as c on c.CON_CODI = pcj.PCJU_CON_CODI  inner join " + 
+                                  " sgi_inve as i on i.INV_CODI = pcj.PCJU_INV_CODI where c.CON_CODI=" + row.CON_CODI
+                                 });
+                                  propuestas.then(function(pro){
 
+                                    var propuesta = Enumerable.From(pro.data)
+                                                 .Distinct()
+                                                 .ToArray();
+                                                 
+                                     var convocatoria = {
+                                            datos:result.data,
+                                            propuesta:pro.data
+                                     }
+                                           
                                 var datos = TareasResource.PdfConvocatoria(JSON.stringify(convocatoria));
                                      datos.then(function(result){
                                      var file = new Blob([result.data], { type: 'application/pdf;charset=utf-8' });
                                      saveAs(file, row.CON_NUME + 'convocatoria.pdf');                                                                   
-                                });         
+                                        });         
+
+                                  });
+                               
                              });
                         }
                 }
