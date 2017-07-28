@@ -103,16 +103,27 @@
  .controller('ControladorConvocatoria', ['$scope','$window','TareasResource','$location', function($scope,$window,TareasResource,$location) {
 
     var user = JSON.parse($window.sessionStorage.getItem('usuario'));
-
+      var admin = JSON.parse($window.sessionStorage.getItem('usuario'));
     if (user==null || user==undefined)
     {
 
-      $location.path('/menu');
-      return;
+       if (admin.Usuario!="admin")
+       {
+
+        $location.path('/menu');
+         return;
+      }
+      else
+      {
+        $scope.btnNuevo=false;
+      }    
+     
     }   
     else
-
+    {  
+        $scope.btnNuevo=true;
          $scope.$parent.mnuConvocatoria = true;                          
+     }
 
              moment.locale('es');
          $scope.options = {                           
@@ -219,12 +230,13 @@
                          }
             },{
                 title: '',
-                width: 75,
+                width: 100,
                 switchable:false,
                 formatter: function(value, row, index) {
 
                        return '<a class="edit ml10 btn btn-default btn-xs" title="Editar"><span class="glyphicon glyphicon-pencil"></span></a>&nbsp; ' +
-                    '<a class="remove ml10 btn btn-default btn-xs" title="Eliminar" ><span class="glyphicon glyphicon-trash"></span></a>';
+                    '<a class="remove ml10 btn btn-default btn-xs" title="Eliminar" ><span class="glyphicon glyphicon-trash"></span></a>' + 
+                    '<img src="images/pdf.png" alt="pdf" class="pdf" style="width:20px;height:20px;cursor:pointer">';
 
                 },
                 events:  window.operateEvents = {
@@ -235,12 +247,29 @@
 
                         'click .edit': function (e, value, row, index) {
                                  $window.location.href ="#/edit-convocatoria/" + row.CON_CODI + "";                           
+                        },
+                         'click .pdf': function (e, value, row, index) {
+
+                             var datosconvocatoria = TareasResource.SQL(
+                                 {
+                                  Accion:"S",
+                                  SQL:"SELECT C.con_nume,C.CON_DESC,TC.TCO_DESC FROM sgi_conv As C INNER JOIN " + 
+                                 "sgi_tipo_conv AS TC ON C.con_tipo_conv_codi=TC.TCO_CODI"
+                                 });
+                             datosconvocatoria.then(function(result){
+
+                                var convocatoria = {
+                                    datos:result.data
+                                }
+
+                                var datos = TareasResource.PdfConvocatoria(JSON.stringify(convocatoria));
+                                     datos.then(function(result){
+                                     var file = new Blob([result.data], { type: 'application/pdf;charset=utf-8' });
+                                     saveAs(file, row.CON_NUME + 'convocatoria.pdf');                                                                   
+                                });         
+                             });
                         }
-
                 }
-
-
-
             }]
         };  
 

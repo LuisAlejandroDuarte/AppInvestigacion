@@ -1,17 +1,34 @@
-<div class="margenTop">
-
-<div ng-controller="ListControllerConvocatoria as list">
-      
- <my-modalconvocatoria></my-modalconvocatoria> 
-  <div ng-controller="ControladorConvocatoria as ctrl">
-    <div id="custom-toolbarconvocatoria">
-     <div class="form-inline" role="form">    
-     	 <a ng-click="onClicSalir()" target="_self" class="btn btn-default btn-danger btn-sm"><span class="glyphicon glyphicon-log-out"></span> Salir</a>
-        <a ng-click="list.btnNovoClick()" target="_self" class="btn btn-default btn-primary btn-sm"><span class="glyphicon glyphicon-plus"></span> Nueva</a>
-     </div>
-    </div>
-   <table id="tableconvocatoria" init-tablaconvocatoria="options" >
-   </table>
-  </div>
- </div>
-</div>
+<div class="margenTop">
+
+
+
+<div ng-controller="ListControllerConvocatoria as list">
+
+      
+
+ <my-modalconvocatoria></my-modalconvocatoria> 
+
+  <div ng-controller="ControladorConvocatoria as ctrl">
+
+    <div id="custom-toolbarconvocatoria">
+
+     <div class="form-inline" role="form">    
+
+     	 <a ng-click="onClicSalir()" target="_self" class="btn btn-default btn-danger btn-sm"><span class="glyphicon glyphicon-log-out"></span> Salir</a>
+
+        <a ng-click="list.btnNovoClick()" target="_self" class="btn btn-default btn-primary btn-sm" ng-show="btnNuevo"><span class="glyphicon glyphicon-plus"></span> Nueva</a>
+
+     </div>
+
+    </div>
+
+   <table id="tableconvocatoria" init-tablaconvocatoria="options" >
+
+   </table>
+
+  </div>
+
+ </div>
+
+</div>
+

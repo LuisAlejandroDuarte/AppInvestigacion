@@ -202,6 +202,27 @@ angular.module('listaTareasApp')
 
 			},
 
+		
+		PdfConvocatoria : function(datos) {
+	  				return  $http({
+	  				
+		  				method: "post",
+						url: 'scripts/services/pdfConvocatoria.php',
+			            data: datos,
+	        		    transformRequest: angular.identity,
+	            		headers: { 'Content-Type': 'application/json' }
+
+  				},
+
+  				 function errorCallback(response) {
+
+    				// called asynchronously if an error occurs
+
+    				// or server returns response with an error status.
+
+  					});     				                      	  
+
+			},	
 
 	  	SQLMulti : function(datos) {
 

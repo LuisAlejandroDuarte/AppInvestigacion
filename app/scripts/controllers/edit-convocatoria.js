@@ -26,7 +26,7 @@ angular.module('listaTareasApp')
     var nombreArchivoResolucion;
     var id = ($route.current.params.idConvocatoria) ? parseInt($route.current.params.idConvocatoria) :0 ;
     $scope.settingsPanel ={
-             width: '60%',
+             width: 300,
              height: 200,
              autoUpdate:true
         };  

@@ -514,12 +514,34 @@
                                                         var producto = TareasResource.SQL(select);  
 
                                                          producto.then(function(produ){
-                                                              var investigador = {
+
+                                                             select={
+                                                              Accion:"S",
+                                                              SQL:"SELECT S.sem_nomb,SI.ins_fech_inic,SI.ins_fech_term FROM sgi_semi AS S INNER JOIN sgi_inve_semi AS SI  ON  " +
+                                                                " SI.ins_semi_codi=S.sem_codi WHERE SI.ins_inve_iden=" + row.inv_codi
+                                                              };
+                                                               var semillero = TareasResource.SQL(select);  
+                                                               semillero.then(function(semi){
+                                                                if (semi.data[0]!=null)                            
+                                                                    angular.forEach(semi.data,function(fila,value){
+                                                                        if (fila.ins_fech_inic==null) 
+                                                                            fila.ins_fech_inic="";
+                                                                        else                                                    
+                                                                            fila.ins_fech_inic = moment(fila.ins_fech_inic).format("DD MMMM YYYY");        
+
+                                                                        if (fila.ins_fech_term==null) 
+                                                                            fila.ins_fech_term ="";
+                                                                        else
+                                                                            fila.ins_fech_term = moment(fila.ins_fech_term).format("DD MMMM YYYY");        
+                                                                    });
+
+                                                                  var investigador = {
                                                                     datos: row,
                                                                     formacion:academica.data,
                                                                     grupo:grupos.data,
+                                                                    semillero:semi.data,
                                                                     proyecto:pro.data,
-                                                                    producto:produ.data
+                                                                    producto:produ.data                                                                    
                                                                 };
                                                             
                                                                 var datos = TareasResource.PDF(JSON.stringify(investigador));
@@ -528,9 +550,8 @@
                                                                         saveAs(file, row.inv_nomb + 'investigador.pdf');
                                                                    
                                                                   // $window.open('investigador.pdf','_blank','');
-                                                                  });             
-
-
+                                                                  });            
+                                                               });                                                            
                                                          });
 
                                                 });

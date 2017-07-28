@@ -31,4 +31,13 @@ angular.module('listaTareasApp')
 
 	}
 
+
+	$scope.onClicConvocatoria = function() {
+
+		$window.location.href = "#/convocatoria";
+
+	}
+
+	
+
 });

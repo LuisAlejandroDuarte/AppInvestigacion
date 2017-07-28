@@ -291,12 +291,118 @@ $pdf->Text(80,$i,utf8_decode(utf8_encode('GRUPOS')));
          $pdf->SetFont('helvetica', 'B', 12, '', true); 
 	 	 $pdf->Text(15,$linea+10,utf8_decode($grupo['gru_nomb']));
  	 	 $pdf->SetFont('helvetica', '', 11, '', true);  
-	  	 $pdf->Text(15,$linea+15,"Inicio  : " . utf8_decode($grupo['igr_fech_inic']));
-	  	 $pdf->Text(15,$linea+20,"Termina : " . utf8_decode($grupo['igr_fech_term'])); 		  	 	          
+	  	 $pdf->Text(15,$linea+15,"Inicio  : " . utf8_decode(utf8_encode($grupo['igr_fech_inic'])));
+	  	 $pdf->Text(15,$linea+20,"Termina : " . utf8_decode(utf8_encode($grupo['igr_fech_term']))); 		  	 	          
 	 	 $i=$linea+30;	
 
 	 	 
 	 }
+
+//SEMILLEROS
+$i=$i+10;
+
+$pdf->SetFont('helvetica', 'B', 13, '', true);
+$pdf->Text(80,$i,utf8_decode(utf8_encode('SEMILLEROS')));
+			
+
+
+	 $data =$markers['semillero'];
+	 foreach ($data as $clave => $valor) {
+	 	 $semillero =$markers['semillero'][$clave];
+	 	 
+	 	 if ($i>=260) 
+	 	 	{
+	 	 		$i=10;
+	 	 		$pdf->AddPage();
+	 	 			
+	 	 	}
+
+
+	 	 $linea = $i;
+         $pdf->SetFont('helvetica', 'B', 12, '', true); 
+	 	 $pdf->Text(15,$linea+10,utf8_decode($semillero['sem_nomb']));
+ 	 	 $pdf->SetFont('helvetica', '', 11, '', true);  
+	  	 $pdf->Text(15,$linea+15,"Inicio  : " . utf8_decode($semillero['ins_fech_inic']));
+	  	 $pdf->Text(15,$linea+20,"Termina : " . utf8_decode($semillero['ins_fech_term'])); 		  	 	          
+	 	 $i=$linea+30;	
+
+	 	 
+	 }
+
+
+//PROYECTOS
+$i=$i+10;
+
+$pdf->SetFont('helvetica', 'B', 13, '', true);
+$pdf->Text(80,$i,utf8_decode(utf8_encode('PROYECTOS')));
+	 	
+		
+	 $data =$markers['proyecto'];
+
+	  foreach ($data as $clave => $valor) {
+	 	 $proyecto =$markers['proyecto'][$clave];
+
+
+	 	 if ($i>=260) 
+	 	 	{
+	 	 		$i=10;
+	 	 		$pdf->AddPage();
+	 	 			
+	 	 	}
+
+	 	 $pdf->SetFont('helvetica', '', 11, '', true);  	
+	 	 $linea = $i; 
+	 	 $pdf->Text(20,$linea+10,utf8_decode(utf8_encode($proyecto['pro_nomb'])));
+				 	 		 	
+	 	 $i=$linea+5;	
+	  }
+
+//PROYECTOS
+$i=$i+10;
+
+$pdf->SetFont('helvetica', 'B', 13, '', true);
+$pdf->Text(80,$i,utf8_decode(utf8_encode('PRODUCTOS')));
+	 	
+		
+	 $data =$markers['producto'];
+
+	  foreach ($data as $clave => $valor) {
+	 	 $producto =$markers['producto'][$clave];
+
+
+	 	 if ($i>=260) 
+	 	 	{
+	 	 		$i=10;
+	 	 		$pdf->AddPage();
+	 	 			
+	 	 	}
+
+	 	 $pdf->SetFont('helvetica', '', 11, '', true);  	
+	 	 $linea = $i; 
+	 	 $pdf->Text(20,$linea+10,utf8_decode(utf8_encode($producto['Nombre'])));
+				 	 		 	
+	 	 $i=$linea+5;	
+	  }	 
+	 
+	//    $pdf->SetFont('Arial','B',16);	 
+	
+	//    	$i=10+$i;
+
+	//    $data =$markers['producto'];
+	 
+	//     $pdf->Text(80,$i,utf8_decode('PRODUCTOS'));
+	//   foreach ($data as $clave => $valor) {
+	//  	 $pro =$markers['producto'][$clave];	 		 	
+	//  	 //echo print_r($grupo);
+	//  	 $pdf->SetFont('Arial');
+	//  	 $pdf->SetFontSize(12);	 	
+	//  	 $linea = $i; 
+	//  	 $pdf->Text(20,$linea+10,utf8_decode($pro['Nombre']));
+				 	 		 	
+	//  	 $i=$linea+5;	
+	//   }
+
+
 
 
 //$pdf->Text(62,50,utf8_decode($markers));
