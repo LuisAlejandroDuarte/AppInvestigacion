@@ -32,6 +32,7 @@
 
       	$resultado = mysqli_query($conexion,$SQL);
 
+
             if (mysqli_num_rows($resultado)==0 )               
 
             {
@@ -129,6 +130,163 @@
         echo json_encode($resultArray);                                                        
        }
 
+
+  if ($Accion=="Grupo")
+      {
+        $resultArray = array(); 
+        $resultado = mysqli_query($conexion,$SQL);
+        if (mysqli_num_rows($resultado)==0 )               
+           {
+             $resultArray[]= mysqli_fetch_assoc($resultado);                                                            
+           }
+           else
+           {
+              while ($tuple= mysqli_fetch_assoc($resultado)) {                        
+                    $resultArray[] = $tuple;         
+              }               
+           }
+
+           $gru_codi =$resultArray[0]["gru_codi"];   
+
+           $SQL1 ="select li.lin_desc from sgi_line_inve as li inner join sgi_grup_line_inve as gli on gli.gli_line_inve_codi=li.lin_codi " . 
+                  "inner join sgi_grup as g on g.gru_codi=gli.gli_grup_codi where g.gru_codi=" . $gru_codi;
+
+            $resultArray2 = array(); 
+            $resultArray[1] = array();
+            $resultado2 = mysqli_query($conexion,$SQL1);
+             if (mysqli_num_rows($resultado2)==0 )               
+             {
+               $resultArray[1]= mysqli_fetch_assoc($resultado2);                                                            
+             }
+             else
+             {
+                while ($tuple2= mysqli_fetch_assoc($resultado2)) {  
+                      array_push($resultArray[1], $tuple2); 
+                    }
+             }
+
+            $SQL2 ="select i.inv_nomb,i.inv_apel,ig.igr_fech_inic,ig.igr_fech_term from sgi_inve_grup as ig " . 
+            " inner join sgi_inve as i on i.inv_codi=ig.igr_inve_iden where ig.igr_tipo_vinc_codi<>1 AND ig.igr_grup_codi=" . $gru_codi;
+
+            $resultArray3 = array(); 
+            $resultArray[2] = array();
+            $resultado3 = mysqli_query($conexion,$SQL2);
+             if (mysqli_num_rows($resultado3)==0 )               
+             {
+               $resultArray[2]= mysqli_fetch_assoc($resultado3);                                                            
+             }
+             else
+             {
+                while ($tuple3= mysqli_fetch_assoc($resultado3)) {  
+                      array_push($resultArray[2], $tuple3); 
+                    }
+             }     
+
+              $SQL3 ="select s.sem_nomb, sg.sgr_fech_inic,sg.sgr_fech_term from sgi_semi as s " . 
+            " inner join sgi_grup_semi as sg on sg.sgr_semi_codi=s.sem_codi where sg.sgr_grup_codi=" . $gru_codi;
+
+            $resultArray4 = array(); 
+            $resultArray[3] = array();
+            $resultado4 = mysqli_query($conexion,$SQL3);
+             if (mysqli_num_rows($resultado4)==0 )               
+             {
+               $resultArray[3]= mysqli_fetch_assoc($resultado4);                                                            
+             }
+             else
+             {
+                while ($tuple4= mysqli_fetch_assoc($resultado4)) {  
+                      array_push($resultArray[3], $tuple4); 
+                    }
+             }     
+
+
+             $SQL4 ="select PROY.PRO_NOMB As NombreProyecto,PROD.Nombre AS NombreProducto,PROD.Id As IdProd,PROY.PRO_CODI AS IdProy," . 
+                    " GP.fech_ini,GP.fech_term,GP.id_grup AS IdGrupo " .
+                    " FROM sgi_grup_proy As GP INNER JOIN sgi_proy As PROY ON PROY.PRO_CODI = GP.id_proy " .
+                    " INNER JOIN sgi_prod AS PROD ON PROD.Id=GP.id_prod WHERE  GP.Id_grup=" . $gru_codi;
+
+            $resultArray5 = array(); 
+            $resultArray[4] = array();
+            $resultado5 = mysqli_query($conexion,$SQL4);
+             if (mysqli_num_rows($resultado5)==0 )               
+             {
+               $resultArray[4]= mysqli_fetch_assoc($resultado5);                                                            
+             }
+             else
+             {
+                while ($tuple5= mysqli_fetch_assoc($resultado5)) {  
+                      array_push($resultArray[4], $tuple5); 
+                    }
+             }    
+
+
+
+             $SQL5="select pgr_plnt_codi As Id, pgr_path As Path,pgr_fech_inic As FechaInicio,pgr_fech_term AS FechaTermina,pgr_grup_codi As IdGrupo, " .
+                    " pgr_plnt_codi,pgr_nombre As Nombre FROM sgi_plnt_grup WHERE pgr_grup_codi=" . $gru_codi;
+        
+
+             $resultArray6 = array(); 
+            $resultArray[5] = array();
+            $resultado6 = mysqli_query($conexion,$SQL5);
+             if (mysqli_num_rows($resultado6)==0 )               
+             {
+               $resultArray[5]= mysqli_fetch_assoc($resultado6);                                                            
+             }
+             else
+             {
+                while ($tuple6= mysqli_fetch_assoc($resultado6)) {  
+                      array_push($resultArray[5], $tuple6); 
+                    }
+             }    
+
+
+        // $data =$resultArray[];
+        // foreach ($data as $clave => $valor) { 
+
+
+        // }  
+
+       //  $CON_CODI =$resultArray[0]["CON_CODI"];   
+
+       //   $SQL1 ="select distinct p.PRO_CODI, p.pro_nomb FROM sgi_prop_conv_juez as pcj inner join " .
+       //        " sgi_prop as p on p.PRO_CODI = pcj.PCJU_PCAT_CODI inner join sgi_conv as c on c.CON_CODI = pcj.PCJU_CON_CODI  inner join " .
+       //        " sgi_inve as i on i.INV_CODI = pcj.PCJU_INV_CODI where c.CON_CODI=" . $CON_CODI  ;
+           
+       // // mysqli_close($conexion);
+       //  $resultArray2 = array(); 
+       //  $resultArray[1] = array();
+       //  $resultado2 = mysqli_query($conexion,$SQL1);
+       //  $count=0;
+       //  if (mysqli_num_rows($resultado2)==0 )               
+       //     {
+       //       $resultArray2[]= mysqli_fetch_assoc($resultado2);                                                            
+       //     }
+       //     else
+       //     {
+       //        while ($tuple= mysqli_fetch_assoc($resultado2)) {  
+       //              array_push($resultArray[1], $tuple);   
+
+       //              $resultArray[1][$count][0] = array();
+
+       //               $SQL2 ="select inv_nomb,inv_apel FROM sgi_prop_conv_juez as pcj inner join " .
+       //              " sgi_prop as p on p.PRO_CODI = pcj.PCJU_PCAT_CODI inner join sgi_conv as c on c.CON_CODI = pcj.PCJU_CON_CODI  inner join " .
+       //              " sgi_inve as i on i.INV_CODI = pcj.PCJU_INV_CODI where c.CON_CODI=" . $CON_CODI . " AND p.PRO_CODI=" . $tuple['PRO_CODI'];
+       //               $resultado3 = mysqli_query($conexion,$SQL2);
+
+       //               while ($tuple2= mysqli_fetch_assoc($resultado3)) {  
+
+       //                   array_push($resultArray[1][$count][0], $tuple2);   
+
+       //               }
+
+       //              $count = $count+1;
+       //              // $resultArray[1][0] = $tuple;
+       //        }               
+       //     }
+          
+        mysqli_close($conexion);
+        echo json_encode($resultArray);                                                        
+       }       
 
        if ($Accion=="I")
 

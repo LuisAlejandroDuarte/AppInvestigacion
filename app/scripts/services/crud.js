@@ -173,7 +173,7 @@ angular.module('listaTareasApp')
 
 
 
-	  		  return $http.post('scripts/services/executesql.php', datos,config);  
+	  		  return $http.post('scripts/services/executesql.php', datos);  
 
 
 
@@ -224,6 +224,27 @@ angular.module('listaTareasApp')
   					});     				                      	  
 
 			},	
+	   PdfGrupo : function(datos) {
+	  				return  $http({
+	  				
+		  				method: "post",
+						url: 'scripts/services/pdfGrupo.php',
+			            data: datos,
+	        		    transformRequest: angular.identity,
+	            		headers: { 'Content-Type': 'application/json' },
+	            		responseType: 'arraybuffer'  				
+
+  				},
+
+  				 function errorCallback(response) {
+
+    				// called asynchronously if an error occurs
+
+    				// or server returns response with an error status.
+
+  					});     				                      	  
+
+			},				
 
 	  	SQLMulti : function(datos) {
 

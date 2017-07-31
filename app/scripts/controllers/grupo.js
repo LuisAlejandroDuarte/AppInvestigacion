@@ -497,8 +497,54 @@
 
                         'click .pdf': function (e, value, row, index) {
 
-                                 
+                           var datos = {
+                              Accion:'Grupo',
+                              SQL:'select g.gru_codi,i.inv_nomb,i.inv_apel, g.gru_nomb,g.gru_fech_ini,g.gru_fech_term,g.gru_colc_codi,a1.are_nomb,c1.cen_nomb As centro1,c2.cen_nomb as centro2,z.zon_nomb,g.gru_aval_inst, ' + 
+                                  ' p.pac_nomb,e.esc_nomb from sgi_grup  as g ' +
+                                  ' inner join sgi_inve_grup As ig on ig.igr_grup_codi = g.gru_codi' +
+                                  ' inner join  sgi_inve as i on i.inv_codi=ig.igr_inve_iden' +
+                                  ' inner join  sgi_area as a1 on a1.are_codi=g.gru_area_codi' +
+                                  ' inner join  sgi_cent as c1 on c1.cen_codi = g.gru_cent_codi ' +
+                                  ' inner join  sgi_cent as c2 on c2.cen_codi = i.inv_cent_codi' +
+                                  ' inner join  sgi_zona as z on z.zon_codi = c2.cen_zona_codi' +
+                                  ' inner join  sgi_prog_acad as p on p.pac_codi = i.inv_prog_acad_codi ' +
+                                  ' inner join  sgi_escu as e on e.esc_codi = p.pac_escu_codi' +
+                                  ' where ig.igr_tipo_vinc_codi=1 AND g.gru_codi=' + row.gru_codi
+                           }                           
 
+                           var select= TareasResource.SQL(datos);
+                              select.then(function(result){
+
+                                 result.data[0].gru_fech_ini =(result.data[0].gru_fech_ini!=null)? moment(result.data[0].gru_fech_ini).format("DD MMMM YYYY") :"";    
+                                 result.data[0].gru_fech_term =(result.data[0].gru_fech_term!=null && result.data[0].gru_fech_term!="0000-00-00")?  moment(result.data[0].gru_fech_term).format("DD MMMM YYYY"):"";    
+
+                                 angular.forEach(result.data[4],function(row,value) {
+
+                                  row.fech_ini =(row.fech_ini!=null)? moment(row.fech_ini).format("DD MMMM YYYY") :"";    
+                                  row.fech_term =(row.fech_term!=null)? moment(row.fech_term).format("DD MMMM YYYY") :"";    
+
+                                 });                              
+
+                                var grupo = {
+                                   datos:result.data[0],
+                                   investigacion:result.data[1],
+                                   integrante:result.data[2],
+                                   semillero:result.data[3],
+                                   produccion:result.data[4],
+                                   plantrabajo:result.data[5]
+                                } 
+
+
+
+                                   select= TareasResource.PdfGrupo(JSON.stringify(grupo));
+                                   select.then(function(r){
+
+                                    var file = new Blob([r.data], { type: 'application/pdf;charset=utf-8' });
+                                     saveAs(file, row.Grupo + '_grupo.pdf');   
+
+                                   });
+
+                              });
                         }
 
                 }
@@ -528,7 +574,7 @@
             SQL:"SELECT IG.igr_grup_codi,G.gru_nomb AS Grupo,G.gru_codi,G.gru_aval_inst," + 
             " G.gru_fech_ini AS Fecha,CONCAT(I.inv_nomb,' ' ,I.inv_apel) As Investigador " + 
             " FROM sgi_inve_grup AS IG  INNER JOIN sgi_grup AS G ON G.gru_codi = IG.igr_grup_codi " + 
-            " INNER JOIN sgi_inve As I ON I.inv_codi = IG.igr_inve_iden "
+            " INNER JOIN sgi_inve As I ON I.inv_codi = IG.igr_inve_iden WHERE IG.igr_tipo_vinc_codi=1"
            }
         }
 
@@ -536,6 +582,9 @@
 
         var grupo =TareasResource.SQL(datos);
         grupo.then(function(result){
+
+          if (result.data[0]!=null)
+
           $('#tablegrupo').bootstrapTable('load',result.data);
         });
         
