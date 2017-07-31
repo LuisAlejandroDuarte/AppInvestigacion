@@ -53,30 +53,81 @@ $pdf->setFooterData(array(0,64,0), array(0,64,128));
 
 $i=30;
 
+$data =$markers['datos'][0];
+
 $pdf->SetFont('helvetica', 'B', 13, '', true);
-$pdf->Text(80,$i,'PROPUESTAS');
-	 	
+$pdf->Text(80,$i,'CONVOCATORIA');
+
+$pdf->SetFont('helvetica', 'B', 11, '', true);
+$pdf->Text(15,$i+10,'Nombre : ');	 	
+
+
+$pdf->SetFont('helvetica', '', 11, '', true);
+$pdf->Text(35,$i+10,$data['CON_DESC']);	 	
+
+$pdf->SetFont('helvetica', 'B', 11, '', true);
+$pdf->Text(15,$i+20,'Tipo Convocatoria : ');	 	
+
+$pdf->SetFont('helvetica', '', 11, '', true);
+$pdf->Text(55,$i+20,$data['TCO_DESC']);	 	
+
+
+$pdf->SetFont('helvetica', 'B', 11, '', true);
+$pdf->Text(15,$i+30,'Inicia : ');	 	
+
+$pdf->SetFont('helvetica', '', 11, '', true);
+$pdf->Text(55,$i+30,$data['CON_FECH_INIC']);	 
+
+
+$pdf->SetFont('helvetica', 'B', 11, '', true);
+$pdf->Text(15,$i+40,'Termina : ');	 	
+
+$pdf->SetFont('helvetica', '', 11, '', true);
+$pdf->Text(55,$i+40,$data['CON_FECH_FINA']);		
+
+$pdf->SetFont('helvetica', 'B', 13, '', true);
+$pdf->Text(80,$i+55,'PROPUESTAS');
 		
-	 // $data =$markers['datos'];
-
-	 //  foreach ($data as $clave => $valor) {
-	 // 	 $producto =$markers['datos'][$clave];
-
-
-	 // 	 if ($i>=260) 
-	 // 	 	{
-	 // 	 		$i=10;
-	 // 	 		$pdf->AddPage();
+$i=$i+50;
+$linea=0;
+	  $data =$markers['datos'][1];
+	  foreach ($data as $clave => $valor) {
+	 	 $propuesta =$markers['datos'][1][$clave];
+	 	 if ($i>=260) 
+	 	 	{
+	 	 		$i=10;
+	 	 		$pdf->AddPage();
 	 	 			
-	 // 	 	}
+	 	 	}
 
-	 // 	 $pdf->SetFont('helvetica', '', 11, '', true);  	
-	 // 	 $linea = $i; 
-	 // 	 $pdf->Text(20,$linea+10,$producto['con_nume']);
-	 // 	 $pdf->Text(20,$linea+15,$producto['CON_DESC']);
-		//  $pdf->Text(20,$linea+20,$producto['TCO_DESC']);					 	 		 	
-	 // 	 $i=$linea+25;	
-	 //  }	 
+	 	 $pdf->SetFont('helvetica', 'BI', 11, '', true);  	
+	 	 $linea = $i; 
+	 	 $pdf->Text(15,$linea+15,$propuesta['pro_nomb']);	 	
+	 	 $i=$linea+10;
+	 //	$data1 =$markers['datos'][1][$clave];
+	 	$data1 =$markers['datos'][1][$clave][0];
+	 	// echo print_r($data1[0]);
+	 	//$i=$linea+15
+	 	 foreach ($data1 as $clave2 => $valor2) {
+	 	 	 
+	 	 	
+	 	 	
+	 	 	// echo print_r($valor2['inv_nomb']);
+	 	 		 if ($i>=260) 
+			 	 	{
+			 	 		$i=10;
+			 	 		$pdf->AddPage();
+			 	 			
+			 	 	}
+			 	   $linea = $i; 		
+			 	   $pdf->SetFont('helvetica', '', 11, '', true);  				 	 
+			 	   $pdf->Text(18,$linea+10,$valor2['inv_nomb'] . ' ' . $valor2['inv_apel']);
+			 	   $i=$linea+5;		 	
+	 	 }
+	 	
+	 	  $i=$linea+5;	
+
+	  }	 
 			
 $pdf->Output('example_002.pdf', 'D');
 

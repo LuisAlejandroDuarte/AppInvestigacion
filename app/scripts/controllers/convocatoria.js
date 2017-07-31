@@ -104,6 +104,7 @@
 
     var user = JSON.parse($window.sessionStorage.getItem('usuario'));
       var admin = JSON.parse($window.sessionStorage.getItem('usuario'));
+      moment.locale('es');
     if (user==null || user==undefined)
     {
 
@@ -229,51 +230,35 @@
                              }
                          }
             },{
-                title: '',
-                width: 100,
+
+                title:'PDF',
+                width:50,
                 switchable:false,
-                formatter: function(value, row, index) {
+                formatter:function(value,row,index) {
 
-                       return '<a class="edit ml10 btn btn-default btn-xs" title="Editar"><span class="glyphicon glyphicon-pencil"></span></a>&nbsp; ' +
-                    '<a class="remove ml10 btn btn-default btn-xs" title="Eliminar" ><span class="glyphicon glyphicon-trash"></span></a>' + 
-                    '<img src="images/pdf.png" alt="pdf" class="pdf" style="width:20px;height:20px;cursor:pointer">';
-
+                    return '<img src="images/pdf.png" alt="pdf" class="pdf" style="width:20px;height:20px;cursor:pointer">';
                 },
-                events:  window.operateEvents = {
-                        'click .remove': function (e, value, row, index) {
-                                $('#nombreConvocatoria').text(row.CON_DESC);
-                                  $('#myModal').data('id', row.CON_CODI).modal('show');                                
-                        },
+                events:window.operateEvents= {
 
-                        'click .edit': function (e, value, row, index) {
-                                 $window.location.href ="#/edit-convocatoria/" + row.CON_CODI + "";                           
-                        },
-                         'click .pdf': function (e, value, row, index) {
+                           'click .pdf': function (e, value, row, index) {
 
                              var datosconvocatoria = TareasResource.SQL(
                                  {
-                                  Accion:"S",
-                                  SQL:"SELECT C.con_nume,C.CON_DESC,TC.TCO_DESC FROM sgi_conv As C INNER JOIN " + 
+                                  Accion:"Convocatoria",
+                                  SQL:"SELECT C.con_nume,C.CON_DESC,TC.TCO_DESC,C.CON_CODI,C.CON_FECH_INIC,C.CON_FECH_FINA FROM sgi_conv As C INNER JOIN " + 
                                  "sgi_tipo_conv AS TC ON C.con_tipo_conv_codi=TC.TCO_CODI WHERE C.CON_CODI=" + row.CON_CODI
                                  });
-                             datosconvocatoria.then(function(result){
+                           
+                                  datosconvocatoria.then(function(result){
 
-                                 var propuestas = TareasResource.SQL(
-                                 {
-                                  Accion:"S",
-                                  SQL:"SELECT p.PRO_CODI, p.pro_nomb,c.con_desc FROM sgi_prop_conv_juez as pcj inner join " +
-                                  " sgi_prop as p on p.PRO_CODI = pcj.PCJU_PCAT_CODI inner join sgi_conv as c on c.CON_CODI = pcj.PCJU_CON_CODI  inner join " + 
-                                  " sgi_inve as i on i.INV_CODI = pcj.PCJU_INV_CODI where c.CON_CODI=" + row.CON_CODI
-                                 });
-                                  propuestas.then(function(pro){
-
-                                    var propuesta = Enumerable.From(pro.data)
-                                                 .Distinct()
-                                                 .ToArray();
+                                    // var propuesta = Enumerable.From(pro.data)
+                                    //              .Distinct()
+                                    //              .ToArray();
                                                  
+                                    result.data[0].CON_FECH_INIC =  moment(result.data[0].CON_FECH_INIC).format("DD MMMM YYYY");    
+                                    result.data[0].CON_FECH_FINA =  moment(result.data[0].CON_FECH_FINA).format("DD MMMM YYYY");    
                                      var convocatoria = {
-                                            datos:result.data,
-                                            propuesta:pro.data
+                                            datos:result.data                                          
                                      }
                                            
                                 var datos = TareasResource.PdfConvocatoria(JSON.stringify(convocatoria));
@@ -284,8 +269,29 @@
 
                                   });
                                
-                             });
+                           
+                        } 
+                }
+              },{
+                title: '',
+                width: 100,
+                switchable:false,
+                formatter: function(value, row, index) {
+
+                       return '<a class="edit ml10 btn btn-default btn-xs" title="Editar"><span class="glyphicon glyphicon-pencil"></span></a>&nbsp; ' +
+                    '<a class="remove ml10 btn btn-default btn-xs" title="Eliminar" ><span class="glyphicon glyphicon-trash"></span></a>';
+
+                },
+                events:  window.operateEvents = {
+                        'click .remove': function (e, value, row, index) {
+                                $('#nombreConvocatoria').text(row.CON_DESC);
+                                  $('#myModal').data('id', row.CON_CODI).modal('show');                                
+                        },
+
+                        'click .edit': function (e, value, row, index) {
+                                 $window.location.href ="#/edit-convocatoria/" + row.CON_CODI + "";                           
                         }
+                  
                 }
             }]
         };  
