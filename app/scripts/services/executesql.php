@@ -286,7 +286,94 @@
           
         mysqli_close($conexion);
         echo json_encode($resultArray);                                                        
-       }       
+       }    
+
+      function ExecuteSQL($sql,$conexion) {
+
+        $result = array(); 
+        $resultado = mysqli_query($conexion,$sql);
+        if (mysqli_num_rows($resultado)==0 )               
+        {
+          $result[]= mysqli_fetch_assoc($resultado);                                                            
+        }
+        else
+        {
+          while ($tuple= mysqli_fetch_assoc($resultado)) {                        
+                $result[] = $tuple;         
+          }               
+        }
+
+        return $result;
+
+      }
+
+      if ($Accion=="Semillero")
+      {
+        $IdUsuario = $d['Id'];
+        $IdSemillero = $d['IdSemillero'];
+        $resultArray = array();
+        $SQL="select lin_codi,lin_desc AS Nombre FROM sgi_line_inve ORDER BY lin_desc";     
+          array_push($resultArray, ExecuteSQL($SQL,$conexion)); 
+
+
+        $SQL="seelct concat(INV_APEL,' ',INV_NOMB) AS Nombre  ,INV_CODI  FROM sgi_inve WHERE " .
+          " INV_CODI!=" . $IdUsuario . " ORDER BY concat(INV_APEL,' ',INV_NOMB)";      
+          array_push($resultArray, ExecuteSQL($SQL,$conexion));   
+
+       $SQL="select PAC_CODI,PAC_NOMB AS Nombre FROM   sgi_prog_acad ORDER BY PAC_NOMB";
+         array_push($resultArray, ExecuteSQL($SQL,$conexion));  
+
+       $SQL="select TIE_CODI,TIE_NOMB AS Nombre FROM  sgi_tipo_estr ORDER BY TIE_NOMB";
+         array_push($resultArray, ExecuteSQL($SQL,$conexion));  
+
+
+       $SQL="select Linea.lin_desc AS Nombre,DATE_FORMAT(LineaSemillero.LIS_FECH_INI,'%d %M %Y') AS LIS_FECH_INI," . 
+                " DATE_FORMAT(LineaSemillero.LIS_FECH_FINA,'%d %M %Y') As LIS_FECH_FINA ,LineaSemillero.LIS_CODI,LineaSemillero.LIS_LINE_INVE_CODI " .
+                " FROM sgi_line_inve_semi AS LineaSemillero " .
+                " INNER JOIN sgi_line_inve AS Linea " .
+                " ON Linea.lin_codi = LineaSemillero.LIS_LINE_INVE_CODI  WHERE LineaSemillero.LIS_SEMI_CODI = " . $IdSemillero;        
+        array_push($resultArray, ExecuteSQL($SQL,$conexion));          
+
+        $SQL="select concat(investigador.INV_NOMB, ' ', investigador.INV_APEL)  AS Nombre," .
+                " integrante.IS_FECH_INI,integrante.IS_FECH_FIN,integrante.IS_CODI,integrante.IS_INVE_CODI " .
+                " FROM sgi_inte_semi AS integrante " .
+                " INNER JOIN sgi_inve AS investigador " . 
+                " ON integrante.IS_INVE_CODI = investigador.INV_CODI  WHERE integrante.IS_SEMI_CODI = " . $IdSemillero;       
+        array_push($resultArray, ExecuteSQL($SQL,$conexion));       
+        
+        $SQL="select Programa.PAC_NOMB AS Nombre," .
+             " ProgramaSemillero.PAS_FECH_INI,ProgramaSemillero.PAS_FECH_FIN,ProgramaSemillero.PAS_CODI,ProgramaSemillero.PAS_PACA_CODI " .
+             " FROM sgi_prog_acad_semi AS ProgramaSemillero " .
+             " INNER JOIN sgi_prog_acad AS Programa " .
+             " ON ProgramaSemillero.PAS_PACA_CODI = Programa.PAC_CODI  WHERE ProgramaSemillero.PAS_SEMI_CODI = " . $IdSemillero; 
+        array_push($resultArray, ExecuteSQL($SQL,$conexion));            
+
+        $SQL="select TipoEstrategia.TIE_NOMB AS Nombre," .
+              " EstrategiaSemillero.TES_CODI,EstrategiaSemillero.TES_TIES_CODI,EstrategiaSemillero.TES_DESC " .
+              " FROM sgi_tipo_estr_semi AS EstrategiaSemillero " .
+              " INNER JOIN sgi_tipo_estr AS TipoEstrategia " .
+              " ON EstrategiaSemillero.TES_TIES_CODI = TipoEstrategia.TIE_CODI  WHERE EstrategiaSemillero.TES_SEMI_CODI = " . $IdSemillero;
+        array_push($resultArray, ExecuteSQL($SQL,$conexion));             
+
+        $SQL="select ESPRODS_CODI,ESPRODS_NOMB AS Nombre FROM sgi_esprod_semi";
+        array_push($resultArray, ExecuteSQL($SQL,$conexion));
+        $SQL="select  ESPROYS_CODI,ESPROYS_DESC AS Nombre FROM sgi_esproy_semi";
+        array_push($resultArray, ExecuteSQL($SQL,$conexion));
+
+        $SQL="select PPR_CODI,PPR_SEMI_CODI,PPR_INVE_CODI,PPR_PROY_CODI,PPR_PROD_CODI,PPR_EPY_CODI,PPR_EPD_CODI,PPR_FECH_INI,PPR_FECH_FIN " .
+             " FROM sgi_proy_prod_semi   WHERE PPR_SEMI_CODI = " . $IdSemillero;             
+        array_push($resultArray, ExecuteSQL($SQL,$conexion));     
+
+       
+
+        mysqli_close($conexion);
+
+
+
+        echo json_encode($resultArray);   
+      }
+
+
 
        if ($Accion=="I")
 

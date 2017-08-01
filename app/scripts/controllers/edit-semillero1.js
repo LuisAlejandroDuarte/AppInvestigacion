@@ -312,230 +312,293 @@ angular.module('listaTareasApp')
 
     $scope.mostrarDatosInvestigador = function(id)
     {
-      var datos = {
-        Accion:"S",
-        SQL:"SELECT lin_codi,lin_desc AS Nombre FROM sgi_line_inve ORDER BY lin_desc"
-      }
-
-
-
-    var lista = TareasResource.SQL(datos);
-
-      lista.then(function(result){
-
-
-
-        $scope.lstLineasInvestigacion = result.data;
-
-
-
-        datos = {
-
-          Accion:"S",
-
-          SQL:"SELECT concat(INV_APEL,' ',INV_NOMB) AS Nombre  ,INV_CODI  FROM sgi_inve WHERE " + 
-
-          " INV_CODI!=" + id + " ORDER BY concat(INV_APEL,' ',INV_NOMB)"
-
-        }
-
-
-
-
-
-        if( $scope.lstIntegrantesSemillero==undefined) $scope.lstIntegrantesSemillero=[];
-
-
-
-           lista = TareasResource.SQL(datos);
-
-            lista.then(function(result){
-
-
-
-              $scope.lstIntegrantesSemillero = result.data;
-
-          datos = {
-
-            Accion:"S",
-
-            SQL:"SELECT PAC_CODI,PAC_NOMB AS Nombre FROM   sgi_prog_acad ORDER BY PAC_NOMB"
-
-            }             
-
-
-
-          if( $scope.lstProgramaAcademico==undefined) $scope.lstProgramaAcademico=[];
-
-
-
-            lista = TareasResource.SQL(datos);
-
-            lista.then(function(result){
-
-
-
-               $scope.lstProgramaAcademico = result.data;
-
-
-
-
-
-            datos = {
-
-              Accion:"S",
-
-              SQL:"SELECT TIE_CODI,TIE_NOMB AS Nombre FROM  sgi_tipo_estr ORDER BY TIE_NOMB"
-
-            }           
-
-
-
-            lista = TareasResource.SQL(datos);
-
-            lista.then(function(result){
-
-
-
-              $scope.lstTipoEstrategia = result.data;
-
-
-
-              datos = {
-
-
-
-                Accion:"S",
-
-                SQL:"SELECT Linea.lin_desc AS Nombre,LineaSemillero.LIS_FECH_INI,LineaSemillero.LIS_FECH_FINA,LineaSemillero.LIS_CODI,LineaSemillero.LIS_LINE_INVE_CODI " +
-
-                " FROM sgi_line_inve_semi AS LineaSemillero " +
-
-                " INNER JOIN sgi_line_inve AS Linea " + 
-
-                " ON Linea.lin_codi = LineaSemillero.LIS_LINE_INVE_CODI  WHERE LineaSemillero.LIS_SEMI_CODI = " + idSemillero
-
-
-
-              }
-
-
-
-              lista = TareasResource.SQL(datos);
-
-              lista.then(function(result){     
-
-
-
-                  if (result.data[0]!=null)            
-
-                  {
-
-                     angular.forEach(result.data, function(value, key) {
-
-
-
-                         var day = moment(result.data[key].LIS_FECH_INI).format("D");
-
-                         var mounth = moment(result.data[key].LIS_FECH_INI).format("M");
-
-                         var year = moment(result.data[key].LIS_FECH_INI).format("YYYY");
-
-
-
-                          var  fechaStr = year + "," + mounth + "," + day;
-
-
-
-                      result.data[key].LIS_FECH_INI  = new Date(fechaStr);
-
-
-
-                      result.data[key].LIS_FECH_FINA  =(result.data[key].LIS_FECH_FINA==null)? null: 
-
-                            new Date(moment(result.data[key].LIS_FECH_FINA).format("YYYY") + "," + 
-
-                              moment(result.data[key].LIS_FECH_FINA).format("M") + "," + 
-
-                              moment(result.data[key].LIS_FECH_FINA).format("D"));
-
-
-
-                     });
-
-
-
-                    $scope.lstLineasInvestigacionFecha = result.data;
-
-
-
+      var datos = TareasResource.SQL({Accion:'Semillero',Id:id,IdSemillero:idSemillero});
+          datos.then(function(result){
+            var r = result.data;
+
+              $scope.lstLineasInvestigacion = result.data[0];
+              if( $scope.lstIntegrantesSemillero==undefined) $scope.lstIntegrantesSemillero=[];
+              $scope.lstIntegrantesSemillero = result.data[1];               
+              $scope.lstProgramaAcademico = result.data[2];
+              $scope.lstTipoEstrategia = result.data[3];
+              $scope.lstLineasInvestigacionFecha = result.data[4];
+              $scope.lstIntegranteSemilleroFecha =result.data[5];
+              $scope.lstProgramaAcademicoFecha =result.data[6];              
+              $scope.lstTipoEstrategica = result.data[7];              
+              $scope.lstEstadoProducto = result.data[8];
+              $scope.lstEstadoProyecto = result.data[9];
+              $scope.listProyectosProductos=[];
+
+              if (result.data[10][0]!=null)
+              angular.forEach(result.data[10], function(value, key) 
+              {
+                var yyyy = moment(value.PPR_FECH_INI).format("YYYY");
+                var mes = moment(value.PPR_FECH_INI).format("MM");
+                var dia = moment(value.PPR_FECH_INI).format("DD"); 
+                var  fechaStr = yyyy + "," + mes + "," + dia;
+                result.data[10][key].PPR_FECH_INI = new Date(fechaStr);  
+                var fechaFin =null;
+                  if (value.PPR_FECH_FIN!=null)                   
+                      fechaFin =  moment(value.PPR_FECH_FIN).format("YYYY") + "," + moment(value.PPR_FECH_FIN).format("MM") + "," + moment(value.PPR_FECH_FIN).format("DD");                  
+                  var datos = {
+                      PPR_EPY_CODI : Enumerable.From($scope.lstEstadoProyecto)    
+                                    .Where(function (x) { return x.ESPROYS_CODI == result.data[key].PPR_EPY_CODI })          
+                                    .ToArray()[0],
+                      PPR_EPD_CODI : Enumerable.From($scope.lstEstadoProducto)                            
+                                    .Where(function (x) { return x.ESPRODS_CODI == result.data[key].PPR_EPD_CODI})   
+                                    .ToArray()[0],
+                      PPR_INVE_CODI:Enumerable.From($scope.lstIntegranteSemilleroFecha)                            
+                                    .Where(function (x) { return x.IS_INVE_CODI == result.data[key].PPR_INVE_CODI})   
+                                    .ToArray()[0], 
+                      PPR_PROY_CODI:result.data[key].PPR_PROY_CODI,
+                      PPR_PROD_CODI:result.data[key].PPR_PROD_CODI,
+                      LST_PROYECTOS:null,
+                      LST_PRODUCTOS:null,                                                                      
+                      PPR_FECH_INI : new Date(fechaStr),
+                      PPR_CODI:result.data[key].PPR_CODI,
+                      PPR_FECH_FIN :(fechaFin==null)? null:new Date(fechaFin),
+                      checkFechaFin:(fechaFin==null)? false:true,
+                      deshabilitarFecha:(fechaFin!=null)? true:false
                   }
 
 
+               if ($scope.listProyectosProductos==undefined) $scope.listProyectosProductos=[];
+                  $scope.listProyectosProductos.splice(0,0,datos);
+            });
 
+             var select=[];
+             angular.forEach($scope.listProyectosProductos, function(value, key) {
+             var  datos2 = {
+                  Accion:'S',
+                  SQL:'SELECT P.PRO_NOMB AS Nombre,P.PRO_CODI,PI.id_inve,PI.id_proy   FROM sgi_proy AS P INNER JOIN sgi_proy_inve AS PI ON P.PRO_CODI=PI.id_proy ' +
+                  '  WHERE PI.id_inve=' + value.PPR_INVE_CODI.IS_INVE_CODI 
+                  }       
+              select.splice(0,0,datos2);                                        
+            });
+            if (select.length>0)
+               {
+               var  lista2 =  TareasResource.SQLMulti(select);
+               lista2.then(function(result2){  
+               angular.forEach(result2.data.split("ok")[0].split(";"), function(value2, key2) {
+                if (value2!="")
+                   {
+                    var dd = value2;
+                    var item = Enumerable.From($scope.listProyectosProductos)                            
+                               .Where(function (x) 
+                               { return x.PPR_INVE_CODI.IS_INVE_CODI ==JSON.parse(value2)[0].id_inve && x.PPR_PROY_CODI.PRO_CODI==undefined})   
+                               .ToArray()[0];
+                    var items = [];                                 
+                    if (item!=null)                   
+                       {  
+                        item.LST_PROYECTOS =JSON.parse(value2);
+                        item.PPR_PROY_CODI = Enumerable.From(item.LST_PROYECTOS)                            
+                                           .Where(function (x) { return x.PRO_CODI ==item.PPR_PROY_CODI })   
+                                           .ToArray()[0];
 
+                        items.push(item);                   
 
-              datos = {
-
-
-
-                Accion:"S",
-
-                SQL:"SELECT concat(investigador.INV_NOMB, ' ',investigador.INV_APEL)  AS Nombre," +
-
-                " integrante.IS_FECH_INI,integrante.IS_FECH_FIN,integrante.IS_CODI,integrante.IS_INVE_CODI " +
-
-                " FROM sgi_inte_semi AS integrante " +
-
-                " INNER JOIN sgi_inve AS investigador " + 
-
-                " ON integrante.IS_INVE_CODI = investigador.INV_CODI  WHERE integrante.IS_SEMI_CODI = " + idSemillero
-
-
-
+                        
+                       }
+                    }
+                  });
+                  $scope.onChangedProyecto(items);
+                });        
               }
+      });
+    }
+
+    //   var datos = {
+    //     Accion:"S",
+    //     SQL:"SELECT lin_codi,lin_desc AS Nombre FROM sgi_line_inve ORDER BY lin_desc"
+    //   }
+    // var lista = TareasResource.SQL(datos);
+
+    //   lista.then(function(result){
+    //     $scope.lstLineasInvestigacion = result.data;
+    //     datos = {
+    //       Accion:"S",
+    //       SQL:"SELECT concat(INV_APEL,' ',INV_NOMB) AS Nombre  ,INV_CODI  FROM sgi_inve WHERE " + 
+    //       " INV_CODI!=" + id + " ORDER BY concat(INV_APEL,' ',INV_NOMB)"
+    //     }
+    //     if( $scope.lstIntegrantesSemillero==undefined) $scope.lstIntegrantesSemillero=[];
+    //        lista = TareasResource.SQL(datos);
+    //         lista.then(function(result){
+    //           $scope.lstIntegrantesSemillero = result.data;
+    //       datos = {
+    //         Accion:"S",
+    //         SQL:"SELECT PAC_CODI,PAC_NOMB AS Nombre FROM   sgi_prog_acad ORDER BY PAC_NOMB"
+    //         }             
+    //       if( $scope.lstProgramaAcademico==undefined) $scope.lstProgramaAcademico=[];
+
+
+
+    //         lista = TareasResource.SQL(datos);
+
+    //         lista.then(function(result){
+
+
+
+    //            $scope.lstProgramaAcademico = result.data;
+
+
+
+
+
+    //         datos = {
+
+    //           Accion:"S",
+
+    //           SQL:"SELECT TIE_CODI,TIE_NOMB AS Nombre FROM  sgi_tipo_estr ORDER BY TIE_NOMB"
+
+    //         }           
+
+
+
+    //         lista = TareasResource.SQL(datos);
+
+    //         lista.then(function(result){
+
+
+
+    //           $scope.lstTipoEstrategia = result.data;
+
+
+
+    //           datos = {
+
+
+
+    //             Accion:"S",
+
+    //             SQL:"SELECT Linea.lin_desc AS Nombre,LineaSemillero.LIS_FECH_INI,LineaSemillero.LIS_FECH_FINA,LineaSemillero.LIS_CODI,LineaSemillero.LIS_LINE_INVE_CODI " +
+
+    //             " FROM sgi_line_inve_semi AS LineaSemillero " +
+
+    //             " INNER JOIN sgi_line_inve AS Linea " + 
+
+    //             " ON Linea.lin_codi = LineaSemillero.LIS_LINE_INVE_CODI  WHERE LineaSemillero.LIS_SEMI_CODI = " + idSemillero
+
+
+
+    //           }
+
+
+
+    //           lista = TareasResource.SQL(datos);
+
+    //           lista.then(function(result){     
+
+
+
+    //               if (result.data[0]!=null)            
+
+    //               {
+
+    //                  angular.forEach(result.data, function(value, key) {
+
+
+
+    //                      var day = moment(result.data[key].LIS_FECH_INI).format("D");
+
+    //                      var mounth = moment(result.data[key].LIS_FECH_INI).format("M");
+
+    //                      var year = moment(result.data[key].LIS_FECH_INI).format("YYYY");
+
+
+
+    //                       var  fechaStr = year + "," + mounth + "," + day;
+
+
+
+    //                   result.data[key].LIS_FECH_INI  = new Date(fechaStr);
+
+
+
+    //                   result.data[key].LIS_FECH_FINA  =(result.data[key].LIS_FECH_FINA==null)? null: 
+
+    //                         new Date(moment(result.data[key].LIS_FECH_FINA).format("YYYY") + "," + 
+
+    //                           moment(result.data[key].LIS_FECH_FINA).format("M") + "," + 
+
+    //                           moment(result.data[key].LIS_FECH_FINA).format("D"));
+
+
+
+    //                  });
+
+
+
+    //                 $scope.lstLineasInvestigacionFecha = result.data;
+
+
+
+    //               }
+
+
+
+
+
+    //           datos = {
+
+
+
+    //             Accion:"S",
+
+    //             SQL:"SELECT concat(investigador.INV_NOMB, ' ',investigador.INV_APEL)  AS Nombre," +
+
+    //             " integrante.IS_FECH_INI,integrante.IS_FECH_FIN,integrante.IS_CODI,integrante.IS_INVE_CODI " +
+
+    //             " FROM sgi_inte_semi AS integrante " +
+
+    //             " INNER JOIN sgi_inve AS investigador " + 
+
+    //             " ON integrante.IS_INVE_CODI = investigador.INV_CODI  WHERE integrante.IS_SEMI_CODI = " + idSemillero
+
+
+
+    //           }
 
             
 
-              lista = TareasResource.SQL(datos);
+    //           lista = TareasResource.SQL(datos);
 
-              lista.then(function(result){     
-
-
-
-                 if (result.data[0]!=null)    
-
-                  {
+    //           lista.then(function(result){     
 
 
 
-                    angular.forEach(result.data, function(value, key) {
+    //              if (result.data[0]!=null)    
+
+    //               {
 
 
 
-                         var day = moment(result.data[key].IS_FECH_INI).format("D");
-
-                         var mounth = moment(result.data[key].IS_FECH_INI).format("M");
-
-                         var year = moment(result.data[key].IS_FECH_INI).format("YYYY");
+    //                 angular.forEach(result.data, function(value, key) {
 
 
 
-                          var  fechaStr = year + "," + mounth + "," + day;
+    //                      var day = moment(result.data[key].IS_FECH_INI).format("D");
 
-                           result.data[key].IS_FECH_INI  = new Date(fechaStr);
+    //                      var mounth = moment(result.data[key].IS_FECH_INI).format("M");
 
-                          // result.data[key].IS_FECH_FIN  =(result.data[key].IS_FECH_FIN==null)? null: moment(result.data[key].IS_FECH_FIN);
+    //                      var year = moment(result.data[key].IS_FECH_INI).format("YYYY");
 
 
 
-                            result.data[key].IS_FECH_FIN  =(result.data[key].IS_FECH_FIN==null)? null: 
+    //                       var  fechaStr = year + "," + mounth + "," + day;
 
-                            new Date(moment(result.data[key].IS_FECH_FIN).format("YYYY") + "," + 
+    //                        result.data[key].IS_FECH_INI  = new Date(fechaStr);
 
-                              moment(result.data[key].IS_FECH_FIN).format("M") + "," + 
+    //                       // result.data[key].IS_FECH_FIN  =(result.data[key].IS_FECH_FIN==null)? null: moment(result.data[key].IS_FECH_FIN);
 
-                              moment(result.data[key].IS_FECH_FIN).format("D"));
+
+
+    //                         result.data[key].IS_FECH_FIN  =(result.data[key].IS_FECH_FIN==null)? null: 
+
+    //                         new Date(moment(result.data[key].IS_FECH_FIN).format("YYYY") + "," + 
+
+    //                           moment(result.data[key].IS_FECH_FIN).format("M") + "," + 
+
+    //                           moment(result.data[key].IS_FECH_FIN).format("D"));
 
 
 
@@ -543,31 +606,31 @@ angular.module('listaTareasApp')
 
 
 
-                     });
+    //                  });
 
                                         
 
-                         $scope.lstIntegranteSemilleroFecha =result.data;
+    //                      $scope.lstIntegranteSemilleroFecha =result.data;
 
 
 
-                  }
+    //               }
 
                  
 
-                      if ($scope.lstIntegranteSemilleroFecha==undefined) $scope.lstIntegranteSemilleroFecha=[];
+    //                   if ($scope.lstIntegranteSemilleroFecha==undefined) $scope.lstIntegranteSemilleroFecha=[];
 
-                       $scope.lstIntegranteSemilleroFecha.splice(0,0,
+    //                    $scope.lstIntegranteSemilleroFecha.splice(0,0,
 
-                                { Nombre:user.INV_NOMB + ' ' + user.INV_APEL,
+    //                             { Nombre:user.INV_NOMB + ' ' + user.INV_APEL,
 
-                                  IS_FECH_INI:new Date(),
+    //                               IS_FECH_INI:new Date(),
 
-                                  IS_CODI:-10,
+    //                               IS_CODI:-10,
 
-                                  IS_FECH_FIN:null,
+    //                               IS_FECH_FIN:null,
 
-                                  IS_INVE_CODI:user.INV_CODI});  
+    //                               IS_INVE_CODI:user.INV_CODI});  
 
                  
 
@@ -577,65 +640,65 @@ angular.module('listaTareasApp')
 
 
 
-                datos = {
+    //             datos = {
 
 
 
-                  Accion:"S",
+    //               Accion:"S",
 
-                  SQL:"SELECT Programa.PAC_NOMB AS Nombre," +
+    //               SQL:"SELECT Programa.PAC_NOMB AS Nombre," +
 
-                  " ProgramaSemillero.PAS_FECH_INI,ProgramaSemillero.PAS_FECH_FIN,ProgramaSemillero.PAS_CODI,ProgramaSemillero.PAS_PACA_CODI " +
+    //               " ProgramaSemillero.PAS_FECH_INI,ProgramaSemillero.PAS_FECH_FIN,ProgramaSemillero.PAS_CODI,ProgramaSemillero.PAS_PACA_CODI " +
 
-                  " FROM sgi_prog_acad_semi AS ProgramaSemillero " +
+    //               " FROM sgi_prog_acad_semi AS ProgramaSemillero " +
 
-                  " INNER JOIN sgi_prog_acad AS Programa " + 
+    //               " INNER JOIN sgi_prog_acad AS Programa " + 
 
-                  " ON ProgramaSemillero.PAS_PACA_CODI = Programa.PAC_CODI  WHERE ProgramaSemillero.PAS_SEMI_CODI = " + idSemillero
-
-
-
-                  }
+    //               " ON ProgramaSemillero.PAS_PACA_CODI = Programa.PAC_CODI  WHERE ProgramaSemillero.PAS_SEMI_CODI = " + idSemillero
 
 
 
-                   lista = TareasResource.SQL(datos);
-
-                   lista.then(function(result){ 
+    //               }
 
 
 
-                     if (result.data[0]!=null)    
+    //                lista = TareasResource.SQL(datos);
 
-                        {
-
-
-
-                          angular.forEach(result.data, function(value, key) {
+    //                lista.then(function(result){ 
 
 
 
-                               var day = moment(result.data[key].PAS_FECH_INI).format("D");
+    //                  if (result.data[0]!=null)    
 
-                               var mounth = moment(result.data[key].PAS_FECH_INI).format("M");
-
-                               var year = moment(result.data[key].PAS_FECH_INI).format("YYYY");
+    //                     {
 
 
 
-                                var  fechaStr = year + "," + mounth + "," + day;
+    //                       angular.forEach(result.data, function(value, key) {
 
-                                 result.data[key].PAS_FECH_INI  = new Date(fechaStr);
 
-                              //result.data[key].PAS_FECH_FIN  =(result.data[key].PAS_FECH_FIN==null)? null: moment(result.data[key].PAS_FECH_FIN);
 
-                              result.data[key].PAS_FECH_FIN  =(result.data[key].PAS_FECH_FIN==null)? null: 
+    //                            var day = moment(result.data[key].PAS_FECH_INI).format("D");
 
-                            new Date(moment(result.data[key].PAS_FECH_FIN).format("YYYY") + "," + 
+    //                            var mounth = moment(result.data[key].PAS_FECH_INI).format("M");
 
-                              moment(result.data[key].PAS_FECH_FIN).format("M") + "," + 
+    //                            var year = moment(result.data[key].PAS_FECH_INI).format("YYYY");
 
-                              moment(result.data[key].PAS_FECH_FIN).format("D"));
+
+
+    //                             var  fechaStr = year + "," + mounth + "," + day;
+
+    //                              result.data[key].PAS_FECH_INI  = new Date(fechaStr);
+
+    //                           //result.data[key].PAS_FECH_FIN  =(result.data[key].PAS_FECH_FIN==null)? null: moment(result.data[key].PAS_FECH_FIN);
+
+    //                           result.data[key].PAS_FECH_FIN  =(result.data[key].PAS_FECH_FIN==null)? null: 
+
+    //                         new Date(moment(result.data[key].PAS_FECH_FIN).format("YYYY") + "," + 
+
+    //                           moment(result.data[key].PAS_FECH_FIN).format("M") + "," + 
+
+    //                           moment(result.data[key].PAS_FECH_FIN).format("D"));
 
 
 
@@ -643,279 +706,280 @@ angular.module('listaTareasApp')
 
 
 
-                           });
+    //                        });
 
 
 
-                          $scope.lstProgramaAcademicoFecha =result.data;
+    //                       $scope.lstProgramaAcademicoFecha =result.data;
 
-                        }
-
-
-
-                          datos = {
+    //                     }
 
 
 
-                            Accion:"S",
-
-                            SQL:"SELECT TipoEstrategia.TIE_NOMB AS Nombre," +
-
-                            " EstrategiaSemillero.TES_CODI,EstrategiaSemillero.TES_TIES_CODI,EstrategiaSemillero.TES_DESC " +
-
-                            " FROM sgi_tipo_estr_semi AS EstrategiaSemillero " +
-
-                            " INNER JOIN sgi_tipo_estr AS TipoEstrategia " + 
-
-                            " ON EstrategiaSemillero.TES_TIES_CODI = TipoEstrategia.TIE_CODI  WHERE EstrategiaSemillero.TES_SEMI_CODI = " + idSemillero
+    //                       datos = {
 
 
 
-                            }
+    //                         Accion:"S",
+
+    //                         SQL:"SELECT TipoEstrategia.TIE_NOMB AS Nombre," +
+
+    //                         " EstrategiaSemillero.TES_CODI,EstrategiaSemillero.TES_TIES_CODI,EstrategiaSemillero.TES_DESC " +
+
+    //                         " FROM sgi_tipo_estr_semi AS EstrategiaSemillero " +
+
+    //                         " INNER JOIN sgi_tipo_estr AS TipoEstrategia " + 
+
+    //                         " ON EstrategiaSemillero.TES_TIES_CODI = TipoEstrategia.TIE_CODI  WHERE EstrategiaSemillero.TES_SEMI_CODI = " + idSemillero
 
 
 
-                             lista = TareasResource.SQL(datos);
-
-                             lista.then(function(result){ 
+    //                         }
 
 
 
-                                if (result.data[0]!=null)    
+    //                          lista = TareasResource.SQL(datos);
 
-                                    {
+    //                          lista.then(function(result){ 
 
-                                        $scope.lstTipoEstrategica = result.data;
 
-                                    }
+
+    //                             if (result.data[0]!=null)    
+
+    //                                 {
+
+    //                                     $scope.lstTipoEstrategica = result.data;
+
+    //                                 }
 
 
 
                             
 
-                            datos = {
+    //                         datos = {
 
 
 
-                               Accion:'S',                              
+    //                            Accion:'S',                              
 
-                                SQL:'SELECT ESPRODS_CODI,ESPRODS_NOMB AS Nombre FROM sgi_esprod_semi' 
-
-
-
-                            }      
+    //                             SQL:'SELECT ESPRODS_CODI,ESPRODS_NOMB AS Nombre FROM sgi_esprod_semi' 
 
 
 
-                             lista = TareasResource.SQL(datos);
+    //                         }      
 
-                             lista.then(function(result){ 
 
-                                $scope.lstEstadoProducto = result.data;
+
+    //                          lista = TareasResource.SQL(datos);
+
+    //                          lista.then(function(result){ 
+
+    //                             $scope.lstEstadoProducto = result.data;
 
                               
 
-                              // $scope.lstEstadoProducto = result.data;
+    //                           // $scope.lstEstadoProducto = result.data;
 
 
 
-                               var  datos2 = {
+    //                            var  datos2 = {
 
 
 
-                                  Accion:'S',
+    //                               Accion:'S',
 
-                                   SQL:'SELECT  ESPROYS_CODI,ESPROYS_DESC AS Nombre FROM sgi_esproy_semi' 
-
-
-
-                                }      
+    //                                SQL:'SELECT  ESPROYS_CODI,ESPROYS_DESC AS Nombre FROM sgi_esproy_semi' 
 
 
 
-                            var lista2 = TareasResource.SQL(datos2);
-
-                             lista2.then(function(result2){ 
+    //                             }      
 
 
 
-                                 $scope.lstEstadoProyecto = result2.data;
+    //                         var lista2 = TareasResource.SQL(datos2);
 
-                                         
+    //                          lista2.then(function(result2){ 
+
+
+
+    //                              $scope.lstEstadoProyecto = result2.data;
 
                                          
 
-                                        datos = {
+                                         
 
-                                            Accion:'S',
+                             //            datos = {
 
-                                            SQL:'SELECT PPR_CODI,PPR_SEMI_CODI,PPR_INVE_CODI,PPR_PROY_CODI,PPR_PROD_CODI,PPR_EPY_CODI,PPR_EPD_CODI,PPR_FECH_INI,PPR_FECH_FIN' +
+                             //                Accion:'S',
 
-                                              ' FROM sgi_proy_prod_semi   WHERE PPR_SEMI_CODI = ' + idSemillero
+                             //                SQL:'SELECT PPR_CODI,PPR_SEMI_CODI,PPR_INVE_CODI,PPR_PROY_CODI,PPR_PROD_CODI,PPR_EPY_CODI,PPR_EPD_CODI,PPR_FECH_INI,PPR_FECH_FIN' +
 
-
-
-                                          }
-
-                             $scope.listProyectosProductos=[];             
-
-                             lista = TareasResource.SQL(datos);
-
-                             lista.then(function(result){ 
+                             //                  ' FROM sgi_proy_prod_semi   WHERE PPR_SEMI_CODI = ' + idSemillero
 
 
 
-                                if (result.data[0]!=null) 
+                             //              }
+
+                             // $scope.listProyectosProductos=[];             
+
+                             // lista = TareasResource.SQL(datos);
+
+                             // lista.then(function(result){ 
+
+
+
+                             //    if (result.data[0]!=null) 
 
                                    
 
-                                   angular.forEach(result.data, function(value, key) {
+                             //       angular.forEach(result.data, function(value, key) {
 
-                                      var yyyy = moment(value.PPR_FECH_INI).format("YYYY");
+                             //          var yyyy = moment(value.PPR_FECH_INI).format("YYYY");
 
-                                      var mes = moment(value.PPR_FECH_INI).format("MM");
+                             //          var mes = moment(value.PPR_FECH_INI).format("MM");
 
-                                      var dia = moment(value.PPR_FECH_INI).format("DD"); 
-
-
+                             //          var dia = moment(value.PPR_FECH_INI).format("DD"); 
 
 
 
 
 
-                                       var  fechaStr = yyyy + "," + mes + "," + dia;
-
-                                       result.data[key].PPR_FECH_INI = new Date(fechaStr);  
 
 
+                             //           var  fechaStr = yyyy + "," + mes + "," + dia;
 
-                                       var fechaFin =null;
-
-                                       if (value.PPR_FECH_FIN!=null)
-
-                                          {
-
-                                            fechaFin =  moment(value.PPR_FECH_FIN).format("YYYY") + "," + moment(value.PPR_FECH_FIN).format("MM") + "," + moment(value.PPR_FECH_FIN).format("DD")
-
-                                          }
+                             //           result.data[key].PPR_FECH_INI = new Date(fechaStr);  
 
 
 
-                                      var datos = {
+                             //           var fechaFin =null;
+
+                             //           if (value.PPR_FECH_FIN!=null)
+
+                             //              {
+
+                             //                fechaFin =  moment(value.PPR_FECH_FIN).format("YYYY") + "," + moment(value.PPR_FECH_FIN).format("MM") + "," + moment(value.PPR_FECH_FIN).format("DD")
+
+                             //              }
 
 
 
-                                        //  NombreProyecto:result.data[key].NombreProyecto,
-
-                                         // NombreProducto:result.data[key].NombreProducto,
-
-                                          PPR_EPY_CODI : Enumerable.From($scope.lstEstadoProyecto)    
-
-                                                               .Where(function (x) { return x.ESPROYS_CODI == result.data[key].PPR_EPY_CODI })          
-
-                                                               .ToArray()[0],
-
-                                          PPR_EPD_CODI : Enumerable.From($scope.lstEstadoProducto)                            
-
-                                                                 .Where(function (x) { return x.ESPRODS_CODI == result.data[key].PPR_EPD_CODI})   
-
-                                                               .ToArray()[0],                                                                                                                                     
+                             //          var datos = {
 
 
 
-                                          PPR_INVE_CODI:Enumerable.From($scope.lstIntegranteSemilleroFecha)                            
+                             //            //  NombreProyecto:result.data[key].NombreProyecto,
 
-                                                                 .Where(function (x) { return x.IS_INVE_CODI == result.data[key].PPR_INVE_CODI})   
+                             //             // NombreProducto:result.data[key].NombreProducto,
 
-                                                               .ToArray()[0], 
+                             //              PPR_EPY_CODI : Enumerable.From($scope.lstEstadoProyecto)    
 
+                             //                                   .Where(function (x) { return x.ESPROYS_CODI == result.data[key].PPR_EPY_CODI })          
 
+                             //                                   .ToArray()[0],
 
-                                          PPR_PROY_CODI:result.data[key].PPR_PROY_CODI,
+                             //              PPR_EPD_CODI : Enumerable.From($scope.lstEstadoProducto)                            
 
-                                          PPR_PROD_CODI:result.data[key].PPR_PROD_CODI,
+                             //                                     .Where(function (x) { return x.ESPRODS_CODI == result.data[key].PPR_EPD_CODI})   
 
-                                          LST_PROYECTOS:null,
-
-                                          LST_PRODUCTOS:null,                                                                      
-
-                                          PPR_FECH_INI : new Date(fechaStr),
-
-                                          PPR_CODI:result.data[key].PPR_CODI,
-
-                                          PPR_FECH_FIN :(fechaFin==null)? null:new Date(fechaFin),
-
-                                          checkFechaFin:(fechaFin==null)? false:true,
-
-                                          deshabilitarFecha:(fechaFin!=null)? true:false
+                             //                                   .ToArray()[0],                                                                                                                                     
 
 
 
+                             //              PPR_INVE_CODI:Enumerable.From($scope.lstIntegranteSemilleroFecha)                            
 
+                             //                                     .Where(function (x) { return x.IS_INVE_CODI == result.data[key].PPR_INVE_CODI})   
 
-                                        }
-
-
-
-                                        if ($scope.listProyectosProductos==undefined) $scope.listProyectosProductos=[];
-
-
-
-                                        $scope.listProyectosProductos.splice(0,0,datos);
+                             //                                   .ToArray()[0], 
 
 
 
-                                   });
+                             //              PPR_PROY_CODI:result.data[key].PPR_PROY_CODI,
+
+                             //              PPR_PROD_CODI:result.data[key].PPR_PROD_CODI,
+
+                             //              LST_PROYECTOS:null,
+
+                             //              LST_PRODUCTOS:null,                                                                      
+
+                             //              PPR_FECH_INI : new Date(fechaStr),
+
+                             //              PPR_CODI:result.data[key].PPR_CODI,
+
+                             //              PPR_FECH_FIN :(fechaFin==null)? null:new Date(fechaFin),
+
+                             //              checkFechaFin:(fechaFin==null)? false:true,
+
+                             //              deshabilitarFecha:(fechaFin!=null)? true:false
+
+
+
+
+
+                             //            }
+
+
+
+                             //            if ($scope.listProyectosProductos==undefined) $scope.listProyectosProductos=[];
+
+
+
+                             //            $scope.listProyectosProductos.splice(0,0,datos);
+
+
+
+                             //       });
+                             //    });
 
                                   
 
-                                  var select=[];
+         //                          var select=[];
 
-                                  angular.forEach($scope.listProyectosProductos, function(value, key) {
-
-
-
-                                          var  datos2 = {
+         //                          angular.forEach($scope.listProyectosProductos, function(value, key) {
 
 
 
-                                                  Accion:'S',
+         //                                  var  datos2 = {
 
-                                                  SQL:'SELECT P.PRO_NOMB AS Nombre,P.PRO_CODI,PI.id_inve,PI.id_proy   FROM sgi_proy AS P INNER JOIN sgi_proy_inve AS PI ON P.PRO_CODI=PI.id_proy ' +
 
-                                                  '  WHERE PI.id_inve=' + value.PPR_INVE_CODI.IS_INVE_CODI 
 
-                                                }       
+         //                                          Accion:'S',
 
-                                         select.splice(0,0,datos2);
+         //                                          SQL:'SELECT P.PRO_NOMB AS Nombre,P.PRO_CODI,PI.id_inve,PI.id_proy   FROM sgi_proy AS P INNER JOIN sgi_proy_inve AS PI ON P.PRO_CODI=PI.id_proy ' +
+
+         //                                          '  WHERE PI.id_inve=' + value.PPR_INVE_CODI.IS_INVE_CODI 
+
+         //                                        }       
+
+         //                                 select.splice(0,0,datos2);
 
                                                                                                             
 
-                                     });
+         //                             });
 
 
 
 
 
-                                    if (select.length>0)
+         //                            if (select.length>0)
 
-                                    {
+         //                            {
 
-                                     var  lista2 =  TareasResource.SQLMulti(select);
+         //                             var  lista2 =  TareasResource.SQLMulti(select);
 
-                                          lista2.then(function(result2){  
-
-
-
-                                            angular.forEach(result2.data.split("ok")[0].split(";"), function(value2, key2) {
+         //                                  lista2.then(function(result2){  
 
 
 
-                                              if (value2!="")
+         //                                    angular.forEach(result2.data.split("ok")[0].split(";"), function(value2, key2) {
 
-                                              {
 
-                                                var dd = value2;
+
+         //                                      if (value2!="")
+
+         //                                      {
+
+         //                                        var dd = value2;
 
 
 
@@ -923,55 +987,55 @@ angular.module('listaTareasApp')
 
 
 
-                                              var item = Enumerable.From($scope.listProyectosProductos)                            
+         //                                      var item = Enumerable.From($scope.listProyectosProductos)                            
 
-                                                                 .Where(function (x) 
+         //                                                         .Where(function (x) 
 
-                                                                  { return x.PPR_INVE_CODI.IS_INVE_CODI ==JSON.parse(value2)[0].id_inve && x.PPR_PROY_CODI.PRO_CODI==undefined})   
+         //                                                          { return x.PPR_INVE_CODI.IS_INVE_CODI ==JSON.parse(value2)[0].id_inve && x.PPR_PROY_CODI.PRO_CODI==undefined})   
 
-                                                               .ToArray()[0];
+         //                                                       .ToArray()[0];
 
-                                               if (item!=null)                   
+         //                                       if (item!=null)                   
 
-                                                             {  
+         //                                                     {  
 
-                                                  item.LST_PROYECTOS =JSON.parse(value2);    
-
-
-
-                                                  item.PPR_PROY_CODI = Enumerable.From(item.LST_PROYECTOS)                            
-
-                                                                     .Where(function (x) { return x.PRO_CODI ==item.PPR_PROY_CODI })   
-
-                                                                   .ToArray()[0];
+         //                                          item.LST_PROYECTOS =JSON.parse(value2);    
 
 
 
-                                                  $scope.onChangedProyecto(item);
+         //                                          item.PPR_PROY_CODI = Enumerable.From(item.LST_PROYECTOS)                            
 
-                                                   }
+         //                                                             .Where(function (x) { return x.PRO_CODI ==item.PPR_PROY_CODI })   
 
-
-
-                                              // item.PPR_PROD_CODI =Enumerable.From( item.LST_PRODUCTOS)                            
-
-                                              //                    .Where(function (x) { return x.id ==item.PPR_PROD_CODI})   
-
-                                              //                  .ToArray()[0];
+         //                                                           .ToArray()[0];
 
 
 
+         //                                          $scope.onChangedProyecto(item);
+
+         //                                           }
 
 
-                                               //  value.LST_PRODUCTOS = JSON.parse(result2.data.split("ok")[0]);
+
+         //                                      // item.PPR_PROD_CODI =Enumerable.From( item.LST_PRODUCTOS)                            
+
+         //                                      //                    .Where(function (x) { return x.id ==item.PPR_PROD_CODI})   
+
+         //                                      //                  .ToArray()[0];
 
 
 
 
 
-                                              }
+         //                                       //  value.LST_PRODUCTOS = JSON.parse(result2.data.split("ok")[0]);
 
-                                            });
+
+
+
+
+         //                                      }
+
+         //                                    });
 
                                             
 
@@ -979,9 +1043,9 @@ angular.module('listaTareasApp')
 
 
 
-                                      });        
+         //                              });        
 
-                                  }
+         //                          }
 
                                                               
 
@@ -991,149 +1055,149 @@ angular.module('listaTareasApp')
 
 
 
-                             datos = {
+         //                     datos = {
 
-                                Accion:'S',
+         //                        Accion:'S',
 
-                                  SQL:'SELECT I.INV_NOMB AS Nombres, I.INV_APEL AS Apellidos, C.CEN_NOMB AS' +
+         //                          SQL:'SELECT I.INV_NOMB AS Nombres, I.INV_APEL AS Apellidos, C.CEN_NOMB AS' +
 
-                                  ' Centro,Z.ZON_NOMB As Zona,P.PAC_NOMB As Programa,E.ESC_NOMB AS Escuela ' +
+         //                          ' Centro,Z.ZON_NOMB As Zona,P.PAC_NOMB As Programa,E.ESC_NOMB AS Escuela ' +
 
-                                ' FROM sgi_inve AS I INNER JOIN sgi_cent As C ON C.CEN_CODI=I.INV_CENT_CODI INNER JOIN '  +
+         //                        ' FROM sgi_inve AS I INNER JOIN sgi_cent As C ON C.CEN_CODI=I.INV_CENT_CODI INNER JOIN '  +
 
-                                ' sgi_zona As Z ON Z.ZON_CODI = C.CEN_ZONA_CODI INNER JOIN sgi_prog_acad As ' +
+         //                        ' sgi_zona As Z ON Z.ZON_CODI = C.CEN_ZONA_CODI INNER JOIN sgi_prog_acad As ' +
 
-                                ' P ON P.PAC_CODI = I.INV_PROG_ACAD_CODI INNER JOIN ' + 
+         //                        ' P ON P.PAC_CODI = I.INV_PROG_ACAD_CODI INNER JOIN ' + 
 
-                                ' sgi_escu AS E ON E.ESC_CODI = P.PAC_ESCU_CODI WHERE I.INV_CODI =' + id
+         //                        ' sgi_escu AS E ON E.ESC_CODI = P.PAC_ESCU_CODI WHERE I.INV_CODI =' + id
 
-                                }
+         //                        }
 
 
 
-                              var investigador = TareasResource.SQL(datos);
+         //                      var investigador = TareasResource.SQL(datos);
 
-                                investigador.then(function(result){
+         //                        investigador.then(function(result){
 
 
 
-                                  if (result.data[0]==null)
+         //                          if (result.data[0]==null)
 
-                                  {
+         //                          {
 
-                                    $window.alert("Faltan completar los datos del investigador");
+         //                            $window.alert("Faltan completar los datos del investigador");
 
-                                          $location.path('/menu');
+         //                                  $location.path('/menu');
 
-                                      return;
+         //                              return;
 
-                                  }
+         //                          }
 
 
 
-                                $scope.nombreInvestigador = result.data[0].Nombres;
+         //                        $scope.nombreInvestigador = result.data[0].Nombres;
 
-                                $scope.apellidoInvestigador = result.data[0].Apellidos;
+         //                        $scope.apellidoInvestigador = result.data[0].Apellidos;
 
-                                $scope.centroInvestigador = result.data[0].Centro;
+         //                        $scope.centroInvestigador = result.data[0].Centro;
 
-                                $scope.zonaInvestigador = result.data[0].Zona;
+         //                        $scope.zonaInvestigador = result.data[0].Zona;
 
-                                $scope.programaInvestigador = result.data[0].Programa;
+         //                        $scope.programaInvestigador = result.data[0].Programa;
 
-                                $scope.escuelaInvestigador = result.data[0].Escuela;
+         //                        $scope.escuelaInvestigador = result.data[0].Escuela;
 
-                                  datos = {
+         //                          datos = {
 
-                                          Accion:'S',
+         //                                  Accion:'S',
 
-                                          SQL:'SELECT G.gru_codi,G.gru_nomb,GS.sgr_fech_inic As FechaInicio,GS.sgr_fech_term AS FechaFin FROM sgi_grup AS G INNER JOIN sgi_grup_semi AS GS ON GS.sgr_grup_codi = G.gru_codi ' +  
+         //                                  SQL:'SELECT G.gru_codi,G.gru_nomb,GS.sgr_fech_inic As FechaInicio,GS.sgr_fech_term AS FechaFin FROM sgi_grup AS G INNER JOIN sgi_grup_semi AS GS ON GS.sgr_grup_codi = G.gru_codi ' +  
 
-                                          'WHERE GS.sgr_semi_codi =' + idSemillero
+         //                                  'WHERE GS.sgr_semi_codi =' + idSemillero
 
-                                     }
+         //                             }
 
 
 
-                                investigador = TareasResource.SQL(datos);
+         //                        investigador = TareasResource.SQL(datos);
 
-                                investigador.then(function(result){
+         //                        investigador.then(function(result){
 
 
 
-                                  if (result.data[0]!=null)
+         //                          if (result.data[0]!=null)
 
 
 
-                                      $('#tablegrupos').bootstrapTable('load',result.data);          
+         //                              $('#tablegrupos').bootstrapTable('load',result.data);          
 
 
 
 
 
-                                         datos = {
+         //                                 datos = {
 
-                                          Accion:'S',
+         //                                  Accion:'S',
 
-                                          SQL:'SELECT DOCU_CODI,DOCU_RUTA,DOCU_NOMB, "S" AS Accion FROM sgi_doc_semi WHERE DOCU_SEM_CODI=' + idSemillero
+         //                                  SQL:'SELECT DOCU_CODI,DOCU_RUTA,DOCU_NOMB, "S" AS Accion FROM sgi_doc_semi WHERE DOCU_SEM_CODI=' + idSemillero
 
-                                          }
+         //                                  }
 
 
 
-                                            investigador = TareasResource.SQL(datos);
+         //                                    investigador = TareasResource.SQL(datos);
 
-                                              investigador.then(function(result){
+         //                                      investigador.then(function(result){
 
 
 
 
 
-                                                 if (result.data[0]!=null)
+         //                                         if (result.data[0]!=null)
 
-                                                 {
+         //                                         {
 
-                                                   $scope.documentos = result.data;
+         //                                           $scope.documentos = result.data;
 
-                                                   jsonDocumentos = JSON.stringify(result.data);
+         //                                           jsonDocumentos = JSON.stringify(result.data);
 
-                                                  $('#tabledocu').bootstrapTable('load',JSON.parse(jsonDocumentos));                                    
+         //                                          $('#tabledocu').bootstrapTable('load',JSON.parse(jsonDocumentos));                                    
 
-                                                }
+         //                                        }
 
-                                         $scope.mostrarDatosSemillero(idSemillero);                          
+         //                                 $scope.mostrarDatosSemillero(idSemillero);                          
 
-                                        });                                  
+         //                                });                                  
 
 
 
-                                  });                               
+         //                          });                               
 
-                                })  
+         //                        })  
 
-                             }); 
+         //                     }); 
 
-                            });
+         //                    });
 
-                          });
+         //                  });
 
-                        });
+         //                });
 
-                     });
+         //             });
 
-                   });
+         //           });
 
-                });                     
+         //        });                     
 
-             });
+         //     });
 
-           });
+         //   });
 
-         });
+         // });
 
-       });      
+       //});      
 
-    }
+    
 
 
 
@@ -1325,16 +1389,10 @@ angular.module('listaTareasApp')
 
     $scope.onChangedProyecto = function(item) {
 
+       
        var datos2 = {
-
-
-
           Accion:'S',
-
            SQL:'SELECT  P.id,P.Nombre FROM sgi_prod_proy AS PP INNER JOIN sgi_prod AS P ON P.id=PP.id_prod WHERE PP.id_proy=' + item.PPR_PROY_CODI.PRO_CODI 
-
-
-
         } 
 
         $('#myModal').show();     
@@ -3134,5 +3192,6 @@ angular.module('listaTareasApp')
       
 
 });
+
 
 

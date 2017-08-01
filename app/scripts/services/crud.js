@@ -178,6 +178,7 @@ angular.module('listaTareasApp')
 
 
 	  	},
+	  
 
 
 	  	PDF : function(datos) {
